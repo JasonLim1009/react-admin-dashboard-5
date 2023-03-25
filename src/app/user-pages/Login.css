@@ -1,0 +1,52 @@
+form .form-inner .form-group{
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4.4px);
+  -webkit-backdrop-filter: blur(4.4px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  display: block;
+  width: 300px;
+  margin-bottom: 15px;
+}
+
+form .form-inner .form-group label{
+display: block;
+color: #666;
+font-size: 12px;
+margin-bottom: 5px;
+transition: 0.4s;
+padding-top: 12px;
+}
+
+form .passwordToggle{
+position: relative;
+cursor: pointer;
+z-index: 5;
+float: right;
+bottom: -40px;
+margin-right: 9px;
+}
+
+Form .mb-3 Select{
+border: none;
+outline: none;
+cursor: pointer;
+background-color: transparent;
+border-radius: 8px;
+font-size: 17px;
+border: 1px solid rgba(0, 0, 0, .3);
+}
+
+
+@keyframes animate {
+  0%{
+    background-position: 0 50%;
+  }
+  50%{
+    background-position: 100% 50%;
+  }
+  100%{
+    background-position: 0 50%;
+  }
+}
