@@ -50,7 +50,7 @@ const InventoryFrom = (props) => {
 
     
 
-    const [Type, setType] = useState([{label:"S",value:"S : Stock"},{label:"T",value:"T : Tool"},{label:"S",value:"S : Serialize"},{label:"S ",value:"S : Serialize with Asset"}]);
+    const [Type, setType] = useState([{label:"S : Stock",value:""},{label:"T : Tool",value:""},{label:"S : Serialize",value:""},{label:"S : Serialize with Asset",value:""}]);
     const [selected_Type, setSelected_Type] = useState([]);
 
     const [Commodity_Code, setCommodity_Code] = useState([]);
@@ -154,7 +154,7 @@ const InventoryFrom = (props) => {
     const [UDFDate_4, setUDFDate_4] = useState(new Date());
     const [UDFDate_5, setUDFDate_5] = useState(new Date());
 
-    const [AccountType, setAccountType] = useState([{label:"I",value:"I : INVENTORY"},{label:"E",value:"E : EXPENSE"}]);
+    const [AccountType, setAccountType] = useState([{label:"I : INVENTORY",value:""},{label:"E : EXPENSE",value:""}]);
     const [selected_AccountType, setSelected_AccountType] = useState([]);
 
     const [TaxCode, setTaxCode] = useState([]);
@@ -1710,11 +1710,11 @@ const InventoryFrom = (props) => {
   return (   
 
         <div>
-            <div className="page-header">
+            <div className="page-header" style={{ marginTop: "-10px", marginBottom:"10px" }}>
             <h3 className="page-title">Inventory Master</h3>   
 
             <nav aria-label="breadcrumb">
-                <ol className="breadcrumb">
+                {/* <ol className="breadcrumb"></ol> */}
                     <div className="template-demo">
 
                         <button type="button" className="btn btn-success btn-icon-text" onClick={onClickChange}>
@@ -1726,13 +1726,13 @@ const InventoryFrom = (props) => {
                         </button>
                     
                     </div>
-                </ol>
+                
             </nav>       
         
         </div> 
 
     <div className="col-12 grid-margin">
-        <div className="card">
+        <div className="card" style={{marginLeft: "-15px", marginRight: "-15px"}}>
             <div className="card-body"> 
                 <form className="form-sample" validated={validated}>  
 
@@ -1863,12 +1863,12 @@ const InventoryFrom = (props) => {
                             </div>
                         </div>
 
-                        <div className="row">
+                        <div className="row" style={{ marginTop: "-20px" }}>
                             <div className="col-md-6">
                                 <Form.Group className="row" controlId="validation_StockNo">
                                     <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Stock No:</label>
                                     <div className="col-sm-8">
-                                        <Form.Control style={{ fontSize: "13px" }} type="text" value={StockNo} onChange={(e) => setStockNo(e.target.value)}  disabled={StockNo_disabled}/>
+                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={StockNo} onChange={(e) => setStockNo(e.target.value)}  disabled={StockNo_disabled}/>
                                     </div>
                                 </Form.Group>
                             </div>
@@ -1893,7 +1893,7 @@ const InventoryFrom = (props) => {
                             </div>
                         </div>
 
-                        <div className="row">
+                        <div className="row" style={{ marginTop: "-20px" }}>
                             <div className="col-md-6">
                                 <Form.Group className="row" controlId="validation_Master_Location">
                                     <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Master Location:</label>
@@ -1917,13 +1917,13 @@ const InventoryFrom = (props) => {
                                 <Form.Group className="row" controlId="validation_Part_No">
                                     <Form.Label className="col-sm-4 col-form-label">Part No:</Form.Label>
                                     <div className="col-sm-8">
-                                    <Form.Control style={{ fontSize: "13px" }} type="text" value={Part_No} onChange={(e) => setPart_No(e.target.value)}/>
+                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Part_No} onChange={(e) => setPart_No(e.target.value)}/>
                                     </div>
                                 </Form.Group>
                             </div>
                         </div>
 
-                        <div className="row">
+                        <div className="row" style={{ marginTop: "-20px" }}>
                             <div className="col-md-6">
                                 <Form.Group className="row" controlId="validation_Order_Rule">
                                     <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Order Rule:</label>
@@ -1947,13 +1947,13 @@ const InventoryFrom = (props) => {
                                 <Form.Group className="row" controlId="validation_TotalOH">
                                     <label className="col-sm-4 col-form-label">Total OH:</label>
                                     <div className="col-sm-8">
-                                        <Form.Control style={{ fontSize: "13px" }} type="number" placeholder="0.0000" value={TotalOH} onChange={(e) => setTotalOH(e.target.value)} readOnly/>
+                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={TotalOH} onChange={(e) => setTotalOH(e.target.value)} readOnly/>
                                     </div>
                                 </Form.Group>
                             </div>
                         </div>
 
-                        <div className="row">
+                        <div className="row" style={{ marginTop: "-20px" }}>
                             <div className="col-md-6">
                                 <Form.Group className="row" controlId="validation_Cost_Center">
                                     <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Cost Center:</label>
@@ -1977,13 +1977,13 @@ const InventoryFrom = (props) => {
                                 <Form.Group className="row" controlId="validation_IssuePrice">
                                     <label className="col-sm-4 col-form-label">Issue Price:</label>
                                     <div className="col-sm-8">
-                                        <Form.Control style={{ fontSize: "13px" }} type="number" placeholder="0.00" value={IssuePrice} onChange={(e) => setIssuePrice(e.target.value)} readOnly/>
+                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.00" value={IssuePrice} onChange={(e) => setIssuePrice(e.target.value)} readOnly/>
                                     </div>
                                 </Form.Group>
                             </div>
                         </div>
 
-                        <div className="row">
+                        <div className="row" style={{ marginTop: "-20px" }}>
                             <div className="col-md-6">
                                 <Form.Group className="row" controlId="validation_Account">
                                     <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Account:</label>
@@ -2007,13 +2007,13 @@ const InventoryFrom = (props) => {
                                 <Form.Group className="row" controlId="validation_SerializeCounter">
                                     <label className="col-sm-4 col-form-label">Serialize Counter:</label>
                                     <div className="col-sm-8">
-                                        <Form.Control style={{ fontSize: "13px" }} type="number" placeholder="100001" value={SerializeCounter} onChange={(e) => setSerializeCounter(e.target.value)} readOnly/>
+                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="100001" value={SerializeCounter} onChange={(e) => setSerializeCounter(e.target.value)} readOnly/>
                                     </div>
                                 </Form.Group>
                             </div>
                         </div>
 
-                        <div className="row">
+                        <div className="row" style={{ marginTop: "-20px" }}>
                             <div className="col-md-12">
                                 <Form.Group className="row" controlId="validation_Description">
                                     <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Description:</label>
@@ -2072,16 +2072,16 @@ const InventoryFrom = (props) => {
                                 <img src={require("../../assets/images/product_images_2/thumb_image2.jpg")} className="sliderimg" alt=""/>
                                 <img src={require("../../assets/images/product_images_2/thumb_image3.jpg")} className="sliderimg" alt=""/>
                                 <img src={require("../../assets/images/product_images_2/thumb_image4.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image5.jpg")} className="sliderimg" alt=""/>
+                                {/* <img src={require("../../assets/images/product_images_2/thumb_image5.jpg")} className="sliderimg" alt=""/>
                                 <img src={require("../../assets/images/product_images_2/thumb_image6.jpg")} className="sliderimg" alt=""/>
                                 <img src={require("../../assets/images/product_images_2/thumb_image7.jpg")} className="sliderimg" alt=""/>
                                 <img src={require("../../assets/images/product_images_2/thumb_image8.jpg")} className="sliderimg" alt=""/>                                    
                                 <img src={require("../../assets/images/product_images_2/thumb_image9.jpg")} className="sliderimg" alt=""/>
                                 <img src={require("../../assets/images/product_images_2/thumb_image10.jpg")} className="sliderimg" alt=""/>
                                 <img src={require("../../assets/images/product_images_2/thumb_image11.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image12.jpg")} className="sliderimg" alt=""/>
+                                <img src={require("../../assets/images/product_images_2/thumb_image12.jpg")} className="sliderimg" alt=""/> */}
                                 
-                                </AliceCarousel>
+                            </AliceCarousel>
                                 
                         </div>
 
@@ -2135,7 +2135,7 @@ const InventoryFrom = (props) => {
                                         </div> 
                                     </div>  
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row" controlId="validation_IssueUOM">
                                                 <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Issue UOM:</label>
@@ -2172,7 +2172,7 @@ const InventoryFrom = (props) => {
                                         </div> 
                                     </div>  
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row" controlId="validation_ReceiveUOM">
                                                 <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Receive UOM:</label>
@@ -2209,12 +2209,12 @@ const InventoryFrom = (props) => {
                                         </div> 
                                     </div>  
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row" controlId="validation_ConversionFactor">
                                                 <label className="col-sm-4 col-form-label">Conversion Factor:</label>
                                                 <div className="col-sm-7">
-                                                <Form.Control style={{ fontSize: "13px" }} type="number" placeholder='1.0000' value={ConversionFactor} onChange={(e) => setConversionFactor(e.target.value)} readOnly/>
+                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder='1.0000' value={ConversionFactor} onChange={(e) => setConversionFactor(e.target.value)} readOnly/>
                                             </div>
                                             </Form.Group>
                                         </div>
@@ -2223,13 +2223,13 @@ const InventoryFrom = (props) => {
                                             <Form.Group className="row" controlId="validation_ABCClass">
                                                 <label className="col-sm-4 col-form-label">ABC Class:</label>
                                                 <div className="col-sm-4">
-                                                <Form.Control style={{ fontSize: "13px" }} type="text" value={ABCClass} onChange={(e) => setABCClass(e.target.value)}/>
+                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={ABCClass} onChange={(e) => setABCClass(e.target.value)}/>
                                                 </div>
                                             </Form.Group>
                                         </div> 
                                     </div>  
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row" controlId="validation_StorageType">
                                                 <label className="col-sm-4 col-form-label">Storage Type:</label>
@@ -2254,7 +2254,7 @@ const InventoryFrom = (props) => {
                                                 <label className="col-sm-4 col-form-label">Order Point:</label>
                                                 <div className="col-sm-7">
                                                 <Form.Control  
-                                                    style={{ fontSize: "13px" }}
+                                                    style={{ fontSize: "13px", height: "38px" }}
                                                     type="number"  
                                                     placeholder=".0000" 
                                                     value={OrderPoint} 
@@ -2265,13 +2265,13 @@ const InventoryFrom = (props) => {
                                         </div> 
                                     </div> 
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row" controlId="validation_Cube">
                                                 <label className="col-sm-4 col-form-label">Cube:</label>
                                                 <div className="col-sm-7">
                                                 <Form.Control  
-                                                    style={{ fontSize: "13px" }}
+                                                    style={{ fontSize: "13px", height: "38px" }}
                                                     type="number"  
                                                     placeholder=".0000" 
                                                     value={Cube} 
@@ -2286,7 +2286,7 @@ const InventoryFrom = (props) => {
                                                 <label className="col-sm-4 col-form-label">Maximum:</label>
                                                 <div className="col-sm-7">
                                                 <Form.Control  
-                                                    style={{ fontSize: "13px" }}
+                                                    style={{ fontSize: "13px", height: "38px" }}
                                                     type="number"  
                                                     placeholder=".0000" 
                                                     value={Maximum} 
@@ -2297,13 +2297,13 @@ const InventoryFrom = (props) => {
                                         </div> 
                                     </div> 
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row" controlId="validation_ShelfLife">
                                                 <label className="col-sm-4 col-form-label">Shelf Life:</label>
                                                 <div className="col-sm-7">
                                                 <Form.Control  
-                                                    style={{ fontSize: "13px" }}
+                                                    style={{ fontSize: "13px", height: "38px" }}
                                                     type="number"  
                                                     value={ShelfLife} 
                                                     onChange={(e) => setShelfLife(e.target.value)}
@@ -2317,7 +2317,7 @@ const InventoryFrom = (props) => {
                                                 <label className="col-sm-4 col-form-label">Last Activity Date:</label>
                                                 <div className="col-sm-7">
                                                 <Form.Control   
-                                                    style={{ fontSize: "13px" }}                                         
+                                                    style={{ fontSize: "13px", height: "38px" }}                                         
                                                     type="datetime-local"  
                                                     value={LastActivityDate} 
                                                     onChange={(e) => setLastActivityDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -2327,12 +2327,12 @@ const InventoryFrom = (props) => {
                                         </div> 
                                     </div> 
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row" controlId="validation_EOQ">
                                                 <label className="col-sm-4 col-form-label">EOQ:</label>
                                                 <div className="col-sm-7">
-                                                <Form.Control style={{ fontSize: "13px" }} type="number" placeholder='0' value={EOQ} onChange={(e) => setEOQ(e.target.value)} readOnly/>
+                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder='0' value={EOQ} onChange={(e) => setEOQ(e.target.value)} readOnly/>
                                                 </div>
                                             </Form.Group>
                                         </div>
@@ -2342,7 +2342,7 @@ const InventoryFrom = (props) => {
                                                 <label className="col-sm-4 col-form-label">Last Count Date:</label>
                                                 <div className="col-sm-7">
                                                 <Form.Control  
-                                                    style={{ fontSize: "13px" }}                                          
+                                                    style={{ fontSize: "13px", height: "38px" }}                                          
                                                     type="datetime-local"  
                                                     value={LastCountDate} 
                                                     onChange={(e) => setLastCountDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -2352,7 +2352,7 @@ const InventoryFrom = (props) => {
                                         </div> 
                                     </div> 
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row" controlId="validation_CountFrequency">
                                                 <label className="col-sm-4 col-form-label">Count Frequency:</label>
@@ -2366,7 +2366,7 @@ const InventoryFrom = (props) => {
                                                 <label className="col-sm-4 col-form-label">Next Count Date:</label>
                                                 <div className="col-sm-7">
                                                 <Form.Control  
-                                                    style={{ fontSize: "13px" }}                                          
+                                                    style={{ fontSize: "13px", height: "38px" }}                                          
                                                     type="datetime-local"  
                                                     value={NextCountDate} 
                                                     onChange={(e) => setNextCountDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -2376,7 +2376,7 @@ const InventoryFrom = (props) => {
                                         </div> 
                                     </div> 
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row" controlId="validation_AverageLeadTime">
                                                 <label className="col-sm-4 col-form-label">Average Lead Time:</label>
@@ -2403,7 +2403,7 @@ const InventoryFrom = (props) => {
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_1}
                                                 onChange={(e) => setUDFText_1(e.target.value)}
@@ -2412,13 +2412,14 @@ const InventoryFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-13">
+                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
                                         <Form.Group className="row">
                                         <label className="col-sm-4 col-form-label">
                                             UDF Text2:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_2}
                                                 onChange={(e) => setUDFText_2(e.target.value)}
@@ -2427,13 +2428,14 @@ const InventoryFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-13">
+                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
                                         <Form.Group className="row">
                                         <label className="col-sm-4 col-form-label">
                                             UDF Text3:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_3}
                                                 onChange={(e) => setUDFText_3(e.target.value)}
@@ -2442,13 +2444,14 @@ const InventoryFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-13">
+                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
                                         <Form.Group className="row">
                                         <label className="col-sm-4 col-form-label">
                                             UDF Text4:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_4}
                                                 onChange={(e) => setUDFText_4(e.target.value)}
@@ -2457,13 +2460,14 @@ const InventoryFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-13">
+                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
                                         <Form.Group className="row">
                                         <label className="col-sm-4 col-form-label">
                                             UDF Text5:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_5}
                                                 onChange={(e) => setUDFText_5(e.target.value)}
@@ -2482,7 +2486,7 @@ const InventoryFrom = (props) => {
                                         <Form.Control
                                             style={{ fontSize: "13px" }} 
                                             as="textarea" 
-                                            rows={28} 
+                                            rows={19} 
                                             value={UDFNote1}
                                             onChange={(e) => setUDFNote1(e.target.value)}
                                         />
@@ -2491,7 +2495,7 @@ const InventoryFrom = (props) => {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-4">
                                     <Form.Group className="row">
                                     <label className="col-sm-4 col-form-label">
@@ -2499,7 +2503,7 @@ const InventoryFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                            style={{ fontSize: "13px" }}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="text"
                                             value={UDFText_6}
                                             onChange={(e) => setUDFText_6(e.target.value)}
@@ -2515,7 +2519,7 @@ const InventoryFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control  
-                                            style={{ fontSize: "13px" }}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="number"  
                                             placeholder=".0000" 
                                             value={UDFNumber_1} 
@@ -2532,7 +2536,7 @@ const InventoryFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                     <Form.Control   
-                                        style={{ fontSize: "13px" }}                                         
+                                        style={{ fontSize: "13px", height: "38px" }}                                         
                                         type="datetime-local"  
                                         value={UDFDate_1} 
                                         onChange={(e) => setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -2542,7 +2546,7 @@ const InventoryFrom = (props) => {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-4">
                                     <Form.Group className="row">
                                     <label className="col-sm-4 col-form-label">
@@ -2550,7 +2554,7 @@ const InventoryFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                            style={{ fontSize: "13px" }}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="text"
                                             value={UDFText_7}
                                             onChange={(e) => setUDFText_7(e.target.value)}
@@ -2566,7 +2570,7 @@ const InventoryFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                     <Form.Control  
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="number"  
                                         placeholder=".0000" 
                                         value={UDFNumber_2} 
@@ -2583,7 +2587,7 @@ const InventoryFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                            style={{ fontSize: "13px" }}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="datetime-local"
                                             value={UDFDate_2} 
                                             onChange={(e) => setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
@@ -2593,7 +2597,7 @@ const InventoryFrom = (props) => {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-4">
                                     <Form.Group className="row">
                                     <label className="col-sm-4 col-form-label">
@@ -2601,7 +2605,7 @@ const InventoryFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                            style={{ fontSize: "13px" }}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="text"
                                             value={UDFText_8}
                                             onChange={(e) => setUDFText_8(e.target.value)}
@@ -2617,7 +2621,7 @@ const InventoryFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                     <Form.Control
-                                        style={{ fontSize: "13px" }}  
+                                        style={{ fontSize: "13px", height: "38px" }}  
                                         type="number"  
                                         placeholder=".0000" 
                                         value={UDFNumber_3} 
@@ -2634,7 +2638,7 @@ const InventoryFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                            style={{ fontSize: "13px" }}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="datetime-local"
                                             value={UDFDate_3} 
                                             onChange={(e) => setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
@@ -2644,7 +2648,7 @@ const InventoryFrom = (props) => {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-4">
                                     <Form.Group className="row">
                                     <label className="col-sm-4 col-form-label">
@@ -2652,7 +2656,7 @@ const InventoryFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                            style={{ fontSize: "13px" }}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="text"
                                             value={UDFText_9}
                                             onChange={(e) => setUDFText_9(e.target.value)}
@@ -2668,7 +2672,7 @@ const InventoryFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                     <Form.Control 
-                                        style={{ fontSize: "13px" }} 
+                                        style={{ fontSize: "13px", height: "38px" }} 
                                         type="number"  
                                         placeholder=".0000" 
                                         value={UDFNumber_4} 
@@ -2685,7 +2689,7 @@ const InventoryFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                            style={{ fontSize: "13px" }}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="datetime-local"
                                             value={UDFDate_4} 
                                             onChange={(e) => setUDFDate_4(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -2695,7 +2699,7 @@ const InventoryFrom = (props) => {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-4">
                                     <Form.Group className="row">
                                     <label className="col-sm-4 col-form-label">
@@ -2703,7 +2707,7 @@ const InventoryFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                            style={{ fontSize: "13px" }}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="text"
                                             value={UDFText_10}
                                             onChange={(e) => setUDFText_10(e.target.value)}
@@ -2719,7 +2723,7 @@ const InventoryFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                     <Form.Control  
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="number"  
                                         placeholder=".0000" 
                                         value={UDFNumber_5} 
@@ -2736,7 +2740,7 @@ const InventoryFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                            style={{ fontSize: "13px" }}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="datetime-local"
                                             value={UDFDate_5} 
                                             onChange={(e) => setUDFDate_5(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
@@ -2796,14 +2800,14 @@ const InventoryFrom = (props) => {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-6">
                                     <Form.Group className="row">
                                     <label className="col-sm-4 col-form-label">
                                         YTD Usage:
                                     </label>
                                     <div className="col-sm-6">
-                                    <Form.Control style={{ fontSize: "13px" }} type="number" placeholder="0.0000" value={YTDUsage} onChange={(e) => setYTDUsage(e.target.value)} readOnly/>
+                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={YTDUsage} onChange={(e) => setYTDUsage(e.target.value)} readOnly/>
                                     </div>
                                     </Form.Group>
                                 </div>
@@ -2814,20 +2818,20 @@ const InventoryFrom = (props) => {
                                         Last Year Usage:
                                     </label>
                                     <div className="col-sm-6">
-                                    <Form.Control style={{ fontSize: "13px" }} type="number" placeholder="0.0000" value={LastYearUsage} onChange={(e) => setLastYearUsage(e.target.value)} readOnly/>
+                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={LastYearUsage} onChange={(e) => setLastYearUsage(e.target.value)} readOnly/>
                                     </div>
                                     </Form.Group>
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-6">
                                     <Form.Group className="row">
                                     <label className="col-sm-4 col-form-label">
                                         YTD Turns:
                                     </label>
                                     <div className="col-sm-6">
-                                    <Form.Control style={{ fontSize: "13px" }} type="number" placeholder="0.0000" value={YTDTurns} onChange={(e) => setYTDTurns(e.target.value)} readOnly/>
+                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={YTDTurns} onChange={(e) => setYTDTurns(e.target.value)} readOnly/>
                                     </div>
                                     </Form.Group>
                                 </div>
@@ -2838,20 +2842,20 @@ const InventoryFrom = (props) => {
                                         Last Year Turns:
                                     </label>
                                     <div className="col-sm-6">
-                                    <Form.Control style={{ fontSize: "13px" }} type="number" placeholder="0.0000" value={LastYearTurns} onChange={(e) => setLastYearTurns(e.target.value)} readOnly/>
+                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={LastYearTurns} onChange={(e) => setLastYearTurns(e.target.value)} readOnly/>
                                     </div>
                                     </Form.Group>
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-6">
                                     <Form.Group className="row">
                                     <label className="col-sm-4 col-form-label">
                                         YTD Stockouts:
                                     </label>
                                     <div className="col-sm-6">
-                                    <Form.Control style={{ fontSize: "13px" }} type="number" placeholder="0.0000" value={YTDStockouts} onChange={(e) => setYTDStockouts(e.target.value)} readOnly/>
+                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={YTDStockouts} onChange={(e) => setYTDStockouts(e.target.value)} readOnly/>
                                     </div>
                                     </Form.Group>
                                 </div>
@@ -2862,13 +2866,13 @@ const InventoryFrom = (props) => {
                                         Last Year Stockouts:
                                     </label>
                                     <div className="col-sm-6">
-                                    <Form.Control style={{ fontSize: "13px" }} type="number" placeholder="0.0000" value={LastYearStockouts} onChange={(e) => setLastYearStockouts(e.target.value)} readOnly/>
+                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={LastYearStockouts} onChange={(e) => setLastYearStockouts(e.target.value)} readOnly/>
                                     </div>
                                     </Form.Group>
                                 </div>
                             </div>
 
-
+                        {/* ************************************* Radio box *************************************** */}
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="row col-form-label">
@@ -2904,7 +2908,7 @@ const InventoryFrom = (props) => {
                                     <fieldset className="p-3 w-100">
 
                                         <div className="row">
-                                            <div className="col-md-12">
+                                            <div className="col-md-12" style={{ marginTop: "-20px" }}>
                                                 <div className="row">
 
                                                     <div className="col-md-2">
@@ -2929,19 +2933,19 @@ const InventoryFrom = (props) => {
                                                         <Form.Group className="row" controlId="validation_Average1">
                                                             {radio === 'Average' && (
                                                             <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" placeholder="0.0000" value={Average} onChange={handleAverageChange} />
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={Average} onChange={handleAverageChange} />
                                                             </div>
                                                             )}
 
                                                             {radio === 'Average' && (
                                                             <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0.0000' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
                                                             </div>
                                                             )}
 
                                                             {radio === 'Average' && (
                                                             <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0.0000' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
                                                             </div>
                                                             )}
                                                         </Form.Group>
@@ -2952,19 +2956,19 @@ const InventoryFrom = (props) => {
                                                         <Form.Group className="row" controlId="validation_Average2">
                                                             {radio === 'Average' && (
                                                             <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0.00' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
                                                             </div>
                                                             )}
 
                                                             {radio === 'Average' && (
                                                             <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0' readOnly/>
                                                             </div>
                                                             )}
 
                                                             {radio === 'Average' && (
                                                             <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0.00' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
                                                             </div>
                                                             )}
                                                         </Form.Group>
@@ -2976,7 +2980,7 @@ const InventoryFrom = (props) => {
 
 
                                         <div className="row">
-                                            <div className="col-md-12">
+                                            <div className="col-md-12" style={{ marginTop: "-20px" }}>
                                                 <div className="row">
 
                                                     <div className="col-md-2">
@@ -3001,19 +3005,19 @@ const InventoryFrom = (props) => {
                                                         <Form.Group className="row" controlId="validation_Standard1">
                                                             {radio === 'Standard' && (
                                                             <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" placeholder="0.0000" value={Standard} onChange={handleStandardChange} />
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={Standard} onChange={handleStandardChange} />
                                                             </div>
                                                             )}
 
                                                             {radio === 'Standard' && (
                                                             <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0.0000' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
                                                             </div>
                                                             )}
 
                                                             {radio === 'Standard' && (
                                                             <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0.0000' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
                                                             </div>
                                                             )}
                                                         </Form.Group>
@@ -3024,19 +3028,19 @@ const InventoryFrom = (props) => {
                                                         <Form.Group className="row" controlId="validation_Standard2">
                                                             {radio === 'Standard' && (
                                                             <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0.00' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
                                                             </div>
                                                             )}
 
                                                             {radio === 'Standard' && (
                                                             <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0' readOnly/>
                                                             </div>
                                                             )}
 
                                                             {radio === 'Standard' && (
                                                             <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0.00' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
                                                             </div>
                                                             )}
                                                         </Form.Group>
@@ -3048,7 +3052,7 @@ const InventoryFrom = (props) => {
 
 
                                         <div className="row">
-                                            <div className="col-md-12">
+                                            <div className="col-md-12" style={{ marginTop: "-20px" }}>
                                                 <div className="row">
 
                                                     <div className="col-md-2">
@@ -3073,19 +3077,19 @@ const InventoryFrom = (props) => {
                                                         <Form.Group className="row" controlId="validation_Last1">
                                                             {radio === 'Last' && (
                                                             <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" placeholder="0.0000" value={Last} onChange={handleLastChange} />
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={Last} onChange={handleLastChange} />
                                                             </div>
                                                             )}
 
                                                             {radio === 'Last' && (
                                                             <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0.0000' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
                                                             </div>
                                                             )}
 
                                                             {radio === 'Last' && (
                                                             <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0.0000' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
                                                             </div>
                                                             )}
                                                         </Form.Group>
@@ -3096,19 +3100,19 @@ const InventoryFrom = (props) => {
                                                         <Form.Group className="row" controlId="validation_Last2">
                                                             {radio === 'Last' && (
                                                             <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0.00' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
                                                             </div>
                                                             )}
 
                                                             {radio === 'Last' && (
                                                             <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0' readOnly/>
                                                             </div>
                                                             )}
 
                                                             {radio === 'Last' && (
                                                             <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0.00' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
                                                             </div>
                                                             )}
                                                         </Form.Group>
@@ -3121,7 +3125,7 @@ const InventoryFrom = (props) => {
 
 
                                         <div className="row">
-                                            <div className="col-md-12">
+                                            <div className="col-md-12" style={{ marginTop: "-20px" }}>
                                                 <div className="row">
 
                                                     <div className="col-md-2">
@@ -3146,19 +3150,19 @@ const InventoryFrom = (props) => {
                                                         <Form.Group className="row" controlId="validation_FIFO1">
                                                             {radio === 'FIFO' && (
                                                             <div className="col-sm-4 form-checkxxxxx">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0.0000' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
                                                             </div>
                                                             )}
 
                                                             {radio === 'FIFO' && (
                                                             <div className="col-sm-4 form-checkxxxxx">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0.0000' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
                                                             </div>
                                                             )}
 
                                                             {radio === 'FIFO' && (
                                                             <div className="col-sm-4 form-checkxxxxx">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0.0000' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
                                                             </div>
                                                             )}
                                                         </Form.Group>
@@ -3169,19 +3173,19 @@ const InventoryFrom = (props) => {
                                                         <Form.Group className="row" controlId="validation_FIFO2">
                                                             {radio === 'FIFO' && (
                                                             <div className="col-sm-4 form-checkxxxxx">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0.00' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
                                                             </div>
                                                             )}
 
                                                             {radio === 'FIFO' && (
                                                             <div className="col-sm-4 form-checkxxxxx">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0' readOnly/>
                                                             </div>
                                                             )}
 
                                                             {radio === 'FIFO' && (
                                                             <div className="col-sm-4 form-checkxxxxx">
-                                                                <Form.Control style={{ fontSize: "13px" }} type="number" value='0.00' readOnly/>
+                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
                                                             </div>
                                                             )}
                                                         </Form.Group>

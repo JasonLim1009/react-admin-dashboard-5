@@ -349,11 +349,11 @@ function Inventory(props) {
 
   return (
     <div>
-      <div className="page-header">
+      <div className="page-header" style={{ marginTop: "10px", marginBottom:"10px" }}>
         <h3 className="page-title">Inventory</h3>
       </div>
       <div>
-        <div className="card">
+        <div className="card" style={{marginLeft: "-3px", marginRight: "-3px"}}>
           <div className="card-body">
             <div className="page-header">
               <div className="template-demo">
