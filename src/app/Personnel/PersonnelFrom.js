@@ -1913,11 +1913,11 @@ const PersonnalFrom = (props) => {
   return (   
 
         <div>
-            <div className="page-header">
+            <div className="page-header" style={{ marginTop: "-10px", marginBottom:"10px" }}>
             <h3 className="page-title">Personnel Master</h3>   
 
             <nav aria-label="breadcrumb">
-                <ol className="breadcrumb">
+                {/* <ol className="breadcrumb"></ol> */}
                     <div className="template-demo">
 
                         <button type="button" className="btn btn-success btn-icon-text" onClick={onClickChange}>
@@ -1929,13 +1929,13 @@ const PersonnalFrom = (props) => {
                         </button>
                     
                     </div>
-                </ol>
+                
             </nav>       
         
         </div> 
 
     <div className="col-12 grid-margin">
-        <div className="card">
+        <div className="card" style={{marginLeft: "-15px", marginRight: "-15px"}}>
             <div className="card-body"> 
             <form className="form-sample" validated={validated}>  
 
@@ -1948,7 +1948,7 @@ const PersonnalFrom = (props) => {
                                 <Form.Group className="row" controlId="validation_Emp_EmployeeID">
                                     <label className="col-sm-5 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Employee ID:</label>
                                     <div className="col-sm-7">
-                                        <Form.Control style={{ fontSize: "13px" }} type="text" value={Emp_EmployeeID} onChange={(e) => setEmp_EmployeeID(e.target.value)}/>
+                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_EmployeeID} onChange={(e) => setEmp_EmployeeID(e.target.value)}/>
                                     </div>
                                 </Form.Group>
                             </div>
@@ -1957,7 +1957,7 @@ const PersonnalFrom = (props) => {
                                 <Form.Group className="row" controlId="validation_Emp_Name">
                                     <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Name:</label>
                                     <div className="col-sm-10">
-                                        <Form.Control style={{ fontSize: "13px" }} type="text" value={Emp_Name} onChange={(e) => setEmp_Name(e.target.value)}/>
+                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_Name} onChange={(e) => setEmp_Name(e.target.value)}/>
                                     </div>
                                 </Form.Group>                        
                             </div> 
@@ -1988,7 +1988,7 @@ const PersonnalFrom = (props) => {
                                 <Form.Group className="row" controlId="validation_Emp_Title">
                                     <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Title:</label>
                                     <div className="col-sm-10">
-                                        <Form.Control style={{ fontSize: "13px" }} type="text" value={Emp_Title} onChange={(e) => setEmp_Title(e.target.value)}/>
+                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_Title} onChange={(e) => setEmp_Title(e.target.value)}/>
                                     </div>
                                 </Form.Group>
                             </div>                         
@@ -2085,16 +2085,16 @@ const PersonnalFrom = (props) => {
                                 <img src={require("../../assets/images/product_images_2/thumb_image2.jpg")} className="sliderimg" alt=""/>
                                 <img src={require("../../assets/images/product_images_2/thumb_image3.jpg")} className="sliderimg" alt=""/>
                                 <img src={require("../../assets/images/product_images_2/thumb_image4.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image5.jpg")} className="sliderimg" alt=""/>
+                                {/* <img src={require("../../assets/images/product_images_2/thumb_image5.jpg")} className="sliderimg" alt=""/>
                                 <img src={require("../../assets/images/product_images_2/thumb_image6.jpg")} className="sliderimg" alt=""/>
                                 <img src={require("../../assets/images/product_images_2/thumb_image7.jpg")} className="sliderimg" alt=""/>
                                 <img src={require("../../assets/images/product_images_2/thumb_image8.jpg")} className="sliderimg" alt=""/>                                    
                                 <img src={require("../../assets/images/product_images_2/thumb_image9.jpg")} className="sliderimg" alt=""/>
                                 <img src={require("../../assets/images/product_images_2/thumb_image10.jpg")} className="sliderimg" alt=""/>
                                 <img src={require("../../assets/images/product_images_2/thumb_image11.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image12.jpg")} className="sliderimg" alt=""/>
+                                <img src={require("../../assets/images/product_images_2/thumb_image12.jpg")} className="sliderimg" alt=""/> */}
                                 
-                                </AliceCarousel>
+                            </AliceCarousel>
                                 
                         </div>
 
@@ -2116,7 +2116,7 @@ const PersonnalFrom = (props) => {
                                             <Form.Group className="row" controlId="validation_Emp_HomePhone">
                                                 <label className="col-sm-3 col-form-label">Home Phone:</label>
                                                 <div className="col-sm-9">
-                                                    <Form.Control style={{ fontSize: "13px" }} type="number" value={Emp_HomePhone} onChange={(e) => setEmp_HomePhone(e.target.value)}/>
+                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value={Emp_HomePhone} onChange={(e) => setEmp_HomePhone(e.target.value)}/>
                                                 </div>
                                             </Form.Group>
                                         </div>  
@@ -2126,7 +2126,7 @@ const PersonnalFrom = (props) => {
                                                 <label className="col-sm-3 col-form-label">Date of Birth:</label>
                                                 <div className="col-sm-9">
                                                     <Form.Control
-                                                        style={{ fontSize: "13px" }}
+                                                        style={{ fontSize: "13px", height: "38px" }}
                                                         type="datetime-local"
                                                         value ={BirthDate} 
                                                         onChange={(e) => setBirthDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -2136,12 +2136,12 @@ const PersonnalFrom = (props) => {
                                         </div> 
                                     </div>
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row" controlId="validation_Emp_EmergencyName">
                                                 <label className="col-sm-3 col-form-label">Emergency Name:</label>
                                                 <div className="col-sm-9">
-                                                    <Form.Control style={{ fontSize: "13px" }} type="text" value={Emp_EmergencyName} onChange={(e) => setEmp_EmergencyName(e.target.value)}/>
+                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_EmergencyName} onChange={(e) => setEmp_EmergencyName(e.target.value)}/>
                                                 </div>
                                             </Form.Group>
                                         </div>  
@@ -2151,7 +2151,7 @@ const PersonnalFrom = (props) => {
                                                 <label className="col-sm-3 col-form-label">Date of Hire:</label>
                                                 <div className="col-sm-9">
                                                 <Form.Control    
-                                                    style={{ fontSize: "13px" }}                                        
+                                                    style={{ fontSize: "13px", height: "38px" }}                                        
                                                     type="datetime-local"  
                                                     value={HireDate} 
                                                     onChange={(e) => setHireDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -2161,12 +2161,12 @@ const PersonnalFrom = (props) => {
                                         </div>  
                                     </div> 
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row" controlId="validation_Emp_EmergencyPhone">
                                                 <label className="col-sm-3 col-form-label">Emergency Phone:</label>
                                                 <div className="col-sm-9">
-                                                    <Form.Control style={{ fontSize: "13px" }} type="number" value={Emp_EmergencyPhone} onChange={(e) => setEmp_EmergencyPhone(e.target.value)}/>
+                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value={Emp_EmergencyPhone} onChange={(e) => setEmp_EmergencyPhone(e.target.value)}/>
                                                 </div>
                                             </Form.Group>
                                         </div>  
@@ -2175,13 +2175,13 @@ const PersonnalFrom = (props) => {
                                             <Form.Group className="row" controlId="validation_Emp_PayRate">
                                                 <label className="col-sm-3 col-form-label">Pay Rate:</label>
                                                 <div className="col-sm-9">
-                                                    <Form.Control style={{ fontSize: "13px" }} type="number" value={Emp_PayRate} onChange={(e) => setEmp_PayRate(e.target.value)}/>
+                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value={Emp_PayRate} onChange={(e) => setEmp_PayRate(e.target.value)}/>
                                                 </div>
                                             </Form.Group>
                                         </div> 
                                     </div>  
 
-                                    <div className='row'>
+                                    <div className='row' style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row" controlId="validation_sex">
                                                 <label className="col-sm-3 col-form-label">Sex:</label>
@@ -2204,13 +2204,13 @@ const PersonnalFrom = (props) => {
                                             <Form.Group className="row" controlId="validation_Emp_PayPeriod">
                                                 <label className="col-sm-3 col-form-label">Pay Period:</label>
                                                 <div className="col-sm-9">
-                                                    <Form.Control style={{ fontSize: "13px" }} type="text" value={Emp_PayPeriod} onChange={(e) => setEmp_PayPeriod(e.target.value)}/>
+                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_PayPeriod} onChange={(e) => setEmp_PayPeriod(e.target.value)}/>
                                                 </div>
                                             </Form.Group>
                                         </div>  
                                     </div>
 
-                                    <div className='row'>                                    
+                                    <div className='row' style={{ marginTop: "-20px" }}>                                    
                                         <div className="col-md-6">
                                             <Form.Group className="row" controlId="validation_marital_statuse">
                                                 <label className="col-sm-3 col-form-label">Marital Status:</label>
@@ -2248,12 +2248,12 @@ const PersonnalFrom = (props) => {
                                         </div>                                        
                                     </div>
 
-                                    <div className='row'>
+                                    <div className='row' style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row">
                                                 <label className="col-sm-3 col-form-label">Email ID:</label>
                                                 <div className="col-sm-9">
-                                                    <Form.Control style={{ fontSize: "13px" }} type="text" value={Emp_EmailID} onChange={(e) => setEmp_EmailID(e.target.value)}/>
+                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_EmailID} onChange={(e) => setEmp_EmailID(e.target.value)}/>
                                                 </div>
                                             </Form.Group>
                                         </div>    
@@ -2278,7 +2278,7 @@ const PersonnalFrom = (props) => {
                                         </div>    
                                     </div>
 
-                                    <div className='row'>
+                                    <div className='row' style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row">
                                                 <label className="col-sm-3 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Primary Craft:</label>
@@ -2306,7 +2306,7 @@ const PersonnalFrom = (props) => {
                                         </div>                                      
                                     </div>
 
-                                    <div className='row'>
+                                    <div className='row' style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row">
                                                 <label className="col-sm-3 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Work Area:</label>
@@ -2346,7 +2346,7 @@ const PersonnalFrom = (props) => {
                                         </div> 
                                     </div>
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row">
                                                 <label className="col-sm-3 col-form-label">Remarks:</label>
@@ -2354,7 +2354,7 @@ const PersonnalFrom = (props) => {
                                                 <Form.Control 
                                                     style={{ fontSize: "13px" }}
                                                     as="textarea" 
-                                                    rows={12} 
+                                                    rows={19} 
                                                     value={Remarks}
                                                     onChange={(e) => setRemarks(e.target.value)}
                                                 />
@@ -2389,7 +2389,7 @@ const PersonnalFrom = (props) => {
 
                                 <div className="col-md-3">
                                     <Form.Group className="mb-3">
-                                            <Form.Control style={{ fontSize: "13px" }} type="number" placeholder=".00" value={selected_MrApprover} disabled ={MrApprover} onChange={(e) => setselected_MrApprover(e.target.value)} />
+                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder=".00" value={selected_MrApprover} disabled ={MrApprover} onChange={(e) => setselected_MrApprover(e.target.value)} />
                                     </Form.Group>
                                 </div>
 
@@ -2410,7 +2410,7 @@ const PersonnalFrom = (props) => {
                                 </div>
                             </div> 
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-3">
                                     <Form.Group className="row">
                                         <label className="col-sm-9 col-form-label">WO Budget Approver / Limit:</label>
@@ -2429,7 +2429,7 @@ const PersonnalFrom = (props) => {
 
                                 <div className="col-md-3">
                                     <Form.Group className="mb-3">
-                                            <Form.Control style={{ fontSize: "13px" }} type="text" placeholder=".00" value={selected_WoBudgetApprover} disabled ={WoBudgetApprover} onChange={(e) => setselected_WoBudgetApprover(e.target.value)} />
+                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" placeholder=".00" value={selected_WoBudgetApprover} disabled ={WoBudgetApprover} onChange={(e) => setselected_WoBudgetApprover(e.target.value)} />
                                     </Form.Group>
                                 </div> 
                                 
@@ -2450,7 +2450,7 @@ const PersonnalFrom = (props) => {
                                 </div>  
                             </div> 
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-3">
                                     <Form.Group className="row">
                                         <label className="col-sm-9 col-form-label">PR Approver / Global Limit:</label>
@@ -2469,7 +2469,7 @@ const PersonnalFrom = (props) => {
 
                                 <div className="col-md-3">
                                     <Form.Group className="mb-3">
-                                            <Form.Control style={{ fontSize: "13px" }} type="text" placeholder=".00" value={selected_PrApprover} disabled ={PrApprover} onChange={(e) => setselected_PrApprover(e.target.value)} />
+                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" placeholder=".00" value={selected_PrApprover} disabled ={PrApprover} onChange={(e) => setselected_PrApprover(e.target.value)} />
                                     </Form.Group>
                                 </div>  
 
@@ -2490,7 +2490,7 @@ const PersonnalFrom = (props) => {
                                 </div>   
                             </div> 
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-3">
                                     <Form.Group className="row">
                                         <label className="col-sm-9 col-form-label">WR Approver:</label>
@@ -2526,7 +2526,7 @@ const PersonnalFrom = (props) => {
                                 </div>   
                             </div> 
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-3">
                                     <Form.Group className="row">
                                         <label className="col-sm-9 col-form-label">Assign To:</label>
@@ -2562,7 +2562,7 @@ const PersonnalFrom = (props) => {
                                 </div> 
                             </div> 
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-3">
                                     <Form.Group className="row">
                                         <label className="col-sm-9 col-form-label">Request Pats & Services:</label>
@@ -2598,7 +2598,7 @@ const PersonnalFrom = (props) => {
                                 </div>  
                             </div> 
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-3">
                                     <Form.Group className="row">
                                         <label className="col-sm-9 col-form-label">PM Generator:</label>
@@ -2625,7 +2625,7 @@ const PersonnalFrom = (props) => {
                                 </div>   
                             </div> 
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-3">
                                     <Form.Group className="row">
                                         <label className="col-sm-9 col-form-label">Enter Time Card:</label>
@@ -2661,7 +2661,7 @@ const PersonnalFrom = (props) => {
                                 </div> 
                             </div> 
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-3">
                                     <Form.Group className="row">
                                         <label className="col-sm-9 col-form-label">Void Time Card:</label>
@@ -2697,7 +2697,7 @@ const PersonnalFrom = (props) => {
                                 </div>  
                             </div> 
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-3">
                                     <Form.Group className="row">
                                         <label className="col-sm-9 col-form-label">Core Access:</label>
@@ -2749,7 +2749,7 @@ const PersonnalFrom = (props) => {
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_1}
                                                 onChange={(e) => setUDFText_1(e.target.value)}
@@ -2758,14 +2758,14 @@ const PersonnalFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-13">
+                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
                                         <Form.Group className="row">
                                         <label className="col-sm-4 col-form-label">
                                             Varchar2:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_2}
                                                 onChange={(e) => setUDFText_2(e.target.value)}
@@ -2774,14 +2774,14 @@ const PersonnalFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-13">
+                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
                                         <Form.Group className="row">
                                         <label className="col-sm-4 col-form-label">
                                             Varchar3:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_3}
                                                 onChange={(e) => setUDFText_3(e.target.value)}
@@ -2790,14 +2790,14 @@ const PersonnalFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-13">
+                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
                                         <Form.Group className="row">
                                         <label className="col-sm-4 col-form-label">
                                             Varchar4:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_4}
                                                 onChange={(e) => setUDFText_4(e.target.value)}
@@ -2806,14 +2806,14 @@ const PersonnalFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-13">
+                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
                                         <Form.Group className="row">
                                         <label className="col-sm-4 col-form-label">
                                             Varchar5:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_5}
                                                 onChange={(e) => setUDFText_5(e.target.value)}
@@ -2832,7 +2832,7 @@ const PersonnalFrom = (props) => {
                                         <Form.Control
                                             style={{ fontSize: "13px" }} 
                                             as="textarea" 
-                                            rows={26} 
+                                            rows={19} 
                                             value={UDFNote1} 
                                             onChange={(e) => setUDFNote1(e.target.value)}
                                         />
@@ -2841,7 +2841,7 @@ const PersonnalFrom = (props) => {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-4">
                                     <Form.Group className="row">
                                     <label className="col-sm-4 col-form-label">
@@ -2849,7 +2849,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="text"
                                         value={UDFText_6}
                                         onChange={(e) => setUDFText_6(e.target.value)}
@@ -2865,7 +2865,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control  
-                                            style={{ fontSize: "13px" }}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="number"  
                                             placeholder=".0000" 
                                             value={UDFNumber_1} 
@@ -2882,7 +2882,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                     <Form.Control   
-                                        style={{ fontSize: "13px" }}                                         
+                                        style={{ fontSize: "13px", height: "38px" }}                                         
                                         type="datetime-local"  
                                         value={UDFDate_1} 
                                         onChange={(e) => setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -2892,7 +2892,7 @@ const PersonnalFrom = (props) => {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-4">
                                     <Form.Group className="row">
                                     <label className="col-sm-4 col-form-label">
@@ -2900,7 +2900,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="text"
                                         value={UDFText_7}
                                         onChange={(e) => setUDFText_7(e.target.value)}
@@ -2916,7 +2916,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                     <Form.Control  
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="number"  
                                         placeholder=".0000" 
                                         value={UDFNumber_2} 
@@ -2933,7 +2933,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="datetime-local"
                                         value={UDFDate_2} 
                                         onChange={(e) => setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
@@ -2943,7 +2943,7 @@ const PersonnalFrom = (props) => {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-4">
                                     <Form.Group className="row">
                                     <label className="col-sm-4 col-form-label">
@@ -2951,7 +2951,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="text"
                                         value={UDFText_8}
                                         onChange={(e) => setUDFText_8(e.target.value)}
@@ -2967,7 +2967,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                     <Form.Control  
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="number"  
                                         placeholder=".0000" 
                                         value={UDFNumber_3} 
@@ -2984,7 +2984,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="datetime-local"
                                         value={UDFDate_3} 
                                         onChange={(e) => setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
@@ -2994,7 +2994,7 @@ const PersonnalFrom = (props) => {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-4">
                                     <Form.Group className="row">
                                     <label className="col-sm-4 col-form-label">
@@ -3002,7 +3002,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="text"
                                         value={UDFText_9}
                                         onChange={(e) => setUDFText_9(e.target.value)}
@@ -3018,7 +3018,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                     <Form.Control  
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="number"  
                                         placeholder=".0000" 
                                         value={UDFNumber_4} 
@@ -3035,7 +3035,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="datetime-local"
                                         value={UDFDate_4} 
                                         onChange={(e) => setUDFDate_4(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -3045,7 +3045,7 @@ const PersonnalFrom = (props) => {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-4">
                                     <Form.Group className="row">
                                     <label className="col-sm-4 col-form-label">
@@ -3053,7 +3053,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="text"
                                         value={UDFText_10}
                                         onChange={(e) => setUDFText_10(e.target.value)}
@@ -3069,7 +3069,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                     <Form.Control  
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="number"  
                                         placeholder=".0000" 
                                         value={UDFNumber_5} 
@@ -3086,7 +3086,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="datetime-local"
                                         value={UDFDate_5} 
                                         onChange={(e) => setUDFDate_5(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
@@ -3112,7 +3112,7 @@ const PersonnalFrom = (props) => {
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_11}
                                                 onChange={(e) => setUDFText_11(e.target.value)}
@@ -3121,14 +3121,14 @@ const PersonnalFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-13">
+                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
                                         <Form.Group className="row">
                                         <label className="col-sm-4 col-form-label">
                                             Varchar12:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_12}
                                                 onChange={(e) => setUDFText_12(e.target.value)}
@@ -3137,14 +3137,14 @@ const PersonnalFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-13">
+                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
                                         <Form.Group className="row">
                                         <label className="col-sm-4 col-form-label">
                                             Varchar13:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_13}
                                                 onChange={(e) => setUDFText_13(e.target.value)}
@@ -3153,14 +3153,14 @@ const PersonnalFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-13">
+                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
                                         <Form.Group className="row">
                                         <label className="col-sm-4 col-form-label">
                                             Varchar14:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_14}
                                                 onChange={(e) => setUDFText_14(e.target.value)}
@@ -3169,14 +3169,14 @@ const PersonnalFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-13">
+                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
                                         <Form.Group className="row">
                                         <label className="col-sm-4 col-form-label">
                                             Varchar15:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_15}
                                                 onChange={(e) => setUDFText_15(e.target.value)}
@@ -3195,7 +3195,7 @@ const PersonnalFrom = (props) => {
                                         <Form.Control 
                                             style={{ fontSize: "13px" }}
                                             as="textarea" 
-                                            rows={26} 
+                                            rows={19} 
                                             value={UDFNote2}
                                             onChange={(e) => setUDFNote2(e.target.value)}
                                         />
@@ -3204,7 +3204,7 @@ const PersonnalFrom = (props) => {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-4">
                                     <Form.Group className="row">
                                     <label className="col-sm-4 col-form-label">
@@ -3212,7 +3212,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="text"
                                         value={UDFText_16}
                                         onChange={(e) => setUDFText_16(e.target.value)}
@@ -3228,7 +3228,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                     <Form.Control  
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="number"  
                                         placeholder=".0000" 
                                         value={UDFNumber_6} 
@@ -3245,7 +3245,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="datetime-local"
                                         value={UDFDate_6} 
                                         onChange={(e) => setUDFDate_6(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
@@ -3255,7 +3255,7 @@ const PersonnalFrom = (props) => {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-4">
                                     <Form.Group className="row">
                                     <label className="col-sm-4 col-form-label">
@@ -3263,7 +3263,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="text"
                                         value={UDFText_17}
                                         onChange={(e) => setUDFText_17(e.target.value)}
@@ -3279,7 +3279,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                     <Form.Control  
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="number"  
                                         placeholder=".0000" 
                                         value={UDFNumber_7} 
@@ -3296,7 +3296,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="datetime-local"
                                         value={UDFDate_7} 
                                         onChange={(e) => setUDFDate_7(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -3306,7 +3306,7 @@ const PersonnalFrom = (props) => {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-4">
                                     <Form.Group className="row">
                                     <label className="col-sm-4 col-form-label">
@@ -3314,7 +3314,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="text"
                                         value={UDFText_18}
                                         onChange={(e) => setUDFText_18(e.target.value)}
@@ -3330,7 +3330,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                     <Form.Control  
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="number"  
                                         placeholder=".0000" 
                                         value={UDFNumber_8} 
@@ -3347,7 +3347,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="datetime-local"
                                         value={UDFDate_8} 
                                         onChange={(e) => setUDFDate_8(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -3357,7 +3357,7 @@ const PersonnalFrom = (props) => {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-4">
                                     <Form.Group className="row">
                                     <label className="col-sm-4 col-form-label">
@@ -3365,7 +3365,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="text"
                                         value={UDFText_19}
                                         onChange={(e) => setUDFText_19(e.target.value)}
@@ -3381,7 +3381,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                     <Form.Control 
-                                        style={{ fontSize: "13px" }} 
+                                        style={{ fontSize: "13px", height: "38px" }} 
                                         type="number"  
                                         placeholder=".0000" 
                                         value={UDFNumber_9} 
@@ -3398,7 +3398,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="datetime-local"
                                         value={UDFDate_9} 
                                         onChange={(e) => setUDFDate_9(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -3408,7 +3408,7 @@ const PersonnalFrom = (props) => {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row" style={{ marginTop: "-20px" }}>
                                 <div className="col-md-4">
                                     <Form.Group className="row">
                                     <label className="col-sm-4 col-form-label">
@@ -3416,7 +3416,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="text"
                                         value={UDFText_20}
                                         onChange={(e) => setUDFText_20(e.target.value)}
@@ -3432,7 +3432,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                     <Form.Control  
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="number"  
                                         placeholder=".0000" 
                                         value={UDFNumber_10} 
@@ -3449,7 +3449,7 @@ const PersonnalFrom = (props) => {
                                     </label>
                                     <div className="col-sm-8">
                                         <Form.Control
-                                        style={{ fontSize: "13px" }}
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="datetime-local"
                                         value={UDFDate_10} 
                                         onChange={(e) => setUDFDate_10(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
