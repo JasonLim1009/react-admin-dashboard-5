@@ -374,7 +374,7 @@ const WorkOrderFrom = (props) => {
                     }));                   
                     setApprover(Approver);  
 
-                let Assign_To = responseJson.data.data.WKO_AssignTO.map(item => ({
+                let Assign_To = responseJson.data.data.WKO_Approver.map(item => ({
                     label: item.emp_mst_empl_id +" : "+ item.emp_mst_name ,
                     value: item.emp_mst_name            
                     }));                   
@@ -671,8 +671,9 @@ const WorkOrderFrom = (props) => {
 
         console.log('select select',location.state.select);
         console.log('select WKOID',location.state.RowID);
+        console.log('select Workorderno',location.state.Workorderno);
     
-        get_workorder_status(site_ID, "All", location.state.select);       
+        //get_workorder_status(site_ID, "All", location.state.select);       
        
 
     },[location]);
@@ -1161,7 +1162,6 @@ const WorkOrderFrom = (props) => {
 
         //Select Permanent ID
         console.log("Perm_ID: ", Permanent_ID)
-
 
         //Select WKO Customer Code
         let Customer_Code, setCustomer_Code;
@@ -2274,12 +2274,12 @@ const WorkOrderFrom = (props) => {
 
   return (   
 
-        <div>
-            <div className="page-header">
+    <div>
+        <div className="page-header" style={{ marginTop: "-10px", marginBottom:"10px" }}>
             <h3 className="page-title">Work Order Master</h3>   
 
             <nav aria-label="breadcrumb">
-                <ol className="breadcrumb">
+                {/* <ol className="breadcrumb"></ol> */}
                     <div className="template-demo">
 
                         <button type="button" className="btn btn-success btn-icon-text" onClick={onClickChange}>
@@ -2291,373 +2291,371 @@ const WorkOrderFrom = (props) => {
                         </button>
                     
                     </div>
-                </ol>
+                
             </nav>       
         
         </div> 
 
-    <div className="col-12 grid-margin">
-        <div className="card">
-            <div className="card-body"> 
-            <form className="form-sample" validated={validated}>  
-
-                    
-                    
-                <div className="row">
-
-                    <div className="col-md-10">
-
+        <div className="col-12 grid-margin">
+            <div className="card" style={{marginLeft: "-15px", marginRight: "-15px"}}>
+                <div className="card-body"> 
+                    <form className="form-sample" validated={validated}>  
+         
                         <div className="row">
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_WorkOrderNo">
-                                    <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Work Order No:</label>
-                                    <div className="col-sm-8">
-                                            <Form.Control style={{ fontSize: "13px" }} type="text" value={WorkOrderNo} onChange={(e) => setWorkOrderNo(e.target.value)}  disabled={WorkOrderNo_disabled}/>
-                                        </div>
-                                </Form.Group>
-                            </div>
 
-                            <div className="col-md-6">                                
-                                <Form.Group className="row" controlId="validation_Asset_No">
-                                    <Form.Label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Asset No:</Form.Label>
-                                    <div className="col-sm-8">
-                                        <Select  
-                                            isClearable={true}  
-                                            options={Asset_No}
-                                            value={selected_Asset_No}
-                                            onChange={handleSelectedAssetNo} // using id as it is unique
-                                            required
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                              }}
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </div>
-                        </div>
+                            <div className="col-md-10">
 
-                        <div className="row">
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Status">                                  
-                                    <Form.Label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Status:</Form.Label>
-                                    <div className="col-sm-8">
-                                        <Select  
-                                            isClearable={true}  
-                                            options={Status}
-                                            value={selected_Status}
-                                            onChange={setSelected_Status}// using id as it is unique
-                                            required
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                              }}
-                                        />
-                                    </div>
-                                    
-                                </Form.Group>
-                            </div>
-
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Asset_Status"> 
-                                    <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Asset Status:</label>
-                                    <div className="col-sm-8">
-                                        <Select  
-                                            isClearable={true}  
-                                            options={Asset_Status}
-                                            value={selected_Asset_Status}
-                                            onChange={setSelected_Asset_Status} // using id as it is unique
-                                            required
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                              }}
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </div>  
-                        </div>
-
-                        <div className="row">
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Plan_Priority">
-                                    <label className="col-sm-4 col-form-label">Plan Periority:</label>
-                                    <div className="col-sm-8">
-                                        <Select  
-                                            isClearable={true}  
-                                            options={Plan_Priority}
-                                            value={selected_Plan_Priority}
-                                            onChange={setSelected_Plan_Priority} // using id as it is unique
-                                            required
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                              }}
-                                        />
-                                    </div>
-                                </Form.Group>                        
-                            </div>
-
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Asset_Group_Code">
-                                    <label className="col-sm-4 col-form-label">Asset Group Code:</label>
-                                    <div className="col-sm-8">
-                                        <Select  
-                                            isClearable={true}  
-                                            options={Asset_Group_Code}
-                                            value={selected_Asset_Group_Code}
-                                            onChange={setSelected_Asset_Group_Code} // using id as it is unique
-                                            required
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                              }}
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </div>  
-                        </div>
-
-                        <div className="row">
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_OriginationDate">
-                                    <label className="col-sm-4 col-form-label">Origination Date:</label>
-                                    <div className="col-sm-8">
-                                                <Form.Control
-                                                type="datetime-local"  
-                                                value={OriginationDate} 
-                                                onChange={(date) => setOriginationDate(Moment().utcOffset('+08:00').format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                                style={{ fontSize: "13px" }}
-                                                /> 
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_WorkOrderNo">
+                                            <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Work Order No:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={WorkOrderNo} onChange={(e) => setWorkOrderNo(e.target.value)}  disabled={WorkOrderNo_disabled}/>
                                             </div>
-                                </Form.Group>
-                            </div> 
-
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Charge_Cost_Center">
-                                    <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Charge Cost Center:</label>
-                                    <div className="col-sm-8">
-                                        <Select  
-                                            isClearable={true}  
-                                            options={Charge_Cost_Center}
-                                            value={selected_Charge_Cost_Center}
-                                            onChange={setSelected_Charge_Cost_Center} // using id as it is unique
-                                            required
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                              }}
-                                        />
+                                        </Form.Group>
                                     </div>
-                                </Form.Group>
-                            </div>
-                        </div>
 
-                        <div className="row">                         
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_DueDate">
-                                    <label className="col-sm-4 col-form-label">Due Date:</label>
-                                    <div className="col-sm-8">
-                                            <Form.Control
-                                            type="datetime-local"
-                                            value ={DueDate} 
-                                            onChange={date => setDueDate(Moment().utcOffset('+08:00').format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                            style={{ fontSize: "13px" }}
+                                    <div className="col-md-6">                                
+                                        <Form.Group className="row" controlId="validation_Asset_No">
+                                            <Form.Label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Asset No:</Form.Label>
+                                            <div className="col-sm-8">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Asset_No}
+                                                    value={selected_Asset_No}
+                                                    onChange={handleSelectedAssetNo} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Status">                                  
+                                            <Form.Label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Status:</Form.Label>
+                                            <div className="col-sm-8">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Status}
+                                                    value={selected_Status}
+                                                    onChange={setSelected_Status}// using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </div>
+                                            
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Asset_Status"> 
+                                            <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Asset Status:</label>
+                                            <div className="col-sm-8">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Asset_Status}
+                                                    value={selected_Asset_Status}
+                                                    onChange={setSelected_Asset_Status} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>  
+                                </div>
+
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Plan_Priority">
+                                            <label className="col-sm-4 col-form-label">Plan Periority:</label>
+                                            <div className="col-sm-8">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Plan_Priority}
+                                                    value={selected_Plan_Priority}
+                                                    onChange={setSelected_Plan_Priority} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </div>
+                                        </Form.Group>                        
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Asset_Group_Code">
+                                            <label className="col-sm-4 col-form-label">Asset Group Code:</label>
+                                            <div className="col-sm-8">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Asset_Group_Code}
+                                                    value={selected_Asset_Group_Code}
+                                                    onChange={setSelected_Asset_Group_Code} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>  
+                                </div>
+
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_OriginationDate">
+                                            <label className="col-sm-4 col-form-label">Origination Date:</label>
+                                            <div className="col-sm-8">
+                                                        <Form.Control
+                                                        type="datetime-local"  
+                                                        value={OriginationDate} 
+                                                        onChange={(date) => setOriginationDate(Moment().utcOffset('+08:00').format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        /> 
+                                            </div>
+                                        </Form.Group>
+                                    </div> 
+
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Charge_Cost_Center">
+                                            <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Charge Cost Center:</label>
+                                            <div className="col-sm-8">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Charge_Cost_Center}
+                                                    value={selected_Charge_Cost_Center}
+                                                    onChange={setSelected_Charge_Cost_Center} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                                <div className="row" style={{ marginTop: "-20px" }}>                         
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_DueDate">
+                                            <label className="col-sm-4 col-form-label">Due Date:</label>
+                                            <div className="col-sm-8">
+                                                    <Form.Control
+                                                    type="datetime-local"
+                                                    value ={DueDate} 
+                                                    onChange={date => setDueDate(Moment().utcOffset('+08:00').format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    />
+                                                </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Work_Area">
+                                            <label className="col-sm-4 col-form-label">Work Area:</label>
+                                            <div className="col-sm-8">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Work_Area}
+                                                    value={selected_Work_Area}
+                                                    onChange={setSelected_Work_Area} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>  
+
+                                <div className="row" style={{ marginTop: "-20px" }}>                 
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Originator">
+                                            <label className="col-sm-4 col-form-label">Originator:</label>
+                                            <div className="col-sm-8">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Originator}
+                                                    value={selected_Originator}
+                                                    onChange={setSelected_Originator} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>  
+
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Asset_Level">
+                                            <label className="col-sm-4 col-form-label">Asset Level:</label>
+                                            <div className="col-sm-8">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Asset_Level}
+                                                    value={selected_Asset_Level}
+                                                    onChange={setSelected_Asset_Level} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>  
+
+                                <div className="row" style={{ marginTop: "-20px" }}>                        
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Phone">
+                                            <label className="col-sm-4 col-form-label">Phone:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value={Phone} onChange={(e) => setPhone(e.target.value)}/>
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Asset_Location">
+                                            <label className="col-sm-4 col-form-label">Asset Location:</label>
+                                            <div className="col-sm-8">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Asset_Location}
+                                                    value={selected_Asset_Location}
+                                                    onChange={setSelected_Asset_Location} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>  
+
+                                <div className="row" style={{ marginTop: "-20px" }}>             
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Fault_Code">
+                                            <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Fault Code:</label>
+                                            <div className="col-sm-8">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Fault_Code}
+                                                    value={selected_Fault_Code}
+                                                    onChange={handleSelectedFaultCode} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>  
+
+                                    <div className="col-md-3">
+                                        <Form.Group className="row" controlId="validation_CreatedBy">
+                                            <label className="col-sm-6 col-form-label"><span style={{color: "blue"}} class="required-asterisk"> Created By: </span></label>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                        <Form.Group className="row" controlId="validation_CreatedDate">
+                                            <label className="col-sm-6 col-form-label"><span style={{color: "blue"}} class="required-asterisk"> Created Date: </span></label>
+                                        </Form.Group>
+                                    </div>
+                                </div>  
+
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-12">
+                                        <Form.Group className="row" controlId="validation_Description">
+                                            <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Description:</label>
+                                            <div className="col-sm-10">
+                                            <Form.Control 
+                                                style={{ fontSize: "13px" }}
+                                                as="textarea" 
+                                                rows={19} 
+                                                value={Description}
+                                                onChange={(e) => {
+                                                    console.log(e.target.value)
+                                                    setDescription(e.target.value);
+                                                }}
                                             />
-                                        </div>
-                                </Form.Group>
-                            </div>
-
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Work_Area">
-                                    <label className="col-sm-4 col-form-label">Work Area:</label>
-                                    <div className="col-sm-8">
-                                        <Select  
-                                            isClearable={true}  
-                                            options={Work_Area}
-                                            value={selected_Work_Area}
-                                            onChange={setSelected_Work_Area} // using id as it is unique
-                                            required
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                              }}
-                                        />
+                                            </div>
+                                        </Form.Group>
                                     </div>
-                                </Form.Group>
-                            </div>
-                        </div>  
+                                </div>        
 
-                        <div className="row">                 
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Originator">
-                                    <label className="col-sm-4 col-form-label">Originator:</label>
-                                    <div className="col-sm-8">
-                                        <Select  
-                                            isClearable={true}  
-                                            options={Originator}
-                                            value={selected_Originator}
-                                            onChange={setSelected_Originator} // using id as it is unique
-                                            required
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                              }}
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </div>  
-
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Asset_Level">
-                                    <label className="col-sm-4 col-form-label">Asset Level:</label>
-                                    <div className="col-sm-8">
-                                        <Select  
-                                            isClearable={true}  
-                                            options={Asset_Level}
-                                            value={selected_Asset_Level}
-                                            onChange={setSelected_Asset_Level} // using id as it is unique
-                                            required
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                              }}
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </div>
-                        </div>  
-
-                        <div className="row">                        
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Phone">
-                                    <label className="col-sm-4 col-form-label">Phone:</label>
-                                    <div className="col-sm-8">
-                                        <Form.Control style={{ fontSize: "13px" }} type="number" value={Phone} onChange={(e) => setPhone(e.target.value)}/>
-                                    </div>
-                                </Form.Group>
                             </div>
 
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Asset_Location">
-                                    <label className="col-sm-4 col-form-label">Asset Location:</label>
-                                    <div className="col-sm-8">
-                                        <Select  
-                                            isClearable={true}  
-                                            options={Asset_Location}
-                                            value={selected_Asset_Location}
-                                            onChange={setSelected_Asset_Location} // using id as it is unique
-                                            required
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                              }}
-                                        />
-                                    </div>
-                                </Form.Group>
+                        {/* ************************************* img ******************************************* */}
+
+                            <div className="col-md-2">
+
+                                <div className="row">
+
+                                    <AliceCarousel 
+                                        autoPlay 
+                                        autoPlayInterval="3000"  
+                                        animationDuration={1000}
+                                        animationType="fadeout"
+                                        infinite
+                                        touchTracking={false}
+                                        disableDotsControls
+                                        >
+                                        <img src={require("../../assets/images/product_images_2/thumb_image1.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image2.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image3.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image4.jpg")} className="sliderimg" alt=""/>
+                                        {/* <img src={require("../../assets/images/product_images_2/thumb_image5.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image6.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image7.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image8.jpg")} className="sliderimg" alt=""/>                                    
+                                        <img src={require("../../assets/images/product_images_2/thumb_image9.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image10.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image11.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image12.jpg")} className="sliderimg" alt=""/> */}
+                                        
+                                        </AliceCarousel>
+                                        
+                                </div>
+
                             </div>
-                        </div>  
-
-                        <div className="row">             
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Fault_Code">
-                                    <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Fault Code:</label>
-                                    <div className="col-sm-8">
-                                        <Select  
-                                            isClearable={true}  
-                                            options={Fault_Code}
-                                            value={selected_Fault_Code}
-                                            onChange={handleSelectedFaultCode} // using id as it is unique
-                                            required
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                              }}
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </div>  
-
-                            <div className="col-md-3">
-                                <Form.Group className="row" controlId="validation_CreatedBy">
-                                    <label className="col-sm-6 col-form-label"><span style={{color: "blue"}} class="required-asterisk"> Created By: </span></label>
-                                </Form.Group>
-                            </div>
-
-                            <div className="col-md-3">
-                                <Form.Group className="row" controlId="validation_CreatedDate">
-                                    <label className="col-sm-6 col-form-label"><span style={{color: "blue"}} class="required-asterisk"> Created Date: </span></label>
-                                </Form.Group>
-                            </div>
-                        </div>  
-
-                        <div className="row">
-                            <div className="col-md-12">
-                                <Form.Group className="row" controlId="validation_Description">
-                                    <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Description:</label>
-                                    <div className="col-sm-10">
-                                    <Form.Control 
-                                        style={{ fontSize: "13px" }}
-                                        as="textarea" 
-                                        rows={12} 
-                                        value={Description}
-                                        onChange={(e) => {
-                                            console.log(e.target.value)
-                                            setDescription(e.target.value);
-                                          }}
-                                    />
-                                    </div>
-                                </Form.Group>
-                            </div>
-                        </div>        
-
-                    </div>
-
-                {/* ************************************* img ******************************************* */}
-
-                    <div className="col-md-2">
-
-                        <div className="row">
-
-                            <AliceCarousel 
-                                autoPlay 
-                                autoPlayInterval="3000"  
-                                animationDuration={1000}
-                                animationType="fadeout"
-                                infinite
-                                touchTracking={false}
-                                disableDotsControls
-                                >
-                                <img src={require("../../assets/images/product_images_2/thumb_image1.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image2.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image3.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image4.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image5.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image6.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image7.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image8.jpg")} className="sliderimg" alt=""/>                                    
-                                <img src={require("../../assets/images/product_images_2/thumb_image9.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image10.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image11.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image12.jpg")} className="sliderimg" alt=""/>
-                                
-                                </AliceCarousel>
-                                
-                        </div>
-
-                    </div>
-                    
-                </div>  
-
-                <section id="tab-menus">
-
-                    <Tabs defaultActiveKey="Details" id="uncontrolled-tab-example" className="mb-4">
-
-
-                        {/* ************************************* Details **************************************** */}
-
-                        <Tab eventKey="Details" title="Details" class="nav-link active">
                             
+                        </div>  
+
+                        <section id="tab-menus">
+
+                        <Tabs defaultActiveKey="Status Audit" id="uncontrolled-tab-example" className="mb-4">
+
+
+                            {/* ************************************* Details **************************************** */}
+
+                            <Tab eventKey="Details" title="Details" class="nav-link active">
+                                
                                     <div className="row">
                                         <div className="col-md-12">
                                             <Form.Group className="row">
@@ -2666,7 +2664,7 @@ const WorkOrderFrom = (props) => {
                                                 <Form.Control 
                                                     style={{ fontSize: "13px" }}
                                                     as="textarea" 
-                                                    rows={12} 
+                                                    rows={19} 
                                                     value={CorrectiveAction}
                                                     onChange={(e) => setCorrectiveAction(e.target.value)}
                                                 />
@@ -2689,7 +2687,7 @@ const WorkOrderFrom = (props) => {
                                                         styles={{ 
                                                             control: (styles) => ({ ...styles, fontSize: "13px" }), 
                                                             singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                          }}
+                                                            }}
                                                     />
                                                 </div>
                                             </Form.Group>
@@ -2708,28 +2706,28 @@ const WorkOrderFrom = (props) => {
                                                         styles={{ 
                                                             control: (styles) => ({ ...styles, fontSize: "13px" }), 
                                                             singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                          }}
+                                                            }}
                                                     />
                                                 </div>
                                             </Form.Group>                        
                                         </div>
                                     </div>  
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row">
                                                 <label className="col-sm-4 col-form-label">Cause Code:</label>
                                                 <div className="col-sm-8">
                                                 <Select  
-                                                   isClearable={true}  
-                                                   options={Cause_Code}
-                                                   value={selected_Cause_Code}
-                                                   onChange={setSelected_Cause_Code} // using id as it is unique
-                                                   required
-                                                   styles={{ 
+                                                    isClearable={true}  
+                                                    options={Cause_Code}
+                                                    value={selected_Cause_Code}
+                                                    onChange={setSelected_Cause_Code} // using id as it is unique
+                                                    required
+                                                    styles={{ 
                                                     control: (styles) => ({ ...styles, fontSize: "13px" }), 
                                                     singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                  }}
+                                                    }}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -2740,7 +2738,7 @@ const WorkOrderFrom = (props) => {
                                                 <label className="col-sm-4 col-form-label">Schedule Date:</label>
                                                 <div className="col-sm-8">
                                                 <Form.Control  
-                                                    style={{ fontSize: "13px" }}                                          
+                                                    style={{ fontSize: "13px", height: "38px" }}                                          
                                                     type="datetime-local"  
                                                     value={ScheduleDate} 
                                                     onChange={(e) => setScheduleDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -2750,7 +2748,7 @@ const WorkOrderFrom = (props) => {
                                         </div>  
                                     </div> 
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row">
                                                 <label className="col-sm-4 col-form-label">Action Code:</label>
@@ -2764,7 +2762,7 @@ const WorkOrderFrom = (props) => {
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
                                                         singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
+                                                        }}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -2775,7 +2773,7 @@ const WorkOrderFrom = (props) => {
                                                 <label className="col-sm-4 col-form-label">Exception Date:</label>
                                                 <div className="col-sm-8">
                                                 <Form.Control       
-                                                    style={{ fontSize: "13px" }}                                     
+                                                    style={{ fontSize: "13px", height: "38px" }}                                     
                                                     type="datetime-local"  
                                                     value={ExceptionDate} 
                                                     onChange={(e) => setExceptionDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -2785,21 +2783,21 @@ const WorkOrderFrom = (props) => {
                                         </div>  
                                     </div>  
 
-                                    <div className='row'>
+                                    <div className='row' style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row">
                                                 <label className="col-sm-4 col-form-label">Delay Code:</label>
                                                 <div className="col-sm-8">
                                                 <Select  
-                                                     isClearable={true}  
-                                                     options={Delay_Code}
-                                                     value={selected_Delay_Code}
-                                                     onChange={setSelected_Delay_Code} // using id as it is unique
-                                                     required
-                                                     styles={{ 
+                                                        isClearable={true}  
+                                                        options={Delay_Code}
+                                                        value={selected_Delay_Code}
+                                                        onChange={setSelected_Delay_Code} // using id as it is unique
+                                                        required
+                                                        styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
                                                         singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
+                                                        }}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -2810,7 +2808,7 @@ const WorkOrderFrom = (props) => {
                                                 <label className="col-sm-4 col-form-label">Status Change Date:</label>
                                                 <div className="col-sm-8">
                                                 <Form.Control 
-                                                    style={{ fontSize: "13px" }}                                           
+                                                    style={{ fontSize: "13px", height: "38px" }}                                           
                                                     type="datetime-local"  
                                                     value={StatusChangeDate} 
                                                     onChange={(e) => setStatusChangeDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -2820,7 +2818,7 @@ const WorkOrderFrom = (props) => {
                                         </div>   
                                     </div>
 
-                                    <div className='row'>                           
+                                    <div className='row' style={{ marginTop: "-20px" }}>                           
                                         <div className="col-md-6">
                                             <Form.Group className="row">
                                                 <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Work Type:</label>
@@ -2834,7 +2832,7 @@ const WorkOrderFrom = (props) => {
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
                                                         singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
+                                                        }}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -2845,7 +2843,7 @@ const WorkOrderFrom = (props) => {
                                                 <label className="col-sm-4 col-form-label">Completion Date:</label>
                                                 <div className="col-sm-8">
                                                 <Form.Control    
-                                                    style={{ fontSize: "13px" }}                                        
+                                                    style={{ fontSize: "13px", height: "38px" }}                                        
                                                     type="datetime-local"  
                                                     value={CompletionDate} 
                                                     onChange={(e) => setCompletionDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -2855,7 +2853,7 @@ const WorkOrderFrom = (props) => {
                                         </div>                                    
                                     </div>
 
-                                    <div className='row'>
+                                    <div className='row' style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row">
                                                 <label className="col-sm-4 col-form-label">Work Permit Type:</label>
@@ -2869,7 +2867,7 @@ const WorkOrderFrom = (props) => {
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
                                                         singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
+                                                        }}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -2880,7 +2878,7 @@ const WorkOrderFrom = (props) => {
                                                 <label className="col-sm-4 col-form-label">Close Date:</label>
                                                 <div className="col-sm-8">
                                                 <Form.Control     
-                                                    style={{ fontSize: "13px" }}                                       
+                                                    style={{ fontSize: "13px", height: "38px" }}                                       
                                                     type="datetime-local"  
                                                     value={CloseDate} 
                                                     onChange={(e) => setCloseDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -2890,7 +2888,7 @@ const WorkOrderFrom = (props) => {
                                         </div>     
                                     </div>
 
-                                    <div className='row'>
+                                    <div className='row' style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row">
                                                 <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Work Group:</label>
@@ -2904,7 +2902,7 @@ const WorkOrderFrom = (props) => {
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
                                                         singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
+                                                        }}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -2918,7 +2916,7 @@ const WorkOrderFrom = (props) => {
                                         </div>                                          
                                     </div>
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row">
                                                 <label className="col-sm-4 col-form-label">Supervisor ID:</label>
@@ -2932,7 +2930,7 @@ const WorkOrderFrom = (props) => {
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
                                                         singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
+                                                        }}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -2955,7 +2953,7 @@ const WorkOrderFrom = (props) => {
                                         </div> 
                                     </div>  
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row">
                                                 <label className="col-sm-4 col-form-label">Planner:</label>
@@ -2969,7 +2967,7 @@ const WorkOrderFrom = (props) => {
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
                                                         singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
+                                                        }}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -2993,7 +2991,7 @@ const WorkOrderFrom = (props) => {
                                         </div> 
                                     </div>  
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row">
                                                 <label className="col-sm-4 col-form-label">Approver:</label>
@@ -3007,7 +3005,7 @@ const WorkOrderFrom = (props) => {
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
                                                         singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
+                                                        }}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3024,7 +3022,7 @@ const WorkOrderFrom = (props) => {
                                         </div> 
                                     </div>  
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row">
                                                 <label className="col-sm-4 col-form-label">Assign To:</label>
@@ -3038,7 +3036,7 @@ const WorkOrderFrom = (props) => {
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
                                                         singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
+                                                        }}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3062,12 +3060,12 @@ const WorkOrderFrom = (props) => {
                                         </div> 
                                     </div>  
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row">
                                                 <label className="col-sm-4 col-form-label">Permanent ID:</label>
                                                 <div className="col-sm-8">
-                                                    <Form.Control style={{ fontSize: "13px" }} type="text" value={Permanent_ID} onChange={(e) => setPermanent_ID(e.target.value)}/>
+                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Permanent_ID} onChange={(e) => setPermanent_ID(e.target.value)}/>
                                                 </div>
                                             </Form.Group>
                                         </div>
@@ -3080,7 +3078,7 @@ const WorkOrderFrom = (props) => {
                                         </div> 
                                     </div>  
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                                 <Form.Group className="row">
                                                     <label className="col-sm-4 col-form-label">Work Request No:</label>
@@ -3096,7 +3094,7 @@ const WorkOrderFrom = (props) => {
                                         </div> 
                                     </div> 
 
-                                    <div className="row">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
                                         <div className="col-md-6">
                                             <Form.Group className="row">
                                                 <label className="col-sm-4 col-form-label">WR Due Date:</label>
@@ -3104,576 +3102,580 @@ const WorkOrderFrom = (props) => {
                                             </Form.Group>
                                         </div> 
                                     </div> 
-                
-                        </Tab>
+                    
+                            </Tab>
 
 
-                        {/* ************************************* Financial *************************************** */}
+                            {/* ************************************* Financial *************************************** */}
 
-                        <Tab eventKey="Financial" title="Financial" class="nav nav-tabs nav-item nav-link active">
-                            
+                            <Tab eventKey="Financial" title="Financial" class="nav nav-tabs nav-item nav-link active">
+                                
 
-                            <div className="row">
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-6 col-form-label">
-                                        Customer Code:
-                                    </label>
-                                    <div className="col-sm-6">
-                                            <Select  
-                                                isClearable={true}  
-                                                options={Customer_Code}
-                                                value={selected_Customer_Code}
-                                                onChange={setSelected_Customer_Code} // using id as it is unique
-                                                required
-                                                styles={{ 
-                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                  }}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-6 col-form-label">
-                                        Labor Account:
-                                    </label>
-                                    <div className="col-sm-6">
-                                            <Select  
-                                                isClearable={true}  
-                                                options={Labor_Account}
-                                                value={selected_Labor_Account}
-                                                onChange={setSelected_Labor_Account} // using id as it is unique
-                                                required
-                                                styles={{ 
-                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                  }}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-6 col-form-label">
-                                        Material Account:
-                                    </label>
-                                    <div className="col-sm-6">
-                                            <Select  
-                                            isClearable={true}  
-                                            options={Material_Account}
-                                            value={selected_Material_Account}
-                                            onChange={setSelected_Material_Account} // using id as it is unique
-                                            required
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                              }}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-6 col-form-label">
-                                        Credit Cost Center:
-                                    </label>
-                                    <div className="col-sm-6">
-                                            <Select  
-                                                isClearable={true}  
-                                                options={Credit_Cost_Center}
-                                                value={selected_Credit_Cost_Center}
-                                                onChange={setSelected_Credit_Cost_Center} // using id as it is unique
-                                                required
-                                                styles={{ 
-                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                  }}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-6 col-form-label">
-                                        Contract Account:
-                                    </label>
-                                    <div className="col-sm-6">
-                                            <Select  
-                                                isClearable={true}  
-                                                options={Contract_Account}
-                                                value={selected_Contract_Account}
-                                                onChange={setSelected_Contract_Account} // using id as it is unique
-                                                required
-                                                styles={{ 
-                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                  }}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-6 col-form-label">
-                                        Miscellaneous Account:
-                                    </label>
-                                    <div className="col-sm-6">
-                                            <Select  
-                                                isClearable={true}  
-                                                options={Miscellaneous_Account}
-                                                value={selected_Miscellaneous_Account}
-                                                onChange={setSelected_Miscellaneous_Account} // using id as it is unique
-                                                required
-                                                styles={{ 
-                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                  }}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                        </Tab>
-
-
-                        {/* ************************************* UDF ******************************************* */}
-
-                        <Tab eventKey="UDF1" title="UDF1" class="nav-link active">
-
-
-                            <div className="row">
-                                <div className='col'>
-                                    <div className="col-md-13">
+                                <div className="row">
+                                    <div className="col-md-4">
                                         <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            Varchar1:
+                                        <label className="col-sm-6 col-form-label">
+                                            Customer Code:
                                         </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
+                                        <div className="col-sm-6">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Customer_Code}
+                                                    value={selected_Customer_Code}
+                                                    onChange={setSelected_Customer_Code} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                        </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-6 col-form-label">
+                                            Labor Account:
+                                        </label>
+                                        <div className="col-sm-6">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Labor_Account}
+                                                    value={selected_Labor_Account}
+                                                    onChange={setSelected_Labor_Account} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                        </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-6 col-form-label">
+                                            Material Account:
+                                        </label>
+                                        <div className="col-sm-6">
+                                                <Select  
+                                                isClearable={true}  
+                                                options={Material_Account}
+                                                value={selected_Material_Account}
+                                                onChange={setSelected_Material_Account} // using id as it is unique
+                                                required
+                                                styles={{ 
+                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                }}
+                                                />
+                                        </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-6 col-form-label">
+                                            Credit Cost Center:
+                                        </label>
+                                        <div className="col-sm-6">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Credit_Cost_Center}
+                                                    value={selected_Credit_Cost_Center}
+                                                    onChange={setSelected_Credit_Cost_Center} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                        </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-6 col-form-label">
+                                            Contract Account:
+                                        </label>
+                                        <div className="col-sm-6">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Contract_Account}
+                                                    value={selected_Contract_Account}
+                                                    onChange={setSelected_Contract_Account} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                        </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-6 col-form-label">
+                                            Miscellaneous Account:
+                                        </label>
+                                        <div className="col-sm-6">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Miscellaneous_Account}
+                                                    value={selected_Miscellaneous_Account}
+                                                    onChange={setSelected_Miscellaneous_Account} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                        </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                            </Tab>
+
+
+                            {/* ************************************* UDF ******************************************* */}
+
+                            <Tab eventKey="UDF1" title="UDF1" class="nav-link active">
+
+
+                                <div className="row">
+                                    <div className='col'>
+                                        <div className="col-md-13">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Varchar1:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="text"
+                                                    value={UDFText_1}
+                                                    onChange={(e) => setUDFText_1(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Varchar2:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="text"
+                                                    value={UDFText_2}
+                                                    onChange={(e) => setUDFText_2(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Varchar3:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="text"
+                                                    value={UDFText_3}
+                                                    onChange={(e) => setUDFText_3(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Varchar4:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="text"
+                                                    value={UDFText_4}
+                                                    onChange={(e) => setUDFText_4(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Varchar5:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="text"
+                                                    value={UDFText_5}
+                                                    onChange={(e) => setUDFText_5(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-md-8">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-2 col-form-label">
+                                                Note1:
+                                        </label>
+                                        <div className="col-sm-10">
+                                            <Form.Control 
                                                 style={{ fontSize: "13px" }}
-                                                type="text"
-                                                value={UDFText_1}
-                                                onChange={(e) => setUDFText_1(e.target.value)}
-                                                />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-
-                                    <div className="col-md-13">
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            Varchar2:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                type="text"
-                                                value={UDFText_2}
-                                                onChange={(e) => setUDFText_2(e.target.value)}
-                                                />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-
-                                    <div className="col-md-13">
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            Varchar3:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                type="text"
-                                                value={UDFText_3}
-                                                onChange={(e) => setUDFText_3(e.target.value)}
-                                                />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-
-                                    <div className="col-md-13">
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            Varchar4:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                type="text"
-                                                value={UDFText_4}
-                                                onChange={(e) => setUDFText_4(e.target.value)}
-                                                />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-
-                                    <div className="col-md-13">
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            Varchar5:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                type="text"
-                                                value={UDFText_5}
-                                                onChange={(e) => setUDFText_5(e.target.value)}
-                                                />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-                                </div>
-
-                                <div className="col-md-8">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-2 col-form-label">
-                                            Note1:
-                                    </label>
-                                    <div className="col-sm-10">
-                                        <Form.Control 
-                                            style={{ fontSize: "13px" }}
-                                            as="textarea" 
-                                            rows={26} 
-                                            value={UDFNote1}
-                                            onChange={(e) => setUDFNote1(e.target.value)}
-                                        />
-                                        </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Varchar6:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                            style={{ fontSize: "13px" }}
-                                            type="text"
-                                            value={UDFText_6}
-                                            onChange={(e) => setUDFText_6(e.target.value)}
+                                                as="textarea" 
+                                                rows={19} 
+                                                value={UDFNote1}
+                                                onChange={(e) => setUDFNote1(e.target.value)}
                                             />
+                                            </div>
+                                        </Form.Group>
                                     </div>
-                                    </Form.Group>
                                 </div>
 
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Numeric1:
-                                    </label>
-                                    <div className="col-sm-8">
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-4 col-form-label">
+                                            Varchar6:
+                                        </label>
+                                        <div className="col-sm-8">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_6}
+                                                onChange={(e) => setUDFText_6(e.target.value)}
+                                                />
+                                        </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-4 col-form-label">
+                                            Numeric1:
+                                        </label>
+                                        <div className="col-sm-8">
+                                            <Form.Control  
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="number"  
+                                                placeholder=".0000" 
+                                                value={UDFNumber_1} 
+                                                onChange={(e) => setUDFNumber_1(e.target.value)}
+                                            />
+                                        </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-4 col-form-label">
+                                            Date1:
+                                        </label>
+                                        <div className="col-sm-8">
                                         <Form.Control  
-                                            style={{ fontSize: "13px" }}
+                                            style={{ fontSize: "13px", height: "38px" }}                                          
+                                            type="datetime-local"  
+                                            value={UDFDate_1} 
+                                            onChange={(e) => setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                            />
+                                        </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-4 col-form-label">
+                                            Wko Det Varchar7:
+                                        </label>
+                                        <div className="col-sm-8">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_7}
+                                                onChange={(e) => setUDFText_7(e.target.value)}
+                                                />
+                                        </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-4 col-form-label">
+                                            Numeric2:
+                                        </label>
+                                        <div className="col-sm-8">
+                                        <Form.Control
+                                            style={{ fontSize: "13px", height: "38px" }}  
                                             type="number"  
                                             placeholder=".0000" 
-                                            value={UDFNumber_1} 
-                                            onChange={(e) => setUDFNumber_1(e.target.value)}
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Date1:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control  
-                                        style={{ fontSize: "13px" }}                                          
-                                        type="datetime-local"  
-                                        value={UDFDate_1} 
-                                        onChange={(e) => setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Wko Det Varchar7:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                            style={{ fontSize: "13px" }}
-                                            type="text"
-                                            value={UDFText_7}
-                                            onChange={(e) => setUDFText_7(e.target.value)}
+                                            value={UDFNumber_2} 
+                                            onChange={(e) => setUDFNumber_2(e.target.value)}
                                             />
+                                        </div>
+                                        </Form.Group>
                                     </div>
-                                    </Form.Group>
-                                </div>
 
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Numeric2:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control
-                                        style={{ fontSize: "13px" }}  
-                                        type="number"  
-                                        placeholder=".0000" 
-                                        value={UDFNumber_2} 
-                                        onChange={(e) => setUDFNumber_2(e.target.value)}
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Date2:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                            style={{ fontSize: "13px" }}
-                                            type="datetime-local"
-                                            value={UDFDate_2} 
-                                            onChange={(e) => setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Wko Det Varchar8:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                            style={{ fontSize: "13px" }}
-                                            type="text"
-                                            value={UDFText_8}
-                                            onChange={(e) => setUDFText_8(e.target.value)}
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-4 col-form-label">
+                                            Date2:
+                                        </label>
+                                        <div className="col-sm-8">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="datetime-local"
+                                                value={UDFDate_2} 
+                                                onChange={(e) => setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
                                             />
+                                        </div>
+                                        </Form.Group>
                                     </div>
-                                    </Form.Group>
                                 </div>
 
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Numeric3:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control 
-                                        style={{ fontSize: "13px" }}
-                                        type="number"  
-                                        placeholder=".0000" 
-                                        value={UDFNumber_3} 
-                                        onChange={(e) => setUDFNumber_3(e.target.value)}
-                                        />
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-4 col-form-label">
+                                            Wko Det Varchar8:
+                                        </label>
+                                        <div className="col-sm-8">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_8}
+                                                onChange={(e) => setUDFText_8(e.target.value)}
+                                                />
+                                        </div>
+                                        </Form.Group>
                                     </div>
-                                    </Form.Group>
-                                </div>
 
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Date3:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                            style={{ fontSize: "13px" }}
-                                            type="datetime-local"
-                                            value={UDFDate_3} 
-                                            onChange={(e) => setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Varchar9:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                            style={{ fontSize: "13px" }}
-                                            type="text"
-                                            value={UDFText_9}
-                                            onChange={(e) => setUDFText_9(e.target.value)}
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-4 col-form-label">
+                                            Numeric3:
+                                        </label>
+                                        <div className="col-sm-8">
+                                        <Form.Control 
+                                            style={{ fontSize: "13px", height: "38px" }}
+                                            type="number"  
+                                            placeholder=".0000" 
+                                            value={UDFNumber_3} 
+                                            onChange={(e) => setUDFNumber_3(e.target.value)}
                                             />
+                                        </div>
+                                        </Form.Group>
                                     </div>
-                                    </Form.Group>
-                                </div>
 
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Numeric4:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control  
-                                        style={{ fontSize: "13px" }}
-                                        type="number"  
-                                        placeholder=".0000" 
-                                        value={UDFNumber_4} 
-                                        onChange={(e) => setUDFNumber_4(e.target.value)}
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Date4:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                            style={{ fontSize: "13px" }}
-                                            type="datetime-local"
-                                            value={UDFDate_4} 
-                                            onChange={(e) => setUDFDate_4(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Varchar10:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                            style={{ fontSize: "13px" }}
-                                            type="text"
-                                            value={UDFText_10}
-                                            onChange={(e) => setUDFText_10(e.target.value)}
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-4 col-form-label">
+                                            Date3:
+                                        </label>
+                                        <div className="col-sm-8">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="datetime-local"
+                                                value={UDFDate_3} 
+                                                onChange={(e) => setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
                                             />
+                                        </div>
+                                        </Form.Group>
                                     </div>
-                                    </Form.Group>
                                 </div>
 
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Numeric5:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control 
-                                        style={{ fontSize: "13px" }} 
-                                        type="number"  
-                                        placeholder=".0000" 
-                                        value={UDFNumber_5} 
-                                        onChange={(e) => setUDFNumber_5(e.target.value)}
-                                        />
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-4 col-form-label">
+                                            Varchar9:
+                                        </label>
+                                        <div className="col-sm-8">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_9}
+                                                onChange={(e) => setUDFText_9(e.target.value)}
+                                                />
+                                        </div>
+                                        </Form.Group>
                                     </div>
-                                    </Form.Group>
+
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-4 col-form-label">
+                                            Numeric4:
+                                        </label>
+                                        <div className="col-sm-8">
+                                        <Form.Control  
+                                            style={{ fontSize: "13px", height: "38px" }}
+                                            type="number"  
+                                            placeholder=".0000" 
+                                            value={UDFNumber_4} 
+                                            onChange={(e) => setUDFNumber_4(e.target.value)}
+                                            />
+                                        </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-4 col-form-label">
+                                            Date4:
+                                        </label>
+                                        <div className="col-sm-8">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="datetime-local"
+                                                value={UDFDate_4} 
+                                                onChange={(e) => setUDFDate_4(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                            />
+                                        </div>
+                                        </Form.Group>
+                                    </div>
                                 </div>
 
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Date5:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                            style={{ fontSize: "13px" }}
-                                            type="datetime-local"
-                                            value={UDFDate_5} 
-                                            onChange={(e) => setUDFDate_5(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
-                                        />
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-4 col-form-label">
+                                            Varchar10:
+                                        </label>
+                                        <div className="col-sm-8">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_10}
+                                                onChange={(e) => setUDFText_10(e.target.value)}
+                                                />
+                                        </div>
+                                        </Form.Group>
                                     </div>
-                                    </Form.Group>
+
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-4 col-form-label">
+                                            Numeric5:
+                                        </label>
+                                        <div className="col-sm-8">
+                                        <Form.Control 
+                                            style={{ fontSize: "13px", height: "38px" }} 
+                                            type="number"  
+                                            placeholder=".0000" 
+                                            value={UDFNumber_5} 
+                                            onChange={(e) => setUDFNumber_5(e.target.value)}
+                                            />
+                                        </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-4">
+                                        <Form.Group className="row">
+                                        <label className="col-sm-4 col-form-label">
+                                            Date5:
+                                        </label>
+                                        <div className="col-sm-8">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="datetime-local"
+                                                value={UDFDate_5} 
+                                                onChange={(e) => setUDFDate_5(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                            />
+                                        </div>
+                                        </Form.Group>
+                                    </div>
                                 </div>
-                            </div>
-                        </Tab>
+                            </Tab>
 
 
-                        {/* ************************************* Material ************************************ */}
+                            {/* ************************************* Material ************************************ */}
 
-                        <Tab eventKey="Material" title="Material" class="nav-link active">
+                            <Tab eventKey="Material" title="Material" class="nav-link active">
 
-                            <WorkOrderMaterial name={'WorkOrderFrom'} />
+                                {/* <WorkOrderMaterial name={'WorkOrderFrom'} /> */}
 
-                        </Tab>
-
-
-                        {/* ************************************* Special Order (PR) ************************************ */}
-
-                        <Tab eventKey="Special Order (PR)" title="Special Order (PR)" class="nav-link active" >
-
-                            <WorkOrderSpecialOrder name={'WorkOrderFrom'} />
-
-                        </Tab>
+                            </Tab>
 
 
-                        {/* ************************************* Outsource Contract (PR) ************************************ */}
+                            {/* ************************************* Special Order (PR) ************************************ */}
 
-                        <Tab eventKey="Outsource Contract (PR)" title="Outsource Contract (PR)" class="nav-link active">
+                            <Tab eventKey="Special Order (PR)" title="Special Order (PR)" class="nav-link active" >
 
-                            <WorkOrderOutsourceContract name={'WorkOrderFrom'} />
+                                {/* <WorkOrderSpecialOrder name={'WorkOrderFrom'} /> */}
 
-                        </Tab>
-
-
-                        {/* ************************************* Time Card ********************************* */}
-
-                        <Tab eventKey="Time Card" title="Time Card" class="nav-link active" >
-
-                            <WorkOrderTimeCard name={'WorkOrderFrom'} />
-
-                        </Tab>
+                            </Tab>
 
 
-                        {/* ************************************* Misc ************************************** */}
+                            {/* ************************************* Outsource Contract (PR) ************************************ */}
 
-                        <Tab eventKey="Misc" title="Misc" class="nav-link active" >
+                            <Tab eventKey="Outsource Contract (PR)" title="Outsource Contract (PR)" class="nav-link active">
 
-                            <WorkOrderMisc name={'WorkOrderFrom'} />
+                                {/* <WorkOrderOutsourceContract name={'WorkOrderFrom'} /> */}
 
-                        </Tab>
+                            </Tab>
 
-                        {/* ************************************* Reference ************************************** */}
 
-                        <Tab eventKey="Reference" title="Reference" class="nav-link active" >
+                            {/* ************************************* Time Card ********************************* */}
+
+                            <Tab eventKey="Time Card" title="Time Card" class="nav-link active" >
+
+                                {/* <WorkOrderTimeCard name={'WorkOrderFrom'} /> */}
+
+                            </Tab>
+
+
+                            {/* ************************************* Misc ************************************** */}
+
+                            <Tab eventKey="Misc" title="Misc" class="nav-link active" >
+
+                                {/* <WorkOrderMisc name={'WorkOrderFrom'} /> */}
+
+                            </Tab>
+
+                            {/* ************************************* Reference ************************************** */}
+
+                            <Tab eventKey="Reference" title="Reference" class="nav-link active" >
+                                
+                                <Form.Group>
+                                    <label>File upload</label>
+                                    <div className="custom-file">
+                                        <Form.Control type="file" className="form-control visibility-hidden" id="customFileLang" lang="es"/>
+                                        <label className="custom-file-label" htmlFor="customFileLang">Upload image</label>
+                                    </div>
+                                </Form.Group> 
+                            </Tab>
                             
-                            <Form.Group>
-                                <label>File upload</label>
-                                <div className="custom-file">
-                                    <Form.Control type="file" className="form-control visibility-hidden" id="customFileLang" lang="es"/>
-                                    <label className="custom-file-label" htmlFor="customFileLang">Upload image</label>
-                                </div>
-                            </Form.Group> 
-                        </Tab>
-                        
 
-                        {/* ************************************* Status Audit ************************************** */}
+                            {/* ************************************* Status Audit ************************************** */}
 
-                        <Tab eventKey="Status Audit" title="Status Audit" class="nav-link active" >
+                            <Tab eventKey="Status Audit" title="Status Audit" class="nav-link active" >
 
-                            <WorkOrderStatusAudit name={'WorkOrderFrom'} />
+                                <WorkOrderStatusAudit name={'WorkOrderFrom'} data={{RowID: location.state.RowID , Workorderno : location.state.Workorderno}}/>
 
-                        </Tab>
+                            </Tab>
 
 
-                    </Tabs>
-                    </section>
+                        </Tabs>
+                        </section>
                     </form>
 
 
@@ -3705,9 +3707,9 @@ const WorkOrderFrom = (props) => {
                     </nav>
                     </div>
                 </div>
-                </div>
             </div>
         </div>
+    </div>
     );
 };
 

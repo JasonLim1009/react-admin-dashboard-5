@@ -29,6 +29,46 @@ function WorkOrder(props) {
   const [showButton, setShowButton] = useState(false);
   const [hoveredRow, setHoveredRow] = useState(null);
 
+  const [showComplete, setShowComplete] = useState(false);
+  const handleCloseComplete = () => setShowComplete(false);
+  const handleShowComplete = (result) => {
+
+    if (result.wko_mst_status === 'A' || result.wko_mst_status === "D" ) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'The record update cannot be done because the record had been updated by another user. Kindly retrieve the Work Request again to continue.',
+      });
+      return; 
+    }
+      
+    console.log(result);
+    sethandlesresult(result)
+    setShowComplete(true)
+
+  };
+
+  const [handlesresult, sethandlesresult] = useState([]);
+
+  const [showClose, setShowClose] = useState(false);
+  const handleCloseClose = () => setShowClose(false);
+  const handleShowClose = (result) => {
+
+    if (result.wko_mst_status === 'D' || result.wko_mst_status === "A" ) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'The record update cannot be done because the record had been updated by another user. Kindly retrieve the Work Request again to continue.',
+      });
+      return; 
+    }
+
+    console.log(result)
+    sethandlesresult(result);
+    setShowClose(true)
+
+  };
+
 
   const get_workordermaster = (site_ID) => {
     APIServices.get_workordermaster(site_ID, page, pageSize)
@@ -191,34 +231,77 @@ function WorkOrder(props) {
               style={{ backgroundColor: hoveredRow === result ? '#BCC9F5' : 'white' }}
             >
           <td>{ <IndeterminateCheckbox {...result} checked={isCheckedList[index]} onChange={() => handleCheckboxChange(index)} />}</td>
-          <td>{result.wko_mst_wo_no}  {hoveredRow === result && (
-                <div className="template-demo">
-                    <button
-                      type="button"
-                      onClick={() => handleEdit(result)}
-                      className="btn btn-light btn-icon-text"
-                      title="Edit"
-                      style={{padding: "5px" }}
-                    >
-                      <i className="mdi mdi-file-document btn-icon-prepend"></i>
-                    </button>
+          <td>{result.wko_mst_wo_no}  
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              {hoveredRow === result && (
+                  <div className="template-demo">
+                      <button
+                          type="button"
+                          onClick={() => handleShowComplete(result)}
+                          className="btn btn-success btn-icon-text"
+                          title="Complete"
+                          style={{width: "30px", height: "30px",padding: "7px", borderRadius: "50%"  }}
+                          // disabled={result.wko_mst_status === "A" || result.wko_mst_status === "D"}
+                        >
+                          <i className="mdi mdi-file-check btn-icon-prepend"></i>
+                        </button>
 
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(result)}
-                      className="btn btn-light btn-icon-text"
-                      title="Delete"
-                      style={{padding: "5px" }}
-                    >
-                      <i className="mdi mdi-delete-forever btn-icon-prepend"></i>
-                    </button>
-                </div>
-              )}
+                        <button
+                          type="button"
+                          onClick={() => handleShowClose(result)}
+                          className="btn btn-danger btn-icon-text"
+                          title="Close"
+                          style={{marginLeft: "-12px", width: "30px", height: "30px",padding: "7px", borderRadius: "50%"  }}
+                          // disabled={result.wko_mst_status === "D" || result.wko_mst_status === "A"}
+                        >
+                          <i className="mdi mdi-do-not-disturb btn-icon-prepend"></i>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => handleEdit(result)}
+                          className="btn btn-primary btn-icon-text"
+                          title={result.wko_mst_status === 'OPE' || result.wko_mst_status === 'WIP' || result.wko_mst_status === 'AWC'  ? 'Edit' : 'View'}
+                          style={{marginLeft: "-12px", width: "30px", height: "30px",padding: "7px", borderRadius: "50%"  }}
+                        >
+                          <i className={result.wko_mst_status === 'OPE' || result.wko_mst_status === 'WIP' || result.wko_mst_status === 'AWC'  ? 'mdi mdi-file-document btn-icon-prepend' : 'mdi mdi-television-guide btn-icon-prepend'}></i>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(result)}
+                          className="btn btn-warning btn-icon-text"
+                          title="Delete"
+                          style={{marginLeft: "-12px", width: "30px", height: "30px",padding: "7px", borderRadius: "50%" }}
+                        >
+                          <i className="mdi mdi-delete-forever btn-icon-prepend"></i>
+                        </button>
+                  </div>
+                )}
           </td>
           <td>{result.wko_mst_assetno}</td>
           <td>{result.wko_det_parent_wo}</td>
           <td>{result.wko_mst_pm_grp}</td>
-          <td>{result.wko_mst_status}</td>
+          <td>
+            <span style={{ 
+                  backgroundColor: 
+                    result.wko_mst_status === 'CMP' ? '#2196F3' : 
+                    result.wko_mst_status === 'OPE' || result.wko_mst_status === 'WIP' || result.wko_mst_status === 'AWC' ? '#19D895' :
+                    result.wko_mst_status === 'CLO' ? '#FF6258' :
+                    null, 
+                  color: 'white', 
+                  padding: '5px', 
+                  borderRadius: '5px', 
+                  fontSize:'13px',
+                  fontWeight: 'bold'
+                }}>
+              { result.wko_mst_status === 'CMP' ? 'Completed (CMP)' :
+                result.wko_mst_status === 'OPE' || result.wko_mst_status === 'WIP' || result.wko_mst_status === 'AWC' ? 'Open (OPEN)' :
+                result.wko_mst_status === 'CLO' ? 'Closed (CLO)' :
+                result.wko_mst_status}
+            </span>
+          </td>
           <td>{result.wko_mst_descs}</td>
           <td>{result.wko_mst_chg_costcenter}</td>
           <td>{wkom_org_date}</td>
@@ -337,8 +420,8 @@ function WorkOrder(props) {
 
 // ******************************** RowID: check and read data ***********************************************
   const handleRowClick = (data) => {
-    console.log(data)
-    history.push("/WorkOrderFrom-1", { RowID: data.RowID });
+    console.log(data.RowID)
+    history.push("/WorkOrderFrom-1", { RowID: data.RowID , Workorderno : data.wko_mst_wo_no });
   };
 
 
@@ -393,7 +476,8 @@ function WorkOrder(props) {
 
   //Edit Button
   const handleEdit = (data) => {
-    history.push("/WorkOrderFrom-1", { RowID: data.RowID });
+    //console.log(data)
+    history.push("/WorkOrderFrom-1", { RowID: data.RowID , Workorderno : data.wko_mst_wo_no});
   };
 
   //Delete Button
@@ -419,11 +503,11 @@ function WorkOrder(props) {
 
   return (
     <div>
-      <div className="page-header">
+      <div className="page-header" style={{ marginTop: "10px", marginBottom:"10px" }}>
         <h3 className="page-title">Work Order</h3>
       </div>
       <div>
-        <div className="card">
+        <div className="card" style={{marginLeft: "-3px", marginRight: "-3px"}}>
           <div className="card-body">
             <div className="page-header">
               <div className="template-demo">
@@ -487,15 +571,23 @@ function WorkOrder(props) {
                   className="btn btn-outline-primary btn-icon-text"
                   onClick={handleNewClick}
                 >
-                  <i className="mdi mdi-file-check btn-icon-prepend"></i> New Work Order
+                  <i className="mdi mdi-file-check btn-icon-prepend"></i> New
                 </button>
 
                 {showButton &&<button
                   type="button"
                   className="btn btn-outline-success btn-icon-text"
-                  onClick={handleNewClick}
+                  //onClick={handleNewClick}
                 >
                   <i className="mdi mdi-file-check btn-icon-prepend"></i> Complete WO
+                </button>}
+
+                {showButton &&<button
+                  type="button"
+                  className="btn btn-outline-danger btn-icon-text"
+                  //onClick={handleNewClick}
+                >
+                  <i className="mdi mdi-do-not-disturb btn-icon-prepend"></i> Close WO
                 </button>}
 
                 {show && (

@@ -235,10 +235,10 @@ function WorkRequest(props) {
                         type="button"
                         onClick={() => handleEdit(result)}
                         className="btn btn-primary btn-icon-text"
-                        title="Edit"
+                        title={result.wkr_mst_wr_status === 'W' ? 'Edit' : 'View'}
                         style={{marginLeft: "-12px", width: "30px", height: "30px",padding: "7px", borderRadius: "50%"  }}
                       >
-                        <i className="mdi mdi-file-document btn-icon-prepend"></i>
+                        <i className={result.wkr_mst_wr_status === 'W' ? 'mdi mdi-file-document btn-icon-prepend' : 'mdi mdi-television-guide btn-icon-prepend'}></i>
                       </button>
 
                       <button
@@ -828,7 +828,6 @@ APIServices.insert_work_request_disapproval(JSON.stringify(json_workrequest)).th
                   onClick={handleNewClick}
                 >
                   <i className="mdi mdi-file-check btn-icon-prepend"></i> New
-                  Work Request
                 </button>
 
                 {showButton &&<button
@@ -915,7 +914,7 @@ APIServices.insert_work_request_disapproval(JSON.stringify(json_workrequest)).th
 
                         </div>
 
-                        <div className="col-md-12">
+                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
                             <Form.Group className="row" controlId="validation_StockLocation">
                                 <label className="col-sm-5 col-form-label">Assign to:</label>
                                 <div className="col-sm-6 form-check">
@@ -931,7 +930,7 @@ APIServices.insert_work_request_disapproval(JSON.stringify(json_workrequest)).th
 
                         </div>
 
-                        <div className="col-md-12">
+                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
                             <Form.Group className="row" controlId="validation_StockLocation">
                                 <label className="col-sm-5 col-form-label">Work Group:</label>
                                 <div className="col-sm-6 form-check">
@@ -978,12 +977,12 @@ APIServices.insert_work_request_disapproval(JSON.stringify(json_workrequest)).th
                             <Form.Group className="row" controlId="validation_StockLocation">
                                 <label className="col-sm-5 col-form-label">Reject By:</label>
                                 <div className="col-sm-7 form-check">
-                                <Form.Control  type="text" value={RejectBy} readOnly/>
+                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={RejectBy} readOnly/>
                                 </div>
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12">
+                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
                             <Form.Group className="row" controlId="validation_StockLocation">
                                 <label className="col-sm-5 col-form-label">Reject Date:</label>
                                 <div className="col-sm-7 form-check">
@@ -996,7 +995,7 @@ APIServices.insert_work_request_disapproval(JSON.stringify(json_workrequest)).th
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12">
+                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
                             <Form.Group className="row" controlId="validation_StockLocation">
                                 <label className="col-sm-5 col-form-label">Rejected Description:</label>
                                 <div className="col-sm-7 form-check">

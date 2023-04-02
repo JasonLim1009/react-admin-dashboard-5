@@ -9,7 +9,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Select from 'react-select';
 import { Modal, Button } from 'react-bootstrap';
-import  {useLocation}  from 'react-router-dom';
+import  { useLocation, useHistory }  from 'react-router-dom';
 import Moment from 'moment';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
@@ -47,7 +47,8 @@ const WorkRequestForm = (props) => {
     const [Button_save, setButton_save] = useState("");
 
     const [RowID, setRowID] = useState("");
-
+    const history = useHistory();
+    const [edited, setEdited] = useState(false);
 
 
     const [WorkRequestNo, setWorkRequestNo] = useState("");
@@ -161,11 +162,15 @@ const WorkRequestForm = (props) => {
 
     const [filteredDataSource, setFilteredDataSource] = React.useState([]); 
     const [name, setName] = useState("");
-    const [show, setShow] = useState(false);
     const [ParentFlag_show, setParentFlag_Show] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const [ApproveShow, setApproveShow] = useState(false);
+    const ApprovehandleClose = () => setApproveShow(false);
+    const ApprovehandleShow = () => setApproveShow(true);
+
+    const [DisapproveShow, setDisapproveShow] = useState(false);
+    const DisapprovehandleClose = () => setDisapproveShow(false);
+    const DisapprovehandleShow = () => setDisapproveShow(true);
 
     const ParentFlag_handleClose = () => setParentFlag_Show(false);
     const ParentFlag_handleShow = () => setParentFlag_Show(true);
@@ -175,9 +180,9 @@ const WorkRequestForm = (props) => {
     const [Status, setStatus] = useState([]);
     const [selected_Status, setSelected_Status] = useState([]);
 
-    const [showApprove, setShowApprove] = useState(false);
-    const handleCloseApprove = () => setShowApprove(false);
-    const handleShowApprove = () => setShowApprove(true);
+    const [showApproveButton, setShowApproveButton] = useState(false);
+    const handleCloseApproveButton = () => setShowApproveButton(false);
+    const handleShowApproveButton = () => setShowApproveButton(true);
     const [Button_submit, setButton_submit] = useState("");
 
    
@@ -644,6 +649,33 @@ const WorkRequestForm = (props) => {
         }
    
     }
+
+    const onClickCancel = () => {
+        if (edited) {
+            Swal.fire({
+                title: 'Warning',
+                text: 'You have made some changes. Do you want to update these changes?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+              }).then((result) => {
+                
+                if (result.isConfirmed) {
+                  Update_WorkRequest();
+                }
+
+                window.history.back();
+              });
+
+            } else {
+              window.history.back();
+            }
+    };
+
+    const handleInputChange = () => {
+        setEdited(true);
+    };
 
 
     const New_WorkRequest = () => {
@@ -1535,37 +1567,6 @@ const WorkRequestForm = (props) => {
         setButton_save('Save');
     }
 
-
-    const handleSelect = (e) => {
-        setSelected_Asset_No(e)
-        handleClose();
-       
-      };
-
-
-    const filter = (e) => {
-
-        const keyword = e.target.value;
-    
-        if (keyword !== '') {
-          const results = Asset_No.filter((user) => {
-
-            const itemData = `${user.label.toUpperCase()}, ,${user.value.toUpperCase()})`
-            const textData = keyword.toUpperCase();
-
-            return itemData.indexOf(textData) > -1;
-           // return user.label.toLowerCase().startsWith(keyword.toLowerCase());
-            // Use the toLowerCase() method to make it case-insensitive
-          });
-          setFilteredDataSource(results);
-        } else {
-            setFilteredDataSource(Asset_No);
-          // If the text field is empty, show all users
-        }
-    
-        setName(keyword);
-      };
-
       
     const get_assetmaster_select = (selected_asset)=>{
 
@@ -1658,6 +1659,51 @@ const WorkRequestForm = (props) => {
     }
 
 
+    //Approval Status
+    const approvalStatusMap = {
+        "W": "Awaiting (W)",
+        "A": "Approve (A)",
+        "D": "Disapprove (D)",
+      };
+
+    const approvalStatusColor = {
+        "W": "#2196F3", 
+        "A": "#19D895", 
+        "D": "#FF6258",
+      };   
+
+    const getApprovalStatusStyle = (status) => {
+        if (status === "W") {
+          return {
+            backgroundColor: approvalStatusColor[status],
+            fontSize: "13px",
+            color: "white",
+            padding: "5px",
+            borderRadius: "5px",
+            fontWeight: "bold",
+          };
+        } else if (status === "A") {
+          return {
+            backgroundColor: approvalStatusColor[status],
+            fontSize: "13px",
+            color: "white",
+            padding: "5px",
+            borderRadius: "5px",
+            fontWeight: "bold",
+          };
+        } else if (status === "D") {
+          return {
+            backgroundColor: approvalStatusColor[status],
+            fontSize: "13px",
+            color: "white",
+            padding: "5px",
+            borderRadius: "5px",
+            fontWeight: "bold",
+          };
+        } else {
+          return {};
+        }
+      };
 
 
 
@@ -1672,15 +1718,17 @@ const WorkRequestForm = (props) => {
                 {/* <ol className="breadcrumb"></ol> */}
                     <div className="template-demo">
 
-                        {/* <button type="button" className="btn btn-primary btn-icon-text" onClick={handleShowApprove}>
+                        {/* <button type="button" className="btn btn-primary btn-icon-text" onClick={handleShowApproveButton}>
                             <i className="mdi mdi-file-check btn-icon-prepend" ></i>  Approve
                         </button> */}
 
+                        {ApprovalStatus === 'W' || !ApprovalStatus ? (
                         <button type="button" className="btn btn-success btn-icon-text" onClick={onClickChange}>
                             <i className="mdi mdi-file-check btn-icon-prepend" ></i>  {Button_save}
                         </button>
+                        ) : null}
 
-                        <button type="button" className="btn btn-danger btn-icon-text">
+                        <button type="button" className="btn btn-danger btn-icon-text" onClick={onClickCancel}>
                             <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i> Cancel 
                         </button>
                     
@@ -1690,14 +1738,14 @@ const WorkRequestForm = (props) => {
     
         </div> 
 
-    <div className="col-12 grid-margin">
-        <div className="card" style={{marginLeft: "-15px", marginRight: "-15px"}}>
-            <div className="card-body"> 
+        <div className="col-12 grid-margin">
+            <div className="card" style={{marginLeft: "-15px", marginRight: "-15px"}}>
+                <div className="card-body"> 
                     <form className="form-sample" validated={validated}>  
 
                         {/******************** Approve Work Request ********************/}
                         <div>
-                            <Modal show={showApprove} onHide={handleCloseApprove} centered >
+                            <Modal show={showApproveButton} onHide={handleCloseApproveButton} centered >
 
                                 <Modal.Header closeButton>
                                     <Modal.Title>Approve Work Request</Modal.Title>
@@ -1707,7 +1755,7 @@ const WorkRequestForm = (props) => {
                                 <Modal.Body>
                                     <div className="col-md-12">
                                         <Form.Group className="row" controlId="validation_StockLocation">
-                                            <label className="col-sm-4 col-form-label">Status:</label>
+                                            <label className="col-sm-5 col-form-label">Status:</label>
                                             <div className="col-sm-6 form-check">
                                             {Status.map((status) => (
                                                 <Form.Check 
@@ -1728,7 +1776,7 @@ const WorkRequestForm = (props) => {
 
                                     <div className="col-md-12">
                                         <Form.Group className="row" controlId="validation_StockLocation">
-                                            <label className="col-sm-4 col-form-label">Asset to:</label>
+                                            <label className="col-sm-5 col-form-label">Asset to:</label>
                                             <div className="col-sm-6 form-check">
                                                 <Select  
                                                     isClearable={true}  
@@ -1741,18 +1789,34 @@ const WorkRequestForm = (props) => {
                                         </Form.Group>
 
                                     </div>
+
+                                    <div className="col-md-12">
+                                        <Form.Group className="row" controlId="validation_StockLocation">
+                                            <label className="col-sm-5 col-form-label">Work Group:</label>
+                                            <div className="col-sm-6 form-check">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Work_Group}
+                                                    value={selected_Work_Group}
+                                                    onChange={setSelected_Work_Group} // using id as it is unique
+                                                    required
+                                                />
+                                            </div>
+                                        </Form.Group>
+
+                                    </div>
                                 </Modal.Body>
                                 
 
                                 <Modal.Footer>
 
-                                <Button variant="secondary" onClick={handleCloseApprove}>
+                                <Button variant="secondary" onClick={handleCloseApproveButton}>
                                 <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i>Close
                                 </Button>
                                 <Button variant="primary" onClick={() => {
                                               
                                                 // Close modal
-                                                handleCloseApprove();
+                                                handleCloseApproveButton();
                                             }}>
                                             <i className="mdi mdi-file-check btn-icon-prepend"></i>Approve
                                             </Button>
@@ -1763,212 +1827,375 @@ const WorkRequestForm = (props) => {
                         </div> 
 
 
-                        {/******************** Asset No ********************/}
-                        {/* <div>
-                            <Modal show={show} onHide={handleClose} centered >
+                        {/******************** Approve Details ********************/}
+                        <div>
+                            <Modal show={ApproveShow} onHide={ApprovehandleClose} centered >
 
                                 <Modal.Header closeButton>
-                                    <Modal.Title>Asset Code</Modal.Title>
+                                    <Modal.Title>Approve Details</Modal.Title>
                                 </Modal.Header>
 
                                 <Modal.Body>
-                                    <Form.Control type="search" className="form-control" placeholder="Search Here" value={name} onChange={(text) => filter(text)}/>
+                                    <div className="col-md-12">
+                                        <Form.Group className="row" controlId="validation_ApprovedBy">
+                                            <label className="col-sm-5 col-form-label">Approved By :</label>
+                                            <div className="col-sm-6 form-check">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="text"
+                                                    value ={ApprovedBy} 
+                                                    readOnly
+                                                    />
+                                            </div>
+                                        </Form.Group>
 
-                                    <div className="user-list" >
+                                    </div>
 
-                                        {filteredDataSource && filteredDataSource.length > 0 ? (
-                                        
-                                            filteredDataSource.map((user) => (
+                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                        <Form.Group className="row" controlId="validation_ApprovedDate">
+                                            <label className="col-sm-5 col-form-label">Approved Date :</label>
+                                            <div className="col-sm-6 form-check">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="datetime-local"
+                                                    value ={ApprovedDate} 
+                                                    readOnly
+                                                    />
+                                            </div>
+                                        </Form.Group>
 
-                                                <li key={user.label } className="user" onClick={()=>handleSelect(user.label +" : "+ user.value)}  >
-                                                    <span className="user-id">{user.label}</span>
-                                                    <span className="user-name">{user.value}</span> 
-                                                </li>                                        
-                                            ))
+                                    </div>
 
-                                        ) : (<h1>No results found!</h1>)}
+                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                        <Form.Group className="row" controlId="validation_WorkOrderNo">
+                                            <label className="col-sm-5 col-form-label">Work Order No :</label>
+                                            <div className="col-sm-6 form-check">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="text"
+                                                    value ={WorkOrderNo} 
+                                                    readOnly
+                                                    />
+                                            </div>
+                                        </Form.Group>
+
+                                    </div>
+
+                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                        <Form.Group className="row" controlId="validation_WorkStatus">
+                                            <label className="col-sm-5 col-form-label">Work Status :</label>
+                                            <div className="col-sm-6 form-check">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="text"
+                                                    value ={WorkStatus} 
+                                                    readOnly
+                                                    />
+                                            </div>
+                                        </Form.Group>
+
                                     </div>
                                 
                                 </Modal.Body>
                             </Modal>
 
-                        </div>  */}
+                        </div> 
 
-                    <div className="row">
+                        {/******************** Disapprove Details ********************/}
+                        <div>
+                            <Modal show={DisapproveShow} onHide={DisapprovehandleClose} centered >
 
-                        <div className="col-md-10">
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Disapprove Details</Modal.Title>
+                                </Modal.Header>
 
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <Form.Group className="row" controlId="validation_WorkRequestNo">
-                                        <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Work Request No:</label>
-                                        <div className="col-sm-8">
-                                        <Form.Control style={{ fontSize: "13px" }} type="text" value={WorkRequestNo} onChange={(e) => setWorkRequestNo(e.target.value)}  disabled={WorkRequestNo_disabled}/>
-                                        </div>
-                                    </Form.Group>
+                                <Modal.Body>
+                                    <div className="col-md-12">
+                                        <Form.Group className="row" controlId="validation_RejectedBy">
+                                            <label className="col-sm-5 col-form-label">Rejected By :</label>
+                                            <div className="col-sm-6 form-check">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="text"
+                                                    value ={RejectedBy} 
+                                                    readOnly
+                                                    />
+                                            </div>
+                                        </Form.Group>
+
+                                    </div>
+
+                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                        <Form.Group className="row" controlId="validation_RejectedDate">
+                                            <label className="col-sm-5 col-form-label">Rejected Date :</label>
+                                            <div className="col-sm-6 form-check">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="datetime-local"
+                                                    value ={RejectedDate} 
+                                                    readOnly
+                                                    />
+                                            </div>
+                                        </Form.Group>
+
+                                    </div>
+
+                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                        <Form.Group className="row" controlId="validation_RejectedDescription">
+                                            <label className="col-sm-5 col-form-label">Rejected Description :</label>
+                                            <div className="col-sm-6 form-check">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="text"
+                                                    value ={RejectedDescription} 
+                                                    readOnly
+                                                    />
+                                            </div>
+                                        </Form.Group>
+
+                                    </div>
+
+                                </Modal.Body>
+                            </Modal>
+
+                        </div> 
+
+                        <div className="row">
+
+                            <div className="col-md-10">
+
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_WorkRequestNo">
+                                            <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Work Request No:</label>
+                                            <div className="col-sm-8">
+                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={WorkRequestNo} onChange={(e) => setWorkRequestNo(e.target.value)}  disabled={WorkRequestNo_disabled}/>
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+
+
+                                    <div className="col-md-6">                                
+                                        <Form.Group className="row" controlId="validation_ApprovalStatus">
+                                            <Form.Label className="col-sm-4 col-form-label">Approval Status:</Form.Label>
+                                            <div className="col-sm-8  col-form-label">
+                                            {/* <Form.Control style={{ fontSize: "13px", color: 'white', fontWeight: 'bold', backgroundColor: approvalStatusColor[ApprovalStatus] }} type="text"  value={approvalStatusMap[ApprovalStatus] || ApprovalStatus} onChange={(e) => setApprovalStatus(e.target.value)} disabled={ApprovalStatus_disabled} readOnly/> */}
+                                            <button type="button" className="btn btn-icon-text" style={getApprovalStatusStyle(ApprovalStatus)} onClick={() => {
+                                                if (ApprovalStatus === 'A') {
+                                                    ApprovehandleShow();
+
+                                                } else if (ApprovalStatus === 'D') {
+                                                    DisapprovehandleShow();
+                                                }
+                                            }}>
+                                                {approvalStatusMap[ApprovalStatus] || ApprovalStatus}
+                                            </button>{' '}
+                                            
+                                                {ApprovalStatus === 'A' || ApprovalStatus === 'D' ? (
+                                                <span style={{ backgroundColor: 'yellow' ,color: 'red', fontSize: "12px", padding: "5px", borderRadius: "5px" }}>Read Only</span>
+                                            ) : null}
+                                            
+                                            </div>
+                                        </Form.Group>
+                                    </div>
                                 </div>
 
-
-                                <div className="col-md-6">                                
-                                    <Form.Group className="row" controlId="validation_ApprovalStatus">
-                                        <Form.Label className="col-sm-4 col-form-label">Approval Status:</Form.Label>
-                                        <div className="col-sm-8">
-                                        <Form.Control style={{ fontSize: "13px" }} type="text" value={ApprovalStatus} onChange={(e) => setApprovalStatus(e.target.value)} disabled={ApprovalStatus_disabled} readOnly/>
-                                        </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <Form.Group className="row" controlId="validation_Originator">
-                                        <label className="col-sm-4 col-form-label">Originator:</label>
-                                        <div className="col-sm-8">
-                                            <Select  
-                                                isClearable={true}  
-                                                options={Originator}
-                                                value={selected_Originator}
-                                                onChange={setSelected_Originator} // using id as it is unique
-                                                required
-                                                styles={{ 
-                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                  }}
-                                            />
-                                        </div>
-                                    </Form.Group>
-                                </div>  
-
-
-                                <div className="col-md-6">
-                                    <Form.Group className="row" controlId="validation_OriginalPriority">
-                                        <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Original Priority:</label>
-                                        <div className="col-sm-8">
-                                            <Select  
-                                                isClearable={true}  
-                                                options={OriginalPriority}
-                                                value={selected_OriginalPriority}
-                                                onChange={setSelected_OriginalPriority} // using id as it is unique
-                                                required
-                                                styles={{ 
-                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                  }}
-                                            />
-                                        </div>
-                                    </Form.Group>
-                                </div>  
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <Form.Group className="row" controlId="validation_Phone">
-                                        <label className="col-sm-4 col-form-label">Phone:</label>
-                                        <div className="col-sm-8">
-                                            <Form.Control style={{ fontSize: "13px" }} type="number" value={Phone} onChange={(e) => setPhone(e.target.value)}/>
-                                        </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-6">
-                                    <Form.Group className="row" controlId="validation_OriginationDate">
-                                        <label className="col-sm-4 col-form-label">Origination Date:</label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                style={{ fontSize: "13px" }}
-                                                type="datetime-local"  
-                                                value={OriginationDate} 
-                                                onChange={(date) => setOriginationDate(Moment().utcOffset('+08:00').format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                            /> 
-                                        </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <Form.Group className="row" controlId="validation_FaultCode">
-                                        <label className="col-sm-4 col-form-label">Fault Code:</label>
-                                        <div className="col-sm-8">
-                                            <Select  
-                                                isClearable={true}  
-                                                options={FaultCode}
-                                                value={selected_FaultCode}
-                                                onChange={handleSelectedFaultCode} // using id as it is unique
-                                                required
-                                                styles={{ 
-                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                  }}
-                                            />
-                                        </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-6">
-                                    <Form.Group className="row" controlId="validation_DueDate">
-                                        <label className="col-sm-4 col-form-label">Due Date:</label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                style={{ fontSize: "13px" }}
-                                                type="datetime-local"
-                                                value ={DueDate} 
-                                                onChange={date => setDueDate(Moment().utcOffset('+08:00').format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Originator">
+                                            <label className="col-sm-4 col-form-label">Originator:</label>
+                                            <div className="col-sm-8">
+                                                <Select  
+                                                    isDisabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                    isClearable={true}  
+                                                    options={Originator}
+                                                    value={selected_Originator}
+                                                    onChange={value => {
+                                                        setSelected_Originator(value);
+                                                        handleInputChange();
+                                                    }} // using id as it is unique
+                                                    required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '13px'
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '13px'
+                                                        })
+                                                    }}
                                                 />
-                                        </div>
-                                    </Form.Group>
+                                            </div>
+                                        </Form.Group>
+                                    </div>  
+
+
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_OriginalPriority">
+                                            <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Original Priority:</label>
+                                            <div className="col-sm-8">
+                                                <Select  
+                                                    isDisabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                    isClearable={true}  
+                                                    options={OriginalPriority}
+                                                    value={selected_OriginalPriority}
+                                                    onChange={value => {
+                                                        setSelected_OriginalPriority(value);
+                                                        handleInputChange();
+                                                    }} // using id as it is unique
+                                                    required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '13px'
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '13px'
+                                                        })
+                                                    }}
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>  
                                 </div>
-                            </div>  
 
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <Form.Group className="row" controlId="validation_Description">
-                                        <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Description:</label>
-                                        <div className="col-sm-10">
-                                        <Form.Control 
-                                            style={{ fontSize: "13px" }}
-                                            as="textarea" 
-                                            rows={12} 
-                                            value={Description}
-                                            onChange={(e) => {
-                                                console.log(e.target.value)
-                                                setDescription(e.target.value);
-                                            }}
-                                        />
-                                        </div>
-                                    </Form.Group>
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Phone">
+                                            <label className="col-sm-4 col-form-label">Phone:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value={Phone} onChange={(e) => {setPhone(e.target.value); handleInputChange();}}
+                                                disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                            />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_OriginationDate">
+                                            <label className="col-sm-4 col-form-label">Origination Date:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="datetime-local"  
+                                                    value={OriginationDate} 
+                                                    onChange={(date) => {setOriginationDate(Moment().utcOffset('+08:00').format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
+                                                    disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                /> 
+                                            </div>
+                                        </Form.Group>
+                                    </div>
                                 </div>
-                            </div>  
 
-                        </div>
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_FaultCode">
+                                            <label className="col-sm-4 col-form-label">Fault Code:</label>
+                                            <div className="col-sm-8">
+                                                <Select  
+                                                    isDisabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                    isClearable={true}  
+                                                    options={FaultCode}
+                                                    value={selected_FaultCode}
+                                                    onChange={value => {
+                                                        handleSelectedFaultCode(value);
+                                                        handleInputChange();
+                                                    }} // using id as it is unique
+                                                    required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '13px'
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '13px'
+                                                        })
+                                                    }}
+                                                    
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
 
-                    {/* ************************************* img ******************************************* */}
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_DueDate">
+                                            <label className="col-sm-4 col-form-label">Due Date:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="datetime-local"
+                                                    value ={DueDate} 
+                                                    onChange={date => {setDueDate(Moment().utcOffset('+08:00').format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
+                                                    disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                    />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>  
 
-                        <div className="col-md-2">
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-12">
+                                        <Form.Group className="row" controlId="validation_Description">
+                                            <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Description:</label>
+                                            <div className="col-sm-10">
+                                            <Form.Control 
+                                                style={{ fontSize: "13px" }}
+                                                as="textarea" 
+                                                rows={19} 
+                                                value={Description}
+                                                onChange={(e) => {
+                                                    console.log(e.target.value)
+                                                    setDescription(e.target.value);
+                                                    handleInputChange();
+                                                }}
+                                                disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                            />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>  
 
-                            <div className="row">
-
-                                <AliceCarousel 
-                                    autoPlay 
-                                    autoPlayInterval="3000"  
-                                    animationDuration={1000}
-                                    animationType="fadeout"
-                                    infinite
-                                    touchTracking={false}
-                                    disableDotsControls
-                                    >
-                                    <img src={require("../../assets/images/product_images_2/thumb_logo.png")} className="sliderimg" alt="" />
-                                    <img src={require("../../assets/images/product_images_2/thumb_work1.png")} className="sliderimg" alt="" />
-                                    
-                                </AliceCarousel>
-                                    
                             </div>
 
-                        </div>
-                        
-                    </div>  
+                        {/* ************************************* img ******************************************* */}
 
-                    <section id="tab-menus">
+                            <div className="col-md-2">
+
+                                <div className="row">
+
+                                    <AliceCarousel 
+                                        autoPlay 
+                                        autoPlayInterval="3000"  
+                                        animationDuration={1000}
+                                        animationType="fadeout"
+                                        infinite
+                                        touchTracking={false}
+                                        disableDotsControls
+                                        >
+                                        <img src={require("../../assets/images/product_images_2/thumb_logo.png")} className="sliderimg" alt="" />
+                                        <img src={require("../../assets/images/product_images_2/thumb_work1.png")} className="sliderimg" alt="" />
+                                        
+                                    </AliceCarousel>
+                                        
+                                </div>
+
+                            </div>
+                            
+                        </div>  
+
+                        <section id="tab-menus">
 
                         <Tabs defaultActiveKey="Details" id="uncontrolled-tab-example" className="mb-4">
 
@@ -1983,6 +2210,7 @@ const WorkRequestForm = (props) => {
                                             <Form.Label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Asset No:</Form.Label>
                                             <div className="col-sm-8">
                                                 <Select
+                                                    isDisabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
                                                     isClearable={true}  
                                                     options={Asset_No}
                                                     // type="select" 
@@ -1990,12 +2218,25 @@ const WorkRequestForm = (props) => {
                                                     // placeholder="Search Here" 
                                                     // onClick={handleShow} 
                                                     value={selected_Asset_No} 
-                                                    onChange={handleSelectedAssetNo}
-                                                    required
-                                                    styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    onChange={value => {
+                                                        handleSelectedAssetNo(value);
+                                                        handleInputChange();
                                                       }}
+                                                    required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '13px'
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                         fontSize: '13px'
+                                                        })
+                                                    }}
+                                                    
                                                 />
                                             </div>
                                         </Form.Group>
@@ -2006,36 +2247,64 @@ const WorkRequestForm = (props) => {
                                             <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Charge Cost Center:</label>
                                             <div className="col-sm-8">
                                                 <Select  
+                                                    isDisabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
                                                     isClearable={true}  
                                                     options={Charge_Cost_Center}
                                                     value={selected_Charge_Cost_Center}
-                                                    onChange={setSelected_Charge_Cost_Center} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Charge_Cost_Center(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
-                                                    styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '13px'
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                         fontSize: '13px'
+                                                        })
+                                                    }}
+                                                    
                                                 />
                                             </div>
                                         </Form.Group>
                                     </div>  
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_WorkArea">
                                             <label className="col-sm-4 col-form-label">Work Area:</label>
                                             <div className="col-sm-8">
                                                 <Select  
+                                                    isDisabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
                                                     isClearable={true}  
                                                     options={Work_Area}
                                                     value={selected_Work_Area}
-                                                    onChange={setSelected_Work_Area} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Work_Area(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
-                                                    styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '13px'
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                         fontSize: '13px'
+                                                        })
+                                                    }}
+                                                    
                                                 />
                                             </div>
                                         </Form.Group>
@@ -2046,36 +2315,63 @@ const WorkRequestForm = (props) => {
                                             <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Work Group:</label>
                                             <div className="col-sm-8">
                                                 <Select  
+                                                    isDisabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
                                                     isClearable={true}  
                                                     options={Work_Group}
                                                     value={selected_Work_Group}
-                                                    onChange={setSelected_Work_Group} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Work_Group(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
-                                                    styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '13px'
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                         fontSize: '13px'
+                                                        })
+                                                    }}
+                                                    
                                                 />
                                             </div>
                                         </Form.Group>
                                     </div>
                                 </div>  
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_AssetLocation">
                                             <label className="col-sm-4 col-form-label">Asset Location:</label>
                                             <div className="col-sm-8">
                                                 <Select  
+                                                    isDisabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
                                                     isClearable={true}  
                                                     options={Asset_Location}
                                                     value={selected_Asset_Location}
-                                                    onChange={setSelected_Asset_Location} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Asset_Location(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
-                                                    styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '13px'
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                         fontSize: '13px'
+                                                        })
+                                                    }}
                                                 />
                                             </div>
                                         </Form.Group>                        
@@ -2085,39 +2381,65 @@ const WorkRequestForm = (props) => {
                                         <Form.Group className="row" controlId="validation_WorkType">
                                             <label className="col-sm-4 col-form-label">Work Type:</label>
                                             <div className="col-sm-8">
-                                                    <Select  
+                                                    <Select 
+                                                    isDisabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'} 
                                                     isClearable={true}  
                                                     options={WorkType}
                                                     value={selected_WorkType}
-                                                    onChange={setSelected_WorkType} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_WorkType(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
-                                                    styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '13px'
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                         fontSize: '13px'
+                                                        })
+                                                    }}
                                                     />
                                                 </div>
                                         </Form.Group>
                                     </div>
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Level">
                                             <label className="col-sm-4 col-form-label">Level:</label>
                                             <div className="col-sm-8">
-                                                    <Select  
-                                                        isClearable={true}  
-                                                        options={Level}
-                                                        value={selected_Level}
-                                                        onChange={setSelected_Level} // using id as it is unique
-                                                        required
-                                                        styles={{ 
-                                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                          }}
-                                                        />
-                                                    </div>
+                                            <Select  
+                                                isDisabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                isClearable={true}  
+                                                options={Level}
+                                                value={selected_Level}
+                                                onChange={value => {
+                                                    setSelected_Level(value);
+                                                    handleInputChange();
+                                                  }} // using id as it is unique
+                                                required
+                                                styles={{
+                                                    control: (styles, { isDisabled }) => ({
+                                                    ...styles,
+                                                    backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                    color: isDisabled ? 'black' : 'inherit',
+                                                    fontSize: '13px'
+                                                    }),
+                                                    singleValue: (styles, { isDisabled }) => ({
+                                                    ...styles,
+                                                    color: isDisabled ? '#495057' : 'inherit',
+                                                     fontSize: '13px'
+                                                    })
+                                                }}
+                                                />
+                                            </div>
                                         </Form.Group>
                                     </div> 
 
@@ -2126,22 +2448,35 @@ const WorkRequestForm = (props) => {
                                             <label className="col-sm-4 col-form-label">Work Class:</label>
                                             <div className="col-sm-8">
                                                 <Select  
+                                                    isDisabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
                                                     isClearable={true}  
                                                     options={WorkClass}
                                                     value={selected_WorkClass}
-                                                    onChange={setSelected_WorkClass} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_WorkClass(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
-                                                    styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '13px'
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                         fontSize: '13px'
+                                                        })
+                                                    }}
                                                 />
                                             </div>
                                         </Form.Group>
                                     </div>  
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6"></div>  
 
                                     <div className="col-md-6">
@@ -2149,22 +2484,35 @@ const WorkRequestForm = (props) => {
                                             <label className="col-sm-4 col-form-label">Project ID:</label>
                                             <div className="col-sm-8">
                                                 <Select  
+                                                    isDisabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
                                                     isClearable={true}  
                                                     options={ProjectID}
                                                     value={selected_ProjectID}
-                                                    onChange={setSelected_ProjectID} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_ProjectID(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
-                                                    styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '13px'
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                         fontSize: '13px'
+                                                        })
+                                                    }}
                                                 />
                                             </div>
                                         </Form.Group>
                                     </div>  
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-12">
                                         <Form.Group className="row">
                                             <label className="col-sm-2 col-form-label">
@@ -2172,11 +2520,12 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-10">
                                                 <Form.Control 
+                                                    disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
                                                     style={{ fontSize: "13px" }}
                                                     as="textarea" 
-                                                    rows={12} 
+                                                    rows={19} 
                                                     value={UDFNote1}
-                                                    onChange={(e) => setUDFNote1(e.target.value)}
+                                                    onChange={(e) => {setUDFNote1(e.target.value); handleInputChange();}}
                                                 />
                                                 </div>
                                         </Form.Group>
@@ -2191,10 +2540,11 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                    style={{ fontSize: "13px" }}
+                                                    disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                    style={{ fontSize: "13px", height: "38px" }}
                                                     type="text"
                                                     value={UDFText_1}
-                                                    onChange={(e) => setUDFText_1(e.target.value)}
+                                                    onChange={(e) => {setUDFText_1(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                         </Form.Group>
@@ -2207,18 +2557,19 @@ const WorkRequestForm = (props) => {
                                                 </label>
                                                 <div className="col-sm-8">
                                                     <Form.Control  
-                                                    style={{ fontSize: "13px" }}
+                                                    disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                    style={{ fontSize: "13px", height: "38px" }}
                                                     type="number"  
                                                     placeholder=".0000" 
                                                     value={UDFNumber_1} 
-                                                    onChange={(e) => setUDFNumber_1(e.target.value)}
+                                                    onChange={(e) => {setUDFNumber_1(e.target.value); handleInputChange();}}
                                                     />
                                                 </div>
                                         </Form.Group>
                                     </div>  
                                 </div> 
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row">
                                             <label className="col-sm-4 col-form-label">
@@ -2226,10 +2577,11 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                    style={{ fontSize: "13px" }}
+                                                    disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                    style={{ fontSize: "13px", height: "38px" }}
                                                     type="text"
                                                     value={UDFText_2}
-                                                    onChange={(e) => setUDFText_2(e.target.value)}
+                                                    onChange={(e) => {setUDFText_2(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                         </Form.Group>
@@ -2242,18 +2594,19 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-8">
                                             <Form.Control  
-                                                style={{ fontSize: "13px" }}
+                                                disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_2} 
-                                                onChange={(e) => setUDFNumber_2(e.target.value)}
+                                                onChange={(e) => {setUDFNumber_2(e.target.value); handleInputChange();}}
                                                 />
                                             </div>
                                         </Form.Group>
                                     </div>  
                                 </div> 
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row">
                                             <label className="col-sm-4 col-form-label">
@@ -2261,10 +2614,11 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                    style={{ fontSize: "13px" }}
+                                                    disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                    style={{ fontSize: "13px", height: "38px" }}
                                                     type="text"
                                                     value={UDFText_3}
-                                                    onChange={(e) => setUDFText_3(e.target.value)}
+                                                    onChange={(e) => {setUDFText_3(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                         </Form.Group>
@@ -2277,18 +2631,19 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-8">
                                             <Form.Control  
-                                                style={{ fontSize: "13px" }}
+                                                disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_3} 
-                                                onChange={(e) => setUDFNumber_3(e.target.value)}
+                                                onChange={(e) => {setUDFNumber_3(e.target.value); handleInputChange();}}
                                                 />
                                             </div>
                                         </Form.Group>
                                     </div>  
                                 </div> 
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row">
                                             <label className="col-sm-4 col-form-label">
@@ -2296,10 +2651,11 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                    style={{ fontSize: "13px" }}
+                                                    disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                    style={{ fontSize: "13px", height: "38px" }}
                                                     type="text"
                                                     value={UDFText_4}
-                                                    onChange={(e) => setUDFText_4(e.target.value)}
+                                                    onChange={(e) => {setUDFText_4(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                         </Form.Group>
@@ -2311,19 +2667,20 @@ const WorkRequestForm = (props) => {
                                                     Numeric4:
                                                 </label>
                                                 <div className="col-sm-8">
-                                                <Form.Control  
-                                                    style={{ fontSize: "13px" }}
+                                                <Form.Control
+                                                    disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}  
+                                                    style={{ fontSize: "13px", height: "38px" }}
                                                     type="number"  
                                                     placeholder=".0000" 
                                                     value={UDFNumber_4} 
-                                                    onChange={(e) => setUDFNumber_4(e.target.value)}
+                                                    onChange={(e) => {setUDFNumber_4(e.target.value); handleInputChange();}}
                                                     />
                                                 </div>
                                             </Form.Group>
                                     </div>  
                                 </div> 
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row">
                                             <label className="col-sm-4 col-form-label">
@@ -2331,10 +2688,11 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                    style={{ fontSize: "13px" }}
+                                                    disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                    style={{ fontSize: "13px", height: "38px" }}
                                                     type="text"
                                                     value={UDFText_5}
-                                                    onChange={(e) => setUDFText_5(e.target.value)}
+                                                    onChange={(e) => {setUDFText_5(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                         </Form.Group>
@@ -2347,18 +2705,19 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-8">
                                             <Form.Control  
-                                                style={{ fontSize: "13px" }}
+                                                disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_5} 
-                                                onChange={(e) => setUDFNumber_5(e.target.value)}
+                                                onChange={(e) => {setUDFNumber_5(e.target.value); handleInputChange();}}
                                                 />
                                             </div>
                                         </Form.Group>
                                     </div>  
                                 </div> 
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row">
                                             <label className="col-sm-4 col-form-label">
@@ -2366,10 +2725,11 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_6}
-                                                onChange={(e) => setUDFText_6(e.target.value)}
+                                                onChange={(e) => {setUDFText_6(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                         </Form.Group>
@@ -2381,18 +2741,19 @@ const WorkRequestForm = (props) => {
                                                 Datetime1:
                                             </label>
                                             <div className="col-sm-8">
-                                            <Form.Control      
-                                                style={{ fontSize: "13px" }}                                     
+                                            <Form.Control  
+                                                disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}    
+                                                style={{ fontSize: "13px", height: "38px" }}                                     
                                                 type="datetime-local"  
                                                 value={UDFDate_1} 
-                                                onChange={(e) => setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                onChange={(e) => {setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                 />
                                             </div>
                                         </Form.Group>
                                     </div>
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row">
                                             <label className="col-sm-4 col-form-label">
@@ -2400,10 +2761,11 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_7}
-                                                onChange={(e) => setUDFText_7(e.target.value)}
+                                                onChange={(e) => {setUDFText_7(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                         </Form.Group>
@@ -2416,17 +2778,18 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="datetime-local"
                                                 value={UDFDate_2} 
-                                                onChange={(e) => setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                onChange={(e) => {setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 
                                                 />
                                             </div>
                                         </Form.Group>
                                     </div>
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row">
                                             <label className="col-sm-4 col-form-label">
@@ -2434,10 +2797,11 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_8}
-                                                onChange={(e) => setUDFText_8(e.target.value)}
+                                                onChange={(e) => {setUDFText_8(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                         </Form.Group>
@@ -2450,17 +2814,18 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="datetime-local"
                                                 value={UDFDate_3} 
-                                                onChange={(e) => setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                onChange={(e) => {setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 
                                                 />
                                             </div>
                                         </Form.Group>
                                     </div>
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row">
                                             <label className="col-sm-4 col-form-label">
@@ -2468,10 +2833,11 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_9}
-                                                onChange={(e) => setUDFText_9(e.target.value)}
+                                                onChange={(e) => {setUDFText_9(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                         </Form.Group>
@@ -2484,17 +2850,18 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="datetime-local"
                                                 value={UDFDate_4} 
-                                                onChange={(e) => setUDFDate_4(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                onChange={(e) => {setUDFDate_4(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                 />
                                             </div>
                                         </Form.Group>
                                     </div>
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row">
                                             <label className="col-sm-4 col-form-label">
@@ -2502,10 +2869,11 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_10}
-                                                onChange={(e) => setUDFText_10(e.target.value)}
+                                                onChange={(e) => {setUDFText_10(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                         </Form.Group>
@@ -2518,10 +2886,11 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px" }}
+                                                disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                style={{ fontSize: "13px", height: "38px" }}
                                                 type="datetime-local"
                                                 value={UDFDate_5} 
-                                                onChange={(e) => setUDFDate_5(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                onChange={(e) => {setUDFDate_5(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 
                                                 />
                                             </div>
                                         </Form.Group>
@@ -2545,74 +2914,79 @@ const WorkRequestForm = (props) => {
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                    style={{ fontSize: "13px" }}
+                                                    disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                    style={{ fontSize: "13px", height: "38px" }}
                                                     type="text"
                                                     value={UDFText_11}
-                                                    onChange={(e) => setUDFText_11(e.target.value)}
+                                                    onChange={(e) => {setUDFText_11(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-13">
+                                        <div className="col-md-13" style={{ marginTop: "-20px" }}>
                                             <Form.Group className="row">
                                             <label className="col-sm-4 col-form-label">
                                                 Varchar12:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                    style={{ fontSize: "13px" }}
+                                                    disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                    style={{ fontSize: "13px", height: "38px" }}
                                                     type="text"
                                                     value={UDFText_12}
-                                                    onChange={(e) => setUDFText_12(e.target.value)}
+                                                    onChange={(e) => {setUDFText_12(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-13">
+                                        <div className="col-md-13" style={{ marginTop: "-20px" }}>
                                             <Form.Group className="row">
                                             <label className="col-sm-4 col-form-label">
                                                 Varchar13:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                    style={{ fontSize: "13px" }}
+                                                    disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                    style={{ fontSize: "13px", height: "38px" }}
                                                     type="text"
                                                     value={UDFText_13}
-                                                    onChange={(e) => setUDFText_13(e.target.value)}
+                                                    onChange={(e) => {setUDFText_13(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-13">
+                                        <div className="col-md-13" style={{ marginTop: "-20px" }}>
                                             <Form.Group className="row">
                                             <label className="col-sm-4 col-form-label">
                                                 Varchar14:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                    style={{ fontSize: "13px" }}
+                                                    disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                    style={{ fontSize: "13px", height: "38px" }}
                                                     type="text"
                                                     value={UDFText_14}
-                                                    onChange={(e) => setUDFText_14(e.target.value)}
+                                                    onChange={(e) => {setUDFText_14(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-13">
+                                        <div className="col-md-13" style={{ marginTop: "-20px" }}>
                                             <Form.Group className="row">
                                             <label className="col-sm-4 col-form-label">
                                                 Varchar15:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                    style={{ fontSize: "13px" }}
+                                                    disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                                    style={{ fontSize: "13px", height: "38px" }}
                                                     type="text"
                                                     value={UDFText_15}
-                                                    onChange={(e) => setUDFText_15(e.target.value)}
+                                                    onChange={(e) => {setUDFText_15(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -2626,11 +3000,12 @@ const WorkRequestForm = (props) => {
                                         </label>
                                         <div className="col-sm-10">
                                             <Form.Control 
+                                                disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
                                                 style={{ fontSize: "13px" }}
                                                 as="textarea" 
-                                                rows={28} 
+                                                rows={19} 
                                                 value={UDFNote2}
-                                                onChange={(e) => setUDFNote2(e.target.value)}
+                                                onChange={(e) => {setUDFNote2(e.target.value); handleInputChange();}}
                                             />
                                             </div>
                                         </Form.Group>
@@ -2638,7 +3013,7 @@ const WorkRequestForm = (props) => {
 
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-4">
                                         <Form.Group className="row">
                                         <label className="col-sm-4 col-form-label">
@@ -2646,10 +3021,11 @@ const WorkRequestForm = (props) => {
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                            style={{ fontSize: "13px" }}
+                                            disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="text"
                                             value={UDFText_16}
-                                            onChange={(e) => setUDFText_16(e.target.value)}
+                                            onChange={(e) => {setUDFText_16(e.target.value); handleInputChange();}}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -2661,12 +3037,13 @@ const WorkRequestForm = (props) => {
                                             Numeric6:
                                         </label>
                                         <div className="col-sm-8">
-                                            <Form.Control  
-                                            style={{ fontSize: "13px" }}
+                                            <Form.Control
+                                            disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'} 
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="number"  
                                             placeholder=".0000" 
                                             value={UDFNumber_6} 
-                                            onChange={(e) => setUDFNumber_6(e.target.value)}
+                                            onChange={(e) => {setUDFNumber_6(e.target.value); handleInputChange();}}
                                             />
                                         </div>
                                         </Form.Group>
@@ -2678,18 +3055,19 @@ const WorkRequestForm = (props) => {
                                             Datetime6:
                                         </label>
                                         <div className="col-sm-8">
-                                        <Form.Control             
-                                            style={{ fontSize: "13px" }}                               
+                                        <Form.Control    
+                                            disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}         
+                                            style={{ fontSize: "13px", height: "38px" }}                               
                                             type="datetime-local"  
                                             value={UDFDate_6} 
-                                            onChange={(e) => setUDFDate_6(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                            onChange={(e) => {setUDFDate_6(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                             />
                                         </div>
                                         </Form.Group>
                                     </div>
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-4">
                                         <Form.Group className="row">
                                         <label className="col-sm-4 col-form-label">
@@ -2697,11 +3075,12 @@ const WorkRequestForm = (props) => {
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                            style={{ fontSize: "13px" }}
+                                            disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="text"
                                             value={UDFText_17}
-                                            onChange={(e) => setUDFText_17(e.target.value)}
-                                                />
+                                            onChange={(e) => {setUDFText_17(e.target.value); handleInputChange();}}
+                                            />
                                         </div>
                                         </Form.Group>
                                     </div>
@@ -2713,11 +3092,12 @@ const WorkRequestForm = (props) => {
                                         </label>
                                         <div className="col-sm-8">
                                         <Form.Control
-                                            style={{ fontSize: "13px" }}  
+                                            disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                            style={{ fontSize: "13px", height: "38px" }}  
                                             type="number"  
                                             placeholder=".0000" 
                                             value={UDFNumber_7} 
-                                            onChange={(e) => setUDFNumber_7(e.target.value)}
+                                            onChange={(e) => {setUDFNumber_7(e.target.value); handleInputChange();}}
                                             />
                                         </div>
                                         </Form.Group>
@@ -2730,17 +3110,18 @@ const WorkRequestForm = (props) => {
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                            style={{ fontSize: "13px" }}
+                                            disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="datetime-local"
                                             value={UDFDate_7} 
-                                            onChange={(e) => setUDFDate_7(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                            onChange={(e) => {setUDFDate_7(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 
                                             />
                                         </div>
                                         </Form.Group>
                                     </div>
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-4">
                                         <Form.Group className="row">
                                         <label className="col-sm-4 col-form-label">
@@ -2748,11 +3129,12 @@ const WorkRequestForm = (props) => {
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                            style={{ fontSize: "13px" }}
+                                            disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="text"
                                             value={UDFText_18}
-                                            onChange={(e) => setUDFText_18(e.target.value)}
-                                                />
+                                            onChange={(e) => {setUDFText_18(e.target.value); handleInputChange();}}
+                                            />
                                         </div>
                                         </Form.Group>
                                     </div>
@@ -2764,11 +3146,12 @@ const WorkRequestForm = (props) => {
                                         </label>
                                         <div className="col-sm-8">
                                         <Form.Control  
-                                            style={{ fontSize: "13px" }}
+                                            disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="number"  
                                             placeholder=".0000" 
                                             value={UDFNumber_8} 
-                                            onChange={(e) => setUDFNumber_8(e.target.value)}
+                                            onChange={(e) => {setUDFNumber_8(e.target.value); handleInputChange();}}
                                             />
                                         </div>
                                         </Form.Group>
@@ -2781,17 +3164,18 @@ const WorkRequestForm = (props) => {
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                            style={{ fontSize: "13px" }}
+                                            disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="datetime-local"
                                             value={UDFDate_8} 
-                                            onChange={(e) => setUDFDate_8(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                            onChange={(e) => {setUDFDate_8(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 
                                             />
                                         </div>
                                         </Form.Group>
                                     </div>
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-4">
                                         <Form.Group className="row">
                                         <label className="col-sm-4 col-form-label">
@@ -2799,10 +3183,11 @@ const WorkRequestForm = (props) => {
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                            style={{ fontSize: "13px" }}
+                                            disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="text"
                                             value={UDFText_19}
-                                            onChange={(e) => setUDFText_19(e.target.value)}
+                                            onChange={(e) => {setUDFText_19(e.target.value); handleInputChange();}}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -2815,11 +3200,12 @@ const WorkRequestForm = (props) => {
                                         </label>
                                         <div className="col-sm-8">
                                         <Form.Control  
-                                            style={{ fontSize: "13px" }}
+                                            disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="number"  
                                             placeholder=".0000" 
                                             value={UDFNumber_9} 
-                                            onChange={(e) => setUDFNumber_9(e.target.value)}
+                                            onChange={(e) => {setUDFNumber_9(e.target.value); handleInputChange();}}
                                             />
                                         </div>
                                         </Form.Group>
@@ -2832,17 +3218,18 @@ const WorkRequestForm = (props) => {
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                            style={{ fontSize: "13px" }}
+                                            disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="datetime-local"
                                             value={UDFDate_9} 
-                                            onChange={(e) => setUDFDate_9(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                            onChange={(e) => {setUDFDate_9(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                             />
                                         </div>
                                         </Form.Group>
                                     </div>
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-4">
                                         <Form.Group className="row">
                                         <label className="col-sm-4 col-form-label">
@@ -2850,11 +3237,12 @@ const WorkRequestForm = (props) => {
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                            style={{ fontSize: "13px" }}
+                                            disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="text"
                                             value={UDFText_20}
-                                            onChange={(e) => setUDFText_20(e.target.value)}
-                                                />
+                                            onChange={(e) => {setUDFText_20(e.target.value); handleInputChange();}}
+                                            />
                                         </div>
                                         </Form.Group>
                                     </div>
@@ -2865,12 +3253,13 @@ const WorkRequestForm = (props) => {
                                             Numeric10:
                                         </label>
                                         <div className="col-sm-8">
-                                        <Form.Control  
-                                            style={{ fontSize: "13px" }}
+                                        <Form.Control
+                                            disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}  
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="number"  
                                             placeholder=".0000" 
                                             value={UDFNumber_10} 
-                                            onChange={(e) => setUDFNumber_10(e.target.value)}
+                                            onChange={(e) => {setUDFNumber_10(e.target.value); handleInputChange();}}
                                             />
                                         </div>
                                         </Form.Group>
@@ -2883,10 +3272,11 @@ const WorkRequestForm = (props) => {
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                            style={{ fontSize: "13px" }}
+                                            disabled={ApprovalStatus === 'A' || ApprovalStatus === 'D'}
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="datetime-local"
                                             value={UDFDate_10} 
-                                            onChange={(e) => setUDFDate_10(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                            onChange={(e) => {setUDFDate_10(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 
                                             />
                                         </div>
                                         </Form.Group>
@@ -2898,127 +3288,127 @@ const WorkRequestForm = (props) => {
 
                             {/* ************************************* Status ************************************ */}
 
-                            <Tab eventKey="Status" title="Status" class="nav-link active">
-                                
-                                <div className="status-container">
-                                    <div className="status-box">
-                                        <Form.Group className="row">
-                                        <fieldset className="border p-3 w-100">
-                                        <legend className="w-auto">
-                                            <font size="4">Approve Details</font>
-                                        </legend>
+                                {/* <Tab eventKey="Status" title="Status" class="nav-link active">
+                                    
+                                    <div className="status-container">
+                                        <div className="status-box">
+                                            <Form.Group className="row">
+                                            <fieldset className="border p-3 w-100">
+                                            <legend className="w-auto">
+                                                <font size="4">Approve Details</font>
+                                            </legend>
 
-                                                <div className="row">
-                                                    <div className="col-md-5">
-                                                        <label className="col-sm-6 col-form-label">Approved By :</label>
-                                                        <label className="col-sm-6">
-                                                        <Form.Control
-                                                            style={{ fontSize: "13px" }}
-                                                            type="text"
-                                                            value ={ApprovedBy} 
-                                                            readOnly
-                                                            />
-                                                        </label>
-                                                    </div> 
-                                                </div>
+                                                    <div className="row">
+                                                        <div className="col-md-5">
+                                                            <label className="col-sm-6 col-form-label">Approved By :</label>
+                                                            <label className="col-sm-6">
+                                                            <Form.Control
+                                                                style={{ fontSize: "13px" }}
+                                                                type="text"
+                                                                value ={ApprovedBy} 
+                                                                readOnly
+                                                                />
+                                                            </label>
+                                                        </div> 
+                                                    </div>
 
-                                                <div className="row">
-                                                    <div className="col-md-5">
-                                                        <label className="col-sm-6 col-form-label">Approved Date :</label>
-                                                        <label className="col-sm-6">
-                                                        <Form.Control
-                                                            style={{ fontSize: "13px" }}
-                                                            type="datetime-local"
-                                                            value ={ApprovedDate} 
-                                                            readOnly
-                                                            />
-                                                        </label>
-                                                    </div> 
-                                                </div>
+                                                    <div className="row">
+                                                        <div className="col-md-5">
+                                                            <label className="col-sm-6 col-form-label">Approved Date :</label>
+                                                            <label className="col-sm-6">
+                                                            <Form.Control
+                                                                style={{ fontSize: "13px" }}
+                                                                type="datetime-local"
+                                                                value ={ApprovedDate} 
+                                                                readOnly
+                                                                />
+                                                            </label>
+                                                        </div> 
+                                                    </div>
 
-                                                <div className="row">
-                                                    <div className="col-md-5">
-                                                        <label className="col-sm-6 col-form-label">Work Order No :</label>
-                                                        <label className="col-sm-6">
-                                                        <Form.Control
-                                                            style={{ fontSize: "13px" }}
-                                                            type="text"
-                                                            value ={WorkOrderNo} 
-                                                            readOnly
-                                                            />
-                                                        </label>
-                                                    </div> 
-                                                </div>
+                                                    <div className="row">
+                                                        <div className="col-md-5">
+                                                            <label className="col-sm-6 col-form-label">Work Order No :</label>
+                                                            <label className="col-sm-6">
+                                                            <Form.Control
+                                                                style={{ fontSize: "13px" }}
+                                                                type="text"
+                                                                value ={WorkOrderNo} 
+                                                                readOnly
+                                                                />
+                                                            </label>
+                                                        </div> 
+                                                    </div>
 
-                                                <div className="row">
-                                                    <div className="col-md-5">
-                                                        <label className="col-sm-6 col-form-label">Work Status :</label>
-                                                        <label className="col-sm-6">
-                                                        <Form.Control
-                                                            style={{ fontSize: "13px" }}
-                                                            type="text"
-                                                            value ={WorkStatus} 
-                                                            readOnly
-                                                            />
-                                                        </label>
-                                                    </div> 
-                                                </div>
-                                        </fieldset>
-                                        </Form.Group>
+                                                    <div className="row">
+                                                        <div className="col-md-5">
+                                                            <label className="col-sm-6 col-form-label">Work Status :</label>
+                                                            <label className="col-sm-6">
+                                                            <Form.Control
+                                                                style={{ fontSize: "13px" }}
+                                                                type="text"
+                                                                value ={WorkStatus} 
+                                                                readOnly
+                                                                />
+                                                            </label>
+                                                        </div> 
+                                                    </div>
+                                            </fieldset>
+                                            </Form.Group>
 
-                                        <Form.Group className="row">
-                                        <fieldset className="border p-3 w-100">
-                                        <legend className="w-auto">
-                                            <font size="4">Disapprove Details</font>
-                                        </legend>
+                                            <Form.Group className="row">
+                                            <fieldset className="border p-3 w-100">
+                                            <legend className="w-auto">
+                                                <font size="4">Disapprove Details</font>
+                                            </legend>
 
-                                                <div className="row">
-                                                    <div className="col-md-5">
-                                                        <label className="col-sm-6 col-form-label">Rejected By :</label>
-                                                        <label className="col-sm-6">
-                                                        <Form.Control
-                                                            style={{ fontSize: "13px" }}
-                                                            type="text"
-                                                            value ={RejectedBy} 
-                                                            readOnly
-                                                            />
-                                                        </label>
-                                                    </div> 
-                                                </div>
+                                                    <div className="row">
+                                                        <div className="col-md-5">
+                                                            <label className="col-sm-6 col-form-label">Rejected By :</label>
+                                                            <label className="col-sm-6">
+                                                            <Form.Control
+                                                                style={{ fontSize: "13px" }}
+                                                                type="text"
+                                                                value ={RejectedBy} 
+                                                                readOnly
+                                                                />
+                                                            </label>
+                                                        </div> 
+                                                    </div>
 
-                                                <div className="row">
-                                                    <div className="col-md-5">
-                                                        <label className="col-sm-6 col-form-label">Rejected Date :</label>
-                                                        <label className="col-sm-6">
-                                                        <Form.Control
-                                                            style={{ fontSize: "13px" }}
-                                                            type="datetime-local"
-                                                            value ={RejectedDate} 
-                                                            readOnly
-                                                            />
-                                                        </label>
-                                                    </div> 
-                                                </div>
+                                                    <div className="row">
+                                                        <div className="col-md-5">
+                                                            <label className="col-sm-6 col-form-label">Rejected Date :</label>
+                                                            <label className="col-sm-6">
+                                                            <Form.Control
+                                                                style={{ fontSize: "13px" }}
+                                                                type="datetime-local"
+                                                                value ={RejectedDate} 
+                                                                readOnly
+                                                                />
+                                                            </label>
+                                                        </div> 
+                                                    </div>
 
-                                                <div className="row">
-                                                    <div className="col-md-5">
-                                                        <label className="col-sm-6 col-form-label">Rejected Description :</label>
-                                                        <label className="col-sm-6">
-                                                        <Form.Control
-                                                            style={{ fontSize: "13px" }}
-                                                            type="text"
-                                                            value ={RejectedDescription} 
-                                                            readOnly
-                                                            />
-                                                        </label>
-                                                    </div> 
-                                                </div>
-                                        </fieldset>
-                                        </Form.Group>
+                                                    <div className="row">
+                                                        <div className="col-md-5">
+                                                            <label className="col-sm-6 col-form-label">Rejected Description :</label>
+                                                            <label className="col-sm-6">
+                                                            <Form.Control
+                                                                style={{ fontSize: "13px" }}
+                                                                type="text"
+                                                                value ={RejectedDescription} 
+                                                                readOnly
+                                                                />
+                                                            </label>
+                                                        </div> 
+                                                    </div>
+                                            </fieldset>
+                                            </Form.Group>
+                                        </div>
                                     </div>
-                                </div>
 
-                            </Tab>
+                                </Tab> */}
 
 
                             {/* ************************************* List 1 ********************************* */}
@@ -3067,22 +3457,17 @@ const WorkRequestForm = (props) => {
                     <nav aria-label="breadcrumb">
                         <ol className="breadcrumb">
                         <div className="template-demo">
-                            <button
-                            type="button"
-                            className="btn btn-success btn-icon-text"
-                            onClick={onClickChange}
-                            >
-                            <i className="mdi mdi-file-check btn-icon-prepend"></i>{" "}
-                            {Button_save}
-                            </button>
 
-                            <button
-                            type="button"
-                            className="btn btn-danger btn-icon-text"
-                            >
+                        {ApprovalStatus === 'W' || !ApprovalStatus ? (
+                        <button type="button" className="btn btn-success btn-icon-text" onClick={onClickChange}>
+                            <i className="mdi mdi-file-check btn-icon-prepend" ></i>  {Button_save}
+                        </button>
+                        ) : null}
+
+                        <button type="button" className="btn btn-danger btn-icon-text" onClick={onClickCancel}>
                             <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i>{" "}
                             Cancel
-                            </button>
+                        </button>
                         </div>
                         </ol>
                     </nav>
