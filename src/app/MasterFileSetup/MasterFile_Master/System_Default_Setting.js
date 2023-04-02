@@ -6,6 +6,7 @@ import Select from 'react-select';
 import APIServices from "../../services/APIServices";
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import  {useLocation}  from 'react-router-dom';
+import moment from 'moment';
 
 
 const System_Default_Setting = (props) => {
@@ -162,9 +163,6 @@ const System_Default_Setting = (props) => {
     const [CheckBox_AutoClosePO, setCheckBox_AutoClosePO] = useState('0');
 
 
-
-
-
     const get_systemdefaultsetting_status = (site_ID, type) => {
 
 
@@ -272,7 +270,6 @@ const System_Default_Setting = (props) => {
                     setDefaultPOCurrencyCode(DefaultPOCurrencyCode);
 
 
-
                     get_systemdefaultsetting_select(site_ID);                 
                     Swal.close();
                 
@@ -296,9 +293,6 @@ const System_Default_Setting = (props) => {
             })
           });
     }
-
-
-
 
 
     const get_systemdefaultsetting_select = (site_ID) => {
@@ -355,7 +349,32 @@ const System_Default_Setting = (props) => {
                 setShowDashboard( responseJson.data.data[index].dft_mst_show_dashboard )
                 setAssetSelectionByLocation( responseJson.data.data[index].dft_mst_asset_selection )
                 setMaterialReserved( responseJson.data.data[index].dft_mst_itm_resv )
+                setPrintTransactionDocument( responseJson.data.data[index].dft_mst_print_trx )
+
+                setMREmailNotification( responseJson.data.data[index].dft_mst_mtr_email )
+                setMRApprovalRequired( responseJson.data.data[index].dft_mst_mr_approval )
+                setDefaultMRReleaseForApproval( responseJson.data.data[index].dft_mst_mr_release_for_app )
+                setMRApprovalClosedLoop( responseJson.data.data[index].dft_mst_mtr_closed_loop )
+                setEmailMRApprover( responseJson.data.data[index].dft_mst_mtr_email_approver )
+                setAutoMRApprovalEmail( responseJson.data.data[index].dft_mst_mtr_approval_auto_send )
+                setEmailRequestedByMRApproved( responseJson.data.data[index].dft_mst_mtr_email_requestor )
                 
+                setWREmailNotification( responseJson.data.data[index].dft_mst_wkr_email )
+                setDefaultWOCCtoPlanning( responseJson.data.data[index].dft_mst_wo_default_cc )
+                setAutoWOPlanfromWR( responseJson.data.data[index].dft_mst_wr_auto_plan_wo )
+                setGenerateWOInvoice( responseJson.data.data[index].dft_mst_gen_inv )
+                setTemporaryAssetFlag( responseJson.data.data[index].dft_mst_temp_ast )
+                setPMClosedLoop( responseJson.data.data[index].dft_mst_pm_closed_loop )
+                setPMScheduleDate( responseJson.data.data[index].dft_mst_pm_schedule_date )
+
+                setDefaultPRReleaseforApproval( responseJson.data.data[index].dft_mst_pr_release_for_app )
+                setPRApprovalClosedLoop( responseJson.data.data[index].dft_mst_pur_closed_loop )
+                setEmailPRApprover( responseJson.data.data[index].dft_mst_pur_email_approver )
+                setAutoPRApprovalEmail( responseJson.data.data[index].dft_mst_pur_approval_auto_send )
+                setEmailRequestedByPRApproved( responseJson.data.data[index].dft_mst_pur_email_requestor )
+                setOrderPointAutoGeneratePR( responseJson.data.data[index].dft_mst_order_point_pr )
+                setAutoGeneratePO( responseJson.data.data[index].dft_mst_generate_po )
+                setAutoClosePO( responseJson.data.data[index].dft_mst_po_auto_close )
 
               }
 
@@ -403,6 +422,370 @@ const System_Default_Setting = (props) => {
 
         }
     }
+
+    
+
+    const Update_SystemDefaultSetting = () => {
+
+        //Swal.fire({  title: 'Loading.... !',allowOutsideClick: false})
+        //Swal.showLoading();
+    
+    
+        let get_date = moment().utcOffset('+08:00').format('yyyy-MM-DD HH:mm:ss');
+    
+        let site_ID = localStorage.getItem("site_ID");
+        let emp_mst_login_id = localStorage.getItem("emp_mst_login_id");
+        let emp_mst_empl_id = localStorage.getItem("emp_mst_empl_id");
+        
+        let RowID = localStorage.getItem("RowID");
+        console.log('get RowID here...',location.state.RowID);
+    
+
+    
+            //Select Default Labor Account
+            let DefaultLaborAccount, setDefaultLaborAccount;
+            if(selected_DefaultLaborAccount == '' || selected_DefaultLaborAccount == null){
+    
+                setDefaultLaborAccount =''
+            }else{
+    
+                DefaultLaborAccount = selected_DefaultLaborAccount.label.split(":")
+                setDefaultLaborAccount = DefaultLaborAccount[0];
+                console.log("DefaultLaborAccount ", DefaultLaborAccount[0])
+            }
+
+            //Select Default MR Status
+            let DefaultMRStatus, setDefaultMRStatus;
+            if(selected_DefaultMRStatus == '' || selected_DefaultMRStatus == null){
+    
+                setDefaultMRStatus =''
+            }else{
+    
+                DefaultMRStatus = selected_DefaultMRStatus.label.split(":")
+                setDefaultMRStatus = DefaultMRStatus[0];
+                console.log("DefaultMRStatus ", DefaultMRStatus[0])
+            }
+
+            //Select Default Material Account
+            let DefaultMaterialAccount, setDefaultMaterialAccount;
+            if(selected_DefaultMaterialAccount == '' || selected_DefaultMaterialAccount == null){
+    
+                setDefaultMaterialAccount =''
+            }else{
+    
+                DefaultMaterialAccount = selected_DefaultMaterialAccount.label.split(":")
+                setDefaultMaterialAccount = DefaultMaterialAccount[0];
+                console.log("DefaultMaterialAccount ", DefaultMaterialAccount[0])
+            }
+
+            //Select Default PR Status
+            let DefaultPRStatus, setDefaultPRStatus;
+            if(selected_DefaultPRStatus == '' || selected_DefaultPRStatus == null){
+    
+                setDefaultPRStatus =''
+            }else{
+    
+                DefaultPRStatus = selected_DefaultPRStatus.label.split(":")
+                setDefaultPRStatus = DefaultPRStatus[0];
+                console.log("DefaultPRStatus ", DefaultPRStatus[0])
+            }
+
+            //Select Default Contract Account
+            let DefaultContractAccount, setDefaultContractAccount;
+            if(selected_DefaultContractAccount == '' || selected_DefaultContractAccount == null){
+    
+                setDefaultContractAccount =''
+            }else{
+    
+                DefaultContractAccount = selected_DefaultContractAccount.label.split(":")
+                setDefaultContractAccount = DefaultContractAccount[0];
+                console.log("DefaultContractAccount ", DefaultContractAccount[0])
+            }
+
+            //Select Default PO Status
+            let DefaultPOStatus, setDefaultPOStatus;
+            if(selected_DefaultPOStatus == '' || selected_DefaultPOStatus == null){
+    
+                setDefaultPOStatus =''
+            }else{
+    
+                DefaultPOStatus = selected_DefaultPOStatus.label.split(":")
+                setDefaultPOStatus = DefaultPOStatus[0];
+                console.log("DefaultPOStatus ", DefaultPOStatus[0])
+            }
+
+            //Select Default WR Work Priority
+            let DefaultWRWorkPriority, setDefaultWRWorkPriority;
+            if(selected_DefaultWRWorkPriority == '' || selected_DefaultWRWorkPriority == null){
+    
+                setDefaultWRWorkPriority =''
+            }else{
+    
+                DefaultWRWorkPriority = selected_DefaultWRWorkPriority.label.split(":")
+                setDefaultWRWorkPriority = DefaultWRWorkPriority[0];
+                console.log("DefaultWRWorkPriority ", DefaultWRWorkPriority[0])
+            }
+
+            //Select Default WR Asset No
+            let DefaultWRAssetNo, setDefaultWRAssetNo;
+            if(selected_DefaultWRAssetNo == '' || selected_DefaultWRAssetNo == null){
+    
+                setDefaultWRAssetNo =''
+            }else{
+    
+                DefaultWRAssetNo = selected_DefaultWRAssetNo.label.split(":")
+                setDefaultWRAssetNo = DefaultWRAssetNo[0];
+                console.log("DefaultWRAssetNo ", DefaultWRAssetNo[0])
+            }
+
+            //Select Default WO Work Priority
+            let DefaultWOWorkPriority, setDefaultWOWorkPriority;
+            if(selected_DefaultWOWorkPriority == '' || selected_DefaultWOWorkPriority == null){
+    
+                setDefaultWOWorkPriority =''
+            }else{
+    
+                DefaultWOWorkPriority = selected_DefaultWOWorkPriority.label.split(":")
+                setDefaultWOWorkPriority = DefaultWOWorkPriority[0];
+                console.log("DefaultWOWorkPriority ", DefaultWOWorkPriority[0])
+            }
+
+            //Select Default WR Originator
+            let DefaultWROriginator, setDefaultWROriginator;
+            if(selected_DefaultWROriginator == '' || selected_DefaultWROriginator == null){
+    
+                setDefaultWROriginator =''
+            }else{
+    
+                DefaultWROriginator = selected_DefaultWROriginator.label.split(":")
+                setDefaultWROriginator = DefaultWROriginator[0];
+                console.log("DefaultWROriginator ", DefaultWROriginator[0])
+            }
+
+            //Select Default PM Work Priority
+            let DefaultPMWorkPriority, setDefaultPMWorkPriority;
+            if(selected_DefaultPMWorkPriority == '' || selected_DefaultPMWorkPriority == null){
+    
+                setDefaultPMWorkPriority =''
+            }else{
+    
+                DefaultPMWorkPriority = selected_DefaultPMWorkPriority.label.split(":")
+                setDefaultPMWorkPriority = DefaultPMWorkPriority[0];
+                console.log("DefaultPMWorkPriority ", DefaultPMWorkPriority[0])
+            }
+
+            //Select Default WO Asset No
+            let DefaultWOAssetNo, setDefaultWOAssetNo;
+            if(selected_DefaultWOAssetNo == '' || selected_DefaultWOAssetNo == null){
+    
+                setDefaultWOAssetNo =''
+            }else{
+    
+                DefaultWOAssetNo = selected_DefaultWOAssetNo.label.split(":")
+                setDefaultWOAssetNo = DefaultWOAssetNo[0];
+                console.log("DefaultWOAssetNo ", DefaultWOAssetNo[0])
+            }
+
+            //Select Default Asset Status
+            let DefaultAssetStatus, setDefaultAssetStatus;
+            if(selected_DefaultAssetStatus == '' || selected_DefaultAssetStatus == null){
+    
+                setDefaultAssetStatus =''
+            }else{
+    
+                DefaultAssetStatus = selected_DefaultAssetStatus.label.split(":")
+                setDefaultAssetStatus = DefaultAssetStatus[0];
+                console.log("DefaultAssetStatus ", DefaultAssetStatus[0])
+            }
+
+            //Select Default PR Approval Type
+            let DefaultPRApprovalType, setDefaultPRApprovalType;
+            if(selected_DefaultPRApprovalType == '' || selected_DefaultPRApprovalType == null){
+    
+                setDefaultPRApprovalType =''
+            }else{
+    
+                DefaultPRApprovalType = selected_DefaultPRApprovalType.label.split(":")
+                setDefaultPRApprovalType = DefaultPRApprovalType[0];
+                console.log("DefaultPRApprovalType ", DefaultPRApprovalType[0])
+            }
+
+            //Select Default WO Work Status
+            let DefaultWOWorkStatus, setDefaultWOWorkStatus;
+            if(selected_DefaultWOWorkStatus == '' || selected_DefaultWOWorkStatus == null){
+    
+                setDefaultWOWorkStatus =''
+            }else{
+    
+                DefaultWOWorkStatus = selected_DefaultWOWorkStatus.label.split(":")
+                setDefaultWOWorkStatus = DefaultWOWorkStatus[0];
+                console.log("DefaultWOWorkStatus ", DefaultWOWorkStatus[0])
+            }
+
+            //Select Default MR Approval Type
+            let DefaultMRApprovalType, setDefaultMRApprovalType;
+            if(selected_DefaultMRApprovalType == '' || selected_DefaultMRApprovalType == null){
+    
+            setDefaultMRApprovalType =''
+            }else{
+    
+            DefaultMRApprovalType = selected_DefaultMRApprovalType.label.split(":")
+                setDefaultMRApprovalType = DefaultMRApprovalType[0];
+                console.log("DefaultMRApprovalType ", DefaultMRApprovalType[0])
+            }
+
+            //Select Time Card Entry By
+            let TimeCardEntryBy, setTimeCardEntryBy;
+            if(selected_TimeCardEntryBy == '' || selected_TimeCardEntryBy == null){
+    
+                setTimeCardEntryBy =''
+            }else{
+    
+                TimeCardEntryBy = selected_TimeCardEntryBy.label.split(":")
+                setTimeCardEntryBy = TimeCardEntryBy[0];
+                console.log("TimeCardEntryBy ", TimeCardEntryBy[0])
+            }
+
+            //Select Default PO Currency Code
+            let DefaultPOCurrencyCode, setDefaultPOCurrencyCode;
+            if(selected_DefaultPOCurrencyCode == '' || selected_DefaultPOCurrencyCode == null){
+    
+            setDefaultPOCurrencyCode =''
+            }else{
+    
+            DefaultPOCurrencyCode = selected_DefaultPOCurrencyCode.label.split(":")
+                setDefaultPOCurrencyCode = DefaultPOCurrencyCode[0];
+                console.log("DefaultPOCurrencyCode ", DefaultPOCurrencyCode[0])
+            }
+
+            //Select WO Grace Period
+            console.log("WOGracePeriod ", WOGracePeriod)
+      
+            //Select Dashboard Refresh Interval
+            console.log("DashboardRefreshInterval ", DashboardRefreshInterval)
+      
+            //Select EOQ Carry Cost Rate
+            console.log("EOQCarryCostRate ", EOQCarryCostRate)
+
+            //Select PM Lead Day
+            console.log("PMLeadDay ", PMLeadDay)
+
+            //Select EOQ PO Process Cost
+            console.log("EOQPOProcessCost ", EOQPOProcessCost)
+       
+
+
+    
+    
+        var json_workrequest ={
+    
+    
+            "site_cd": site_ID,
+          
+            "dft_mst_lab_act":setDefaultLaborAccount.trim(),
+            "dft_mst_mtr_sts":setDefaultMRStatus.trim(),
+            "dft_mst_mat_act":setDefaultMaterialAccount.trim(),
+            "dft_mst_pur_sts":setDefaultPRStatus.trim(),
+            "dft_mst_con_act":setDefaultContractAccount.trim(),
+
+            "dft_mst_puo_sts":setDefaultPOStatus.trim(),
+            "dft_mst_wkr_pri":setDefaultWRWorkPriority.trim(),
+            "dft_mst_wkr_asset_no":setDefaultWRAssetNo.trim(),
+            "dft_mst_wko_pri":setDefaultWOWorkPriority.trim(),
+            "dft_mst_wkr_originator":setDefaultWROriginator.trim(),
+
+            "dft_mst_prm_pri":setDefaultPMWorkPriority.trim(),
+            "dft_mst_wko_asset_no":setDefaultWOAssetNo.trim(),
+            "dft_mst_ast_sts":setDefaultAssetStatus.trim(),
+            "dft_mst_pur_approval":setDefaultPRApprovalType.trim(),
+            "dft_mst_wko_sts":setDefaultWOWorkStatus.trim(),
+
+            "dft_mst_mtr_approval_type":setDefaultMRApprovalType.trim(),
+            "dft_mst_time_card_by":setTimeCardEntryBy.trim(),
+            "dft_mst_po_curr_code":setDefaultPOCurrencyCode.trim(),
+
+            "dft_mst_grace_period": WOGracePeriod.trim(),
+            "dft_mst_dsh_refresh": DashboardRefreshInterval.trim(),
+            "dft_mst_eoq_carry_cost_rate": EOQCarryCostRate.trim(),
+            "dft_mst_prm_led": PMLeadDay.trim(),
+            "dft_mst_eoq_po_process_cost": EOQPOProcessCost.trim(),
+
+            // "dft_mst_show_dashboard":setShowDashboard.trim(),
+            // "dft_mst_asset_selection":setAssetSelectionByLocation.trim(),
+            // "dft_mst_itm_resv":setMaterialReserved.trim(),
+            // "dft_mst_print_trx":setPrintTransactionDocument.trim(),
+
+            // "dft_mst_mtr_email":setMREmailNotification.trim(),
+            // "dft_mst_mr_approval":setMRApprovalRequired.trim(),
+            // "dft_mst_mr_release_for_app":setDefaultMRReleaseForApproval.trim(),
+            // "dft_mst_mtr_closed_loop":setMRApprovalClosedLoop.trim(),
+            // "dft_mst_mtr_email_approver":setEmailMRApprover.trim(),
+            // "dft_mst_mtr_approval_auto_send":setAutoMRApprovalEmail.trim(),
+            // "dft_mst_mtr_email_requestor":setEmailRequestedByMRApproved.trim(),
+
+            // "dft_mst_wkr_email":setWREmailNotification.trim(),
+            // "dft_mst_wo_default_cc":setDefaultWOCCtoPlanning.trim(),
+            // "dft_mst_wr_auto_plan_wo":setAutoWOPlanfromWR.trim(),
+            // "dft_mst_gen_inv":setGenerateWOInvoice.trim(),
+            // "dft_mst_temp_ast":setTemporaryAssetFlag.trim(),
+            // "dft_mst_pm_closed_loop":setPMClosedLoop.trim(),
+            // "dft_mst_pm_schedule_date":setPMScheduleDate.trim(),
+
+            // "dft_mst_pr_release_for_app":setDefaultPRReleaseforApproval.trim(),
+            // "dft_mst_pur_closed_loop":setPRApprovalClosedLoop.trim(),
+            // "dft_mst_pur_email_approver":setEmailPRApprover.trim(),
+            // "dft_mst_pur_approval_auto_send":setAutoPRApprovalEmail.trim(),
+            // "dft_mst_pur_email_requestor":setEmailRequestedByPRApproved.trim(),
+            // "dft_mst_order_point_pr":setOrderPointAutoGeneratePR.trim(),
+            // "dft_mst_generate_po":setAutoGeneratePO.trim(),
+            // "dft_mst_po_auto_close":setAutoClosePO.trim(),
+
+
+    
+            "audit_user":emp_mst_login_id.trim(),
+            "wkr_mst_create_by":emp_mst_login_id.trim(),
+            "ast_aud_originator":emp_mst_empl_id.trim(),
+            "wkr_mst_create_date":get_date,
+            
+    
+            "RowID":location.state.RowID,
+    
+            
+        }
+    
+        console.log("Update : "+JSON.stringify(json_workrequest))
+    
+        APIServices.update_systemdefaultsetting(JSON.stringify(json_workrequest)).then((responseJson)=>{
+            if (responseJson.data.status === 'SUCCESS') { 
+                Swal.close();
+    
+                Swal.fire({
+                    icon: 'success',
+                    title: responseJson.data.status,
+                    text: responseJson.data.message,
+                    
+                  })
+    
+            }else{
+                Swal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: responseJson.data,
+                    
+                  })
+    
+            }
+        }).catch((e) => {
+            Swal.close();
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops get_systemdefaultsetting_select...',
+              text: e,          
+            })
+          });
+    
+      }
 
 
 
@@ -718,7 +1101,6 @@ const System_Default_Setting = (props) => {
         }
     }
 
-                        
                             
 
 
@@ -755,7 +1137,7 @@ const System_Default_Setting = (props) => {
                         <Tabs defaultActiveKey="Default" id="uncontrolled-tab-example" className="mb-4">
 
 
-                            {/* ************************************* Details **************************************** */}
+                            {/* ************************************* Default **************************************** */}
                             
                             <Tab eventKey="Default" title="Default" class="nav-link active">
                             
@@ -796,7 +1178,7 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_DefaultMaterialAccount">
                                         <label className="col-sm-4 col-form-label">
@@ -833,7 +1215,7 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_DefaultContractAccount">
                                         <label className="col-sm-4 col-form-label">
@@ -870,7 +1252,7 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_DefaultWRWorkPriority">
                                         <label className="col-sm-4 col-form-label">
@@ -907,7 +1289,7 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_DefaultWOWorkPriority">
                                         <label className="col-sm-4 col-form-label">
@@ -944,7 +1326,7 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_DefaultPMWorkPriority">
                                         <label className="col-sm-4 col-form-label">
@@ -981,7 +1363,7 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_DefaultAssetStatus">
                                         <label className="col-sm-4 col-form-label">
@@ -1017,7 +1399,7 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_DefaultWOWorkStatus">
                                         <label className="col-sm-4 col-form-label">
@@ -1053,7 +1435,7 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_TimeCardEntryBy">
                                         <label className="col-sm-4 col-form-label">
@@ -1072,7 +1454,7 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_DefaultPOCurrencyCode">
                                         <label className="col-sm-4 col-form-label">
@@ -1096,21 +1478,21 @@ const System_Default_Setting = (props) => {
                                             WO Grace Period:
                                         </label>
                                         <div className="col-sm-6">
-                                        <Form.Control type="number" placeholder="0" value={WOGracePeriod} onChange={(e) => setWOGracePeriod(e.target.value)}/>
+                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0" value={WOGracePeriod} onChange={(e) => setWOGracePeriod(e.target.value)}/>
                                         </div>
                                         </Form.Group>
                                     </div>
 
                                 </div>
 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_DashboardRefreshInterval">
                                         <label className="col-sm-4 col-form-label">
                                             Dashboard Refresh Interval (Minutes):
                                         </label>
                                         <div className="col-sm-6">
-                                        <Form.Control type="number" placeholder="0" value={DashboardRefreshInterval} onChange={(e) => setDashboardRefreshInterval(e.target.value)}/>
+                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0" value={DashboardRefreshInterval} onChange={(e) => setDashboardRefreshInterval(e.target.value)}/>
                                         </div>
                                         </Form.Group>
                                     </div>
@@ -1121,21 +1503,21 @@ const System_Default_Setting = (props) => {
                                             EOQ Carry Cost Rate(%):
                                         </label>
                                         <div className="col-sm-6">
-                                        <Form.Control type="number" placeholder="0.00" value={EOQCarryCostRate} onChange={(e) => setEOQCarryCostRate(e.target.value)}/>
+                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.00" value={EOQCarryCostRate} onChange={(e) => setEOQCarryCostRate(e.target.value)}/>
                                         </div>
                                         </Form.Group>
                                     </div>
 
                                 </div>
                                 
-                                <div className="row">
+                                <div className="row" style={{ marginTop: "-20px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_PMLeadDay">
                                         <label className="col-sm-4 col-form-label">
                                             PM Lead Day:
                                         </label>
                                         <div className="col-sm-6">
-                                        <Form.Control type="number" placeholder="0" value={PMLeadDay} onChange={(e) => setPMLeadDay(e.target.value)}/>
+                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0" value={PMLeadDay} onChange={(e) => setPMLeadDay(e.target.value)}/>
                                         </div>
                                         </Form.Group>
                                     </div>
@@ -1146,7 +1528,7 @@ const System_Default_Setting = (props) => {
                                             EOQ PO Process Cost:
                                         </label>
                                         <div className="col-sm-6">
-                                        <Form.Control type="number" placeholder="0.00" value={EOQPOProcessCost} onChange={(e) => setEOQPOProcessCost(e.target.value)}/>
+                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.00" value={EOQPOProcessCost} onChange={(e) => setEOQPOProcessCost(e.target.value)}/>
                                         </div>
                                         </Form.Group>
                                     </div>
@@ -1155,7 +1537,7 @@ const System_Default_Setting = (props) => {
 
                             </Tab>
 
-                            {/* ************************************* UDF ******************************************* */}
+                            {/* ************************************* Settings ******************************************* */}
 
                             <Tab eventKey="Settings" title="Settings" class="nav-link active">
 
