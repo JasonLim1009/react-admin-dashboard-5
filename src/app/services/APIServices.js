@@ -2117,8 +2117,8 @@ const get_workordermaster_misc = (site_cd) => {
 };
 
 //WorkOrder Master Status Audit
-const get_workordermaster_statusaudit = (site_cd) => {
-  return http.get(`/get_workordermaster_statusaudit.php?site_cd=${site_cd}`);
+const get_workordermaster_statusaudit = (site_cd, wko_sts_wo_no, RowID) => {
+  return http.get(`/get_workordermaster_statusaudit.php?site_cd=${site_cd}&wko_sts_wo_no=${wko_sts_wo_no}&RowID=${RowID}`);
 };
 
 
