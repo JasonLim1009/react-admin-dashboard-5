@@ -6,6 +6,7 @@ import { Trans } from 'react-i18next';
 //import image
 import evantage from '../../assets/images/Full-Logo-Evantage.png';
 import collapseLogo from '../../assets/images/logo.png';
+import NewEvantage from '../../assets/images/NewLogoEvantageFull.png';
 
 //import icon
 import IconAsset from '../../assets/images/IconAsset.png';
@@ -93,7 +94,7 @@ class Sidebar extends Component {
     return (
       <nav className="sidebar sidebar-offcanvas" id="sidebar">
         <div className="text-center sidebar-underline sidebar-brand-wrapper d-flex align-items-center"> {/**** <img src={collapseLogo} ****/}
-          <a className="sidebar-brand brand-logo-mini d-block" style={{cursor : "alias"}}> <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS47U75WAYlZpId0o8qgK_Y7XD6eKtV6_vQNw&usqp=CAU" className="rounded-full w-100 h-10"/></a>
+          <a className="sidebar-brand brand-logo-mini d-block" style={{cursor : "alias"}}> <img src={NewEvantage} className="rounded-full" style={{ width: "120px", height: "auto" }}/></a>
         </div>
         
         <ul className="nav">  
@@ -231,10 +232,6 @@ class Sidebar extends Component {
               onMouseOut={(event) => {event.target.style.color = '#C0C0C0';}}
               ><Trans>Work Request</Trans></Link></li>
               
-              </ul>
-            </Collapse>
-            <Collapse in={ this.state.MaintenanceOpen }>
-              <ul className="nav flex-column sub-menu">
               <li className="nav-item"> <Link className={ this.isPathActive('/Work_Order') ? 'nav-link active' : 'nav-link' } to={{pathname:"/Work_Order",state:{data:"Work Order"}}}
               onMouseOver={(event) => {event.target.style.color = '#FFF';}}
               onMouseOut={(event) => {event.target.style.color = '#C0C0C0';}}
