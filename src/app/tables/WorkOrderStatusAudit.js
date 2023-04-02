@@ -1,212 +1,181 @@
 import React, { useState, useEffect } from "react";
-import {
-  useTable,
-  useSortBy,
-  usePagination,
-  useRowSelect,
-  useResizeColumns,
-} from "react-table";
 import Swal from "sweetalert2";
-import { useHistory } from "react-router-dom";
 import APIServices from "../services/APIServices";
+import Moment from 'moment';
+import styled from 'styled-components';
 
 
-const WorkOrderStatusAudit = () => {
- 
+const StepContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 70px;
+  position: relative;
+  :before {
+    content: '';
+    position: absolute;
+    background: #4694d1;
+    height: 90%;
+    width: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 14px;
+  }
+  :after {
+    content: '';
+    position: absolute;
+    background: #f3e7f3;
+    height: ${({ width }) => width};
+    width: 2px;
+    top: 45%;
+    transition: 0.4s ease;
+    transform: translateY(-50%);
+    left: 14px;
+  }
+`
 
-  const [Columns, setColumns] = useState([]);
-  const [Data, setData] = useState([]);
-
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+const WorkOrderStatusAudit = (props) => {
 
 
+  const [steps, setsteps] = useState([]);
+  
+  const [handlesresult, sethandlesresult] = useState([]);
 
-  const get_workordermaster_statusaudit = (site_ID) => {
-    APIServices.get_workordermaster_statusaudit(site_ID)
-        .then((responseJson) => {
-        console.log("Login JSON DATA : ", responseJson);
+  const [WorkOrderNo, setWorkOrderNo] = useState("");
 
-        if (responseJson.data.status === "SUCCESS") {
+  const [Status, setStatus] = useState([]);
 
-            setColumns(responseJson.data.data.header);
-            setData(responseJson.data.data.result);
-        
-        } else {
-            Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: responseJson.data.message,
-            });
-        }
-        })
-        .catch((e) => {
-        console.log(e);
+  const [StartDate, setStartDate] = useState(Moment().utcOffset('+08:00').format('YYYY-MM-DDTHH:mm:ss'));
+
+  const [EndDate, setEndDate] = useState(Moment().utcOffset('+08:00').format('YYYY-MM-DDTHH:mm:ss'));
+
+
+
+  const getsteps = (site_ID, RowID, wko_sts_wo_no) => {
+
+   
+    Swal.fire({ title: 'Please Wait !', allowOutsideClick: false });
+    Swal.showLoading();
+
+    APIServices.get_workordermaster_statusaudit(site_ID, wko_sts_wo_no, RowID).then((responseJson) => {
+      console.log('get_workordermaster_statusaudit', responseJson.data.data)
+
+      if (responseJson.data.status === 'SUCCESS') {
+
+
+        console.log('get_workordermaster_statusaudit', responseJson.data.data)
+
+        // var stepsvalue =[];
+
+        // for (var index in responseJson.data.data.WorkorderStatus) { 
+
+        //   stepsvalue.push(responseJson.data.data.WorkorderStatus.item[index])
+
+        // }
+
+
+        let Status = responseJson.data.data.map((item, index) => ({
+          label: item.wko_sts_status,
+          label1: item.wko_sts_status,
+          label2: item.wko_sts_originator,
+          label3: item.wko_sts_originator,
+          label4: `${new Date(item.wko_sts_start_date.date).toLocaleString("default", {
+            weekday: "short",
+            day: "numeric",
+            month: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+          })}`,
+          label5: item.wko_sts_duration,
+          step: index + 1
+        // step: item.length+1
+        // {console.log(item.length)}
+        // step: +1
+        }));
+        setsteps(Status);
+
+   
+        Swal.close();
+
+      } else {
+        Swal.close();
         Swal.fire({
-            icon: "error",
-            title: "Oops get_sitecode...",
-            text: e,
-        });
-        });
-    };
+          icon: 'error',
+          title: 'Oops...',
+          text: responseJson.data.message,
 
+        })
+      }
+
+    }).catch((e) => {
+      Swal.close();
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops get_sitecode...',
+        text: e,
+      })
+    });
+  }
+
+ // console.log(JSON.stringify(Status));
 
 
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
-    get_workordermaster_statusaudit(site_ID);
+    //get_workordermaster_statusaudit(site_ID);
+    console.log('select WKO_RowID',props.data.RowID);
+    console.log('select WKO_Workorderno', props.data.Workorderno);
+
+    getsteps(site_ID, props.data.RowID, props.data.Workorderno);
+    console.log('getsteps here: ', getsteps(site_ID, props.data.RowID, props.data.Workorderno));
   }, []);
 
 
 
-    const IndeterminateCheckbox = React.forwardRef(
-    ({ indeterminate, ...rest }, ref) => {
-        const defaultRef = React.useRef()
-        const resolvedRef = ref || defaultRef
-    
-        React.useEffect(() => {
-        resolvedRef.current.indeterminate = indeterminate
-        }, [resolvedRef, indeterminate])
-    
-        return (
-        <>
-            <input type="checkbox" ref={resolvedRef} {...rest} />
-        </>
-        )
-    }
-    )
-   
-
-    
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-        
-        selectedFlatRows,
-        resetResizing,        
-        state: { selectedRowIds },
-        
-    } = useTable({ columns: Columns, data: Data },useSortBy, useRowSelect, useResizeColumns,
-
-        hooks => {
-            hooks.visibleColumns.push(columns => [
-              // Let's make a column for selection
-              {
-                id: 'selection',
-                // The header can use the table's getToggleAllRowsSelectedProps method
-                // to render a checkbox
-                Header: ({ getToggleAllRowsSelectedProps }) => (
-                  <div>
-                    <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-                  </div>
-                ),
-                // The cell can use the individual row's getToggleRowSelectedProps method
-                // to the render a checkbox
-                Cell: ({ row }) => (
-
-                  <div>                      
-                    <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-                  </div>
-
-                ),
-                
-              },
-              ...columns,
-            ])
-          }
-        )
-
-
-        const handleRowClick = (data) => {
-     
-            console.log(data.col56)
-        };
 
 
   return (
     <div>
-        <div className="page-header">
-            <div className="template-demo" >
-                <button type="button" className="btn btn-outline-primary btn-icon-text"  onClick>
-                    <i className="mdi mdi-file-check btn-icon-prepend"></i> New  
-                </button>
-            
-                <button type="button" className="btn btn-outline-danger btn-icon-text"  >
-                    <i className="mdi mdi-delete-forever btn-icon-prepend"></i> Delete 
-                </button>
-            </div>                     
-        </div> 
+      <div className="table-responsive">
+          <table className="table table-hover table-bordered ">
+              
+                <div class="p-4 text-center text-lg rounded-top">
+                {/************* * {props.data.Workorderno} * ************/}
+                  <h3 className="page-title">Work Order Status Audit</h3>
+                </div>
+                  <div style={{ width: "100%", maxWidth: "600px", padding: "0 160px", marginTop: "-60px", marginLeft: "-20px"  }}>
 
-        <div className="table-responsive">
-            <table className="table table-hover table-bordered " {...getTableProps() } on >
-                <thead>
-                    {headerGroups.map(headerGroup => (
-                        <tr {...headerGroup.getHeaderGroupProps()} className="tr">
-                        
-                            {headerGroup.headers.map(column => (                                    
-                                <th
-                                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                                    
-                                    style={{
-                                        borderBottom: 'solid 3px red',
-                                        color: 'black',
-                                    }}
+                    <StepContainer>
+                      {steps.map(({ step, label, label1, label2, label3, label4, label5 }) => (
+                        <div key={step} style={{ position: "relative", zIndex: 1 }}>
+                          <div style={{ fontSize: "11px", color: "grey", position: 'absolute', left: '-100px', top: '45px', width: '100px', height: '20px', borderRadius: '5%', backgroundColor: '#f3f3f3' }}>{label5}</div>
+                            <div step={step} style={{ width: '30px', height: '30px', borderRadius: '50%', backgroundColor: '#4694d1', border: `3px solid ${step === 'completed' ? '#0080FF' : '#F3E7F3'}`, transition: '0.4s ease', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <div style={{ fontSize: "15px", color: "#f3e7f3" }}>{step}</div>
+                            </div>
 
-                                    {...column.getResizerProps()}
-                                        className={`resizer ${
-                                            column.isResizing ? 'isResizing' : ''
-                                        }`}
-                                >                            
-                                    {column.render('Header')}
+                            <div style={{ position: 'relative', bottom: '30px', textAlign: 'left', left: '50px' }}>
+                              <div key={step} style={{ fontSize: "15px", color: "#4a154b" }}>{label}({label1})</div>
+                            </div>
 
-                                    <span>
-                                        {column.isSorted
-                                            ? column.isSortedDesc
-                                                ? '🔽'
-                                                : '🔼'
-                                            : ''}
-                                    </span>
-                                </th>
-                            ))}
-                        </tr>
-                    ))}
-                        
-                </thead>
-                <tbody {...getTableBodyProps() } >
-                    {rows.map(row => {
-                    prepareRow(row)
-                    return (
-                        <tr {...row.getRowProps()} onClick={() => handleRowClick(row.original)}>
-                        {row.cells.map(cell => {
-                            return (
-                            <>
-                            {/* Here added onClick function to get cell value */}
-                            <td
-                            // onClick={()=> getCellValue(cell)}
-                            //     {...cell.getCellProps()}
-                            //     style={{
-                            //     padding: '10px',
-                            //     border: 'solid 1px gray',
-                            //     background: 'papayawhip',
-                            //     }}
-                            >
-                                {cell.render('Cell')}
-                            </td>
-                            </>
-                            )
-                        })}
-                        </tr>
-                    )
-                    })}                                
-                </tbody>
-            </table>
-        </div>
+                            <div style={{ position: 'relative', bottom: '30px', textAlign: 'left', left: '50px' }}>
+                              <div key={step} style={{ fontSize: "11px", color: "grey" }}>Status Update By: {label2} ({label3})</div>
+                            </div>
+
+                            <div style={{ position: 'relative', bottom: '30px', textAlign: 'left', left: '50px' }}>
+                              <div key={step} style={{ fontSize: "11px", color: "grey" }}>On Start Date: {label4}</div>
+                            </div>
+                            
+                        </div>
+                      ))}
+                    </StepContainer>
+
+                  </div>
+          </table>
+      </div>
     </div>
-  );
-};
+  )
+}
 
 export default WorkOrderStatusAudit;
