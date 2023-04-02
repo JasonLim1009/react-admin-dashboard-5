@@ -1100,7 +1100,7 @@ const AssetFrom = (props) => {
             "ast_det_numeric29":UDFNumber_29,
             "ast_det_numeric30":UDFNumber_30,
             
-            "ast_det_datetime1":UDFDate_1,
+            "ast_det_datetime1":date_1,
             "ast_det_datetime2":"",
             "ast_det_datetime3":"",
             "ast_det_datetime4":"",
