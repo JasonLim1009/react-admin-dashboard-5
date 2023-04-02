@@ -178,6 +178,7 @@ $sql_ast_det = "UPDATE	ast_det
 		SET		ast_det_modelno = '".$ast_det_modelno."',
 				ast_det_mfg_cd = '".$ast_det_mfg_cd."',
 				ast_det_repl_cost = '".$ast_det_repl_cost."',
+				ast_det_warranty_date = '".$ast_det_warranty_date."',
 				ast_det_varchar1 = '".$ast_det_varchar1."',
 				ast_det_varchar2 = '".$ast_det_varchar2."',
 				ast_det_varchar3 = '".$ast_det_varchar3."',

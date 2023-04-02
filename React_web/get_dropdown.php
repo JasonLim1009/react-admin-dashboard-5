@@ -1433,53 +1433,6 @@ switch ($type) {
 				 }
 			} while ( sqlsrv_next_result($stmt_emp_mst) );
 			
-			//WKO AssignTO----JASON
-			$sql= "	SELECT  	emp_mst.emp_mst_empl_id,		
-								emp_mst.emp_mst_name,		
-								emp_det.emp_det_work_grp,		
-								emp_det.emp_det_ira_idno,  			
-						TotalWO = ( 	SELECT 		COUNT(wko_mst_wo_no)  								
-					FROM		wko_mst (NOLOCK),		
-								wko_det (NOLOCK),		
-								wrk_sts (NOLOCK)  								
-					WHERE		wko_mst.site_cd = wko_det.site_cd  								
-					AND			wko_mst.RowID = wko_det.mst_RowID  								
-					AND			wko_mst.site_cd = wrk_sts.site_cd  								
-					AND			wko_mst.wko_mst_status = wrk_sts.wrk_sts_status  								
-					AND			wrk_sts.wrk_sts_typ_cd 
-					NOT IN ('CANCEL', 'FORCE-CLOSE', 'CLOSE')  								
-					AND			wko_det.wko_det_assign_to = emp_mst.emp_mst_empl_id )    
-					FROM 	emp_mst (NOLOCK),  			
-							emp_det (NOLOCK),  			
-							emp_sts (NOLOCK)  
-					WHERE (	emp_mst.site_cd = emp_det.site_cd 
-					AND		emp_mst.RowID = emp_det.mst_RowID  
-					AND		emp_mst.site_cd = emp_sts.site_cd  
-					AND		emp_mst.emp_mst_status = emp_sts.emp_sts_status  
-					AND		emp_sts.emp_sts_typ_cd = 'ACTIVE'  
-					AND		emp_det.emp_det_foreman = '1') 
-					AND		emp_mst.site_cd = '".$site_cd."' 
-					AND		emp_det_foreman = '1' 
-					AND ( emp_det.emp_det_work_grp = 'MAINTENANCE' OR emp_det.emp_det_ira_idno = 'MAINTENANCE') ";
-					
-			$stmt_emp_mst = sqlsrv_query( $conn, $sql);
-
-			if( !$stmt_emp_mst ) {
-				 $error_message = "Error selecting table (wko_assignto_emp_mst)";
-				 returnError($error_message);
-				 die( print_r( sqlsrv_errors(), true));
-				 
-			}
-
-			$wko_assignto_emp_mst = array();
-
-			do {
-				 while ($row = sqlsrv_fetch_array($stmt_emp_mst, SQLSRV_FETCH_ASSOC)) {		
-					$wko_assignto_emp_mst[] = $row;	
-				
-				 }
-			} while ( sqlsrv_next_result($stmt_emp_mst) );
-			
 			//WKO Labor Account----JASON
 			$sql= "	SELECT  	cf_account.account,		
 								cf_account.descs
@@ -1978,7 +1931,6 @@ switch ($type) {
 				 $json_All['WKO_Work_Group'] = $wko_wrk_grp;
 				 $json_All['WKO_Planner'] = $wko_planner_emp_mst;
 				 $json_All['WKO_Approver'] = $wko_approver_emp_mst;
-				 $json_All['WKO_AssignTO'] = $wko_assignto_emp_mst;
 				 $json_All['WKO_Labor_Account'] = $cf_account;
 				 
 				 $json_All['ITM_Commodity_Code'] = $com_mst;
@@ -4041,69 +3993,6 @@ switch ($type) {
 			 sqlsrv_close( $conn);	
 			 
 			 $json_All['WKO_Approver'] = $wko_approver_emp_mst;
-			 returnData($json_All);	
-			 
-		} else {
-			
-			 sqlsrv_rollback( $conn );
-			 $error_message = "Transaction rolled back.<br />";
-			 returnError($error_message);
-		}
-				
-	break;
-	
-	//WKO AssignTO----JASON
-		$sql= "	SELECT  	emp_mst.emp_mst_empl_id,		
-							emp_mst.emp_mst_name,		
-							emp_det.emp_det_work_grp,		
-							emp_det.emp_det_ira_idno,  			
-					TotalWO = ( 	SELECT 		COUNT(wko_mst_wo_no)  								
-				FROM		wko_mst (NOLOCK),		
-							wko_det (NOLOCK),		
-							wrk_sts (NOLOCK)  								
-				WHERE		wko_mst.site_cd = wko_det.site_cd  								
-				AND			wko_mst.RowID = wko_det.mst_RowID  								
-				AND			wko_mst.site_cd = wrk_sts.site_cd  								
-				AND			wko_mst.wko_mst_status = wrk_sts.wrk_sts_status  								
-				AND			wrk_sts.wrk_sts_typ_cd 
-				NOT IN ('CANCEL', 'FORCE-CLOSE', 'CLOSE')  								
-				AND			wko_det.wko_det_assign_to = emp_mst.emp_mst_empl_id )    
-				FROM 	emp_mst (NOLOCK),  			
-						emp_det (NOLOCK),  			
-						emp_sts (NOLOCK)  
-				WHERE (	emp_mst.site_cd = emp_det.site_cd 
-				AND		emp_mst.RowID = emp_det.mst_RowID  
-				AND		emp_mst.site_cd = emp_sts.site_cd  
-				AND		emp_mst.emp_mst_status = emp_sts.emp_sts_status  
-				AND		emp_sts.emp_sts_typ_cd = 'ACTIVE'  
-				AND		emp_det.emp_det_foreman = '1') 
-				AND		emp_mst.site_cd = '".$site_cd."' 
-				AND		emp_det_foreman = '1' 
-				AND ( emp_det.emp_det_work_grp = 'MAINTENANCE' OR emp_det.emp_det_ira_idno = 'MAINTENANCE')  "; 
-				
-		$stmt_emp_mst = sqlsrv_query( $conn, $sql);
-
-		if( !$stmt_emp_mst ) {
-			 $error_message = "Error selecting table (wko_assignto_emp_mst)";
-			 returnError($error_message);
-			 die( print_r( sqlsrv_errors(), true));
-			 
-		}
-
-		$wko_assignto_emp_mst = array();
-
-		do {
-			 while ($row = sqlsrv_fetch_array($stmt_emp_mst, SQLSRV_FETCH_ASSOC)) {		
-				$wko_assignto_emp_mst[] = $row;	
-			
-			 }
-		} while ( sqlsrv_next_result($stmt_emp_mst) );
-			
-		if($stmt_emp_mst) {
-			 sqlsrv_commit( $conn );
-			 sqlsrv_close( $conn);	
-			 
-			 $json_All['WKO_AssignTO'] = $wko_assignto_emp_mst;
 			 returnData($json_All);	
 			 
 		} else {

@@ -10,104 +10,68 @@ header(
 );
 
 require_once('config.php');
+/* Begin the transaction. */
+if ( sqlsrv_begin_transaction( $conn ) === false ) {
+     die( print_r( sqlsrv_errors(), true ));
+}
+
 $error_message;
 $valid = true;
 
 
-$key[0] = "wko_ls5_assetno";
-$key[1] = "wko_ls5_desc";
-//$key[2] = "wko_ls5_date";
-$key[2] = "wko_ls5_uom";
-$key[3] = "wko_ls5_qty";
-$key[4] = "wko_ls5_item_cost";
-$key[5] = "wko_ls5_est_amt";
-$key[6] = "wko_ls5_costcenter";
-$key[7] = "wko_ls5_account";
-
-
-
 $site_cd = $_REQUEST['site_cd'];
+$wko_sts_wo_no = $_REQUEST['wko_sts_wo_no'];
+
+$RowID = $_REQUEST['RowID'];
 
 
+$sql= "	SELECT 	wko_sts_status,	
+				wko_sts_originator,
+				wko_sts_duration,
+				wko_sts_start_date,		
+				wko_sts_end_date
+		FROM 	wko_sts (NOLOCK)
+		WHERE 	site_cd = '".$site_cd."' 
+		AND		wko_sts_wo_no = '".$wko_sts_wo_no."'
+		AND 	wko_sts.mst_RowID = '".$RowID."'";
 
+	$stmt_wko_sts = sqlsrv_query( $conn, $sql);
 
-$sql= "	SELECT * 
-		FROM wko_ls5 (NOLOCK)
-		WHERE wko_ls5.site_cd = '".$site_cd."'ORDER BY wko_ls5_assetno";
-
-	$stmt_wko_ls5 = sqlsrv_query( $conn, $sql);
-
-	if( !$stmt_wko_ls5 ) {
-		 $error_message = "Error selecting table (asset_type Drop Down)";
+	if( !$stmt_wko_sts ) {
+		 $error_message = "Error selecting table (wko_sts123)";
 		 returnError($error_message);
 		 die( print_r( sqlsrv_errors(), true));
 		 
 	}
 
-	 $row_end = [];
-     $header_end = [];
+	 $json =array();
+     
 
 	do {
-		 while ($row = sqlsrv_fetch_array($stmt_wko_ls5, SQLSRV_FETCH_ASSOC)) {	
+		 while ($row = sqlsrv_fetch_array($stmt_wko_sts, SQLSRV_FETCH_ASSOC)) {	
 		 
-			    $row_result["col1"] = $row[$key[0]];
-			    $row_result["col2"] = $row[$key[1]];
-				$row_result["col3"] = $row[$key[2]];
-				$row_result["col4"] = $row[$key[3]];
-				$row_result["col5"] = $row[$key[4]];
-				$row_result["col6"] = $row[$key[5]];
-				$row_result["col7"] = $row[$key[6]];		
-				$row_result["col8"] = $row["RowID"];
-				
-				
-				array_push($row_end, $row_result);
-				 $result = [];
+			   $json[]=$row;
 		
 		 }
-	} while ( sqlsrv_next_result($stmt_wko_ls5) );
-	
-	 $final_result["result"] = $row_end;
-	 
-	 for ($x = 0; $x < count($key); $x++) {
-        $sql =
-            "select customize_header  from cf_label (NOLOCK) where column_name ='" .
-            $key[$x] .
-            "' and language_cd ='DEFAULT'";
-
-        $stmt = sqlsrv_query($conn, $sql);
-
-        if (!$stmt) {
-            $error_message = "Error selecting table (dft_mst)";
-            returnError($error_message);
-            die(print_r(sqlsrv_errors(), true));
-        }
-
-        do {
-            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-                $header_result["Header"] = $row["customize_header"];
-                $header_result["accessor"] = "col" . ($x + 1);
-
-                array_push($header_end, $header_result);
-            }
-        } while (sqlsrv_next_result($stmt));
-
-        $final_headername["header"] = $header_end;
-    }
+	} while ( sqlsrv_next_result($stmt_wko_sts) );
 	
 	
-returnData($final_headername, $final_result);
+	
+returnData($json);
 
-sqlsrv_free_stmt($stmt_wko_ls5);
+sqlsrv_free_stmt($stmt_wko_sts);
 sqlsrv_close($conn);
 
-function returnData($final_headername, $final_result)
+
+
+
+function returnData($json)
 {
     $returnData = [
         "status" => "SUCCESS",
         "message" => "Successfully",
+		"data"=>$json
     ];
-
-    $returnData["data"] = array_merge($final_headername, $final_result);
 
     echo json_encode($returnData);
 }

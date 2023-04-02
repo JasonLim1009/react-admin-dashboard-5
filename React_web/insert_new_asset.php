@@ -134,6 +134,8 @@ $ast_det_numeric28 = $data['ast_det_numeric28'];
 $ast_det_numeric29 = $data['ast_det_numeric29'];
 $ast_det_numeric30 = $data['ast_det_numeric30'];
 
+$ast_det_datetime1 = $data['ast_det_datetime1'];
+
 
 
 $asset_type_ID = $data['asset_type_ID'];
