@@ -419,7 +419,7 @@ const System_Default_Setting = (props) => {
                         
         if(Button_save ==  "Save"){
             console.log("Create button clicked!");
-
+            Update_SystemDefaultSetting();
         }
     }
 
@@ -674,9 +674,6 @@ const System_Default_Setting = (props) => {
             console.log("EOQPOProcessCost ", EOQPOProcessCost)
        
 
-
-    
-    
         var json_workrequest ={
     
     
