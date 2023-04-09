@@ -107,6 +107,40 @@ wko_det_datetime3,
 wko_det_datetime4,
 wko_det_datetime5,
 
+wko_ls2_assetno,
+wko_ls2_stockno,
+wko_ls2_stk_locn,
+wko_ls2_desc,
+wko_ls2_chg_costcenter,
+wko_ls2_chg_account,
+wko_ls2_qty_needed,
+wko_ls2_mtl_uom,
+wko_ls2_item_cost,
+wko_ls2_mr_no,
+wko_ls2_mr_lineno,
+mtr_mst_status,
+mtr_ls1_rcv_qty,
+wko_ls2_po_no,
+wko_ls2_po_lineno,
+
+wko_ls3_assetno,
+wko_ls3_rec_supplier,
+
+wko_ls3_descr,
+wko_ls3_tax_cd,
+wko_ls3_mtl_uom,
+wko_ls3_qty_needed,
+wko_ls3_item_cost,
+wko_ls3_chg_costcenter,
+wko_ls3_chg_account,
+wko_ls3_pr_no,
+wko_ls3_pr_lineno,
+pur_mst_purq_approve,
+pur_ls1_po_no,
+pur_ls1_po_lineno,
+wko_ls3_po_no,
+wko_ls3_po_lineno,
+
 wko_mst_create_by,
 wko_mst_create_date
 
@@ -183,6 +217,30 @@ wko_mst_create_date
 							JOIN			wko_isp (NOLOCK)
 							ON				wko_mst.site_cd = wko_isp.site_cd
 							AND				wko_mst.RowID = wko_isp.mst_RowID
+							
+							LEFT 
+							OUTER 
+							JOIN			mtr_mst (NOLOCK)
+							ON				wko_mst.site_cd = mtr_mst.site_cd
+							AND				wko_mst.wko_mst_wo_no = mtr_mst.mtr_mst_wo_no
+
+							LEFT 
+							OUTER 
+							JOIN			mtr_ls1 (NOLOCK)
+							ON				wko_mst.site_cd = mtr_ls1.site_cd
+							AND				wko_mst.wko_mst_chg_costcenter = mtr_ls1.mtr_ls1_chg_costcenter
+
+							LEFT 
+							OUTER 
+							JOIN			pur_mst (NOLOCK)
+							ON				wko_mst.site_cd = pur_mst.site_cd
+							AND				wko_mst.wko_mst_chg_costcenter = pur_mst.pur_mst_chg_costcenter
+
+							LEFT 
+							OUTER 
+							JOIN			pur_ls1 (NOLOCK)
+							ON				wko_mst.site_cd = pur_ls1.site_cd
+							AND				wko_mst.wko_mst_wo_no = pur_ls1.pur_ls1_wo_no
 							
 							
 			WHERE  			wko_mst.RowID = '".$RowID."'";

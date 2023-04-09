@@ -33,7 +33,7 @@ $RowID = $data['RowID'];
 $dis_Dec = $data['wkr_det_reject_desc'];
 $LOGINID = $data['LOGINID'];
 
-
+//step-01
 $sql = " update wkr_mst 
 			SET wkr_mst_wr_status ='D' ,
 				audit_user =?, 
@@ -59,7 +59,7 @@ do {
 sqlsrv_free_stmt($stmt_wkr_mst);
 
 
-
+//step-02
 $sql = " update wkr_det 
 		SET 	wkr_det_reject_by =? ,
 				wkr_det_reject_date = getDate() , 

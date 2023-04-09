@@ -9,112 +9,123 @@ header(
     "Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
 );
 
-require_once('config.php');
+require_once ('config.php');
+require_once ('functions.php');
+
 $error_message;
 $valid = true;
+
+
+$site_cd = $_REQUEST['site_cd'];
+$RowID = $_REQUEST['RowID'];
 
 
 $key[0] = "wko_ls8_assetno";
 $key[1] = "wko_ls8_empl_id";
 
 $key[2] = "wko_ls8_craft";
-//$key[3] = "wko_ls8_datetime1";
-$key[3] = "wko_ls8_hours_type";
-$key[4] = "wko_ls8_hrs";
-$key[5] = "wko_ls8_rate";
-$key[6] = "wko_ls8_multiplier";
-$key[7] = "wko_ls8_adder";
-$key[8] = "wko_ls8_act_cost";
-$key[9] = "wko_ls8_chg_costcenter";
-$key[10] = "wko_ls8_chg_account";
-$key[11] = "wko_ls8_crd_costcenter";
-$key[12] = "wko_ls8_crd_account";
-$key[13] = "wko_ls8_time_card_no";
-
-
-
-$site_cd = $_REQUEST['site_cd'];
+$key[3] = "wko_ls8_datetime1";
+$key[4] = "wko_ls8_hours_type";
+$key[5] = "wko_ls8_hrs";
+$key[6] = "wko_ls8_rate";
+$key[7] = "wko_ls8_multiplier";
+$key[8] = "wko_ls8_adder";
+$key[9] = "wko_ls8_act_cost";
+$key[10] = "wko_ls8_chg_costcenter";
+$key[11] = "wko_ls8_chg_account";
+$key[12] = "wko_ls8_crd_costcenter";
+$key[13] = "wko_ls8_crd_account";
+$key[14] = "wko_ls8_time_card_no";
 
 
 
 
-$sql= "	SELECT * 
-		FROM wko_ls8 (NOLOCK)
-		WHERE wko_ls8.site_cd = '".$site_cd."'ORDER BY wko_ls8_assetno";
+$sql= "	SELECT 
+				wko_ls8.site_cd,   
+				wko_ls8.mst_RowID,
+				wko_ls8_assetno,
+				wko_ls8_empl_id,
+				
+				wko_ls8_craft,
+				wko_ls8_datetime1,
+				wko_ls8_hours_type,
+				wko_ls8_hrs,
+				wko_ls8_rate,
+				wko_ls8_multiplier,
+				wko_ls8_adder,
+				wko_ls8_act_cost,
+				wko_ls8_chg_costcenter,
+				wko_ls8_chg_account,
+				wko_ls8_crd_costcenter,
+				wko_ls8_crd_account,
+				wko_ls8_time_card_no
+				
+		FROM wko_ls8
+		
+		
+		WHERE 	wko_ls8.site_cd = '".$site_cd."'
+		AND 	wko_ls8.mst_RowID = '".$RowID."'";
 
 	$stmt_wko_ls8 = sqlsrv_query( $conn, $sql);
 
 	if( !$stmt_wko_ls8 ) {
-		 $error_message = "Error selecting table (asset_type Drop Down)";
+		 $error_message = "Error selecting table (wko_ls8)";
 		 returnError($error_message);
-		 die( print_r( sqlsrv_errors(), true));
-		 
+		 die( print_r( sqlsrv_errors(), true));		 
 	}
 
-	 $row_end = [];
-     $header_end = [];
+    $row_end = [];
+    $header_end = [];
+	$header_result=[];
 
 	do {
-		 while ($row = sqlsrv_fetch_array($stmt_wko_ls8, SQLSRV_FETCH_ASSOC)) {	
-		 
-			    $row_result["col1"] = $row[$key[0]];
-			    $row_result["col2"] = $row[$key[1]];
-				$row_result["col3"] = $row[$key[2]];
-				$row_result["col4"] = $row[$key[3]];
-				$row_result["col5"] = $row[$key[4]];
-				$row_result["col6"] = $row[$key[5]];
-				$row_result["col7"] = $row[$key[6]];
-				$row_result["col8"] = $row[$key[7]];
-				$row_result["col9"] = $row[$key[8]];
-				$row_result["col0"] = $row[$key[9]];
-				$row_result["col11"] = $row[$key[10]];
-				$row_result["col12"] = $row[$key[11]];
-				$row_result["col13"] = $row[$key[12]];
-				
-				$row_result["col14"] = $row["RowID"];
-				
-				
-				array_push($row_end, $row_result);
-				 $result = [];
+        while ($row = sqlsrv_fetch_array($stmt_wko_ls8, SQLSRV_FETCH_ASSOC)) {
+			
 		
-		 }
-	} while ( sqlsrv_next_result($stmt_wko_ls8) );
-	
-	 $final_result["result"] = $row_end;
+		$JSON =json_encode($row);
+
+		//echo($JSON);
+
+			  $row_end[] = $row;
+			
+        }
+    } while (sqlsrv_next_result($stmt_wko_ls8));
+
+    $final_result["result"] = $row_end;
 	 
-	 for ($x = 0; $x < count($key); $x++) {
+    for ($x = 0; $x < count($key); $x++) {
         $sql =
-            "select customize_header  from cf_label (NOLOCK) where column_name ='" .
-            $key[$x] .
-            "' and language_cd ='DEFAULT'";
+            "select customize_label  from cf_label (NOLOCK) where column_name ='" .$key[$x] . "' and language_cd ='DEFAULT'";
 
-        $stmt = sqlsrv_query($conn, $sql);
+        $stmt_wko_ls8 = sqlsrv_query($conn, $sql);
 
-        if (!$stmt) {
+        if (!$stmt_wko_ls8) {
             $error_message = "Error selecting table (dft_mst)";
             returnError($error_message);
             die(print_r(sqlsrv_errors(), true));
         }
 
         do {
-            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-                $header_result["Header"] = $row["customize_header"];
-                $header_result["accessor"] = "col" . ($x + 1);
+            while ($row = sqlsrv_fetch_array($stmt_wko_ls8, SQLSRV_FETCH_ASSOC)) {
+                $header_result[ $row["customize_label"]] = $row["customize_label"];
+			   //$header_result[  $key[$x]] = $row["customize_header"];
+               // $header_result["accessor"] = "col" . ($x + 1);
+			   
 
-                array_push($header_end, $header_result);
+                //array_push($header_end, $header_result);
             }
-        } while (sqlsrv_next_result($stmt));
+        } while (sqlsrv_next_result($stmt_wko_ls8));
 
-        $final_headername["header"] = $header_end;
+        $final_headername["header"] = $header_result;
     }
 	
 	
-returnData($final_headername, $final_result);
+returnData($final_headername, $final_result,$key);
 
 sqlsrv_free_stmt($stmt_wko_ls8);
 sqlsrv_close($conn);
 
-function returnData($final_headername, $final_result)
+function returnData($final_headername, $final_result,$key)
 {
     $returnData = [
         "status" => "SUCCESS",

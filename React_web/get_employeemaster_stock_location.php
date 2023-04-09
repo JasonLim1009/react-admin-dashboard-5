@@ -20,46 +20,28 @@ $site_cd = $_REQUEST['site_cd'];
 $RowID = $_REQUEST['RowID'];
 
 
-
-$key[0] = "wko_ls5_assetno";
-$key[1] = "wko_ls5_desc";
-$key[2] = "wko_ls5_date";
-$key[3] = "wko_ls5_uom";
-$key[4] = "wko_ls5_qty";
-$key[5] = "wko_ls5_item_cost";
-$key[6] = "wko_ls5_est_amt";
-$key[7] = "wko_ls5_costcenter";
-$key[8] = "wko_ls5_account";
-
-
-
+$key[0] = "usg_itm_location";
+$key[1] = "usg_itm_list";
+$key[1] = "usg_itm_change";
 
 
 
 $sql= "	SELECT 
-				wko_ls5.site_cd,   
-				wko_ls5.mst_RowID,
-				wko_ls5_assetno,
-				wko_ls5_desc,
-				wko_ls5_date,
-				wko_ls5_uom,
-				wko_ls5_qty,
-				wko_ls5_item_cost,
-				wko_ls5_est_amt,
-				wko_ls5_costcenter,
-				wko_ls5_account
+				usg_itm_location,
+				usg_itm_list,
+				usg_itm_change
+		
 				
-		FROM	wko_ls5  
+		FROM 	usg_itm (NOLOCK)
 		
 		
-		WHERE 		wko_ls5.site_cd = '".$site_cd."'
-		AND 		wko_ls5.mst_RowID = '".$RowID."'";
-		
-	$stmt_wko_ls5 = sqlsrv_query( $conn, $sql);
+		WHERE 	usg_itm.site_cd = '".$site_cd."'
+		AND 	usg_itm.RowID = '".$RowID."'";
 
+	$stmt_usg_itm = sqlsrv_query( $conn, $sql);
 
-	if( !$stmt_wko_ls5 ) {
-		 $error_message = "Error selecting table (wko_ls5)";
+	if( !$stmt_usg_itm ) {
+		 $error_message = "Error selecting table (usg_itm)";
 		 returnError($error_message);
 		 die( print_r( sqlsrv_errors(), true));		 
 	}
@@ -69,7 +51,7 @@ $sql= "	SELECT
 	$header_result=[];
 
 	do {
-        while ($row = sqlsrv_fetch_array($stmt_wko_ls5, SQLSRV_FETCH_ASSOC)) {
+        while ($row = sqlsrv_fetch_array($stmt_usg_itm, SQLSRV_FETCH_ASSOC)) {
 			
 		
 		$JSON =json_encode($row);
@@ -79,7 +61,7 @@ $sql= "	SELECT
 			  $row_end[] = $row;
 			
         }
-    } while (sqlsrv_next_result($stmt_wko_ls5));
+    } while (sqlsrv_next_result($stmt_usg_itm));
 
     $final_result["result"] = $row_end;
 	 
@@ -87,16 +69,16 @@ $sql= "	SELECT
         $sql =
             "select customize_label  from cf_label (NOLOCK) where column_name ='" .$key[$x] . "' and language_cd ='DEFAULT'";
 
-        $stmt_wko_ls5 = sqlsrv_query($conn, $sql);
+        $stmt_usg_itm = sqlsrv_query($conn, $sql);
 
-        if (!$stmt_wko_ls5) {
+        if (!$stmt_usg_itm) {
             $error_message = "Error selecting table (dft_mst)";
             returnError($error_message);
             die(print_r(sqlsrv_errors(), true));
         }
 
         do {
-            while ($row = sqlsrv_fetch_array($stmt_wko_ls5, SQLSRV_FETCH_ASSOC)) {
+            while ($row = sqlsrv_fetch_array($stmt_usg_itm, SQLSRV_FETCH_ASSOC)) {
                 $header_result[ $row["customize_label"]] = $row["customize_label"];
 			   //$header_result[  $key[$x]] = $row["customize_header"];
                // $header_result["accessor"] = "col" . ($x + 1);
@@ -104,7 +86,7 @@ $sql= "	SELECT
 
                 //array_push($header_end, $header_result);
             }
-        } while (sqlsrv_next_result($stmt_wko_ls5));
+        } while (sqlsrv_next_result($stmt_usg_itm));
 
         $final_headername["header"] = $header_result;
     }
@@ -112,7 +94,7 @@ $sql= "	SELECT
 	
 returnData($final_headername, $final_result,$key);
 
-sqlsrv_free_stmt($stmt_wko_ls5);
+sqlsrv_free_stmt($stmt_usg_itm);
 sqlsrv_close($conn);
 
 function returnData($final_headername, $final_result,$key)
