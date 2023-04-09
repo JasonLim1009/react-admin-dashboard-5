@@ -182,14 +182,7 @@ const InventoryFrom = (props) => {
 
     const [Last, setLast] = useState("0.0000");
 
-    const [PrimaryLocation, setPrimaryLocation] = useState(false);
-    const [CheckBox_PrimaryLocation, setCheckBox_PrimaryLocation] = useState('0');
-
-    const [IncreaseTotalOH, setIncreaseTotalOH] = useState(false);
-    const [CheckBox_IncreaseTotalOH, setCheckBox_IncreaseTotalOH] = useState('0');
-
-    const [UpdateStockCosting, setUpdateStockCosting] = useState(false);
-    const [CheckBox_UpdateStockCosting, setCheckBox_UpdateStockCosting] = useState('0');
+    
 
     const [AutoNumring, setAutoNumring] = useState("");
 
@@ -199,9 +192,6 @@ const InventoryFrom = (props) => {
     const [Data, setData] = useState([]);
 
 
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
 
 
 
@@ -475,11 +465,6 @@ const InventoryFrom = (props) => {
                 setAverage( responseJson.data.data[index].itm_det_avg_cost )
                 setStandard( responseJson.data.data[index].itm_det_std_cost )
                 setLast( responseJson.data.data[index].itm_det_last_cost )
-
-                setPrimaryLocation( responseJson.data.data[index].itm_loc_prim_locn_flg )
-                
-                setIncreaseTotalOH( responseJson.data.data[index].itm_loc_inc_ttloh )
-                setUpdateStockCosting( responseJson.data.data[index].itm_loc_stock_cost_flag )
 
 
               }
@@ -1009,12 +994,6 @@ const InventoryFrom = (props) => {
         "itm_det_avg_cost":Average.trim(),
         "itm_det_last_cost":Last.trim(),
 
-        "itm_loc_prim_locn_flg":CheckBox_PrimaryLocation,
-        "itm_loc_stk_loc":setMaster_Location.trim(),
-        "itm_loc_inc_ttloh":CheckBox_IncreaseTotalOH,
-        "itm_loc_stock_cost_flag":CheckBox_UpdateStockCosting,
-
-
         "asset_type_ID":AutoNumring.trim(),
 
         "audit_user":emp_mst_login_id.trim(),
@@ -1417,11 +1396,6 @@ const InventoryFrom = (props) => {
         "itm_det_avg_cost":Average.trim(),
         "itm_det_last_cost":Last.trim(),
 
-        "itm_loc_prim_locn_flg":CheckBox_PrimaryLocation,
-        "itm_loc_stk_loc":setMaster_Location.trim(),
-        "itm_loc_inc_ttloh":CheckBox_IncreaseTotalOH,
-        "itm_loc_stock_cost_flag":CheckBox_UpdateStockCosting,
-
 
         "asset_type_ID":AutoNumring.trim(),
 
@@ -1523,11 +1497,6 @@ const InventoryFrom = (props) => {
         setSelected_AccountType(0);
         setSelected_TaxCode(0);
 
-        setPrimaryLocation('');
-
-        setIncreaseTotalOH('');
-        setUpdateStockCosting('');
-
         setButton_save('Save');
     }
 
@@ -1568,41 +1537,7 @@ const InventoryFrom = (props) => {
     }
     }
 
-    const handleOnChangePrimaryLocation = () => {
-    setPrimaryLocation(!PrimaryLocation);
-    
-    if(!PrimaryLocation){
-        console.log('1')
-        setCheckBox_PrimaryLocation('1')
-    }else{
-        console.log('0')
-        setCheckBox_PrimaryLocation('0')
-    }
-    }
 
-    const handleOnChangeIncreaseTotalOH = () => {
-    setIncreaseTotalOH(!IncreaseTotalOH);
-    
-    if(!IncreaseTotalOH){
-        console.log('1')
-        setCheckBox_IncreaseTotalOH('1')
-    }else{
-        console.log('0')
-        setCheckBox_IncreaseTotalOH('0')
-    }
-    }
-
-    const handleOnChangeUpdateStockCosting = () => {
-    setUpdateStockCosting(!UpdateStockCosting);
-    
-    if(!UpdateStockCosting){
-        console.log('1')
-        setCheckBox_UpdateStockCosting('1')
-    }else{
-        console.log('0')
-        setCheckBox_UpdateStockCosting('0')
-    }
-    }
 
 
     const handleRadioChange = (e) => {
@@ -1708,7 +1643,6 @@ const InventoryFrom = (props) => {
       
       
   return (   
-
         <div>
             <div className="page-header" style={{ marginTop: "-10px", marginBottom:"10px" }}>
             <h3 className="page-title">Inventory Master</h3>   
@@ -1729,1556 +1663,1462 @@ const InventoryFrom = (props) => {
                 
             </nav>       
         
-        </div> 
+            </div> 
 
-    <div className="col-12 grid-margin">
-        <div className="card" style={{marginLeft: "-15px", marginRight: "-15px"}}>
-            <div className="card-body"> 
-                <form className="form-sample" validated={validated}>  
-
-
-                    {/******************** Inventory Location ********************/}
-                    <div>
-                        <Modal show={show} onHide={handleClose} centered >
-
-                            <Modal.Header closeButton>
-                                <Modal.Title>Location</Modal.Title>
-                            </Modal.Header>
-
-                            <Modal.Body>
-                                <div className="col-md-12">
-                                    <Form.Group className="row" controlId="validation_PrimaryLocation">
-                                        <label className="col-sm-5 col-form-label">Primary Location:</label>
-                                        <div className="col-sm-6 form-check">
-                                        <label className="form-check-label">
-                                            <input type="checkbox" 
-                                            className="form-check-input"
-                                            checked={PrimaryLocation}
-                                            onChange={handleOnChangePrimaryLocation}
-                                            />
-                                            <i className="input-helper"></i>
-                                        </label>
-                                        </div>
-                                    </Form.Group>
-
-                                    <Form.Group className="row" controlId="validation_StockLocation">
-                                        <label className="col-sm-5 col-form-label">Stock Location:</label>
-                                        <div className="col-sm-6 form-check">
-                                            <Select  
-                                                    isClearable={true}  
-                                                    options={Master_Location}
-                                                    value={selected_Master_Location}
-                                                    onChange={setSelected_Master_Location} // using id as it is unique
-                                                    required
-                                                />
-                                        </div>
-                                    </Form.Group>
-
-                                    <Form.Group className="row" controlId="validation_IncreaseTotalOH">
-                                        <label className="col-sm-5 col-form-label">Increase Total OH:</label>
-                                        <div className="col-sm-6 form-check">
-                                        <label className="form-check-label">
-                                            <input type="checkbox" 
-                                            className="form-check-input"
-                                            checked={IncreaseTotalOH}
-                                            onChange={handleOnChangeIncreaseTotalOH}
-                                            />
-                                            <i className="input-helper"></i>
-                                        </label>
-                                        </div>
-                                    </Form.Group>
-
-                                    <Form.Group className="row" controlId="validation_UpdateStockCosting">
-                                        <label className="col-sm-5 col-form-label">Update Stock Costing:</label>
-                                        <div className="col-sm-6 form-check">
-                                        <label className="form-check-label">
-                                            <input type="checkbox" 
-                                            className="form-check-input"
-                                            checked={UpdateStockCosting}
-                                            onChange={handleOnChangeUpdateStockCosting}
-                                            />
-                                            <i className="input-helper"></i>
-                                        </label>
-                                        </div>
-                                    </Form.Group>
-                                </div>
-                                    
-                            </Modal.Body>
-                            <Modal.Footer>
-
-                                <Button variant="secondary" onClick={handleClose}>Close</Button>
-                                <Button variant="primary" onClick={() => {
-                                    // Close modal
-                                    handleClose();
-                                }}>
-                                Submit
-                                </Button>
-                            </Modal.Footer>
-                        </Modal>
-
-                    </div> 
-
-
-
-                <div className="row">
-
-                    <div className="col-md-10">
-
-                        <div className="row">
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Type">
-                                    <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Type:</label>
-                                    <div className="col-sm-8">
-                                    <Select  
-                                        isClearable={true}  
-                                        value={selected_Type}
-                                        onChange={setSelected_Type}
-                                        options={Type}
-                                        styles={{ 
-                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                          }}
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </div>
-
-                            <div className="col-md-6">                                
-                                <Form.Group className="row" controlId="validation_Commodity_Code">
-                                    <Form.Label className="col-sm-4 col-form-label">Commodity Code:</Form.Label>
-                                    <div className="col-sm-8">
-                                        <Select  
-                                            isClearable={true}  
-                                            options={Commodity_Code}
-                                            value={selected_Commodity_Code}
-                                            onChange={setSelected_Commodity_Code} // using id as it is unique
-                                            required
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                              }}
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </div>
-                        </div>
-
-                        <div className="row" style={{ marginTop: "-20px" }}>
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_StockNo">
-                                    <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Stock No:</label>
-                                    <div className="col-sm-8">
-                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={StockNo} onChange={(e) => setStockNo(e.target.value)}  disabled={StockNo_disabled}/>
-                                    </div>
-                                </Form.Group>
-                            </div>
-                            
-                            <div className="col-md-6">                                
-                                <Form.Group className="row" controlId="validation_Stock_Group">
-                                    <Form.Label className="col-sm-4 col-form-label">Stock Group:</Form.Label>
-                                    <div className="col-sm-8">
-                                        <Select  
-                                            isClearable={true}  
-                                            options={Stock_Group}
-                                            value={selected_Stock_Group}
-                                            onChange={setSelected_Stock_Group} // using id as it is unique
-                                            required
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                              }}
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </div>
-                        </div>
-
-                        <div className="row" style={{ marginTop: "-20px" }}>
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Master_Location">
-                                    <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Master Location:</label>
-                                    <div className="col-sm-8">
-                                    <Select  
-                                        isClearable={true}  
-                                        options={Master_Location}
-                                        value={selected_Master_Location}
-                                        onChange={setSelected_Master_Location} // using id as it is unique
-                                        required
-                                        styles={{ 
-                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                            }}
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </div>
-
-                            <div className="col-md-6">                                
-                                <Form.Group className="row" controlId="validation_Part_No">
-                                    <Form.Label className="col-sm-4 col-form-label">Part No:</Form.Label>
-                                    <div className="col-sm-8">
-                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Part_No} onChange={(e) => setPart_No(e.target.value)}/>
-                                    </div>
-                                </Form.Group>
-                            </div>
-                        </div>
-
-                        <div className="row" style={{ marginTop: "-20px" }}>
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Order_Rule">
-                                    <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Order Rule:</label>
-                                    <div className="col-sm-8">
-                                    <Select  
-                                        isClearable={true}  
-                                        options={Order_Rule}
-                                        value={selected_Order_Rule}
-                                        onChange={setSelected_Order_Rule} // using id as it is unique
-                                        required
-                                        styles={{ 
-                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                            }}
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </div>
-
-                            <div className="col-md-6">                                
-                                <Form.Group className="row" controlId="validation_TotalOH">
-                                    <label className="col-sm-4 col-form-label">Total OH:</label>
-                                    <div className="col-sm-8">
-                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={TotalOH} onChange={(e) => setTotalOH(e.target.value)} readOnly/>
-                                    </div>
-                                </Form.Group>
-                            </div>
-                        </div>
-
-                        <div className="row" style={{ marginTop: "-20px" }}>
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Cost_Center">
-                                    <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Cost Center:</label>
-                                    <div className="col-sm-8">
-                                    <Select  
-                                        isClearable={true}  
-                                        options={Cost_Center}
-                                        value={selected_Cost_Center}
-                                        onChange={setSelected_Cost_Center} // using id as it is unique
-                                        required
-                                        styles={{ 
-                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                            }}
-                                        />
-                                        </div>
-                                </Form.Group>
-                            </div>
-
-                            <div className="col-md-6">                                
-                                <Form.Group className="row" controlId="validation_IssuePrice">
-                                    <label className="col-sm-4 col-form-label">Issue Price:</label>
-                                    <div className="col-sm-8">
-                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.00" value={IssuePrice} onChange={(e) => setIssuePrice(e.target.value)} readOnly/>
-                                    </div>
-                                </Form.Group>
-                            </div>
-                        </div>
-
-                        <div className="row" style={{ marginTop: "-20px" }}>
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Account">
-                                    <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Account:</label>
-                                    <div className="col-sm-8">
-                                    <Select  
-                                        isClearable={true}  
-                                        options={Account}
-                                        value={selected_Account}
-                                        onChange={setSelected_Account} // using id as it is unique
-                                        required
-                                        styles={{ 
-                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                            }}
-                                    />
-                                    </div>
-                                </Form.Group>
-                            </div>
-
-                            <div className="col-md-6">                                
-                                <Form.Group className="row" controlId="validation_SerializeCounter">
-                                    <label className="col-sm-4 col-form-label">Serialize Counter:</label>
-                                    <div className="col-sm-8">
-                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="100001" value={SerializeCounter} onChange={(e) => setSerializeCounter(e.target.value)} readOnly/>
-                                    </div>
-                                </Form.Group>
-                            </div>
-                        </div>
-
-                        <div className="row" style={{ marginTop: "-20px" }}>
-                            <div className="col-md-12">
-                                <Form.Group className="row" controlId="validation_Description">
-                                    <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Description:</label>
-                                    <div className="col-sm-10">
-                                    <Form.Control 
-                                        style={{ fontSize: "13px" }}
-                                        as="textarea" 
-                                        rows={12} 
-                                        value={Description}
-                                        onChange={(e) => {
-                                            setDescription(e.target.value);
-                                          }}
-                                    />
-                                    </div>
-                                </Form.Group>
-                            </div>
-                        </div> 
-
-                        <div className="row">
-                            <div className="col-md-12">
-                                <Form.Group className="row" controlId="validation_ExtendedDescription">
-                                    <label className="col-sm-2 col-form-label">Extended Description:</label>
-                                    <div className="col-sm-10">
-                                    <Form.Control 
-                                        style={{ fontSize: "13px" }}
-                                        as="textarea" 
-                                        rows={12} 
-                                        value={ExtendedDescription}
-                                        onChange={(e) => {
-                                            setExtendedDescription(e.target.value);
-                                          }}
-                                    />
-                                    </div>
-                                </Form.Group>
-                            </div>
-                        </div> 
-
-                    </div>
-
-                {/* ************************************* img ******************************************* */}
-
-                    <div className="col-md-2">
+            <div className="col-12 grid-margin">
+                <div className="card" style={{marginLeft: "-15px", marginRight: "-15px"}}>
+                    <div className="card-body"> 
+                    <form className="form-sample" validated={validated}>  
 
                         <div className="row">
 
-                            <AliceCarousel 
-                                autoPlay 
-                                autoPlayInterval="3000"  
-                                animationDuration={1000}
-                                animationType="fadeout"
-                                infinite
-                                touchTracking={false}
-                                disableDotsControls
-                                >
-                                <img src={require("../../assets/images/product_images_2/thumb_image1.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image2.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image3.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image4.jpg")} className="sliderimg" alt=""/>
-                                {/* <img src={require("../../assets/images/product_images_2/thumb_image5.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image6.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image7.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image8.jpg")} className="sliderimg" alt=""/>                                    
-                                <img src={require("../../assets/images/product_images_2/thumb_image9.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image10.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image11.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image12.jpg")} className="sliderimg" alt=""/> */}
-                                
-                            </AliceCarousel>
-                                
-                        </div>
+                            <div className="col-md-10">
 
-                    </div>
-                    
-                </div>  
-
-                <section id="tab-menus">
-
-                    <Tabs defaultActiveKey="Details" id="uncontrolled-tab-example" className="mb-4">
-
-
-                        {/* ************************************* Details **************************************** */}
-
-                        <Tab eventKey="Details" title="Details" class="nav-link active">
-                            
-
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_PartDeacStatus">
-                                                <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Part Deac Status:</label>
-                                                <div className="col-sm-7">
-                                                <Select  
-                                                    isClearable={true}  
-                                                    options={PartDeacStatus}
-                                                    value={selected_PartDeacStatus}
-                                                    onChange={setSelected_PartDeacStatus} // using id as it is unique
-                                                    required styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
-                                                />
-                                            </div>
-                                            </Form.Group>
-                                        </div>
-
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_AutoSpare">
-                                                <label className="col-sm-4 col-form-label">Auto Spare:</label>
-                                                <div className="col-sm-4 form-check">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={AutoSpare}
-                                                    onChange={handleOnChangeAutoSpare}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </Form.Group>
-                                        </div> 
-                                    </div>  
-
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_IssueUOM">
-                                                <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Issue UOM:</label>
-                                                <div className="col-sm-7">
-                                                <Select  
-                                                    isClearable={true}  
-                                                    options={IssueUOM}
-                                                    value={selected_IssueUOM}
-                                                    onChange={setSelected_IssueUOM} // using id as it is unique
-                                                    required
-                                                    styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
-                                                />
-                                            </div>
-                                            </Form.Group>
-                                        </div>
-
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_CriticalSpare">
-                                                <label className="col-sm-4 col-form-label">Critical Spare:</label>
-                                                <div className="col-sm-4 form-check">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={CriticalSpare}
-                                                    onChange={handleOnChangeCriticalSpare}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </Form.Group>
-                                        </div> 
-                                    </div>  
-
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_ReceiveUOM">
-                                                <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Receive UOM:</label>
-                                                <div className="col-sm-7">
-                                                <Select  
-                                                    isClearable={true}  
-                                                    options={ReceiveUOM}
-                                                    value={selected_ReceiveUOM}
-                                                    onChange={setSelected_ReceiveUOM} // using id as it is unique
-                                                    required
-                                                    styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
-                                                />
-                                            </div>
-                                            </Form.Group>
-                                        </div>
-
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_HazardousMaterial">
-                                                <label className="col-sm-4 col-form-label">Hazardous Material:</label>
-                                                <div className="col-sm-4 form-check">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={HazardousMaterial}
-                                                    onChange={handleOnChangeHazardousMaterial}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </Form.Group>
-                                        </div> 
-                                    </div>  
-
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_ConversionFactor">
-                                                <label className="col-sm-4 col-form-label">Conversion Factor:</label>
-                                                <div className="col-sm-7">
-                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder='1.0000' value={ConversionFactor} onChange={(e) => setConversionFactor(e.target.value)} readOnly/>
-                                            </div>
-                                            </Form.Group>
-                                        </div>
-
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_ABCClass">
-                                                <label className="col-sm-4 col-form-label">ABC Class:</label>
-                                                <div className="col-sm-4">
-                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={ABCClass} onChange={(e) => setABCClass(e.target.value)}/>
-                                                </div>
-                                            </Form.Group>
-                                        </div> 
-                                    </div>  
-
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_StorageType">
-                                                <label className="col-sm-4 col-form-label">Storage Type:</label>
-                                                <div className="col-sm-7">
-                                                <Select  
-                                                    isClearable={true}  
-                                                    options={StorageType}
-                                                    value={selected_StorageType}
-                                                    onChange={setSelected_StorageType} // using id as it is unique
-                                                    required
-                                                    styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                      }}
-                                                />
-                                            </div>
-                                            </Form.Group>
-                                        </div>
-
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_OrderPoint">
-                                                <label className="col-sm-4 col-form-label">Order Point:</label>
-                                                <div className="col-sm-7">
-                                                <Form.Control  
-                                                    style={{ fontSize: "13px", height: "38px" }}
-                                                    type="number"  
-                                                    placeholder=".0000" 
-                                                    value={OrderPoint} 
-                                                    onChange={(e) => setOrderPoint(e.target.value)}
-                                                    />
-                                                </div>
-                                            </Form.Group>
-                                        </div> 
-                                    </div> 
-
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_Cube">
-                                                <label className="col-sm-4 col-form-label">Cube:</label>
-                                                <div className="col-sm-7">
-                                                <Form.Control  
-                                                    style={{ fontSize: "13px", height: "38px" }}
-                                                    type="number"  
-                                                    placeholder=".0000" 
-                                                    value={Cube} 
-                                                    onChange={(e) => setCube(e.target.value)}
-                                                />
-                                            </div>
-                                            </Form.Group>
-                                        </div>
-
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_Maximum">
-                                                <label className="col-sm-4 col-form-label">Maximum:</label>
-                                                <div className="col-sm-7">
-                                                <Form.Control  
-                                                    style={{ fontSize: "13px", height: "38px" }}
-                                                    type="number"  
-                                                    placeholder=".0000" 
-                                                    value={Maximum} 
-                                                    onChange={(e) => setMaximum(e.target.value)}
-                                                    />
-                                                </div>
-                                            </Form.Group>
-                                        </div> 
-                                    </div> 
-
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_ShelfLife">
-                                                <label className="col-sm-4 col-form-label">Shelf Life:</label>
-                                                <div className="col-sm-7">
-                                                <Form.Control  
-                                                    style={{ fontSize: "13px", height: "38px" }}
-                                                    type="number"  
-                                                    value={ShelfLife} 
-                                                    onChange={(e) => setShelfLife(e.target.value)}
-                                                />
-                                            </div>
-                                            </Form.Group>
-                                        </div>
-
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_LastActivityDate">
-                                                <label className="col-sm-4 col-form-label">Last Activity Date:</label>
-                                                <div className="col-sm-7">
-                                                <Form.Control   
-                                                    style={{ fontSize: "13px", height: "38px" }}                                         
-                                                    type="datetime-local"  
-                                                    value={LastActivityDate} 
-                                                    onChange={(e) => setLastActivityDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                                    /> 
-                                                </div>
-                                            </Form.Group>
-                                        </div> 
-                                    </div> 
-
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_EOQ">
-                                                <label className="col-sm-4 col-form-label">EOQ:</label>
-                                                <div className="col-sm-7">
-                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder='0' value={EOQ} onChange={(e) => setEOQ(e.target.value)} readOnly/>
-                                                </div>
-                                            </Form.Group>
-                                        </div>
-
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_LastCountDate">
-                                                <label className="col-sm-4 col-form-label">Last Count Date:</label>
-                                                <div className="col-sm-7">
-                                                <Form.Control  
-                                                    style={{ fontSize: "13px", height: "38px" }}                                          
-                                                    type="datetime-local"  
-                                                    value={LastCountDate} 
-                                                    onChange={(e) => setLastCountDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                                    /> 
-                                                </div>
-                                            </Form.Group>
-                                        </div> 
-                                    </div> 
-
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_CountFrequency">
-                                                <label className="col-sm-4 col-form-label">Count Frequency:</label>
-                                                <div className="col-sm-7">
-                                                </div>
-                                            </Form.Group>
-                                        </div>
-
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_NextCountDate">
-                                                <label className="col-sm-4 col-form-label">Next Count Date:</label>
-                                                <div className="col-sm-7">
-                                                <Form.Control  
-                                                    style={{ fontSize: "13px", height: "38px" }}                                          
-                                                    type="datetime-local"  
-                                                    value={NextCountDate} 
-                                                    onChange={(e) => setNextCountDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                                    /> 
-                                                </div>
-                                            </Form.Group>
-                                        </div> 
-                                    </div> 
-
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_AverageLeadTime">
-                                                <label className="col-sm-4 col-form-label">Average Lead Time:</label>
-                                                <div className="col-sm-7">
-                                                </div>
-                                            </Form.Group>
-                                        </div>
-                                    </div> 
-
-                        </Tab>
-
-
-                        {/* ************************************* UDF ******************************************* */}
-
-                        <Tab eventKey="UDF" title="UDF" class="nav-link active">
-
-
-                            <div className="row">
-                                <div className='col'>
-                                    <div className="col-md-13">
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            UDF Text1:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
-                                                type="text"
-                                                value={UDFText_1}
-                                                onChange={(e) => setUDFText_1(e.target.value)}
-                                                />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-
-                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            UDF Text2:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
-                                                type="text"
-                                                value={UDFText_2}
-                                                onChange={(e) => setUDFText_2(e.target.value)}
-                                                />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-
-                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            UDF Text3:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
-                                                type="text"
-                                                value={UDFText_3}
-                                                onChange={(e) => setUDFText_3(e.target.value)}
-                                                />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-
-                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            UDF Text4:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
-                                                type="text"
-                                                value={UDFText_4}
-                                                onChange={(e) => setUDFText_4(e.target.value)}
-                                                />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-
-                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            UDF Text5:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
-                                                type="text"
-                                                value={UDFText_5}
-                                                onChange={(e) => setUDFText_5(e.target.value)}
-                                                />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-                                </div>
-
-                                <div className="col-md-8">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-2 col-form-label">
-                                        UDF Note1:
-                                    </label>
-                                    <div className="col-sm-10">
-                                        <Form.Control
-                                            style={{ fontSize: "13px" }} 
-                                            as="textarea" 
-                                            rows={19} 
-                                            value={UDFNote1}
-                                            onChange={(e) => setUDFNote1(e.target.value)}
-                                        />
-                                        </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        UDF Text6:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                            style={{ fontSize: "13px", height: "38px" }}
-                                            type="text"
-                                            value={UDFText_6}
-                                            onChange={(e) => setUDFText_6(e.target.value)}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        UDF Numeric1:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control  
-                                            style={{ fontSize: "13px", height: "38px" }}
-                                            type="number"  
-                                            placeholder=".0000" 
-                                            value={UDFNumber_1} 
-                                            onChange={(e) => setUDFNumber_1(e.target.value)}
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        UDF Date1:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control   
-                                        style={{ fontSize: "13px", height: "38px" }}                                         
-                                        type="datetime-local"  
-                                        value={UDFDate_1} 
-                                        onChange={(e) => setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        UDF Text7:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                            style={{ fontSize: "13px", height: "38px" }}
-                                            type="text"
-                                            value={UDFText_7}
-                                            onChange={(e) => setUDFText_7(e.target.value)}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        UDF Numeric2:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control  
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="number"  
-                                        placeholder=".0000" 
-                                        value={UDFNumber_2} 
-                                        onChange={(e) => setUDFNumber_2(e.target.value)}
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        UDF Date2:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                            style={{ fontSize: "13px", height: "38px" }}
-                                            type="datetime-local"
-                                            value={UDFDate_2} 
-                                            onChange={(e) => setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        UDF Text8:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                            style={{ fontSize: "13px", height: "38px" }}
-                                            type="text"
-                                            value={UDFText_8}
-                                            onChange={(e) => setUDFText_8(e.target.value)}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        UDF Numeric3:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}  
-                                        type="number"  
-                                        placeholder=".0000" 
-                                        value={UDFNumber_3} 
-                                        onChange={(e) => setUDFNumber_3(e.target.value)}
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        UDF Date3:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                            style={{ fontSize: "13px", height: "38px" }}
-                                            type="datetime-local"
-                                            value={UDFDate_3} 
-                                            onChange={(e) => setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        UDF Text9:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                            style={{ fontSize: "13px", height: "38px" }}
-                                            type="text"
-                                            value={UDFText_9}
-                                            onChange={(e) => setUDFText_9(e.target.value)}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        UDF Numeric4:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control 
-                                        style={{ fontSize: "13px", height: "38px" }} 
-                                        type="number"  
-                                        placeholder=".0000" 
-                                        value={UDFNumber_4} 
-                                        onChange={(e) => setUDFNumber_4(e.target.value)}
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        UDF Date4:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                            style={{ fontSize: "13px", height: "38px" }}
-                                            type="datetime-local"
-                                            value={UDFDate_4} 
-                                            onChange={(e) => setUDFDate_4(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        UDF Text10:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                            style={{ fontSize: "13px", height: "38px" }}
-                                            type="text"
-                                            value={UDFText_10}
-                                            onChange={(e) => setUDFText_10(e.target.value)}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        UDF Numeric5:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control  
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="number"  
-                                        placeholder=".0000" 
-                                        value={UDFNumber_5} 
-                                        onChange={(e) => setUDFNumber_5(e.target.value)}
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        UDF Date5:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                            style={{ fontSize: "13px", height: "38px" }}
-                                            type="datetime-local"
-                                            value={UDFDate_5} 
-                                            onChange={(e) => setUDFDate_5(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-                        </Tab>
-
-
-                        {/* ************************************* Financial *************************************** */}
-
-                        <Tab eventKey="Financial" title="Financial" class="nav nav-tabs nav-item nav-link active">
-                            
-
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Account Type:
-                                    </label>
-                                    <div className="col-sm-6">
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Type">
+                                            <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Type:</label>
+                                            <div className="col-sm-8">
                                             <Select  
                                                 isClearable={true}  
-                                                value={selected_AccountType}
-                                                onChange={setSelected_AccountType}
-                                                options={AccountType}
+                                                value={selected_Type}
+                                                onChange={setSelected_Type}
+                                                options={Type}
                                                 styles={{ 
                                                     control: (styles) => ({ ...styles, fontSize: "13px" }), 
                                                     singleValue: (styles) => ({ ...styles, fontSize: "13px" })
                                                 }}
-                                            />
+                                                />
+                                            </div>
+                                        </Form.Group>
                                     </div>
-                                    </Form.Group>
+
+                                    <div className="col-md-6">                                
+                                        <Form.Group className="row" controlId="validation_Commodity_Code">
+                                            <Form.Label className="col-sm-4 col-form-label">Commodity Code:</Form.Label>
+                                            <div className="col-sm-8">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Commodity_Code}
+                                                    value={selected_Commodity_Code}
+                                                    onChange={setSelected_Commodity_Code} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
                                 </div>
 
-                                <div className="col-md-6">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Tax Code:
-                                    </label>
-                                    <div className="col-sm-6">
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_StockNo">
+                                            <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Stock No:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={StockNo} onChange={(e) => setStockNo(e.target.value)}  disabled={StockNo_disabled}/>
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                    
+                                    <div className="col-md-6">                                
+                                        <Form.Group className="row" controlId="validation_Stock_Group">
+                                            <Form.Label className="col-sm-4 col-form-label">Stock Group:</Form.Label>
+                                            <div className="col-sm-8">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Stock_Group}
+                                                    value={selected_Stock_Group}
+                                                    onChange={setSelected_Stock_Group} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Master_Location">
+                                            <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Master Location:</label>
+                                            <div className="col-sm-8">
                                             <Select  
                                                 isClearable={true}  
-                                                options={TaxCode}
-                                                value={selected_TaxCode}
-                                                onChange={setSelected_TaxCode} // using id as it is unique
+                                                options={Master_Location}
+                                                value={selected_Master_Location}
+                                                onChange={setSelected_Master_Location} // using id as it is unique
                                                 required
                                                 styles={{ 
                                                     control: (styles) => ({ ...styles, fontSize: "13px" }), 
                                                     singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-6">                                
+                                        <Form.Group className="row" controlId="validation_Part_No">
+                                            <Form.Label className="col-sm-4 col-form-label">Part No:</Form.Label>
+                                            <div className="col-sm-8">
+                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Part_No} onChange={(e) => setPart_No(e.target.value)}/>
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Order_Rule">
+                                            <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Order Rule:</label>
+                                            <div className="col-sm-8">
+                                            <Select  
+                                                isClearable={true}  
+                                                options={Order_Rule}
+                                                value={selected_Order_Rule}
+                                                onChange={setSelected_Order_Rule} // using id as it is unique
+                                                required
+                                                styles={{ 
+                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-6">                                
+                                        <Form.Group className="row" controlId="validation_TotalOH">
+                                            <label className="col-sm-4 col-form-label">Total OH:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={TotalOH} onChange={(e) => setTotalOH(e.target.value)} readOnly/>
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Cost_Center">
+                                            <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Cost Center:</label>
+                                            <div className="col-sm-8">
+                                            <Select  
+                                                isClearable={true}  
+                                                options={Cost_Center}
+                                                value={selected_Cost_Center}
+                                                onChange={setSelected_Cost_Center} // using id as it is unique
+                                                required
+                                                styles={{ 
+                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                                </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-6">                                
+                                        <Form.Group className="row" controlId="validation_IssuePrice">
+                                            <label className="col-sm-4 col-form-label">Issue Price:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.00" value={IssuePrice} onChange={(e) => setIssuePrice(e.target.value)} readOnly/>
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Account">
+                                            <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Account:</label>
+                                            <div className="col-sm-8">
+                                            <Select  
+                                                isClearable={true}  
+                                                options={Account}
+                                                value={selected_Account}
+                                                onChange={setSelected_Account} // using id as it is unique
+                                                required
+                                                styles={{ 
+                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                            />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-6">                                
+                                        <Form.Group className="row" controlId="validation_SerializeCounter">
+                                            <label className="col-sm-4 col-form-label">Serialize Counter:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="100001" value={SerializeCounter} onChange={(e) => setSerializeCounter(e.target.value)} readOnly/>
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                                <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-12">
+                                        <Form.Group className="row" controlId="validation_Description">
+                                            <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Description:</label>
+                                            <div className="col-sm-10">
+                                            <Form.Control 
+                                                style={{ fontSize: "13px" }}
+                                                as="textarea" 
+                                                rows={12} 
+                                                value={Description}
+                                                onChange={(e) => {
+                                                    setDescription(e.target.value);
                                                 }}
                                             />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-6">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        YTD Usage:
-                                    </label>
-                                    <div className="col-sm-6">
-                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={YTDUsage} onChange={(e) => setYTDUsage(e.target.value)} readOnly/>
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-6">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Last Year Usage:
-                                    </label>
-                                    <div className="col-sm-6">
-                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={LastYearUsage} onChange={(e) => setLastYearUsage(e.target.value)} readOnly/>
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-6">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        YTD Turns:
-                                    </label>
-                                    <div className="col-sm-6">
-                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={YTDTurns} onChange={(e) => setYTDTurns(e.target.value)} readOnly/>
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-6">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Last Year Turns:
-                                    </label>
-                                    <div className="col-sm-6">
-                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={LastYearTurns} onChange={(e) => setLastYearTurns(e.target.value)} readOnly/>
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-6">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        YTD Stockouts:
-                                    </label>
-                                    <div className="col-sm-6">
-                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={YTDStockouts} onChange={(e) => setYTDStockouts(e.target.value)} readOnly/>
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-6">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Last Year Stockouts:
-                                    </label>
-                                    <div className="col-sm-6">
-                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={LastYearStockouts} onChange={(e) => setLastYearStockouts(e.target.value)} readOnly/>
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                        {/* ************************************* Radio box *************************************** */}
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="row col-form-label">
-                                        <div className="col-md-2">
-                                            <Form.Group className="row" controlId="validation_Type">
-                                            <th className="col-sm-8">Costing Rule</th>
-                                            </Form.Group>
-                                        </div>
-
-                                        <div className="col-md-5">
-                                            <Form.Group className="row" controlId="validation_Type">
-                                            <th className="col-sm-4">Item Cost (A)</th>
-                                            <th className="col-sm-4">Total On-Hand (B)</th>
-                                            <th className="col-sm-4">Total Repair Location (C)</th>
-                                            </Form.Group>
-                                        </div>
-
-                                        <div className="col-md-5">
-                                            <Form.Group className="row" controlId="validation_Type">
-                                            <th className="col-sm-4">Value A * (B-C)</th>
-                                            <th className="col-sm-4">Surcharge</th>
-                                            <th className="col-sm-4">Surcharge Value</th>
-                                            </Form.Group>
-                                        </div>
-                                    </div> 
-                                </div>
-                            </div>
-                            <hr className="mt-0"></hr>
-
-                            <div className="status-container">
-                                <div className="status-box">
-                                    <Form.Group className="row">
-                                    <fieldset className="p-3 w-100">
-
-                                        <div className="row">
-                                            <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                                                <div className="row">
-
-                                                    <div className="col-md-2">
-                                                        <Form.Group className="row" controlId="validation_Average">
-                                                            <div className="col-sm-2 form-check">
-                                                                <label className="form-check-label">
-                                                                    <input type="radio" 
-                                                                        name='Average'
-                                                                        value='Average'
-                                                                        checked={radio === 'Average'}
-                                                                        onChange={handleRadioChange}
-                                                                    />
-                                                                    <i className="input-helper"></i>
-                                                                </label>
-                                                            </div>
-                                                            <label className="col-sm-7 col-form-label">Average</label>
-                                                        </Form.Group>
-                                                    </div> 
-
-
-                                                    <div className="col-md-5">
-                                                        <Form.Group className="row" controlId="validation_Average1">
-                                                            {radio === 'Average' && (
-                                                            <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={Average} onChange={handleAverageChange} />
-                                                            </div>
-                                                            )}
-
-                                                            {radio === 'Average' && (
-                                                            <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
-                                                            </div>
-                                                            )}
-
-                                                            {radio === 'Average' && (
-                                                            <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
-                                                            </div>
-                                                            )}
-                                                        </Form.Group>
-                                                    </div>
-
-
-                                                    <div className="col-md-5">
-                                                        <Form.Group className="row" controlId="validation_Average2">
-                                                            {radio === 'Average' && (
-                                                            <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
-                                                            </div>
-                                                            )}
-
-                                                            {radio === 'Average' && (
-                                                            <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0' readOnly/>
-                                                            </div>
-                                                            )}
-
-                                                            {radio === 'Average' && (
-                                                            <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
-                                                            </div>
-                                                            )}
-                                                        </Form.Group>
-                                                    </div>
-
-                                                </div>
                                             </div>
-                                        </div>
+                                        </Form.Group>
+                                    </div>
+                                </div> 
 
-
-                                        <div className="row">
-                                            <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                                                <div className="row">
-
-                                                    <div className="col-md-2">
-                                                        <Form.Group className="row" controlId="validation_Standard">
-                                                            <div className="col-sm-2 form-check">
-                                                                <label className="form-check-label">
-                                                                    <input type="radio" 
-                                                                        name='Standard'
-                                                                        value='Standard'
-                                                                        checked={radio === 'Standard'}
-                                                                        onChange={handleRadioChange}
-                                                                    />
-                                                                    <i className="input-helper"></i>
-                                                                </label>
-                                                            </div>
-                                                            <label className="col-sm-7 col-form-label">Standard</label>
-                                                        </Form.Group>
-                                                    </div> 
-
-
-                                                    <div className="col-md-5">
-                                                        <Form.Group className="row" controlId="validation_Standard1">
-                                                            {radio === 'Standard' && (
-                                                            <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={Standard} onChange={handleStandardChange} />
-                                                            </div>
-                                                            )}
-
-                                                            {radio === 'Standard' && (
-                                                            <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
-                                                            </div>
-                                                            )}
-
-                                                            {radio === 'Standard' && (
-                                                            <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
-                                                            </div>
-                                                            )}
-                                                        </Form.Group>
-                                                    </div>
-
-
-                                                    <div className="col-md-5">
-                                                        <Form.Group className="row" controlId="validation_Standard2">
-                                                            {radio === 'Standard' && (
-                                                            <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
-                                                            </div>
-                                                            )}
-
-                                                            {radio === 'Standard' && (
-                                                            <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0' readOnly/>
-                                                            </div>
-                                                            )}
-
-                                                            {radio === 'Standard' && (
-                                                            <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
-                                                            </div>
-                                                            )}
-                                                        </Form.Group>
-                                                    </div>
-
-                                                </div>
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <Form.Group className="row" controlId="validation_ExtendedDescription">
+                                            <label className="col-sm-2 col-form-label">Extended Description:</label>
+                                            <div className="col-sm-10">
+                                            <Form.Control 
+                                                style={{ fontSize: "13px" }}
+                                                as="textarea" 
+                                                rows={12} 
+                                                value={ExtendedDescription}
+                                                onChange={(e) => {
+                                                    setExtendedDescription(e.target.value);
+                                                }}
+                                            />
                                             </div>
-                                        </div>
+                                        </Form.Group>
+                                    </div>
+                                </div> 
 
-
-                                        <div className="row">
-                                            <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                                                <div className="row">
-
-                                                    <div className="col-md-2">
-                                                        <Form.Group className="row" controlId="validation_Last">
-                                                            <div className="col-sm-2 form-check">
-                                                                <label className="form-check-label">
-                                                                    <input type="radio" 
-                                                                        name='Last'
-                                                                        value='Last'
-                                                                        checked={radio === 'Last'}
-                                                                        onChange={handleRadioChange}
-                                                                    />
-                                                                    <i className="input-helper"></i>
-                                                                </label>
-                                                            </div>
-                                                            <label className="col-sm-7 col-form-label">Last</label>
-                                                        </Form.Group>
-                                                    </div> 
-
-
-                                                    <div className="col-md-5">
-                                                        <Form.Group className="row" controlId="validation_Last1">
-                                                            {radio === 'Last' && (
-                                                            <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={Last} onChange={handleLastChange} />
-                                                            </div>
-                                                            )}
-
-                                                            {radio === 'Last' && (
-                                                            <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
-                                                            </div>
-                                                            )}
-
-                                                            {radio === 'Last' && (
-                                                            <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
-                                                            </div>
-                                                            )}
-                                                        </Form.Group>
-                                                    </div>
-
-
-                                                    <div className="col-md-5">
-                                                        <Form.Group className="row" controlId="validation_Last2">
-                                                            {radio === 'Last' && (
-                                                            <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
-                                                            </div>
-                                                            )}
-
-                                                            {radio === 'Last' && (
-                                                            <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0' readOnly/>
-                                                            </div>
-                                                            )}
-
-                                                            {radio === 'Last' && (
-                                                            <div className="col-sm-4">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
-                                                            </div>
-                                                            )}
-                                                        </Form.Group>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-                                        <div className="row">
-                                            <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                                                <div className="row">
-
-                                                    <div className="col-md-2">
-                                                        <Form.Group className="row" controlId="validation_FIFO">
-                                                            <div className="col-sm-2 form-check">
-                                                                <label className="form-check-label">
-                                                                    <input type="radio" 
-                                                                        name='FIFO'
-                                                                        value='FIFO'
-                                                                        checked={radio === 'FIFO'}
-                                                                        onChange={handleRadioChange}
-                                                                    />
-                                                                    <i className="input-helper"></i>
-                                                                </label>
-                                                            </div>
-                                                            <label className="col-sm-7 col-form-label">FIFO</label>
-                                                        </Form.Group>
-                                                    </div> 
-
-
-                                                    <div className="col-md-5">
-                                                        <Form.Group className="row" controlId="validation_FIFO1">
-                                                            {radio === 'FIFO' && (
-                                                            <div className="col-sm-4 form-checkxxxxx">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
-                                                            </div>
-                                                            )}
-
-                                                            {radio === 'FIFO' && (
-                                                            <div className="col-sm-4 form-checkxxxxx">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
-                                                            </div>
-                                                            )}
-
-                                                            {radio === 'FIFO' && (
-                                                            <div className="col-sm-4 form-checkxxxxx">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
-                                                            </div>
-                                                            )}
-                                                        </Form.Group>
-                                                    </div>
-
-
-                                                    <div className="col-md-5">
-                                                        <Form.Group className="row" controlId="validation_FIFO2">
-                                                            {radio === 'FIFO' && (
-                                                            <div className="col-sm-4 form-checkxxxxx">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
-                                                            </div>
-                                                            )}
-
-                                                            {radio === 'FIFO' && (
-                                                            <div className="col-sm-4 form-checkxxxxx">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0' readOnly/>
-                                                            </div>
-                                                            )}
-
-                                                            {radio === 'FIFO' && (
-                                                            <div className="col-sm-4 form-checkxxxxx">
-                                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
-                                                            </div>
-                                                            )}
-                                                        </Form.Group>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </fieldset>
-                                    </Form.Group>
-
-                                </div>
                             </div>
 
-                        </Tab>
+                        {/* ************************************* img ******************************************* */}
 
+                            <div className="col-md-2">
 
-                        {/* ************************************* Location ************************************ */}
+                                <div className="row">
 
-                        <Tab eventKey="Location" title="Location" class="nav-link active">
-                            <div className="page-header">
-                                <div className="template-demo" >
-                                    <button type="button" className="btn btn-outline-primary btn-icon-text"  onClick={handleShow}>
-                                        <i className="mdi mdi-file-check btn-icon-prepend"></i> New  
-                                    </button>
-                                
-                                    <button type="button" className="btn btn-outline-danger btn-icon-text"  >
-                                        <i className="mdi mdi-delete-forever btn-icon-prepend"></i> Delete 
-                                    </button>
-                                </div>                     
-                            </div> 
+                                    <AliceCarousel 
+                                        autoPlay 
+                                        autoPlayInterval="3000"  
+                                        animationDuration={1000}
+                                        animationType="fadeout"
+                                        infinite
+                                        touchTracking={false}
+                                        disableDotsControls
+                                        >
+                                        <img src={require("../../assets/images/product_images_2/thumb_image1.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image2.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image3.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image4.jpg")} className="sliderimg" alt=""/>
+                                        {/* <img src={require("../../assets/images/product_images_2/thumb_image5.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image6.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image7.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image8.jpg")} className="sliderimg" alt=""/>                                    
+                                        <img src={require("../../assets/images/product_images_2/thumb_image9.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image10.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image11.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image12.jpg")} className="sliderimg" alt=""/> */}
+                                        
+                                    </AliceCarousel>
+                                        
+                                </div>
+
+                            </div>
                             
-                            <InventoryLocation name={'InventoryFrom'} />
+                        </div>  
 
-                        </Tab>
-
-
-                        {/* ************************************* Supplier ************************************ */}
-
-                        <Tab eventKey="Supplier" title="Supplier" class="nav-link active">
-
-                            <InventorySupplier name={'InventoryFrom'} />
-
-                        </Tab>
+                        <section id="tab-menus">
+                            <Tabs defaultActiveKey="Details" id="uncontrolled-tab-example" className="mb-4">
 
 
-                        {/* ************************************* Reference ************************************ */}
+                                {/* ************************************* Details **************************************** */}
 
-                        <Tab eventKey="Reference" title="Reference" class="nav-link active">
-                            <Form.Group>
-                                <label>File upload</label>
-                                <div className="custom-file">
-                                    <Form.Control type="file" className="form-control visibility-hidden" id="customFileLang" lang="es"/>
-                                    <label className="custom-file-label" htmlFor="customFileLang">Upload image</label>
-                                </div>
-                            </Form.Group> 
-                        </Tab>
+                                <Tab eventKey="Details" title={<><i className="mdi mdi-information"></i><span className="d-none d-md-inline"> Details</span></>} class="nav-link active">
+                                    
+
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_PartDeacStatus">
+                                                        <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Part Deac Status:</label>
+                                                        <div className="col-sm-7">
+                                                        <Select  
+                                                            isClearable={true}  
+                                                            options={PartDeacStatus}
+                                                            value={selected_PartDeacStatus}
+                                                            onChange={setSelected_PartDeacStatus} // using id as it is unique
+                                                            required styles={{ 
+                                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_AutoSpare">
+                                                        <label className="col-sm-4 col-form-label">Auto Spare:</label>
+                                                        <div className="col-sm-4 form-check">
+                                                        <label className="form-check-label">
+                                                            <input type="checkbox" 
+                                                            className="form-check-input"
+                                                            checked={AutoSpare}
+                                                            onChange={handleOnChangeAutoSpare}
+                                                            />
+                                                            <i className="input-helper"></i>
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div> 
+                                            </div>  
+
+                                            <div className="row" style={{ marginTop: "-20px" }}>
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_IssueUOM">
+                                                        <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Issue UOM:</label>
+                                                        <div className="col-sm-7">
+                                                        <Select  
+                                                            isClearable={true}  
+                                                            options={IssueUOM}
+                                                            value={selected_IssueUOM}
+                                                            onChange={setSelected_IssueUOM} // using id as it is unique
+                                                            required
+                                                            styles={{ 
+                                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_CriticalSpare">
+                                                        <label className="col-sm-4 col-form-label">Critical Spare:</label>
+                                                        <div className="col-sm-4 form-check">
+                                                        <label className="form-check-label">
+                                                            <input type="checkbox" 
+                                                            className="form-check-input"
+                                                            checked={CriticalSpare}
+                                                            onChange={handleOnChangeCriticalSpare}
+                                                            />
+                                                            <i className="input-helper"></i>
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div> 
+                                            </div>  
+
+                                            <div className="row" style={{ marginTop: "-20px" }}>
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_ReceiveUOM">
+                                                        <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Receive UOM:</label>
+                                                        <div className="col-sm-7">
+                                                        <Select  
+                                                            isClearable={true}  
+                                                            options={ReceiveUOM}
+                                                            value={selected_ReceiveUOM}
+                                                            onChange={setSelected_ReceiveUOM} // using id as it is unique
+                                                            required
+                                                            styles={{ 
+                                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_HazardousMaterial">
+                                                        <label className="col-sm-4 col-form-label">Hazardous Material:</label>
+                                                        <div className="col-sm-4 form-check">
+                                                        <label className="form-check-label">
+                                                            <input type="checkbox" 
+                                                            className="form-check-input"
+                                                            checked={HazardousMaterial}
+                                                            onChange={handleOnChangeHazardousMaterial}
+                                                            />
+                                                            <i className="input-helper"></i>
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div> 
+                                            </div>  
+
+                                            <div className="row" style={{ marginTop: "-20px" }}>
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_ConversionFactor">
+                                                        <label className="col-sm-4 col-form-label">Conversion Factor:</label>
+                                                        <div className="col-sm-7">
+                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder='1.0000' value={ConversionFactor} onChange={(e) => setConversionFactor(e.target.value)} readOnly/>
+                                                    </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_ABCClass">
+                                                        <label className="col-sm-4 col-form-label">ABC Class:</label>
+                                                        <div className="col-sm-4">
+                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={ABCClass} onChange={(e) => setABCClass(e.target.value)}/>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div> 
+                                            </div>  
+
+                                            <div className="row" style={{ marginTop: "-20px" }}>
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_StorageType">
+                                                        <label className="col-sm-4 col-form-label">Storage Type:</label>
+                                                        <div className="col-sm-7">
+                                                        <Select  
+                                                            isClearable={true}  
+                                                            options={StorageType}
+                                                            value={selected_StorageType}
+                                                            onChange={setSelected_StorageType} // using id as it is unique
+                                                            required
+                                                            styles={{ 
+                                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_OrderPoint">
+                                                        <label className="col-sm-4 col-form-label">Order Point:</label>
+                                                        <div className="col-sm-7">
+                                                        <Form.Control  
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="number"  
+                                                            placeholder=".0000" 
+                                                            value={OrderPoint} 
+                                                            onChange={(e) => setOrderPoint(e.target.value)}
+                                                            />
+                                                        </div>
+                                                    </Form.Group>
+                                                </div> 
+                                            </div> 
+
+                                            <div className="row" style={{ marginTop: "-20px" }}>
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_Cube">
+                                                        <label className="col-sm-4 col-form-label">Cube:</label>
+                                                        <div className="col-sm-7">
+                                                        <Form.Control  
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="number"  
+                                                            placeholder=".0000" 
+                                                            value={Cube} 
+                                                            onChange={(e) => setCube(e.target.value)}
+                                                        />
+                                                    </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_Maximum">
+                                                        <label className="col-sm-4 col-form-label">Maximum:</label>
+                                                        <div className="col-sm-7">
+                                                        <Form.Control  
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="number"  
+                                                            placeholder=".0000" 
+                                                            value={Maximum} 
+                                                            onChange={(e) => setMaximum(e.target.value)}
+                                                            />
+                                                        </div>
+                                                    </Form.Group>
+                                                </div> 
+                                            </div> 
+
+                                            <div className="row" style={{ marginTop: "-20px" }}>
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_ShelfLife">
+                                                        <label className="col-sm-4 col-form-label">Shelf Life:</label>
+                                                        <div className="col-sm-7">
+                                                        <Form.Control  
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="number"  
+                                                            value={ShelfLife} 
+                                                            onChange={(e) => setShelfLife(e.target.value)}
+                                                        />
+                                                    </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_LastActivityDate">
+                                                        <label className="col-sm-4 col-form-label">Last Activity Date:</label>
+                                                        <div className="col-sm-7">
+                                                        <Form.Control   
+                                                            style={{ fontSize: "13px", height: "38px" }}                                         
+                                                            type="datetime-local"  
+                                                            value={LastActivityDate} 
+                                                            onChange={(e) => setLastActivityDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                            /> 
+                                                        </div>
+                                                    </Form.Group>
+                                                </div> 
+                                            </div> 
+
+                                            <div className="row" style={{ marginTop: "-20px" }}>
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_EOQ">
+                                                        <label className="col-sm-4 col-form-label">EOQ:</label>
+                                                        <div className="col-sm-7">
+                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder='0' value={EOQ} onChange={(e) => setEOQ(e.target.value)} readOnly/>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_LastCountDate">
+                                                        <label className="col-sm-4 col-form-label">Last Count Date:</label>
+                                                        <div className="col-sm-7">
+                                                        <Form.Control  
+                                                            style={{ fontSize: "13px", height: "38px" }}                                          
+                                                            type="datetime-local"  
+                                                            value={LastCountDate} 
+                                                            onChange={(e) => setLastCountDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                            /> 
+                                                        </div>
+                                                    </Form.Group>
+                                                </div> 
+                                            </div> 
+
+                                            <div className="row" style={{ marginTop: "-20px" }}>
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_CountFrequency">
+                                                        <label className="col-sm-4 col-form-label">Count Frequency:</label>
+                                                        <div className="col-sm-7">
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_NextCountDate">
+                                                        <label className="col-sm-4 col-form-label">Next Count Date:</label>
+                                                        <div className="col-sm-7">
+                                                        <Form.Control  
+                                                            style={{ fontSize: "13px", height: "38px" }}                                          
+                                                            type="datetime-local"  
+                                                            value={NextCountDate} 
+                                                            onChange={(e) => setNextCountDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                            /> 
+                                                        </div>
+                                                    </Form.Group>
+                                                </div> 
+                                            </div> 
+
+                                            <div className="row" style={{ marginTop: "-20px" }}>
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_AverageLeadTime">
+                                                        <label className="col-sm-4 col-form-label">Average Lead Time:</label>
+                                                        <div className="col-sm-7">
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+                                            </div> 
+
+                                </Tab>
 
 
-                    </Tabs>
-                </section>
-                </form>
+                                {/* ************************************* UDF ******************************************* */}
+
+                                <Tab eventKey="UDF" title={<><i className="mdi mdi-calendar-text"></i><span className="d-none d-md-inline"> UDF</span></>} class="nav-link active">
 
 
-                        {/* ************************************* button ***************************************** */}
+                                    <div className="row">
+                                        <div className='col'>
+                                            <div className="col-md-13">
+                                                <Form.Group className="row">
+                                                <label className="col-sm-4 col-form-label">
+                                                    UDF Text1:
+                                                </label>
+                                                <div className="col-sm-8">
+                                                    <Form.Control
+                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        type="text"
+                                                        value={UDFText_1}
+                                                        onChange={(e) => setUDFText_1(e.target.value)}
+                                                        />
+                                                </div>
+                                                </Form.Group>
+                                            </div>
 
-                    <div className="page-header">
-                    <h3 className="page-title"></h3>
-                    <nav aria-label="breadcrumb">
-                        <ol className="breadcrumb">
-                        <div className="template-demo">
-                            <button
-                            type="button"
-                            className="btn btn-success btn-icon-text"
-                            onClick={onClickChange}
-                            >
-                            <i className="mdi mdi-file-check btn-icon-prepend"></i>{" "}
-                            {Button_save}
-                            </button>
+                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                                <Form.Group className="row">
+                                                <label className="col-sm-4 col-form-label">
+                                                    UDF Text2:
+                                                </label>
+                                                <div className="col-sm-8">
+                                                    <Form.Control
+                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        type="text"
+                                                        value={UDFText_2}
+                                                        onChange={(e) => setUDFText_2(e.target.value)}
+                                                        />
+                                                </div>
+                                                </Form.Group>
+                                            </div>
 
-                            <button
-                            type="button"
-                            className="btn btn-danger btn-icon-text"
-                            >
-                            <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i>{" "}
-                            Cancel
-                            </button>
+                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                                <Form.Group className="row">
+                                                <label className="col-sm-4 col-form-label">
+                                                    UDF Text3:
+                                                </label>
+                                                <div className="col-sm-8">
+                                                    <Form.Control
+                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        type="text"
+                                                        value={UDFText_3}
+                                                        onChange={(e) => setUDFText_3(e.target.value)}
+                                                        />
+                                                </div>
+                                                </Form.Group>
+                                            </div>
+
+                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                                <Form.Group className="row">
+                                                <label className="col-sm-4 col-form-label">
+                                                    UDF Text4:
+                                                </label>
+                                                <div className="col-sm-8">
+                                                    <Form.Control
+                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        type="text"
+                                                        value={UDFText_4}
+                                                        onChange={(e) => setUDFText_4(e.target.value)}
+                                                        />
+                                                </div>
+                                                </Form.Group>
+                                            </div>
+
+                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                                <Form.Group className="row">
+                                                <label className="col-sm-4 col-form-label">
+                                                    UDF Text5:
+                                                </label>
+                                                <div className="col-sm-8">
+                                                    <Form.Control
+                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        type="text"
+                                                        value={UDFText_5}
+                                                        onChange={(e) => setUDFText_5(e.target.value)}
+                                                        />
+                                                </div>
+                                                </Form.Group>
+                                            </div>
+                                        </div>
+
+                                        <div className="col-md-8">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-2 col-form-label">
+                                                UDF Note1:
+                                            </label>
+                                            <div className="col-sm-10">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px" }} 
+                                                    as="textarea" 
+                                                    rows={19} 
+                                                    value={UDFNote1}
+                                                    onChange={(e) => setUDFNote1(e.target.value)}
+                                                />
+                                                </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                UDF Text6:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="text"
+                                                    value={UDFText_6}
+                                                    onChange={(e) => setUDFText_6(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                UDF Numeric1:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control  
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="number"  
+                                                    placeholder=".0000" 
+                                                    value={UDFNumber_1} 
+                                                    onChange={(e) => setUDFNumber_1(e.target.value)}
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                UDF Date1:
+                                            </label>
+                                            <div className="col-sm-8">
+                                            <Form.Control   
+                                                style={{ fontSize: "13px", height: "38px" }}                                         
+                                                type="datetime-local"  
+                                                value={UDFDate_1} 
+                                                onChange={(e) => setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                UDF Text7:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="text"
+                                                    value={UDFText_7}
+                                                    onChange={(e) => setUDFText_7(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                UDF Numeric2:
+                                            </label>
+                                            <div className="col-sm-8">
+                                            <Form.Control  
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="number"  
+                                                placeholder=".0000" 
+                                                value={UDFNumber_2} 
+                                                onChange={(e) => setUDFNumber_2(e.target.value)}
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                UDF Date2:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="datetime-local"
+                                                    value={UDFDate_2} 
+                                                    onChange={(e) => setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                UDF Text8:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="text"
+                                                    value={UDFText_8}
+                                                    onChange={(e) => setUDFText_8(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                UDF Numeric3:
+                                            </label>
+                                            <div className="col-sm-8">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}  
+                                                type="number"  
+                                                placeholder=".0000" 
+                                                value={UDFNumber_3} 
+                                                onChange={(e) => setUDFNumber_3(e.target.value)}
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                UDF Date3:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="datetime-local"
+                                                    value={UDFDate_3} 
+                                                    onChange={(e) => setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                UDF Text9:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="text"
+                                                    value={UDFText_9}
+                                                    onChange={(e) => setUDFText_9(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                UDF Numeric4:
+                                            </label>
+                                            <div className="col-sm-8">
+                                            <Form.Control 
+                                                style={{ fontSize: "13px", height: "38px" }} 
+                                                type="number"  
+                                                placeholder=".0000" 
+                                                value={UDFNumber_4} 
+                                                onChange={(e) => setUDFNumber_4(e.target.value)}
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                UDF Date4:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="datetime-local"
+                                                    value={UDFDate_4} 
+                                                    onChange={(e) => setUDFDate_4(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                UDF Text10:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="text"
+                                                    value={UDFText_10}
+                                                    onChange={(e) => setUDFText_10(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                UDF Numeric5:
+                                            </label>
+                                            <div className="col-sm-8">
+                                            <Form.Control  
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="number"  
+                                                placeholder=".0000" 
+                                                value={UDFNumber_5} 
+                                                onChange={(e) => setUDFNumber_5(e.target.value)}
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                UDF Date5:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="datetime-local"
+                                                    value={UDFDate_5} 
+                                                    onChange={(e) => setUDFDate_5(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+                                </Tab>
+
+
+                                {/* ************************************* Financial ******************************************* */}
+
+                                <Tab eventKey="Financial" title={<><i className="mdi mdi-currency-usd"></i><span className="d-none d-md-inline"> Financial</span></>} class="nav nav-tabs nav-item nav-link active">
+                                    
+
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Account Type:
+                                            </label>
+                                            <div className="col-sm-6">
+                                                    <Select  
+                                                        isClearable={true}  
+                                                        value={selected_AccountType}
+                                                        onChange={setSelected_AccountType}
+                                                        options={AccountType}
+                                                        styles={{ 
+                                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        }}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Tax Code:
+                                            </label>
+                                            <div className="col-sm-6">
+                                                    <Select  
+                                                        isClearable={true}  
+                                                        options={TaxCode}
+                                                        value={selected_TaxCode}
+                                                        onChange={setSelected_TaxCode} // using id as it is unique
+                                                        required
+                                                        styles={{ 
+                                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        }}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-6">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                YTD Usage:
+                                            </label>
+                                            <div className="col-sm-6">
+                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={YTDUsage} onChange={(e) => setYTDUsage(e.target.value)} readOnly/>
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Last Year Usage:
+                                            </label>
+                                            <div className="col-sm-6">
+                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={LastYearUsage} onChange={(e) => setLastYearUsage(e.target.value)} readOnly/>
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-6">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                YTD Turns:
+                                            </label>
+                                            <div className="col-sm-6">
+                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={YTDTurns} onChange={(e) => setYTDTurns(e.target.value)} readOnly/>
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Last Year Turns:
+                                            </label>
+                                            <div className="col-sm-6">
+                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={LastYearTurns} onChange={(e) => setLastYearTurns(e.target.value)} readOnly/>
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-6">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                YTD Stockouts:
+                                            </label>
+                                            <div className="col-sm-6">
+                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={YTDStockouts} onChange={(e) => setYTDStockouts(e.target.value)} readOnly/>
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Last Year Stockouts:
+                                            </label>
+                                            <div className="col-sm-6">
+                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={LastYearStockouts} onChange={(e) => setLastYearStockouts(e.target.value)} readOnly/>
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                {/* ************************************* Radio box *************************************** */}
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <div className="row col-form-label">
+                                                <div className="col-md-2">
+                                                    <Form.Group className="row" controlId="validation_Type">
+                                                    <th className="col-sm-8">Costing Rule</th>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-5">
+                                                    <Form.Group className="row" controlId="validation_Type">
+                                                    <th className="col-sm-4">Item Cost (A)</th>
+                                                    <th className="col-sm-4">Total On-Hand (B)</th>
+                                                    <th className="col-sm-4">Total Repair Location (C)</th>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-5">
+                                                    <Form.Group className="row" controlId="validation_Type">
+                                                    <th className="col-sm-4">Value A * (B-C)</th>
+                                                    <th className="col-sm-4">Surcharge</th>
+                                                    <th className="col-sm-4">Surcharge Value</th>
+                                                    </Form.Group>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                    <hr className="mt-0"></hr>
+
+                                    <div className="status-container">
+                                        <div className="status-box">
+                                            <Form.Group className="row">
+                                            <fieldset className="p-3 w-100">
+
+                                                <div className="row">
+                                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                                        <div className="row">
+
+                                                            <div className="col-md-2">
+                                                                <Form.Group className="row" controlId="validation_Average">
+                                                                    <div className="col-sm-2 form-check">
+                                                                        <label className="form-check-label">
+                                                                            <input type="radio" 
+                                                                                name='Average'
+                                                                                value='Average'
+                                                                                checked={radio === 'Average'}
+                                                                                onChange={handleRadioChange}
+                                                                            />
+                                                                            <i className="input-helper"></i>
+                                                                        </label>
+                                                                    </div>
+                                                                    <label className="col-sm-7 col-form-label">Average</label>
+                                                                </Form.Group>
+                                                            </div> 
+
+
+                                                            <div className="col-md-5">
+                                                                <Form.Group className="row" controlId="validation_Average1">
+                                                                    {radio === 'Average' && (
+                                                                    <div className="col-sm-4">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={Average} onChange={handleAverageChange} />
+                                                                    </div>
+                                                                    )}
+
+                                                                    {radio === 'Average' && (
+                                                                    <div className="col-sm-4">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
+                                                                    </div>
+                                                                    )}
+
+                                                                    {radio === 'Average' && (
+                                                                    <div className="col-sm-4">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
+                                                                    </div>
+                                                                    )}
+                                                                </Form.Group>
+                                                            </div>
+
+
+                                                            <div className="col-md-5">
+                                                                <Form.Group className="row" controlId="validation_Average2">
+                                                                    {radio === 'Average' && (
+                                                                    <div className="col-sm-4">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
+                                                                    </div>
+                                                                    )}
+
+                                                                    {radio === 'Average' && (
+                                                                    <div className="col-sm-4">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0' readOnly/>
+                                                                    </div>
+                                                                    )}
+
+                                                                    {radio === 'Average' && (
+                                                                    <div className="col-sm-4">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
+                                                                    </div>
+                                                                    )}
+                                                                </Form.Group>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div className="row">
+                                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                                        <div className="row">
+
+                                                            <div className="col-md-2">
+                                                                <Form.Group className="row" controlId="validation_Standard">
+                                                                    <div className="col-sm-2 form-check">
+                                                                        <label className="form-check-label">
+                                                                            <input type="radio" 
+                                                                                name='Standard'
+                                                                                value='Standard'
+                                                                                checked={radio === 'Standard'}
+                                                                                onChange={handleRadioChange}
+                                                                            />
+                                                                            <i className="input-helper"></i>
+                                                                        </label>
+                                                                    </div>
+                                                                    <label className="col-sm-7 col-form-label">Standard</label>
+                                                                </Form.Group>
+                                                            </div> 
+
+
+                                                            <div className="col-md-5">
+                                                                <Form.Group className="row" controlId="validation_Standard1">
+                                                                    {radio === 'Standard' && (
+                                                                    <div className="col-sm-4">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={Standard} onChange={handleStandardChange} />
+                                                                    </div>
+                                                                    )}
+
+                                                                    {radio === 'Standard' && (
+                                                                    <div className="col-sm-4">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
+                                                                    </div>
+                                                                    )}
+
+                                                                    {radio === 'Standard' && (
+                                                                    <div className="col-sm-4">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
+                                                                    </div>
+                                                                    )}
+                                                                </Form.Group>
+                                                            </div>
+
+
+                                                            <div className="col-md-5">
+                                                                <Form.Group className="row" controlId="validation_Standard2">
+                                                                    {radio === 'Standard' && (
+                                                                    <div className="col-sm-4">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
+                                                                    </div>
+                                                                    )}
+
+                                                                    {radio === 'Standard' && (
+                                                                    <div className="col-sm-4">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0' readOnly/>
+                                                                    </div>
+                                                                    )}
+
+                                                                    {radio === 'Standard' && (
+                                                                    <div className="col-sm-4">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
+                                                                    </div>
+                                                                    )}
+                                                                </Form.Group>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div className="row">
+                                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                                        <div className="row">
+
+                                                            <div className="col-md-2">
+                                                                <Form.Group className="row" controlId="validation_Last">
+                                                                    <div className="col-sm-2 form-check">
+                                                                        <label className="form-check-label">
+                                                                            <input type="radio" 
+                                                                                name='Last'
+                                                                                value='Last'
+                                                                                checked={radio === 'Last'}
+                                                                                onChange={handleRadioChange}
+                                                                            />
+                                                                            <i className="input-helper"></i>
+                                                                        </label>
+                                                                    </div>
+                                                                    <label className="col-sm-7 col-form-label">Last</label>
+                                                                </Form.Group>
+                                                            </div> 
+
+
+                                                            <div className="col-md-5">
+                                                                <Form.Group className="row" controlId="validation_Last1">
+                                                                    {radio === 'Last' && (
+                                                                    <div className="col-sm-4">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={Last} onChange={handleLastChange} />
+                                                                    </div>
+                                                                    )}
+
+                                                                    {radio === 'Last' && (
+                                                                    <div className="col-sm-4">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
+                                                                    </div>
+                                                                    )}
+
+                                                                    {radio === 'Last' && (
+                                                                    <div className="col-sm-4">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
+                                                                    </div>
+                                                                    )}
+                                                                </Form.Group>
+                                                            </div>
+
+
+                                                            <div className="col-md-5">
+                                                                <Form.Group className="row" controlId="validation_Last2">
+                                                                    {radio === 'Last' && (
+                                                                    <div className="col-sm-4">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
+                                                                    </div>
+                                                                    )}
+
+                                                                    {radio === 'Last' && (
+                                                                    <div className="col-sm-4">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0' readOnly/>
+                                                                    </div>
+                                                                    )}
+
+                                                                    {radio === 'Last' && (
+                                                                    <div className="col-sm-4">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
+                                                                    </div>
+                                                                    )}
+                                                                </Form.Group>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div className="row">
+                                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                                        <div className="row">
+
+                                                            <div className="col-md-2">
+                                                                <Form.Group className="row" controlId="validation_FIFO">
+                                                                    <div className="col-sm-2 form-check">
+                                                                        <label className="form-check-label">
+                                                                            <input type="radio" 
+                                                                                name='FIFO'
+                                                                                value='FIFO'
+                                                                                checked={radio === 'FIFO'}
+                                                                                onChange={handleRadioChange}
+                                                                            />
+                                                                            <i className="input-helper"></i>
+                                                                        </label>
+                                                                    </div>
+                                                                    <label className="col-sm-7 col-form-label">FIFO</label>
+                                                                </Form.Group>
+                                                            </div> 
+
+
+                                                            <div className="col-md-5">
+                                                                <Form.Group className="row" controlId="validation_FIFO1">
+                                                                    {radio === 'FIFO' && (
+                                                                    <div className="col-sm-4 form-checkxxxxx">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
+                                                                    </div>
+                                                                    )}
+
+                                                                    {radio === 'FIFO' && (
+                                                                    <div className="col-sm-4 form-checkxxxxx">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
+                                                                    </div>
+                                                                    )}
+
+                                                                    {radio === 'FIFO' && (
+                                                                    <div className="col-sm-4 form-checkxxxxx">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
+                                                                    </div>
+                                                                    )}
+                                                                </Form.Group>
+                                                            </div>
+
+
+                                                            <div className="col-md-5">
+                                                                <Form.Group className="row" controlId="validation_FIFO2">
+                                                                    {radio === 'FIFO' && (
+                                                                    <div className="col-sm-4 form-checkxxxxx">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
+                                                                    </div>
+                                                                    )}
+
+                                                                    {radio === 'FIFO' && (
+                                                                    <div className="col-sm-4 form-checkxxxxx">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0' readOnly/>
+                                                                    </div>
+                                                                    )}
+
+                                                                    {radio === 'FIFO' && (
+                                                                    <div className="col-sm-4 form-checkxxxxx">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
+                                                                    </div>
+                                                                    )}
+                                                                </Form.Group>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </fieldset>
+                                            </Form.Group>
+
+                                        </div>
+                                    </div>
+
+                                </Tab>
+
+
+                                {/* ************************************* Location ************************************ */}
+
+                                <Tab eventKey="Location" title={<><i className="mdi mdi-map-marker-radius"></i><span className="d-none d-md-inline"> Location</span></>} class="nav-link active">
+                                    
+                                    {/* <InventoryLocation name={'InventoryFrom'}  data={{RowID: location.state.RowID }}/> */}
+
+                                </Tab>
+
+
+                                {/* ************************************* Supplier ************************************ */}
+
+                                <Tab eventKey="Supplier" title={<><i className="mdi mdi-truck-fast"></i><span className="d-none d-md-inline"> Supplier</span></>} class="nav-link active">
+
+                                    {/* <InventorySupplier name={'InventoryFrom'}  data={{RowID: location.state.RowID }}/> */}
+
+                                </Tab>
+
+
+                                {/* ************************************* Reference ************************************ */}
+
+                                <Tab eventKey="Reference" title={<><i className="mdi mdi-folder-upload"></i><span className="d-none d-md-inline"> Reference</span></>} class="nav-link active">
+                                    
+                                    <Form.Group>
+                                        <label>File upload</label>
+                                        <div className="custom-file">
+                                            <Form.Control type="file" className="form-control visibility-hidden" id="customFileLang" lang="es"/>
+                                            <label className="custom-file-label" htmlFor="customFileLang">Upload image</label>
+                                        </div>
+                                    </Form.Group> 
+
+                                </Tab>
+
+
+                            </Tabs>
+                        </section>
+                    </form>
+
+
+                            {/* ************************************* button ***************************************** */}
+
+                        <div className="page-header">
+                        <h3 className="page-title"></h3>
+                        <nav aria-label="breadcrumb">
+                            <ol className="breadcrumb">
+                            <div className="template-demo">
+                                <button
+                                type="button"
+                                className="btn btn-success btn-icon-text"
+                                onClick={onClickChange}
+                                >
+                                <i className="mdi mdi-file-check btn-icon-prepend"></i>{" "}
+                                {Button_save}
+                                </button>
+
+                                <button
+                                type="button"
+                                className="btn btn-danger btn-icon-text"
+                                >
+                                <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i>{" "}
+                                Cancel
+                                </button>
+                            </div>
+                            </ol>
+                        </nav>
                         </div>
-                        </ol>
-                    </nav>
                     </div>
-                </div>
                 </div>
             </div>
         </div>
