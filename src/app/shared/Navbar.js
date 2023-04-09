@@ -53,7 +53,7 @@ class Navbar extends Component {
     return (
       <nav className="navbar col-lg-12 col-12 p-lg-0 fixed-top d-flex flex-row">
         <div className="navbar-underline navbar-menu-wrapper d-flex align-items-center justify-content-between">
-        <a className="navbar-brand brand-logo-mini align-self-center d-lg-none" href="!#" onClick={evt =>evt.preventDefault()}><img src={require("../../assets/images/logo-mini.svg")} alt="logo" /></a>
+        <a className="navbar-brand brand-logo-mini align-self-center d-lg-none" href="!#" onClick={evt =>evt.preventDefault()}><img src={require("../../assets/images/logo.png")} alt="logo" style={{ width: '50px', height: '50px' }} /></a>
           <button className="navbar-toggler align-self-center" type="button" onClick={this.toggleSidebarIcon}>
             <i className="mdi mdi-format-indent-decrease"></i>
             <i className="mdi mdi-format-indent-increase d-none"></i>
