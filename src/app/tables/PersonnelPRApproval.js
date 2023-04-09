@@ -17,7 +17,7 @@ import Moment from 'moment';
 import  {useLocation}  from 'react-router-dom';
 
 
-const PersonnelMaintenance = (props) => {
+const PersonnelPRApproval = (props) => {
  
 
   const [Header, setHeader] = React.useState([]);
@@ -30,15 +30,10 @@ const PersonnelMaintenance = (props) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [Craft, setCraft] = useState([]);
-  const [selected_Craft, setSelected_Craft] = useState([]);
+  const [CostCenter, setCostCenter] = useState([]);
+  const [selected_CostCenter, setSelected_CostCenter] = useState([]);
 
-  const [SupervisorID, setSupervisorID] = useState([]);
-  const [selected_SupervisorID, setSelected_SupervisorID] = useState([]);
-
-  const [PayRate, setPayRate] = useState("0");
-
-  const [ChargeRate, setChargeRate] = useState("0");
+  const [ApprovalLimit, setApprovalLimit] = useState("0");
 
   const location = useLocation();
   
@@ -48,8 +43,8 @@ const PersonnelMaintenance = (props) => {
 
 
 
-  const get_employeemaster_maintenance = (site_ID, RowID) => {
-    APIServices.get_employeemaster_maintenance(site_ID, RowID)
+  const get_employeemaster_pr_approval = (site_ID, RowID) => {
+    APIServices.get_employeemaster_pr_approval(site_ID, RowID)
         .then((responseJson) => {
         console.log("Login JSON DATA : ", responseJson);
 
@@ -79,7 +74,7 @@ const PersonnelMaintenance = (props) => {
 
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
-    get_employeemaster_maintenance(site_ID, props.data.RowID);
+    get_employeemaster_pr_approval(site_ID, props.data.RowID);
   }, []);
 
 
@@ -99,17 +94,11 @@ const PersonnelMaintenance = (props) => {
                console.log('get_dropdown', responseJson.data)
 
 
-                let Craft = responseJson.data.data.Employee_Primary_Craft.map(item => ({
-                    label: item.crf_mst_crf_cd +" : "+ item.crf_mst_desc,
-                    value: item.crf_mst_crf_cd            
+                let CostCenter = responseJson.data.data.CostCenter.map(item => ({
+                    label: item.costcenter +" : "+ item.descs,
+                    value: item.costcenter            
                     }));
-                    setCraft(Craft);
-
-                let SupervisorID = responseJson.data.data.Employee_Supervisor_Id.map(item => ({
-                    label: item.emp_mst_empl_id +" : "+ item.emp_mst_name,
-                    value: item.emp_mst_empl_id            
-                    }));
-                    setSupervisorID(SupervisorID);
+                    setCostCenter(CostCenter);
 
 
                     //get_dropdown_ParentFlag(site_ID,selected_asset);  
@@ -159,10 +148,8 @@ const PersonnelMaintenance = (props) => {
                 setRowID( responseJson.data.data[index].RowID )
 
 
-                setSelected_Craft( {label:responseJson.data.data[index].emp_ls1_craft} )
-                setSelected_SupervisorID( {label:responseJson.data.data[index].emp_ls1_supervisor_id} )
-                setPayRate( responseJson.data.data[index].emp_ls1_pay_rate )
-                setChargeRate( responseJson.data.data[index].emp_ls1_charge_rate )
+                setSelected_CostCenter( {label:responseJson.data.data[index].emp_ls2_costcenter} )
+                setApprovalLimit( responseJson.data.data[index].emp_ls2_pr_approval_limit )
                
               }
 
@@ -225,11 +212,9 @@ const PersonnelMaintenance = (props) => {
         <tr key={result.site_cd}>
             <td>{ <IndeterminateCheckbox {...result} checked={isCheckedList[index]} onChange={() => handleCheckboxChange(index)} />}</td>
             
-            <td>{result.emp_ls1_craft}</td>
-            <td>{result.emp_ls1_supervisor_id}</td>
-            <td>{result.emp_ls1_pay_rate}</td>
-            <td>{result.emp_ls1_charge_rate}</td>
-            
+            <td>{result.emp_ls2_costcenter}</td>
+            <td>{result.emp_ls2_pr_approval_limit}</td>
+
         </tr>
         );
     });
@@ -287,26 +272,26 @@ const PersonnelMaintenance = (props) => {
             </div>                     
         </div> 
 
-            {/******************** Personnel Maintenance ********************/}
+            {/******************** Personnel PR Approval ********************/}
             <div>
                 <Modal show={show} onHide={handleClose} centered >
 
                     <Modal.Header closeButton>
-                        <Modal.Title>Maintenance</Modal.Title>
+                        <Modal.Title>PR Approval</Modal.Title>
                     </Modal.Header>
 
 
                     <Modal.Body>
                         <div className="col-md-12">
-                            <Form.Group className="row" controlId="validation_Craft">
-                                <label className="col-sm-4 col-form-label">Craft:</label>
+                            <Form.Group className="row" controlId="validation_CostCenter">
+                                <label className="col-sm-4 col-form-label">Cost Center:</label>
                                 <div className="col-sm-8">
                                 <label className="col-sm-10 form-label">
                                     <Select  
                                        isClearable={true}  
-                                       options={Craft}
-                                       value={selected_Craft}
-                                       onChange={setSelected_Craft} // using id as it is unique
+                                       options={CostCenter}
+                                       value={selected_CostCenter}
+                                       onChange={setSelected_CostCenter} // using id as it is unique
                                        required
                                        styles={{ 
                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -319,54 +304,16 @@ const PersonnelMaintenance = (props) => {
                         </div>
 
                         <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                            <Form.Group className="row" controlId="validation_SupervisorID">
-                                <label className="col-sm-4 col-form-label">Supervisor ID:</label>
-                                <div className="col-sm-8">
-                                <label className="col-sm-10 form-label">
-                                    <Select  
-                                       isClearable={true}  
-                                       options={SupervisorID}
-                                       value={selected_SupervisorID}
-                                       onChange={setSelected_SupervisorID} // using id as it is unique
-                                       required
-                                       styles={{ 
-                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                    }}
-                                    />
-                                </label>
-                                </div>
-                            </Form.Group>
-                        </div>
-
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                            <Form.Group className="row" controlId="validation_PayRate">
-                                <label className="col-sm-4 col-form-label">Pay Rate:</label>
+                            <Form.Group className="row" controlId="validation_ApprovalLimit">
+                                <label className="col-sm-4 col-form-label">Approval Limit:</label>
                                 <div className="col-sm-8 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control  
                                         style={{ fontSize: "13px", height: "38px" }}
                                         type="number"  
                                         placeholder=".00" 
-                                        value={PayRate} 
-                                        onChange={(e) => setPayRate(e.target.value)}
-                                        />
-                                </label>
-                                </div>
-                            </Form.Group>
-                        </div>
-
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                            <Form.Group className="row" controlId="validation_ChargeRate">
-                                <label className="col-sm-4 col-form-label">Charge Rate:</label>
-                                <div className="col-sm-8 form-label">
-                                <label className="col-sm-10 form-label">
-                                    <Form.Control  
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="number"  
-                                        placeholder=".00" 
-                                        value={ChargeRate} 
-                                        onChange={(e) => setChargeRate(e.target.value)}
+                                        value={ApprovalLimit} 
+                                        onChange={(e) => setApprovalLimit(e.target.value)}
                                         />
                                 </label>
                                 </div>
@@ -413,4 +360,4 @@ const PersonnelMaintenance = (props) => {
   );
 };
 
-export default PersonnelMaintenance;
+export default PersonnelPRApproval;

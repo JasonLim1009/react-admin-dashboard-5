@@ -17,7 +17,7 @@ import Moment from 'moment';
 import  {useLocation}  from 'react-router-dom';
 
 
-const PersonnelMaintenance = (props) => {
+const PersonnelStockLocation = (props) => {
  
 
   const [Header, setHeader] = React.useState([]);
@@ -30,15 +30,11 @@ const PersonnelMaintenance = (props) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [Craft, setCraft] = useState([]);
-  const [selected_Craft, setSelected_Craft] = useState([]);
+  const [List, setList] = useState(false);
+  const [CheckBox_List, setCheckBox_List] = useState('0');
 
-  const [SupervisorID, setSupervisorID] = useState([]);
-  const [selected_SupervisorID, setSelected_SupervisorID] = useState([]);
-
-  const [PayRate, setPayRate] = useState("0");
-
-  const [ChargeRate, setChargeRate] = useState("0");
+  const [Change, setChange] = useState(false);
+  const [CheckBox_Change, setCheckBox_Change] = useState('0');
 
   const location = useLocation();
   
@@ -48,8 +44,8 @@ const PersonnelMaintenance = (props) => {
 
 
 
-  const get_employeemaster_maintenance = (site_ID, RowID) => {
-    APIServices.get_employeemaster_maintenance(site_ID, RowID)
+  const get_employeemaster_stock_location = (site_ID, RowID) => {
+    APIServices.get_employeemaster_stock_location(site_ID, RowID)
         .then((responseJson) => {
         console.log("Login JSON DATA : ", responseJson);
 
@@ -79,7 +75,7 @@ const PersonnelMaintenance = (props) => {
 
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
-    get_employeemaster_maintenance(site_ID, props.data.RowID);
+    get_employeemaster_stock_location(site_ID, props.data.RowID);
   }, []);
 
 
@@ -97,19 +93,6 @@ const PersonnelMaintenance = (props) => {
 
 
                console.log('get_dropdown', responseJson.data)
-
-
-                let Craft = responseJson.data.data.Employee_Primary_Craft.map(item => ({
-                    label: item.crf_mst_crf_cd +" : "+ item.crf_mst_desc,
-                    value: item.crf_mst_crf_cd            
-                    }));
-                    setCraft(Craft);
-
-                let SupervisorID = responseJson.data.data.Employee_Supervisor_Id.map(item => ({
-                    label: item.emp_mst_empl_id +" : "+ item.emp_mst_name,
-                    value: item.emp_mst_empl_id            
-                    }));
-                    setSupervisorID(SupervisorID);
 
 
                     //get_dropdown_ParentFlag(site_ID,selected_asset);  
@@ -155,14 +138,11 @@ const PersonnelMaintenance = (props) => {
                
                for (var index in responseJson.data.data) {
                
-                
                 setRowID( responseJson.data.data[index].RowID )
 
 
-                setSelected_Craft( {label:responseJson.data.data[index].emp_ls1_craft} )
-                setSelected_SupervisorID( {label:responseJson.data.data[index].emp_ls1_supervisor_id} )
-                setPayRate( responseJson.data.data[index].emp_ls1_pay_rate )
-                setChargeRate( responseJson.data.data[index].emp_ls1_charge_rate )
+                setList( responseJson.data.data[index].usg_itm_list )
+                setChange( responseJson.data.data[index].usg_itm_change )
                
               }
 
@@ -225,10 +205,9 @@ const PersonnelMaintenance = (props) => {
         <tr key={result.site_cd}>
             <td>{ <IndeterminateCheckbox {...result} checked={isCheckedList[index]} onChange={() => handleCheckboxChange(index)} />}</td>
             
-            <td>{result.emp_ls1_craft}</td>
-            <td>{result.emp_ls1_supervisor_id}</td>
-            <td>{result.emp_ls1_pay_rate}</td>
-            <td>{result.emp_ls1_charge_rate}</td>
+            <td>{result.usg_itm_location}</td>
+            <td>{result.usg_itm_list}</td>
+            <td>{result.usg_itm_change}</td>
             
         </tr>
         );
@@ -271,6 +250,31 @@ const PersonnelMaintenance = (props) => {
     };
 
 
+    const handleOnChangeList = () => {
+        setList(!List);
+        
+        if(!List){
+            console.log('1')
+            setCheckBox_List('1')
+        }else{
+            console.log('0')
+            setCheckBox_List('0')
+        }
+    }
+
+    const handleOnChangeChange = () => {
+        setChange(!Change);
+        
+        if(!Change){
+            console.log('1')
+            setCheckBox_Change('1')
+        }else{
+            console.log('0')
+            setCheckBox_Change('0')
+        }
+    }
+
+
 
 
   return (
@@ -287,87 +291,43 @@ const PersonnelMaintenance = (props) => {
             </div>                     
         </div> 
 
-            {/******************** Personnel Maintenance ********************/}
+            {/******************** Personnel Stock Location ********************/}
             <div>
                 <Modal show={show} onHide={handleClose} centered >
 
                     <Modal.Header closeButton>
-                        <Modal.Title>Maintenance</Modal.Title>
+                        <Modal.Title>Stock Location</Modal.Title>
                     </Modal.Header>
 
 
                     <Modal.Body>
                         <div className="col-md-12">
-                            <Form.Group className="row" controlId="validation_Craft">
-                                <label className="col-sm-4 col-form-label">Craft:</label>
-                                <div className="col-sm-8">
-                                <label className="col-sm-10 form-label">
-                                    <Select  
-                                       isClearable={true}  
-                                       options={Craft}
-                                       value={selected_Craft}
-                                       onChange={setSelected_Craft} // using id as it is unique
-                                       required
-                                       styles={{ 
-                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                    }}
+                            <Form.Group className="row" controlId="validation_List">
+                                <label className="col-sm-4 col-form-label">List:</label>
+                                <div className="col-sm-4 form-check">
+                                <label className="form-check-label">
+                                    <input type="checkbox" 
+                                    className="form-check-input"
+                                    checked={List}
+                                    onChange={handleOnChangeList}
                                     />
+                                    <i className="input-helper"></i>
                                 </label>
                                 </div>
                             </Form.Group>
                         </div>
 
                         <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                            <Form.Group className="row" controlId="validation_SupervisorID">
-                                <label className="col-sm-4 col-form-label">Supervisor ID:</label>
-                                <div className="col-sm-8">
-                                <label className="col-sm-10 form-label">
-                                    <Select  
-                                       isClearable={true}  
-                                       options={SupervisorID}
-                                       value={selected_SupervisorID}
-                                       onChange={setSelected_SupervisorID} // using id as it is unique
-                                       required
-                                       styles={{ 
-                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                    }}
+                            <Form.Group className="row" controlId="validation_Change">
+                                <label className="col-sm-4 col-form-label">Change:</label>
+                                <div className="col-sm-4 form-check">
+                                <label className="form-check-label">
+                                    <input type="checkbox" 
+                                    className="form-check-input"
+                                    checked={Change}
+                                    onChange={handleOnChangeChange}
                                     />
-                                </label>
-                                </div>
-                            </Form.Group>
-                        </div>
-
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                            <Form.Group className="row" controlId="validation_PayRate">
-                                <label className="col-sm-4 col-form-label">Pay Rate:</label>
-                                <div className="col-sm-8 form-label">
-                                <label className="col-sm-10 form-label">
-                                    <Form.Control  
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="number"  
-                                        placeholder=".00" 
-                                        value={PayRate} 
-                                        onChange={(e) => setPayRate(e.target.value)}
-                                        />
-                                </label>
-                                </div>
-                            </Form.Group>
-                        </div>
-
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                            <Form.Group className="row" controlId="validation_ChargeRate">
-                                <label className="col-sm-4 col-form-label">Charge Rate:</label>
-                                <div className="col-sm-8 form-label">
-                                <label className="col-sm-10 form-label">
-                                    <Form.Control  
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="number"  
-                                        placeholder=".00" 
-                                        value={ChargeRate} 
-                                        onChange={(e) => setChargeRate(e.target.value)}
-                                        />
+                                    <i className="input-helper"></i>
                                 </label>
                                 </div>
                             </Form.Group>
@@ -413,4 +373,4 @@ const PersonnelMaintenance = (props) => {
   );
 };
 
-export default PersonnelMaintenance;
+export default PersonnelStockLocation;

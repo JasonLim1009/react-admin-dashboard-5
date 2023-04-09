@@ -10,21 +10,28 @@ import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 import APIServices from "../services/APIServices";
 
+import { format, setDate } from "date-fns";
 import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Moment from 'moment';
 import  {useLocation}  from 'react-router-dom';
+import logo from '../../assets/images/toolkit.png';
 
 
-const WorkOrderMisc = () => {
+
+const WorkOrderMisc = (props) => {
  
 
-  const [Columns, setColumns] = useState([]);
-  const [Data, setData] = useState([]);
+  const [Header, setHeader] = React.useState([]);
+  const [Result, setResult] = React.useState([]);
 
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {setShow(false); resetData(); };
   const handleShow = () => setShow(true);
+
+  const [showModal, setShowModal] = useState(false);
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
 
   const [Description, setDescription] = useState("");
 
@@ -49,18 +56,21 @@ const WorkOrderMisc = () => {
 
   const [RowID, setRowID] = useState("");
 
+  const [AssetNumber, setAssetNumber] = useState("");
+  const [EstimateCost, setEstimateCost] = useState("");
 
 
 
-  const get_workordermaster_misc = (site_ID) => {
-    APIServices.get_workordermaster_misc(site_ID)
+
+  const get_workordermaster_misc = (site_ID, RowID) => {
+    APIServices.get_workordermaster_misc(site_ID, RowID)
         .then((responseJson) => {
         console.log("Login JSON DATA : ", responseJson);
 
         if (responseJson.data.status === "SUCCESS") {
 
-            setColumns(responseJson.data.data.header);
-            setData(responseJson.data.data.result);
+            setHeader(responseJson.data.data.header);
+            setResult(responseJson.data.data.result);
         
         } else {
             Swal.fire({
@@ -84,76 +94,8 @@ const WorkOrderMisc = () => {
 
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
-    get_workordermaster_misc(site_ID);
+    get_workordermaster_misc(site_ID, props.data.RowID);
   }, []);
-
-
-
-    const IndeterminateCheckbox = React.forwardRef(
-    ({ indeterminate, ...rest }, ref) => {
-        const defaultRef = React.useRef()
-        const resolvedRef = ref || defaultRef
-    
-        React.useEffect(() => {
-        resolvedRef.current.indeterminate = indeterminate
-        }, [resolvedRef, indeterminate])
-    
-        return (
-        <>
-            <input type="checkbox" ref={resolvedRef} {...rest} />
-        </>
-        )
-    }
-    )
-   
-
-    
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-        
-        selectedFlatRows,
-        resetResizing,        
-        state: { selectedRowIds },
-        
-    } = useTable({ columns: Columns, data: Data },useSortBy, useRowSelect, useResizeColumns,
-
-        hooks => {
-            hooks.visibleColumns.push(columns => [
-              // Let's make a column for selection
-              {
-                id: 'selection',
-                // The header can use the table's getToggleAllRowsSelectedProps method
-                // to render a checkbox
-                Header: ({ getToggleAllRowsSelectedProps }) => (
-                  <div>
-                    <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-                  </div>
-                ),
-                // The cell can use the individual row's getToggleRowSelectedProps method
-                // to the render a checkbox
-                Cell: ({ row }) => (
-
-                  <div>                      
-                    <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-                  </div>
-
-                ),
-                
-              },
-              ...columns,
-            ])
-          }
-        )
-
-
-        const handleRowClick = (data) => {
-     
-            console.log(data.col56)
-        };
 
 
 
@@ -191,7 +133,8 @@ const WorkOrderMisc = () => {
                         setAccount(Account);
     
 
-                    //get_dropdown_ParentFlag(site_ID,selected_asset);                  
+                    //get_dropdown_ParentFlag(site_ID,selected_asset);   
+                    get_workordermaster_select(site_ID,selected_asset);               
                     Swal.close();
                 
             }else{
@@ -213,42 +156,6 @@ const WorkOrderMisc = () => {
                 text: e,          
             })
             });
-    }
-    
-    
-    const get_dropdown_ParentFlag = (site_ID,selected_asset) => {  
-    
-    
-        console.log('PARENT FLAG: '+ site_ID + selected_asset)
-        
-        APIServices.get_dropdown_ParentFlag(site_ID,selected_asset).then((responseJson)=>{
-    
-    
-            console.log(responseJson.data.status);
-    
-            if (responseJson.data.status === 'SUCCESS') {  
-    
-                    Swal.close();
-                    setButton_save("Submit")
-                    get_workordermaster_select(site_ID,selected_asset);
-                    
-            }else{
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: responseJson.data,
-                    
-                    })
-            }
-    
-        }).catch((e) => {           
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops get_WorkOrder_select...',
-                text: e,          
-            })
-            });
-    
     }
     
     
@@ -320,8 +227,8 @@ const WorkOrderMisc = () => {
     
         let site_ID = localStorage.getItem("site_ID");
     
-        console.log('select select',location.state.select);
-        console.log('select WKOID',location.state.RowID);
+        // console.log('select select',location.state.select);
+        // console.log('select WKOID',location.state.RowID);
     
         get_workorder_status(site_ID, "All", location.state.select);       
         
@@ -329,20 +236,181 @@ const WorkOrderMisc = () => {
     },[location]);
 
 
+    //Header
+    const renderTableHeader = () => {
+        return (
+          <>
+            <th key="select">
+              {/* <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} /> */}
+            </th>
+            {Object.keys(Header).map((attr) => (
+              <th key={attr}> {attr.toUpperCase()}</th>
+            ))}
+          </>
+        );
+    };
+
+    //Body
+    const renderTableRows = () => {
+    return Result.map((result, index) => {
+
+        if (result.wko_ls5_date == null) {
+            var wkols5_date = ''
+          } else {
     
+            var wkols5_date = format(new Date(result.wko_ls5_date.date), "dd/MM/yyyy HH:MM")
+    
+          }
+
+      return (
+        <tr key={index} onClick={(event) =>handleRowClick(result, event)}>
+
+          <td>{index + 1}</td>
+          <td>{result.wko_ls5_assetno}</td>
+          <td>{result.wko_ls5_desc}</td>
+          <td>{wkols5_date}</td>
+          <td>{result.wko_ls5_uom}</td>
+          <td>{result.wko_ls5_qty}</td>
+          <td>{result.wko_ls5_item_cost}</td>
+          <td>{result.wko_ls5_est_amt}</td>
+          <td>{result.wko_ls5_costcenter}</td>
+          <td>{result.wko_ls5_account}</td>
+         
+        </tr>
+      );
+    });
+    };
+
+
+    const handleRowClick = (data) => {
+        console.log(data)
+    
+        setAssetNumber( data.wko_ls5_assetno )
+        setDescription( data.wko_ls5_desc )
+        //setDate( data.wko_ls5_date.date )
+        setUOM( data.wko_ls5_uom )
+        setQuantity( data.wko_ls5_qty )
+        setItemCost( data.wko_ls5_item_cost )
+        setEstimateCost( data.wko_ls5_est_amt )
+        setCostCenter( data.wko_ls5_costcenter )
+        setAccount( data.wko_ls5_account )
+    
+        setShowModal(true);
+    };
+    
+    const resetData = () => {
+    
+     
+      
+    };
+
+
+    const handleAddButtonClick  = () => {
+
+        let site_ID = localStorage.getItem("site_ID");
+        
+        //Select Account
+        let Account, setAccount;
+        if(selected_Account == '' || selected_Account == null){
+
+            setAccount=''
+        }else{
+
+            Account = selected_Account.label.split(":")
+            setAccount = Account[0];
+            console.log("Account ", Account[0])
+        }
+
+        //Select Cost Center
+        let CostCenter, setCostCenter;
+        if(selected_CostCenter == '' || selected_CostCenter == null){
+
+            setCostCenter=''
+        }else{
+
+            CostCenter = selected_CostCenter.label.split(":")
+            setCostCenter = CostCenter[0];
+            console.log("CostCenter ", CostCenter[0])
+        }
+
+        //Select Misc Date
+        let Misc_Date = ''
+        if (MiscDate == '' || MiscDate == null) {
+
+            Misc_Date = '';
+        } else {
+
+            Misc_Date = Moment(MiscDate).format('yyyy-MM-DD HH:mm:ss').trim();
+            console.log("Date1 ", Misc_Date);
+        }
+
+        //Select Description
+        console.log("Description: ", Description)
+
+        //Select Item Cost
+        console.log("ItemCost: ", ItemCost)
+
+        //Select Quantity
+        console.log("Quantity: ", Quantity)
+
+        //Select UOM
+        let UOM, setUOM;
+        if(selected_UOM == '' || selected_UOM == null){
+
+            setUOM=''
+        }else{
+
+            UOM = selected_UOM.label.split(":")
+            setUOM = UOM[0];
+            console.log("UOM ", UOM[0])
+        }
+
+
+        const newPart = {
+            
+            mst_RowID: location.state.RowID,
+            site_cd: site_ID,
+            wko_ls5_account: setAccount.trim(),
+            wko_ls5_assetno: "E0804-001",
+            wko_ls5_costcenter: setCostCenter.trim(),
+            //wko_ls5_date: Misc_Date,
+            wko_ls5_desc: Description,
+            wko_ls5_est_amt: "0.0000",
+            wko_ls5_item_cost: ItemCost,
+            wko_ls5_qty: Quantity,
+            wko_ls5_uom: setUOM.trim(),
+
+          };
+          // Add new part to partsList
+          setResult([...Result, newPart]);
+          console.log(Result);
+          // Close modal
+          handleClose();
+  };
+
+
+    //Sum calculation
+    const totalQty = Result.reduce((acc, item) => acc + (parseFloat(item.wko_ls5_qty) || 0), 0);
+
+    //Multiply calculation
+    const totalCost = Result.reduce((acc, item) => acc + (parseFloat(item.wko_ls5_qty) || 0) * (parseFloat(item.wko_ls5_item_cost) || 0), 0);
+
+
+
 
   return (
     <div>
-        <div className="page-header">
-            <div className="template-demo" >
-                <button type="button" className="btn btn-outline-primary btn-icon-text"  onClick={handleShow}>
-                    <i className="mdi mdi-file-check btn-icon-prepend"></i> New  
-                </button>
-            
-                <button type="button" className="btn btn-outline-danger btn-icon-text"  >
-                    <i className="mdi mdi-delete-forever btn-icon-prepend"></i> Delete 
-                </button>
-            </div>                     
+        <div style={{ paddingBottom: '20px', backgroundColor: 'white' }}>
+            <div className="template-demo" style={{ display: 'flex', alignItems: 'center' }}>
+
+                <div style={{ marginRight: '10px' }}>
+                    <img src={logo} style={{ width: '60px', height: '60px' }}/>
+                </div>
+                <div className="template-demo" style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ marginRight: '10px', fontWeight: 'bold'}}>Misc</div>
+                    <div><span style={{color: "blue"}}>{(totalQty * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCost.toFixed(2)}</span></div>
+                </div> 
+            </div>
         </div>
 
         <div>
@@ -357,9 +425,10 @@ const WorkOrderMisc = () => {
                     <div className="col-md-12">
                         <Form.Group className="row" controlId="validation_Description">
                             <label className="col-sm-4 col-form-label">Description:</label>
-                            <div className="col-sm-7 form-label">
-                            <label className="col-sm-12 form-label">
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
                                 <Form.Control  
+                                    style={{ fontSize: "13px", height: "38px" }}
                                     type="text"  
                                     value={Description} 
                                     onChange={(e) => setDescription(e.target.value)}
@@ -369,12 +438,13 @@ const WorkOrderMisc = () => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
                             <Form.Group className="row" controlId="validation_Date">
                                 <label className="col-sm-4 col-form-label">Date:</label>
-                                <div className="col-sm-7 form-label">
-                                <label className="col-sm-12 form-label">
-                                    <Form.Control                                            
+                                <div className="col-sm-8 form-label">
+                                <label className="col-sm-10 form-label">
+                                    <Form.Control   
+                                        style={{ fontSize: "13px", height: "38px" }}                                         
                                         type="datetime-local"  
                                         value={MiscDate} 
                                         onChange={(e) => setMiscDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -384,27 +454,34 @@ const WorkOrderMisc = () => {
                             </Form.Group>
                     </div>
 
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
                         <Form.Group className="row" controlId="validation_UOM">
                             <label className="col-sm-4 col-form-label">UOM:</label>
-                            <div className="col-sm-7">
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
                                 <Select  
                                     isClearable={true}  
                                     options={UOM}
                                     value={selected_UOM}
                                     onChange={setSelected_UOM} // using id as it is unique
                                     required
+                                    styles={{ 
+                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                    }}
                                 />
+                            </label>
                             </div>
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
                         <Form.Group className="row" controlId="validation_Quantity">
                             <label className="col-sm-4 col-form-label">Quantity:</label>
-                            <div className="col-sm-7 form-label">
-                            <label className="col-sm-12 form-label">
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
                                 <Form.Control  
+                                    style={{ fontSize: "13px", height: "38px" }}
                                     type="number"  
                                     placeholder=".00" 
                                     value={Quantity} 
@@ -415,12 +492,13 @@ const WorkOrderMisc = () => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
                         <Form.Group className="row" controlId="validation_ItemCost">
                             <label className="col-sm-4 col-form-label">Item Cost:</label>
-                            <div className="col-sm-7 form-label">
-                            <label className="col-sm-12 form-label">
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
                                 <Form.Control  
+                                    style={{ fontSize: "13px", height: "38px" }}
                                     type="number"  
                                     placeholder=".00" 
                                     value={ItemCost} 
@@ -431,32 +509,44 @@ const WorkOrderMisc = () => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
                         <Form.Group className="row" controlId="validation_CostCenter">
                             <label className="col-sm-4 col-form-label">Cost Center:</label>
-                            <div className="col-sm-7">
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
                                 <Select  
                                     isClearable={true}  
                                     options={CostCenter}
                                     value={selected_CostCenter}
                                     onChange={setSelected_CostCenter} // using id as it is unique
                                     required
+                                    styles={{ 
+                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                    }}
                                 />
+                            </label>
                             </div>
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
                         <Form.Group className="row" controlId="validation_Account">
                             <label className="col-sm-4 col-form-label">Account:</label>
-                            <div className="col-sm-7">
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
                                 <Select  
                                     isClearable={true}  
                                     options={Account}
                                     value={selected_Account}
                                     onChange={setSelected_Account} // using id as it is unique
                                     required
+                                    styles={{ 
+                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                    }}
                                 />
+                            </label>
                             </div>
                         </Form.Group>
                     </div>
@@ -466,10 +556,7 @@ const WorkOrderMisc = () => {
                 <Modal.Footer>
 
                     <Button variant="secondary" onClick={handleClose}>Close</Button>
-                    <Button variant="primary" onClick={() => {
-                        // Close modal
-                        handleClose();
-                    }}>
+                    <Button variant="primary" onClick={handleAddButtonClick}>
                     {/* {Button_save} */}
                     Submit
                     </Button>
@@ -477,71 +564,190 @@ const WorkOrderMisc = () => {
 
             </Modal>
 
+
+            {showModal && (
+              <Modal show={showModal} onHide={handleCloseModal} centered >
+
+              <Modal.Header closeButton>
+                  <Modal.Title>Misc</Modal.Title>
+              </Modal.Header>
+
+
+              <Modal.Body>
+                  
+                  <div className="col-md-12">
+                      <Form.Group className="row" controlId="validation_AssetNumber">
+                          <label className="col-sm-4 col-form-label">Asset Number:</label>
+                          <div className="col-sm-8">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={AssetNumber} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_Description">
+                          <label className="col-sm-4 col-form-label">Description:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={Description} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_Date">
+                          <label className="col-sm-4 col-form-label">Date:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={Date} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_UOM">
+                          <label className="col-sm-4 col-form-label">UOM:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={UOM} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_Quantity">
+                          <label className="col-sm-4 col-form-label">Quantity:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={Quantity} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_ItemCost">
+                          <label className="col-sm-4 col-form-label">Item Cost:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={ItemCost} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_EstimateCost">
+                          <label className="col-sm-4 col-form-label">Estimate Cost:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={EstimateCost} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_CostCenter">
+                          <label className="col-sm-4 col-form-label">Cost Center:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={CostCenter} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_Account">
+                          <label className="col-sm-4 col-form-label">Account:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={Account} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+              </Modal.Body>
+              
+              </Modal>
+            )}
         </div> 
 
         <div className="table-responsive">
-            <table className="table table-hover table-bordered " {...getTableProps() } on >
-                <thead>
-                    {headerGroups.map(headerGroup => (
-                        <tr {...headerGroup.getHeaderGroupProps()} className="tr">
-                        
-                            {headerGroup.headers.map(column => (                                    
-                                <th
-                                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                                    
-                                    style={{
-                                        borderBottom: 'solid 3px red',
-                                        color: 'black',
-                                    }}
-
-                                    {...column.getResizerProps()}
-                                        className={`resizer ${
-                                            column.isResizing ? 'isResizing' : ''
-                                        }`}
-                                >                            
-                                    {column.render('Header')}
-
-                                    <span>
-                                        {column.isSorted
-                                            ? column.isSortedDesc
-                                                ? '🔽'
-                                                : '🔼'
-                                            : ''}
-                                    </span>
-                                </th>
-                            ))}
-                        </tr>
-                    ))}
-                        
-                </thead>
-                <tbody {...getTableBodyProps() } >
-                    {rows.map(row => {
-                    prepareRow(row)
-                    return (
-                        <tr {...row.getRowProps()} onClick={() => handleRowClick(row.original)}>
-                        {row.cells.map(cell => {
-                            return (
-                            <>
-                            {/* Here added onClick function to get cell value */}
-                            <td
-                            // onClick={()=> getCellValue(cell)}
-                            //     {...cell.getCellProps()}
-                            //     style={{
-                            //     padding: '10px',
-                            //     border: 'solid 1px gray',
-                            //     background: 'papayawhip',
-                            //     }}
-                            >
-                                {cell.render('Cell')}
-                            </td>
-                            </>
-                            )
-                        })}
-                        </tr>
-                    )
-                    })}                                
-                </tbody>
+            <table
+            className="table table-hover table-bordered"
+            style={{ color: "#000", border: 1 }}
+            >
+            <thead
+                style={{
+                color: "#000",
+                fontWeight: "bold",
+                fontFamily: "montserrat",
+                margin: "5px",
+                }}
+            >
+                <tr>{renderTableHeader()}</tr>
+            </thead>
+            <tbody>{renderTableRows()}</tbody>
             </table>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+            <button type="button" style={{ padding: '5px 10px', background: 'none', color: 'blue', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+            onClick={handleShow}>
+                + Add Misc
+            </button>
         </div>
     </div>
   );

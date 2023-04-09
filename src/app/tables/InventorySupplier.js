@@ -10,17 +10,21 @@ import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 import APIServices from "../services/APIServices";
 
+import { format } from "date-fns";
 import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Moment from 'moment';
 import  {useLocation}  from 'react-router-dom';
 
 
-const InventorySupplier = () => {
+const InventorySupplier = (props) => {
  
 
-  const [Columns, setColumns] = useState([]);
-  const [Data, setData] = useState([]);
+  const [Header, setHeader] = React.useState([]);
+  const [Result, setResult] = React.useState([]);
+
+  const [isHeaderCheckboxChecked, setIsHeaderCheckboxChecked] = useState(false);
+  const [isCheckedList, setIsCheckedList] = useState(Result.map(() => false));
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -57,15 +61,15 @@ const InventorySupplier = () => {
 
 
 
-  const get_inventorymaster_supplier = (site_ID) => {
-    APIServices.get_inventorymaster_supplier(site_ID)
+  const get_inventorymaster_supplier = (site_ID, RowID) => {
+    APIServices.get_inventorymaster_supplier(site_ID, RowID)
         .then((responseJson) => {
         console.log("Login JSON DATA : ", responseJson);
 
         if (responseJson.data.status === "SUCCESS") {
 
-            setColumns(responseJson.data.data.header);
-            setData(responseJson.data.data.result);
+            setHeader(responseJson.data.data.header);
+            setResult(responseJson.data.data.result);
         
         } else {
             Swal.fire({
@@ -88,74 +92,9 @@ const InventorySupplier = () => {
 
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
-    get_inventorymaster_supplier(site_ID);
+    get_inventorymaster_supplier(site_ID, props.data.RowID);
   }, []);
 
-
-    const IndeterminateCheckbox = React.forwardRef(
-    ({ indeterminate, ...rest }, ref) => {
-        const defaultRef = React.useRef()
-        const resolvedRef = ref || defaultRef
-    
-        React.useEffect(() => {
-        resolvedRef.current.indeterminate = indeterminate
-        }, [resolvedRef, indeterminate])
-    
-        return (
-        <>
-            <input type="checkbox" ref={resolvedRef} {...rest} />
-        </>
-        )
-    }
-    )
-   
-    
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-        
-        selectedFlatRows,
-        resetResizing,        
-        state: { selectedRowIds },
-        
-    } = useTable({ columns: Columns, data: Data },useSortBy, useRowSelect, useResizeColumns,
-
-        hooks => {
-            hooks.visibleColumns.push(columns => [
-              // Let's make a column for selection
-              {
-                id: 'selection',
-                // The header can use the table's getToggleAllRowsSelectedProps method
-                // to render a checkbox
-                Header: ({ getToggleAllRowsSelectedProps }) => (
-                  <div>
-                    <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-                  </div>
-                ),
-                // The cell can use the individual row's getToggleRowSelectedProps method
-                // to the render a checkbox
-                Cell: ({ row }) => (
-
-                  <div>                      
-                    <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-                  </div>
-
-                ),
-                
-              },
-              ...columns,
-            ])
-          }
-        )
-
-
-    const handleRowClick = (data) => {
-    
-        console.log(data.col56)
-    };
 
 
     const get_inventory_status = (site_ID, type, selected_asset) => {
@@ -191,9 +130,9 @@ const InventorySupplier = () => {
                     }));
                     setManufacturer(Manufacturer);
 
-
-
-                    //get_dropdown_ParentFlag(site_ID,selected_asset);                  
+                    
+                    //get_dropdown_ParentFlag(site_ID,selected_asset); 
+                    get_inventorymaster_select(site_ID, selected_asset);                 
                     Swal.close();
                 
             }else{
@@ -217,42 +156,6 @@ const InventorySupplier = () => {
           });
     }
 
-
-    const get_dropdown_ParentFlag = (site_ID, selected_asset) => {  
-
-
-        console.log('PARENT FLAG: '+ site_ID + selected_asset)
-        
-        APIServices.get_dropdown_ParentFlag(site_ID, selected_asset).then((responseJson)=>{
-
-
-           console.log(responseJson.data.status);
-
-            if (responseJson.data.status === 'SUCCESS') {  
-
-                    Swal.close();
-                    setButton_save("Submit")
-                    get_inventorymaster_select(site_ID, selected_asset);
-              
-            }else{
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: responseJson.data,
-                    
-                  })
-            }
-
-        }).catch((e) => {           
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops get_Inventory_select...',
-              text: e,          
-            })
-          });
-
-    }
-  
 
     const get_inventorymaster_select = () => {
 
@@ -324,14 +227,104 @@ const InventorySupplier = () => {
 
         let site_ID = localStorage.getItem("site_ID");
 
-        console.log('select select',location.state.select);
-        console.log('select ITMID',location.state.RowID);
+        // console.log('select select',location.state.select);
+        // console.log('select ITMID',location.state.RowID);
     
         get_inventory_status(site_ID, "All", location.state.select);       
        
 
     },[location]);
 
+
+    //Header
+    const renderTableHeader = () => {
+    return (
+        <>
+        <th key="select">
+            <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} />
+        </th>
+        {Object.keys(Header).map((attr) => (
+            <th key={attr}> {attr.toUpperCase()}</th>
+        ))}
+        </>
+    );
+    };
+    
+    //Body    
+    const renderTableRows = () => {
+    return Result.map((result, index) => {
+
+            if (result.itm_sup_last_rcvd_date == null) {
+            var last_rcvd_date = ''
+            } else {
+    
+            var last_rcvd_date = format(new Date(result.itm_sup_last_rcvd_date.date), "dd/MM/yyyy HH:MM")
+    
+            }
+
+        return (
+        <tr key={result.site_cd}>
+            <td>{ <IndeterminateCheckbox {...result} checked={isCheckedList[index]} onChange={() => handleCheckboxChange(index)} />}</td>
+            
+            <td>{result.itm_sup_mfgrank}</td>
+            <td>{result.itm_sup_supplier}</td>
+            <td>{result.itm_sup_tax_cd}</td>
+            <td>{result.itm_sup_supplier_partno}</td>
+            <td>{result.itm_sup_partmfg}</td>
+            <td>{result.itm_sup_file_name}</td>
+            <td>{result.itm_sup_last_itemcost}</td>
+            <td>{result.itm_sup_retail_price}</td>
+            <td>{last_rcvd_date}</td>
+            <td>{result.itm_sup_order_uom}</td>
+            <td>{result.itm_sup_min_orderqty}</td>
+            <td>{result.itm_sup_rcpts_ctr}</td>
+            <td>{result.itm_sup_discount_pct}</td>
+            <td>{result.itm_sup_ord_qty}</td>
+            <td>{result.itm_sup_rcv_qty}</td>
+            <td>{result.itm_sup_late_qty}</td>
+            <td>{result.itm_sup_high_qty}</td>
+            <td>{result.itm_sup_di}</td>
+            <td>{result.itm_sup_ci}</td>
+            
+        </tr>
+        );
+    });
+    };
+
+    //Checkbox
+    const IndeterminateCheckbox = React.forwardRef(
+    ({ indeterminate, onChange, ...rest }, ref) => {
+        
+        const defaultRef = React.useRef()
+        const resolvedRef = ref || defaultRef;
+    
+        React.useEffect(() => {
+        resolvedRef.current.indeterminate = indeterminate
+        }, [resolvedRef, indeterminate])
+
+        const handleChange = (event) => {
+        onChange(event);
+        //setShowButton(event.target.checked);
+        };
+    
+        return (
+        <>
+            <input type="checkbox" ref={resolvedRef} onChange={handleChange} {...rest} />
+        </>
+        )
+    }
+    )
+
+    const handleHeaderCheckboxChange = () => {
+setIsHeaderCheckboxChecked(!isHeaderCheckboxChecked);
+setIsCheckedList(Result.map(() => !isHeaderCheckboxChecked));
+    };
+
+    const handleCheckboxChange = (index) => {
+const newCheckedList = [...isCheckedList];
+newCheckedList[index] = !isCheckedList[index];
+setIsCheckedList(newCheckedList);
+    };
 
 
 
@@ -364,39 +357,52 @@ const InventorySupplier = () => {
                         <div className="col-md-12">
                             <Form.Group className="row" controlId="validation_Supplier">
                                 <label className="col-sm-4 col-form-label">Supplier:</label>
-                                <div className="col-sm-7">
+                                <div className="col-sm-8">
+                                <label className="col-sm-10 form-label">
                                     <Select  
                                        isClearable={true}  
                                        options={Supplier}
                                        value={selected_Supplier}
                                        onChange={setSelected_Supplier} // using id as it is unique
                                        required
+                                       styles={{ 
+                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                    }}
                                     />
+                                </label>
                                 </div>
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12">
+                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
                             <Form.Group className="row" controlId="validation_TaxCode">
                                 <label className="col-sm-4 col-form-label">Tax Code:</label>
-                                <div className="col-sm-7">
+                                <div className="col-sm-8">
+                                <label className="col-sm-10 form-label">
                                     <Select  
                                        isClearable={true}  
                                        options={TaxCode}
                                        value={selected_TaxCode}
                                        onChange={setSelected_TaxCode} // using id as it is unique
                                        required
+                                       styles={{ 
+                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                    }}
                                     />
+                                </label>
                                 </div>
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12">
+                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
                             <Form.Group className="row" controlId="validation_SupplierPartNo">
                                 <label className="col-sm-4 col-form-label">Supplier Part No:</label>
-                                <div className="col-sm-7 form-label">
-                                    <label className="col-sm-12 form-label">
+                                <div className="col-sm-8 form-label">
+                                    <label className="col-sm-10 form-label">
                                         <Form.Control
+                                            style={{ fontSize: "13px", height: "38px" }}
                                             type="text"
                                             value={SupplierPartNo}
                                             onChange={(e) => setSupplierPartNo(e.target.value)}
@@ -406,27 +412,34 @@ const InventorySupplier = () => {
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12">
+                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
                             <Form.Group className="row" controlId="validation_Manufacturer">
                                 <label className="col-sm-4 col-form-label">Manufacturer:</label>
-                                <div className="col-sm-7">
+                                <div className="col-sm-8">
+                                <label className="col-sm-10 form-label">
                                     <Select  
                                        isClearable={true}  
                                        options={Manufacturer}
                                        value={selected_Manufacturer}
                                        onChange={setSelected_Manufacturer} // using id as it is unique
                                        required
+                                       styles={{ 
+                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                    }}
                                     />
+                                </label>
                                 </div>
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12">
+                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
                             <Form.Group className="row" controlId="validation_LastItemCost">
                                 <label className="col-sm-4 col-form-label">Last Item Cost:</label>
-                                <div className="col-sm-7 form-label">
-                                <label className="col-sm-12 form-label">
+                                <div className="col-sm-8 form-label">
+                                <label className="col-sm-10 form-label">
                                     <Form.Control  
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="number"  
                                         placeholder=".0000" 
                                         value={LastItemCost} 
@@ -437,12 +450,13 @@ const InventorySupplier = () => {
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12">
+                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
                             <Form.Group className="row" controlId="validation_RetailItemCost">
                                 <label className="col-sm-4 col-form-label">Retail Item Cost:</label>
-                                <div className="col-sm-7 form-label">
-                                <label className="col-sm-12 form-label">
+                                <div className="col-sm-8 form-label">
+                                <label className="col-sm-10 form-label">
                                     <Form.Control  
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="number"  
                                         placeholder=".00" 
                                         value={RetailItemCost} 
@@ -453,12 +467,13 @@ const InventorySupplier = () => {
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12">
+                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
                             <Form.Group className="row" controlId="validation_LastReceiveDate">
                                 <label className="col-sm-4 col-form-label">Last Receive Date:</label>
-                                <div className="col-sm-7 form-label">
-                                <label className="col-sm-12 form-label">
-                                    <Form.Control                                            
+                                <div className="col-sm-8 form-label">
+                                <label className="col-sm-10 form-label">
+                                    <Form.Control        
+                                        style={{ fontSize: "13px", height: "38px" }}                                    
                                         type="datetime-local"  
                                         value={LastReceiveDate} 
                                         onChange={(e) => setLastReceiveDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -468,12 +483,13 @@ const InventorySupplier = () => {
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12">
+                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
                             <Form.Group className="row" controlId="validation_MinimumOrderQty">
                                 <label className="col-sm-4 col-form-label">Minimum Order Qty:</label>
-                                <div className="col-sm-7 form-label">
-                                <label className="col-sm-12 form-label">
+                                <div className="col-sm-8 form-label">
+                                <label className="col-sm-10 form-label">
                                     <Form.Control  
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="number"  
                                         placeholder=".00" 
                                         value={MinimumOrderQty} 
@@ -484,12 +500,13 @@ const InventorySupplier = () => {
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12">
+                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
                             <Form.Group className="row" controlId="validation_MultiplierQuantity">
                                 <label className="col-sm-4 col-form-label">Multiplier Quantity:</label>
-                                <div className="col-sm-7 form-label">
-                                <label className="col-sm-12 form-label">
+                                <div className="col-sm-8 form-label">
+                                <label className="col-sm-10 form-label">
                                     <Form.Control  
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="number"  
                                         placeholder="0" 
                                         value={MultiplierQuantity} 
@@ -500,12 +517,13 @@ const InventorySupplier = () => {
                             </Form.Group>
                         </div>
                         
-                        <div className="col-md-12">
+                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
                             <Form.Group className="row" controlId="validation_Discount">
                                 <label className="col-sm-4 col-form-label">Discount %:</label>
-                                <div className="col-sm-7 form-label">
-                                <label className="col-sm-12 form-label">
+                                <div className="col-sm-8 form-label">
+                                <label className="col-sm-10 form-label">
                                     <Form.Control  
+                                        style={{ fontSize: "13px", height: "38px" }}
                                         type="number"  
                                         placeholder="0.00" 
                                         value={Discount} 
@@ -535,67 +553,21 @@ const InventorySupplier = () => {
             </div> 
 
         <div className="table-responsive">
-            <table className="table table-hover table-bordered " {...getTableProps() } on >
-                <thead>
-                    {headerGroups.map(headerGroup => (
-                        <tr {...headerGroup.getHeaderGroupProps()} className="tr">
-                        
-                            {headerGroup.headers.map(column => (                                    
-                                <th
-                                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                                    
-                                    style={{
-                                        borderBottom: 'solid 3px red',
-                                        color: 'black',
-                                    }}
-
-                                    {...column.getResizerProps()}
-                                        className={`resizer ${
-                                            column.isResizing ? 'isResizing' : ''
-                                        }`}
-                                >                            
-                                    {column.render('Header')}
-
-                                    <span>
-                                        {column.isSorted
-                                            ? column.isSortedDesc
-                                                ? '🔽'
-                                                : '🔼'
-                                            : ''}
-                                    </span>
-                                </th>
-                            ))}
-                        </tr>
-                    ))}
-                        
-                </thead>
-                <tbody {...getTableBodyProps() } >
-                    {rows.map(row => {
-                    prepareRow(row)
-                    return (
-                        <tr {...row.getRowProps()} onClick={() => handleRowClick(row.original)}>
-                        {row.cells.map(cell => {
-                            return (
-                            <>
-                            {/* Here added onClick function to get cell value */}
-                            <td
-                            // onClick={()=> getCellValue(cell)}
-                            //     {...cell.getCellProps()}
-                            //     style={{
-                            //     padding: '10px',
-                            //     border: 'solid 1px gray',
-                            //     background: 'papayawhip',
-                            //     }}
-                            >
-                                {cell.render('Cell')}
-                            </td>
-                            </>
-                            )
-                        })}
-                        </tr>
-                    )
-                    })}                                
-                </tbody>
+            <table
+              className="table table-hover table-bordered"
+              style={{ color: "#000", border: 1 }}
+              >
+              <thead
+                  style={{
+                  color: "#000",
+                  fontWeight: "bold",
+                  fontFamily: "montserrat",
+                  margin: "5px",
+                  }}
+              >
+                  <tr>{renderTableHeader()}</tr>
+              </thead>
+              <tbody>{renderTableRows()}</tbody>
             </table>
         </div>
     </div>

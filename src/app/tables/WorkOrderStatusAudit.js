@@ -18,7 +18,7 @@ const StepContainer = styled.div`
     width: 2px;
     top: 50%;
     transform: translateY(-50%);
-    left: 14px;
+    left: 15px;
   }
   :after {
     content: '';
@@ -38,20 +38,27 @@ const WorkOrderStatusAudit = (props) => {
 
   const [steps, setsteps] = useState([]);
   
-  const [handlesresult, sethandlesresult] = useState([]);
 
-  const [WorkOrderNo, setWorkOrderNo] = useState("");
-
-  const [Status, setStatus] = useState([]);
-
-  const [StartDate, setStartDate] = useState(Moment().utcOffset('+08:00').format('YYYY-MM-DDTHH:mm:ss'));
-
-  const [EndDate, setEndDate] = useState(Moment().utcOffset('+08:00').format('YYYY-MM-DDTHH:mm:ss'));
-
+  const formatDuration = (duration) => {
+   // const seconds = Math.floor(duration % 60);
+    const minutes = Math.floor((duration % 60));
+    const hours = Math.floor((duration % 1440) / 60);
+    const days = Math.floor(duration / 1440);
+    
+    if (days > 0) {
+      return `${days}d: ${hours}h: ${minutes}m`;
+    } else if (hours > 0) {
+      return `${hours}h: ${minutes}m`;
+    } else if (minutes > 0) {
+      return `${minutes}m`;
+    } else {
+      return "";
+    }
+    // return `${days}d: ${hours}h: ${minutes}m`;
+  }
 
 
   const getsteps = (site_ID, RowID, wko_sts_wo_no) => {
-
    
     Swal.fire({ title: 'Please Wait !', allowOutsideClick: false });
     Swal.showLoading();
@@ -61,22 +68,17 @@ const WorkOrderStatusAudit = (props) => {
 
       if (responseJson.data.status === 'SUCCESS') {
 
-
         console.log('get_workordermaster_statusaudit', responseJson.data.data)
 
         // var stepsvalue =[];
-
         // for (var index in responseJson.data.data.WorkorderStatus) { 
-
         //   stepsvalue.push(responseJson.data.data.WorkorderStatus.item[index])
-
         // }
 
-
         let Status = responseJson.data.data.map((item, index) => ({
-          label: item.wko_sts_status,
+          label: item.wrk_sts_desc,
           label1: item.wko_sts_status,
-          label2: item.wko_sts_originator,
+          label2: item.emp_mst_name,
           label3: item.wko_sts_originator,
           label4: `${new Date(item.wko_sts_start_date.date).toLocaleString("default", {
             weekday: "short",
@@ -87,14 +89,13 @@ const WorkOrderStatusAudit = (props) => {
             minute: "numeric",
             second: "numeric",
           })}`,
-          label5: item.wko_sts_duration,
+          label5: formatDuration(item.duration),
           step: index + 1
         // step: item.length+1
         // {console.log(item.length)}
         // step: +1
         }));
         setsteps(Status);
-
    
         Swal.close();
 
@@ -145,18 +146,18 @@ const WorkOrderStatusAudit = (props) => {
                 {/************* * {props.data.Workorderno} * ************/}
                   <h3 className="page-title">Work Order Status Audit</h3>
                 </div>
-                  <div style={{ width: "100%", maxWidth: "600px", padding: "0 160px", marginTop: "-60px", marginLeft: "-20px"  }}>
+                  <div style={{ width: "100%", maxWidth: "600px", marginTop: "-60px", marginLeft: "110px"  }}>
 
                     <StepContainer>
                       {steps.map(({ step, label, label1, label2, label3, label4, label5 }) => (
                         <div key={step} style={{ position: "relative", zIndex: 1 }}>
-                          <div style={{ fontSize: "11px", color: "grey", position: 'absolute', left: '-100px', top: '45px', width: '100px', height: '20px', borderRadius: '5%', backgroundColor: '#f3f3f3' }}>{label5}</div>
+                          <div style={{ fontSize: "11px", color: "grey", position: 'absolute', left: '-81px', top: '45px', width: '80px', height: '20px', borderRadius: '5%' }}>{label5}</div>
                             <div step={step} style={{ width: '30px', height: '30px', borderRadius: '50%', backgroundColor: '#4694d1', border: `3px solid ${step === 'completed' ? '#0080FF' : '#F3E7F3'}`, transition: '0.4s ease', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                 <div style={{ fontSize: "15px", color: "#f3e7f3" }}>{step}</div>
                             </div>
 
                             <div style={{ position: 'relative', bottom: '30px', textAlign: 'left', left: '50px' }}>
-                              <div key={step} style={{ fontSize: "15px", color: "#4a154b" }}>{label}({label1})</div>
+                              <div key={step} style={{ fontSize: "15px", color: "#4a154b" }}>{label} ({label1})</div>
                             </div>
 
                             <div style={{ position: 'relative', bottom: '30px', textAlign: 'left', left: '50px' }}>
@@ -175,7 +176,7 @@ const WorkOrderStatusAudit = (props) => {
           </table>
       </div>
     </div>
-  )
+  );
 }
 
 export default WorkOrderStatusAudit;

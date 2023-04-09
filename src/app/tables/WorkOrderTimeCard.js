@@ -10,21 +10,26 @@ import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 import APIServices from "../services/APIServices";
 
+import { format, setHours } from "date-fns";
 import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Moment from 'moment';
 import  {useLocation}  from 'react-router-dom';
 
 
-const WorkOrderTimeCard = () => {
+const WorkOrderTimeCard = (props) => {
  
 
-  const [Columns, setColumns] = useState([]);
-  const [Data, setData] = useState([]);
+  const [Header, setHeader] = React.useState([]);
+  const [Result, setResult] = React.useState([]);
 
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {setShow(false); resetData(); };
   const handleShow = () => setShow(true);
+  
+  const [showModal, setShowModal] = useState(false);
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
 
   const [EmployeeID, setEmployeeID] = useState([]);
   const [selected_EmployeeID, setSelected_EmployeeID] = useState([]);
@@ -57,17 +62,24 @@ const WorkOrderTimeCard = () => {
 
   const [RowID, setRowID] = useState("");
 
+  const [AssetNo, setAssetNo] = useState("");
+  const [Rate, setRate] = useState("");
+  const [Multiplier, setMultiplier] = useState("");
+  const [Adder, setAdder] = useState("");
+  const [ActualCost, setActualCost] = useState("");
+  const [TimeCardNo, setTimeCardNo] = useState("");
 
+  
 
-  const get_workordermaster_timecard = (site_ID) => {
-    APIServices.get_workordermaster_timecard(site_ID)
+  const get_workordermaster_timecard = (site_ID, RowID) => {
+    APIServices.get_workordermaster_timecard(site_ID, RowID)
         .then((responseJson) => {
         console.log("Login JSON DATA : ", responseJson);
 
         if (responseJson.data.status === "SUCCESS") {
 
-            setColumns(responseJson.data.data.header);
-            setData(responseJson.data.data.result);
+            setHeader(responseJson.data.data.header);
+            setResult(responseJson.data.data.result);
         
         } else {
             Swal.fire({
@@ -88,79 +100,10 @@ const WorkOrderTimeCard = () => {
     };
 
 
-
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
-    get_workordermaster_timecard(site_ID);
+    get_workordermaster_timecard(site_ID, props.data.RowID);
   }, []);
-
-
-
-    const IndeterminateCheckbox = React.forwardRef(
-    ({ indeterminate, ...rest }, ref) => {
-        const defaultRef = React.useRef()
-        const resolvedRef = ref || defaultRef
-    
-        React.useEffect(() => {
-        resolvedRef.current.indeterminate = indeterminate
-        }, [resolvedRef, indeterminate])
-    
-        return (
-        <>
-            <input type="checkbox" ref={resolvedRef} {...rest} />
-        </>
-        )
-    }
-    )
-   
-
-    
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-        
-        selectedFlatRows,
-        resetResizing,        
-        state: { selectedRowIds },
-        
-    } = useTable({ columns: Columns, data: Data },useSortBy, useRowSelect, useResizeColumns,
-
-        hooks => {
-            hooks.visibleColumns.push(columns => [
-              // Let's make a column for selection
-              {
-                id: 'selection',
-                // The header can use the table's getToggleAllRowsSelectedProps method
-                // to render a checkbox
-                Header: ({ getToggleAllRowsSelectedProps }) => (
-                  <div>
-                    <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-                  </div>
-                ),
-                // The cell can use the individual row's getToggleRowSelectedProps method
-                // to the render a checkbox
-                Cell: ({ row }) => (
-
-                  <div>                      
-                    <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-                  </div>
-
-                ),
-                
-              },
-              ...columns,
-            ])
-          }
-        )
-
-
-        const handleRowClick = (data) => {
-     
-            console.log(data.col56)
-        };
 
 
 
@@ -184,6 +127,12 @@ const WorkOrderTimeCard = () => {
                         value: item.emp_mst_empl_id            
                         }));
                         setEmployeeID(EmployeeID);
+
+                    let Craft = responseJson.data.data.Employee_Primary_Craft.map(item => ({
+                        label: item.crf_mst_crf_cd +" : "+ item.crf_mst_desc,
+                        value: item.crf_mst_crf_cd            
+                        }));
+                        setCraft(Craft);    
     
                     let HourType = responseJson.data.data.HoursType.map(item => ({
                         label: item.hours_type_cd,
@@ -216,7 +165,8 @@ const WorkOrderTimeCard = () => {
                         setCreditAccount(CreditAccount);
 
 
-                    //get_dropdown_ParentFlag(site_ID,selected_asset);                  
+                    //get_dropdown_ParentFlag(site_ID,selected_asset);    
+                    get_workordermaster_select(site_ID,selected_asset);              
                     Swal.close();
                 
             }else{
@@ -240,43 +190,7 @@ const WorkOrderTimeCard = () => {
             });
     }
     
-    
-    const get_dropdown_ParentFlag = (site_ID,selected_asset) => {  
-    
-    
-        console.log('PARENT FLAG: '+ site_ID + selected_asset)
-        
-        APIServices.get_dropdown_ParentFlag(site_ID,selected_asset).then((responseJson)=>{
-    
-    
-            console.log(responseJson.data.status);
-    
-            if (responseJson.data.status === 'SUCCESS') {  
-    
-                    Swal.close();
-                    setButton_save("Submit")
-                    get_workordermaster_select(site_ID,selected_asset);
-                    
-            }else{
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: responseJson.data,
-                    
-                    })
-            }
-    
-        }).catch((e) => {           
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops get_WorkOrder_select...',
-                text: e,          
-            })
-            });
-    
-    }
-    
-    
+
     const get_workordermaster_select = () => {
     
         
@@ -347,8 +261,8 @@ const WorkOrderTimeCard = () => {
     
         let site_ID = localStorage.getItem("site_ID");
     
-        console.log('select select',location.state.select);
-        console.log('select WKOID',location.state.RowID);
+        // console.log('select select',location.state.select);
+        // console.log('select WKOID',location.state.RowID);
     
         get_workorder_status(site_ID, "All", location.state.select);       
         
@@ -357,15 +271,219 @@ const WorkOrderTimeCard = () => {
 
 
 
-    const [list, setList] = useState([]);
-    const handleAdd = () => {
-        const newItem = { id: list.length + 1, text: "", text1: ".00", text2: "" };
-        setList([...list, newItem]);
-      };
+  //Header
+  const renderTableHeader = () => {
+    return (
+      <>
+        <th key="select">
+          {/* <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} /> */}
+        </th>
+        {Object.keys(Header).map((attr) => (
+          <th key={attr}> {attr.toUpperCase()}</th>
+        ))}
+      </>
+    );
+  };
+  
+  //Body    
+  const renderTableRows = () => {
+    return Result.map((result, index) => {
+
+        if (result.wko_ls8_datetime1 == null) {
+            var wkols8_date = ''
+          } else {
     
-    const handleVoid = (id) => {
-        setList(list.filter((item) => item.id !== id));
+            var wkols8_date = format(new Date(result.wko_ls8_datetime1.date), "dd/MM/yyyy HH:MM")
+    
+          }
+
+      return (
+        <tr key={index} onClick={(event) =>handleRowClick(result, event)}>
+          
+          <td>{index + 1}</td>
+          <td>{result.wko_ls8_assetno}</td>
+          <td>{result.wko_ls8_empl_id}</td>
+
+          <td>{result.wko_ls8_craft}</td>
+          <td>{wkols8_date}</td>
+          <td>{result.wko_ls8_hours_type}</td>
+          <td>{result.wko_ls8_hrs}</td>
+          <td>{result.wko_ls8_rate}</td>
+          <td>{result.wko_ls8_multiplier}</td>
+          <td>{result.wko_ls8_adder}</td>
+          <td>{result.wko_ls8_act_cost}</td>
+          <td>{result.wko_ls8_chg_costcenter}</td>
+          <td>{result.wko_ls8_chg_account}</td>
+          <td>{result.wko_ls8_crd_costcenter}</td>
+          <td>{result.wko_ls8_crd_account}</td>
+          <td>{result.wko_ls8_time_card_no}</td>
+
+        </tr>
+      );
+    });
+  };
+
+
+  const handleRowClick = (data) => {
+    console.log(data);
+
+    setAssetNo( data.wko_ls8_assetno )
+    setEmployeeID( data.wko_ls8_empl_id )
+    setCraft( data.wko_ls8_craft )
+    //setTimeCardDate( wkols8_date )
+    setHourType( data.wko_ls8_hours_type )
+    setActualHour( data.wko_ls8_hrs )
+    setRate( data.wko_ls8_rate )
+    setMultiplier( data.wko_ls8_multiplier )
+    setAdder( data.wko_ls8_adder )
+    setActualCost( data.wko_ls8_act_cost )
+    setChargeCostCenter( data.wko_ls8_chg_costcenter )
+    setChargeAccount( data.wko_ls8_chg_account )
+    setCreditCostCenter( data.wko_ls8_crd_costcenter )
+    setCreditAccount( data.wko_ls8_crd_account )
+    setTimeCardNo( data.wko_ls8_time_card_no )
+ 
+    setShowModal(true);
+};
+
+const resetData = () => {
+
+ 
+  
+};
+
+
+const handleAddButtonClick  = () => {
+
+    let site_ID = localStorage.getItem("site_ID");
+   
+    //Select Account
+    let EmployeeID, setEmployeeID;
+    if(selected_EmployeeID == '' || selected_EmployeeID == null){
+
+        setEmployeeID=''
+    }else{
+
+        EmployeeID = selected_EmployeeID.label.split(":")
+        setEmployeeID = EmployeeID[0];
+        console.log("EmployeeID ", EmployeeID[0])
+    }
+
+    //Select Craft
+    let Craft, setCraft;
+    if(selected_Craft == '' || selected_Craft == null){
+
+        setCraft=''
+    }else{
+
+        Craft = selected_Craft.label.split(":")
+        setCraft = Craft[0];
+        console.log("Craft ", Craft[0])
+    }
+
+    //Select Craft
+    let HourType, setHourType;
+    if(selected_HourType == '' || selected_HourType == null){
+
+    setHourType=''
+    }else{
+
+    HourType = selected_HourType.label.split(":")
+    setHourType = HourType[0];
+    console.log("HourType ", HourType[0])
+    }
+
+    //Select Actual Hour
+    console.log("ActualHour: ", ActualHour)
+
+    //Select Actual Hour
+    let Actual_Hour = ''
+    if (ActualHour == '' || ActualHour == null) {
+
+        Actual_Hour = '';
+    } else {
+
+        Actual_Hour = Moment(ActualHour).format('yyyy-MM-DD HH:mm:ss').trim();
+        console.log("Date1 ", Actual_Hour);
+    }
+
+    //Select Charge Cost Center
+    let ChargeCostCenter, setChargeCostCenter;
+    if(selected_ChargeCostCenter == '' || selected_ChargeCostCenter == null){
+
+    setChargeCostCenter=''
+    }else{
+
+    ChargeCostCenter = selected_ChargeCostCenter.label.split(":")
+    setChargeCostCenter = ChargeCostCenter[0];
+    console.log("ChargeCostCenter ", ChargeCostCenter[0])
+    }
+
+    //Select Charge Account
+    let ChargeAccount, setChargeAccount;
+    if(selected_ChargeAccount == '' || selected_ChargeAccount == null){
+
+    setChargeAccount=''
+    }else{
+
+    ChargeAccount = selected_ChargeAccount.label.split(":")
+    setChargeAccount = ChargeAccount[0];
+    console.log("ChargeAccount ", ChargeAccount[0])
+    }
+
+    //Select Credit Cost Center
+    let CreditCostCenter, setCreditCostCenter;
+    if(selected_CreditCostCenter == '' || selected_CreditCostCenter == null){
+
+    setCreditCostCenter=''
+    }else{
+
+    CreditCostCenter = selected_CreditCostCenter.label.split(":")
+    setCreditCostCenter = CreditCostCenter[0];
+    console.log("CreditCostCenter ", CreditCostCenter[0])
+    }
+
+    //Select Credit Account
+    let CreditAccount, setCreditAccount;
+    if(selected_CreditAccount == '' || selected_CreditAccount == null){
+
+        setCreditAccount=''
+    }else{
+
+    CreditAccount = selected_CreditAccount.label.split(":")
+    setCreditAccount = CreditAccount[0];
+    console.log("CreditAccount ", CreditAccount[0])
+    }
+
+    const newPart = {
+        
+        mst_RowID: location.state.RowID,
+        site_cd: site_ID,
+        wko_ls8_act_cost: ".0000",
+        wko_ls8_adder: ".0000",
+        wko_ls8_assetno: "TEST123",
+        wko_ls8_chg_account: setChargeAccount.trim(),
+        wko_ls8_chg_costcenter: setChargeCostCenter.trim(),
+        wko_ls8_craft: setCraft.trim(),
+        wko_ls8_crd_account: setCreditAccount.trim(),
+        wko_ls8_crd_costcenter: setCreditCostCenter.trim(),
+        //wko_ls8_datetime1: Actual_Hour,
+        wko_ls8_empl_id: setEmployeeID.trim(),
+        wko_ls8_hours_type: setHourType.trim(),
+        wko_ls8_hrs: ActualHour,
+        wko_ls8_multiplier: "1.0000",
+        wko_ls8_rate: ".0000",
+        wko_ls8_time_card_no: "TM100003",
+
       };
+      // Add new part to partsList
+      setResult([...Result, newPart]);
+      console.log(Result);
+      // Close modal
+      handleClose();
+};
+
+
 
 
 
@@ -374,17 +492,17 @@ const WorkOrderTimeCard = () => {
     <div>
         <div className="page-header">
             <div className="template-demo" >
-                <button type="button" className="btn btn-outline-primary btn-icon-text" onClick={handleAdd}>
+                <button type="button" className="btn btn-outline-primary btn-icon-text" onClick={handleShow}>
                     <i className="mdi mdi-file-check btn-icon-prepend"></i> New  
                 </button>
             
                 <button type="button" className="btn btn-outline-danger btn-icon-text"  >
-                    <i className="mdi mdi-delete-forever btn-icon-prepend" onClick={() => handleVoid()}></i> Void 
+                    <i className="mdi mdi-delete-forever btn-icon-prepend" ></i> Void 
                 </button>
             </div>                     
         </div> 
 
-        {/* <div>
+        <div>
             <Modal show={show} onHide={handleClose} centered >
 
                 <Modal.Header closeButton>
@@ -396,39 +514,52 @@ const WorkOrderTimeCard = () => {
                     <div className="col-md-12">
                         <Form.Group className="row" controlId="validation_EmployeeID">
                             <label className="col-sm-4 col-form-label">Employee ID:</label>
-                            <div className="col-sm-7">
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
                                 <Select  
                                     isClearable={true}  
                                     options={EmployeeID}
                                     value={selected_EmployeeID}
                                     onChange={setSelected_EmployeeID} // using id as it is unique
                                     required
+                                    styles={{ 
+                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                    }}
                                 />
+                            </label>
                             </div>
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
                         <Form.Group className="row" controlId="validation_Craft">
                             <label className="col-sm-4 col-form-label">Craft:</label>
-                            <div className="col-sm-7">
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
                                 <Select  
                                     isClearable={true}  
                                     options={Craft}
                                     value={selected_Craft}
                                     onChange={setSelected_Craft} // using id as it is unique
                                     required
+                                    styles={{ 
+                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                    }}
                                 />
+                            </label>
                             </div>
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
                             <Form.Group className="row" controlId="validation_TimeCardDate">
                                 <label className="col-sm-4 col-form-label">Time Card Date:</label>
-                                <div className="col-sm-7 form-label">
-                                <label className="col-sm-12 form-label">
-                                    <Form.Control                                            
+                                <div className="col-sm-8 form-label">
+                                <label className="col-sm-10 form-label">
+                                    <Form.Control    
+                                        style={{ fontSize: "13px", height: "38px" }}                                        
                                         type="datetime-local"  
                                         value={TimeCardDate} 
                                         onChange={(e) => setTimeCardDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -438,27 +569,34 @@ const WorkOrderTimeCard = () => {
                             </Form.Group>
                     </div>
 
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
                         <Form.Group className="row" controlId="validation_HourType">
                             <label className="col-sm-4 col-form-label">Hour Type:</label>
-                            <div className="col-sm-7">
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
                                 <Select  
                                     isClearable={true}  
                                     options={HourType}
                                     value={selected_HourType}
                                     onChange={setSelected_HourType} // using id as it is unique
                                     required
+                                    styles={{ 
+                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                    }}
                                 />
+                            </label>
                             </div>
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
                         <Form.Group className="row" controlId="validation_ActualHour">
                             <label className="col-sm-4 col-form-label">Actual Hour:</label>
-                            <div className="col-sm-7 form-label">
-                            <label className="col-sm-12 form-label">
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
                                 <Form.Control  
+                                    style={{ fontSize: "13px", height: "38px" }}
                                     type="number"  
                                     placeholder="1.00" 
                                     value={ActualHour} 
@@ -469,62 +607,86 @@ const WorkOrderTimeCard = () => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
                         <Form.Group className="row" controlId="validation_ChargeCostCenter">
                             <label className="col-sm-4 col-form-label">Charge Cost Center:</label>
-                            <div className="col-sm-7">
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
                                 <Select  
                                     isClearable={true}  
                                     options={ChargeCostCenter}
                                     value={selected_ChargeCostCenter}
                                     onChange={setSelected_ChargeCostCenter} // using id as it is unique
                                     required
+                                    styles={{ 
+                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                    }}
                                 />
+                            </label>
                             </div>
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
                         <Form.Group className="row" controlId="validation_ChargeAccount">
                             <label className="col-sm-4 col-form-label">Charge Account:</label>
-                            <div className="col-sm-7">
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
                                 <Select  
                                     isClearable={true}  
                                     options={ChargeAccount}
                                     value={selected_ChargeAccount}
                                     onChange={setSelected_ChargeAccount} // using id as it is unique
                                     required
+                                    styles={{ 
+                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                    }}
                                 />
+                            </label>
                             </div>
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
                         <Form.Group className="row" controlId="validation_CreditCostCenter">
                             <label className="col-sm-4 col-form-label">Credit Cost Center:</label>
-                            <div className="col-sm-7">
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
                                 <Select  
                                     isClearable={true}  
                                     options={CreditCostCenter}
                                     value={selected_CreditCostCenter}
                                     onChange={setSelected_CreditCostCenter} // using id as it is unique
                                     required
+                                    styles={{ 
+                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                    }}
                                 />
+                            </label>
                             </div>
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
                         <Form.Group className="row" controlId="validation_CreditAccount">
                             <label className="col-sm-4 col-form-label">Credit Account:</label>
-                            <div className="col-sm-7">
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
                                 <Select  
                                     isClearable={true}  
                                     options={CreditAccount}
                                     value={selected_CreditAccount}
                                     onChange={setSelected_CreditAccount} // using id as it is unique
                                     required
+                                    styles={{ 
+                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                    }}
                                 />
+                            </label>
                             </div>
                         </Form.Group>
                     </div>
@@ -534,137 +696,287 @@ const WorkOrderTimeCard = () => {
                 <Modal.Footer>
 
                     <Button variant="secondary" onClick={handleClose}>Close</Button>
-                    <Button variant="primary" onClick={() => {
-                        // Close modal
-                        handleClose();
-                    }}>
+                    <Button variant="primary" onClick={handleAddButtonClick}>
+                    {/* {Button_save} */}
                     Submit
                     </Button>
                 </Modal.Footer>
 
             </Modal>
 
-        </div> */}
+
+            {showModal && (
+              <Modal show={showModal} onHide={handleCloseModal} centered >
+
+              <Modal.Header closeButton>
+                  <Modal.Title>Time Card</Modal.Title>
+              </Modal.Header>
+
+
+              <Modal.Body>
+                  
+                  <div className="col-md-12">
+                      <Form.Group className="row" controlId="validation_AssetNo">
+                          <label className="col-sm-4 col-form-label">Asset No:</label>
+                          <div className="col-sm-8">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={AssetNo} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_EmployeeID">
+                          <label className="col-sm-4 col-form-label">Employee ID:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={EmployeeID} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_Craft">
+                          <label className="col-sm-4 col-form-label">Craft:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={Craft} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_TimeCardDate">
+                          <label className="col-sm-4 col-form-label">Time Card Date:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={TimeCardDate} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_HourType">
+                          <label className="col-sm-4 col-form-label">Hour Type:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={HourType} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_ActualHour">
+                          <label className="col-sm-4 col-form-label">Actual Hour:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={ActualHour} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_Rate">
+                          <label className="col-sm-4 col-form-label">Rate:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={Rate} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_Multiplier">
+                          <label className="col-sm-4 col-form-label">Multiplier:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={Multiplier} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_Adder">
+                          <label className="col-sm-4 col-form-label">Adder:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={Adder} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_ActualCost">
+                          <label className="col-sm-4 col-form-label">Actual Cost:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value={ActualCost}
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_ChargeCostCenter">
+                          <label className="col-sm-4 col-form-label">Charge Cost Center:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={ChargeCostCenter} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <Form.Group className="row" controlId="validation_ChargeAccount">
+                            <label className="col-sm-4 col-form-label">Charge Account:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                    style={{ fontSize: "13px", height: "38px" }}
+                                    type="text"
+                                    value={ChargeAccount}
+                                    readOnly
+                                    />
+                            </label>
+                            </div>
+                        </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_CreditCostCenter">
+                          <label className="col-sm-4 col-form-label">Credit Cost Center:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={CreditCostCenter} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_CreditAccount">
+                          <label className="col-sm-4 col-form-label">Credit Account:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={CreditAccount} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                      <Form.Group className="row" controlId="validation_TimeCardNo">
+                          <label className="col-sm-4 col-form-label">Time Card No:</label>
+                          <div className="col-sm-8 form-label">
+                          <label className="col-sm-10 form-label">
+                              <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={TimeCardNo} 
+                                  readOnly
+                                />
+                          </label>
+                          </div>
+                      </Form.Group>
+                  </div>
+
+              </Modal.Body>
+              
+              </Modal>
+            )}
+        </div>
 
         <div className="table-responsive">
-            <table className="table table-hover table-bordered " {...getTableProps() } on >
-                <thead>
-                    {headerGroups.map(headerGroup => (
-                        <tr {...headerGroup.getHeaderGroupProps()} className="tr">
-                        
-                            {headerGroup.headers.map(column => (                                    
-                                <th
-                                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                                    
-                                    style={{
-                                        borderBottom: 'solid 3px red',
-                                        color: 'black',
-                                    }}
-
-                                    {...column.getResizerProps()}
-                                        className={`resizer ${
-                                            column.isResizing ? 'isResizing' : ''
-                                        }`}
-                                >                            
-                                    {column.render('Header')}
-
-                                    <span>
-                                        {column.isSorted
-                                            ? column.isSortedDesc
-                                                ? '🔽'
-                                                : '🔼'
-                                            : ''}
-                                    </span>
-                                </th>
-                            ))}
-                        </tr>
-                    ))}
-                        
+                <table
+                className="table table-hover table-bordered"
+                style={{ color: "#000", border: 1 }}
+                >
+                <thead
+                    style={{
+                    color: "#000",
+                    fontWeight: "bold",
+                    fontFamily: "montserrat",
+                    margin: "5px",
+                    }}
+                >
+                    <tr>{renderTableHeader()}</tr>
                 </thead>
-                <tbody>
-                    {list.map((item, index) => (
-                    <tr key={index}>
-                        <td>{item.id}</td>
-                        <td>{item.text}</td>
-                        <td>
-                            <Select
-                                isClearable={true}
-                                options={EmployeeID}
-                                value={item.selected}
-                                onChange={setSelected_EmployeeID}
-                                required
-                            />
-                        </td>
-                        <td>
-                            <Select  
-                                isClearable={true}  
-                                options={Craft}
-                                value={item.selected}
-                                onChange={setSelected_Craft} // using id as it is unique
-                                required
-                            />
-                        </td>
-                        <td>
-                            <Select  
-                                isClearable={true}  
-                                options={HourType}
-                                value={item.selected}
-                                onChange={setSelected_HourType} // using id as it is unique
-                                required
-                            />
-                        </td>
-                        <td>
-                            <Form.Control  
-                                type="number"  
-                                placeholder="1.00" 
-                                value={item.selected} 
-                                onChange={(e) => setActualHour(e.target.value)}
-                                />
-                        </td>
-                        <td>{item.text1}</td>
-                        <td>{item.text1}</td>
-                        <td>{item.text1}</td>
-                        <td>{item.text1}</td>
-                        <td>
-                            <Select  
-                                isClearable={true}  
-                                options={ChargeCostCenter}
-                                value={item.selected}
-                                onChange={setSelected_ChargeCostCenter} // using id as it is unique
-                                required
-                            />
-                        </td>
-                        <td>
-                            <Select  
-                                isClearable={true}  
-                                options={ChargeAccount}
-                                value={item.selected}
-                                onChange={setSelected_ChargeAccount} // using id as it is unique
-                                required
-                            />
-                        </td>
-                        <td>
-                            <Select  
-                                isClearable={true}  
-                                options={CreditCostCenter}
-                                value={item.selected}
-                                onChange={setSelected_CreditCostCenter} // using id as it is unique
-                                required
-                            />
-                        </td>
-                        <td>
-                            <Select  
-                                isClearable={true}  
-                                options={CreditAccount}
-                                value={item.selected}
-                                onChange={setSelected_CreditAccount} // using id as it is unique
-                                required
-                            />
-                        </td>
-                        <td>{item.text2}</td>
-                    </tr>
-                    ))}
-                </tbody>
+                <tbody>{renderTableRows()}</tbody>
             </table>
         </div>
     </div>

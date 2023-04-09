@@ -14,17 +14,25 @@ import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Moment from 'moment';
 import  {useLocation}  from 'react-router-dom';
+import logo from '../../assets/images/transaction-history.png';
+import WorkOrderMaterial from "../tables/WorkOrderMaterial";
+import WorkOrderOutsourceContract from "../tables/WorkOrderOutsourceContract";
+import WorkOrderMisc from "../tables/WorkOrderMisc";
 
 
-const WorkOrderSpecialOrder = () => {
+
+const WorkOrderSpecialOrder = (props) => {
  
-
-  const [Columns, setColumns] = useState([]);
-  const [Data, setData] = useState([]);
+  const [Header, setHeader] = React.useState([]);
+  const [Result, setResult] = React.useState([]);
 
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {setShow(false); resetData(); };
   const handleShow = () => setShow(true);
+
+  const [showModal, setShowModal] = useState(false);
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
 
   const [Supplier, setSupplier] = useState([]);
   const [selected_Supplier, setSelected_Supplier] = useState([]);
@@ -53,17 +61,26 @@ const WorkOrderSpecialOrder = () => {
 
   const [RowID, setRowID] = useState("");
 
+  const [AssetNo, setAssetNo] = useState("");
+  const [PrNo, setPrNo] = useState("");
+  const [PrLineNo, setPrLineNo] = useState("");
+  const [ApprovalStatus, setApprovalStatus] = useState("");
+  const [PoNo, setPoNo] = useState("");
+  const [PoLineNo, setPoLineNo] = useState("");
+  const [ContractPoNo, setContractPoNo] = useState("");
+  const [ContractPoLine, setContractPoLine] = useState("");
 
 
-  const get_workordermaster_specialorder = (site_ID) => {
-    APIServices.get_workordermaster_specialorder(site_ID)
+
+  const get_workordermaster_specialorder = (site_ID, RowID) => {
+    APIServices.get_workordermaster_specialorder(site_ID, RowID)
         .then((responseJson) => {
         console.log("Login JSON DATA : ", responseJson);
 
         if (responseJson.data.status === "SUCCESS") {
 
-            setColumns(responseJson.data.data.header);
-            setData(responseJson.data.data.result);
+            setHeader(responseJson.data.data.header);
+            setResult(responseJson.data.data.result);
         
         } else {
             Swal.fire({
@@ -84,89 +101,20 @@ const WorkOrderSpecialOrder = () => {
     };
 
 
-
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
-    get_workordermaster_specialorder(site_ID);
+    get_workordermaster_specialorder(site_ID, props.data.RowID);
   }, []);
 
 
 
-    const IndeterminateCheckbox = React.forwardRef(
-    ({ indeterminate, ...rest }, ref) => {
-        const defaultRef = React.useRef()
-        const resolvedRef = ref || defaultRef
-    
-        React.useEffect(() => {
-        resolvedRef.current.indeterminate = indeterminate
-        }, [resolvedRef, indeterminate])
-    
-        return (
-        <>
-            <input type="checkbox" ref={resolvedRef} {...rest} />
-        </>
-        )
-    }
-    )
-   
-
-    
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-        
-        selectedFlatRows,
-        resetResizing,        
-        state: { selectedRowIds },
-        
-    } = useTable({ columns: Columns, data: Data },useSortBy, useRowSelect, useResizeColumns,
-
-        hooks => {
-            hooks.visibleColumns.push(columns => [
-              // Let's make a column for selection
-              {
-                id: 'selection',
-                // The header can use the table's getToggleAllRowsSelectedProps method
-                // to render a checkbox
-                Header: ({ getToggleAllRowsSelectedProps }) => (
-                  <div>
-                    <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-                  </div>
-                ),
-                // The cell can use the individual row's getToggleRowSelectedProps method
-                // to the render a checkbox
-                Cell: ({ row }) => (
-
-                  <div>                      
-                    <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-                  </div>
-
-                ),
-                
-              },
-              ...columns,
-            ])
-          }
-        )
-
-
-        const handleRowClick = (data) => {
-     
-            console.log(data.col56)
-        };
-
-
-
-const get_workorder_status = (site_ID, type, selected_asset) => {
+const get_workorder_status = (site_ID, RowID, selected_asset) => {
 
 
     Swal.fire({  title: 'Please Wait !', allowOutsideClick: false})
     Swal.showLoading()
 
-    APIServices.get_dropdown(site_ID,type).then((responseJson)=>{
+    APIServices.get_dropdown(site_ID,RowID).then((responseJson)=>{
 
     
         if (responseJson.data.status === 'SUCCESS') {
@@ -206,7 +154,8 @@ const get_workorder_status = (site_ID, type, selected_asset) => {
                     setAccount(Account);
 
 
-                //get_dropdown_ParentFlag(site_ID,selected_asset);                  
+                //get_dropdown_ParentFlag(site_ID,selected_asset);
+                get_workordermaster_select(site_ID,selected_asset);               
                 Swal.close();
             
         }else{
@@ -228,42 +177,6 @@ const get_workorder_status = (site_ID, type, selected_asset) => {
             text: e,          
         })
         });
-}
-
-
-const get_dropdown_ParentFlag = (site_ID,selected_asset) => {  
-
-
-    console.log('PARENT FLAG: '+ site_ID + selected_asset)
-    
-    APIServices.get_dropdown_ParentFlag(site_ID,selected_asset).then((responseJson)=>{
-
-
-        console.log(responseJson.data.status);
-
-        if (responseJson.data.status === 'SUCCESS') {  
-
-                Swal.close();
-                setButton_save("Submit")
-                get_workordermaster_select(site_ID,selected_asset);
-                
-        }else{
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: responseJson.data,
-                
-                })
-        }
-
-    }).catch((e) => {           
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops get_WorkOrder_select...',
-            text: e,          
-        })
-        });
-
 }
 
 
@@ -327,8 +240,8 @@ useEffect(() => {
 
     let site_ID = localStorage.getItem("site_ID");
 
-    console.log('select select',location.state.select);
-    console.log('select WKOID',location.state.RowID);
+    // console.log('select select',location.state.select);
+    // console.log('select WKOID',location.state.RowID);
 
     get_workorder_status(site_ID, "All", location.state.select);       
     
@@ -336,232 +249,777 @@ useEffect(() => {
 },[location]);
 
 
+  //Header
+  const renderTableHeader = () => {
+    return (
+      <>
+        <th>
+          {/* <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} /> */}
+        </th>
+        {Object.keys(Header).map((attr) => (
+          <th key={attr}> {attr.toUpperCase()}</th>
+        ))}
+      </>
+    );
+  };
+
+  //Body
+  const renderTableRows = () => {
+    return Result.map((result, index) => {
+
+      return (
+        <tr key={index} onClick={(event) =>handleRowClick(result, event)}>
+          <td>{index + 1}</td>
+          {/* <td>{result.wko_ls3_assetno}</td> */}
+          <td>{result.wko_ls3_rec_supplier}</td>
+
+          <td>{result.wko_ls3_descr}</td>
+          {/* <td>{result.wko_ls3_tax_cd}</td> */}
+          <td>{result.wko_ls3_mtl_uom}</td>
+          <td>{result.wko_ls3_qty_needed}</td>
+          <td>{result.wko_ls3_item_cost}</td>
+          {/* <td>{result.wko_ls3_chg_costcenter}</td>
+          <td>{result.wko_ls3_chg_account}</td> */}
+          <td>{result.wko_ls3_pr_no}</td>
+          <td>{result.wko_ls3_pr_lineno}</td>
+          <td>
+            <span style={{ 
+                  backgroundColor: 
+                    result.pur_mst_purq_approve === 'W' ? '#FF6258' : 
+                    result.pur_mst_purq_approve === 'A' ? '#19D895' :
+                    result.pur_mst_purq_approve === 'D' ? '#2196F3' :
+                    null, 
+                  color: 'white', 
+                  padding: '5px', 
+                  borderRadius: '5px', 
+                  fontSize:'13px',
+                  fontWeight: 'bold'
+                }}>
+              { result.pur_mst_purq_approve === 'W' ? 'Awaiting (W)' :
+                result.pur_mst_purq_approve === 'A' ? 'Approve (A)' :
+                result.pur_mst_purq_approve === 'D' ? 'Disapprove (D)' :
+                result.pur_mst_purq_approve}
+            </span>
+          </td>
+          <td>{result.pur_ls1_po_no}</td>
+          {/* <td>{result.pur_ls1_po_lineno}</td>
+          <td>{result.wko_ls3_po_no}</td>
+          <td>{result.wko_ls3_po_lineno}</td> */}
+         
+        </tr>
+      );
+    });
+  };
+
+
+  const handleRowClick = (data) => {
+    console.log(data)
+
+    setAssetNo( data.wko_ls3_assetno )
+    setSupplier( data.wko_ls3_rec_supplier )
+    setDescription( data.wko_ls3_descr )
+    setTaxCode( data.wko_ls3_tax_cd )
+    setUOM( data.wko_ls3_mtl_uom )
+    setQtyNeeded( data.wko_ls3_qty_needed )
+    setItemCost( data.wko_ls3_item_cost )
+    setCostCenter( data.wko_ls3_chg_costcenter )
+    setAccount( data.wko_ls3_chg_account )
+    setPrNo( data.wko_ls3_pr_no )
+    setPrLineNo( data.wko_ls3_pr_lineno )
+    setApprovalStatus( data.pur_mst_purq_approve )
+    setPoNo( data.pur_ls1_po_no )
+    setPoLineNo( data.pur_ls1_po_lineno )
+    setContractPoNo( data.wko_ls3_po_no )
+    setContractPoLine( data.wko_ls3_po_lineno )
+
+    setShowModal(true);
+  };
+
+  const resetData = () => {
+
+    setSelected_Supplier(0);
+    setDescription('');
+    setSelected_TaxCode(0);
+    setSelected_UOM(0);
+    setQtyNeeded('');
+    setItemCost('');
+    setSelected_CostCenter(0);
+    setSelected_Account(0);
+  
+};
+
+
+  const handleAddButtonClick  = () => {
+
+    let site_ID = localStorage.getItem("site_ID");
+    
+    //Select Description
+    console.log("Description: ", Description)
+
+    //Select Account
+    let Account, setAccount;
+    if(selected_Account == '' || selected_Account == null){
+
+        setAccount=''
+    }else{
+
+        Account = selected_Account.label.split(":")
+        setAccount = Account[0];
+        console.log("Account ", Account[0])
+    }
+
+    //Select Charge Cost Center
+    let CostCenter, setCostCenter;
+    if(selected_CostCenter == '' || selected_CostCenter == null){
+
+        setCostCenter=''
+    }else{
+
+        CostCenter = selected_CostCenter.label.split(":")
+        setCostCenter = CostCenter[0];
+        console.log("CostCenter ", CostCenter[0])
+    }
+
+    //Select Description
+    console.log("Description: ", Description)
+
+    //Select ItemCost
+    console.log("ItemCost: ", ItemCost)
+
+    //Select UOM
+    let UOM, setUOM;
+    if(selected_UOM == '' || selected_UOM == null){
+
+        setUOM=''
+    }else{
+
+        UOM = selected_UOM.label.split(":")
+        setUOM = UOM[0];
+        console.log("UOM: ", UOM[0])
+    }
+
+    //Select QtyNeeded
+    console.log("QtyNeeded: ", QtyNeeded)
+
+    //Select Supplier
+    let Supplier, setSupplier;
+    if(selected_Supplier == '' || selected_Supplier == null){
+
+        setSupplier=''
+    }else{
+
+        Supplier = selected_Supplier.label.split(":")
+        setSupplier = Supplier[0];
+        console.log("Supplier ", Supplier[0])
+    }
+
+    //Select TaxCode
+    let TaxCode, setTaxCode;
+    if(selected_TaxCode == '' || selected_TaxCode == null){
+
+        setTaxCode=''
+    }else{
+
+        TaxCode = selected_TaxCode.label.split(":")
+        setTaxCode = TaxCode[0];
+        console.log("TaxCode ", TaxCode[0])
+    }
+
+    
+    const newPart = {
+    
+        pur_ls1_po_lineno: null,
+        pur_ls1_po_no: null,
+        pur_mst_purq_approve: "W",
+        site_cd: site_ID,
+        wko_ls3_assetno: "TEST123",
+        wko_ls3_chg_account: setAccount.trim(),
+        wko_ls3_chg_costcenter: setCostCenter.trim(),
+        wko_ls3_descr: Description,
+        wko_ls3_item_cost: ItemCost,
+        wko_ls3_mtl_uom: setUOM.trim(),
+        wko_ls3_po_lineno: null,
+        wko_ls3_po_no: null,
+        wko_ls3_pr_lineno: "1",
+        wko_ls3_pr_no: "PR100002",
+        wko_ls3_qty_needed: QtyNeeded,
+        wko_ls3_rec_supplier: setSupplier.trim(),
+        wko_ls3_tax_cd: setTaxCode.trim(),
+
+      };
+      // Add new part to partsList
+      setResult([...Result, newPart]);
+      console.log(Result);
+      // Close modal
+      handleClose();
+    };
+
+
+  //Sum calculation
+  const totalQty = Result.reduce((acc, item) => acc + (parseFloat(item.wko_ls3_qty_needed) || 0), 0);
+  
+  //Multiply calculation
+  const totalCost = Result.reduce((acc, item) => acc + (parseFloat(item.wko_ls3_qty_needed) || 0) * (parseFloat(item.wko_ls3_item_cost) || 0), 0);
+
+
+
+
+
   return (
     <div>
-      <div className="page-header">
-            <div className="template-demo" >
-                <button type="button" className="btn btn-outline-primary btn-icon-text"  onClick={handleShow}>
-                    <i className="mdi mdi-file-check btn-icon-prepend"></i> New  
-                </button>
-            
-                <button type="button" className="btn btn-outline-danger btn-icon-text"  >
-                    <i className="mdi mdi-delete-forever btn-icon-prepend"></i> Delete 
-                </button>
-            </div>                     
-        </div> 
-
+        {/*************************************** Material **************************************************/}
         <div>
-            <Modal show={show} onHide={handleClose} centered >
+            {/* <div style={{ paddingBottom: '20px', backgroundColor: 'white' }}>
+                <h3 className="page-title">Material</h3>
+            </div> */}
 
-                <Modal.Header closeButton>
-                    <Modal.Title>Special Order (PR)</Modal.Title>
-                </Modal.Header>
+            <div className="card">
+                <div className="card-body" style={{ borderRadius: '4px', boxShadow: '2px 2px 15px 2px #f0f0f0'}}>
 
-
-                <Modal.Body>
-                    <div className="col-md-12">
-                        <Form.Group className="row" controlId="validation_Supplier">
-                            <label className="col-sm-4 col-form-label">Supplier:</label>
-                            <div className="col-sm-7">
-                                <Select  
-                                    isClearable={true}  
-                                    options={Supplier}
-                                    value={selected_Supplier}
-                                    onChange={setSelected_Supplier} // using id as it is unique
-                                    required
-                                />
-                            </div>
-                        </Form.Group>
-                    </div>
-
-                    <div className="col-md-12">
-                        <Form.Group className="row" controlId="validation_Description">
-                            <label className="col-sm-4 col-form-label">Description:</label>
-                            <div className="col-sm-7 form-label">
-                            <label className="col-sm-12 form-label">
-                                <Form.Control  
-                                    type="text"  
-                                    value={Description} 
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-
-                    <div className="col-md-12">
-                        <Form.Group className="row" controlId="validation_TaxCode">
-                            <label className="col-sm-4 col-form-label">Tax Code:</label>
-                            <div className="col-sm-7">
-                                <Select  
-                                    isClearable={true}  
-                                    options={TaxCode}
-                                    value={selected_TaxCode}
-                                    onChange={setSelected_TaxCode} // using id as it is unique
-                                    required
-                                />
-                            </div>
-                        </Form.Group>
-                    </div>
-
-                    <div className="col-md-12">
-                        <Form.Group className="row" controlId="validation_UOM">
-                            <label className="col-sm-4 col-form-label">UOM:</label>
-                            <div className="col-sm-7">
-                                <Select  
-                                    isClearable={true}  
-                                    options={UOM}
-                                    value={selected_UOM}
-                                    onChange={setSelected_UOM} // using id as it is unique
-                                    required
-                                />
-                            </div>
-                        </Form.Group>
-                    </div>
-
-                    <div className="col-md-12">
-                        <Form.Group className="row" controlId="validation_QtyNeeded">
-                            <label className="col-sm-4 col-form-label">Qty Needed:</label>
-                            <div className="col-sm-7 form-label">
-                            <label className="col-sm-12 form-label">
-                                <Form.Control  
-                                    type="number"  
-                                    placeholder=".00" 
-                                    value={QtyNeeded} 
-                                    onChange={(e) => setQtyNeeded(e.target.value)}
-                                    />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-
-                    <div className="col-md-12">
-                        <Form.Group className="row" controlId="validation_ItemCost">
-                            <label className="col-sm-4 col-form-label">Item Cost:</label>
-                            <div className="col-sm-7 form-label">
-                            <label className="col-sm-12 form-label">
-                            <Form.Control  
-                                    type="number"  
-                                    placeholder=".00" 
-                                    value={ItemCost} 
-                                    onChange={(e) => setItemCost(e.target.value)}
-                                    />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-
-                    <div className="col-md-12">
-                        <Form.Group className="row" controlId="validation_ItemCost">
-                            <label className="col-sm-4 col-form-label">Cost Center:</label>
-                            <div className="col-sm-7">
-                                <Select  
-                                    isClearable={true}  
-                                    options={CostCenter}
-                                    value={selected_CostCenter}
-                                    onChange={setSelected_CostCenter} // using id as it is unique
-                                    required
-                                />
-                            </div>
-                        </Form.Group>
-                    </div>
-
-                    <div className="col-md-12">
-                        <Form.Group className="row" controlId="validation_Account">
-                            <label className="col-sm-4 col-form-label">Account:</label>
-                            <div className="col-sm-7">
-                                <Select  
-                                    isClearable={true}  
-                                    options={Account}
-                                    value={selected_Account}
-                                    onChange={setSelected_Account} // using id as it is unique
-                                    required
-                                />
-                            </div>
-                        </Form.Group>
-                    </div>
-                </Modal.Body>
+                    <WorkOrderMaterial name={'WorkOrderFrom'} data={{RowID: location.state.RowID }}/>
                 
+                </div>
+            </div>
+        </div>
 
-                <Modal.Footer>
+        <br/>
 
-                    <Button variant="secondary" onClick={handleClose}>Close</Button>
-                    <Button variant="primary" onClick={() => {
-                        // Close modal
-                        handleClose();
-                    }}>
-                    {/* {Button_save} */}
-                    Submit
-                    </Button>
-                </Modal.Footer>
+        {/*************************************** Special Order **************************************************/}
+        <div>
+            {/* <div style={{ paddingBottom: '20px', backgroundColor: 'white' }}>
+                <h3 className="page-title">Special Order</h3>
+            </div> */}
 
-            </Modal>
+            <div className="card">
+                <div className="card-body" style={{ borderRadius: '4px', boxShadow: '2px 2px 15px 2px #f0f0f0'}}>
+                    <div>
+                        <div style={{ paddingBottom: '20px', backgroundColor: 'white' }}>
+                            <div className="template-demo" style={{ display: 'flex', alignItems: 'center' }}>
 
-        </div> 
+                            <div style={{ marginRight: '10px' }}>
+                                <img src={logo} style={{ width: '60px', height: '60px' }}/>
+                            </div>
+                            <div className="template-demo" style={{ display: 'flex', flexDirection: 'column' }}>
+                                <div style={{ marginRight: '10px', fontWeight: 'bold' }}>Special Order</div>
+                                <div><span style={{color: "blue"}}>{(totalQty * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCost.toFixed(2)}</span></div>
+                            </div> 
+                            </div>
+                        </div>
 
-        <div className="table-responsive">
-            <table className="table table-hover table-bordered " {...getTableProps() } on >
-                <thead>
-                    {headerGroups.map(headerGroup => (
-                        <tr {...headerGroup.getHeaderGroupProps()} className="tr">
-                        
-                            {headerGroup.headers.map(column => (                                    
-                                <th
-                                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                                    
-                                    style={{
-                                        borderBottom: 'solid 3px red',
-                                        color: 'black',
-                                    }}
+                        <div>
+                            <Modal show={show} onHide={handleClose} centered >
 
-                                    {...column.getResizerProps()}
-                                        className={`resizer ${
-                                            column.isResizing ? 'isResizing' : ''
-                                        }`}
-                                >                            
-                                    {column.render('Header')}
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Special Order (PR)</Modal.Title>
+                                </Modal.Header>
 
-                                    <span>
-                                        {column.isSorted
-                                            ? column.isSortedDesc
-                                                ? '🔽'
-                                                : '🔼'
-                                            : ''}
-                                    </span>
-                                </th>
-                            ))}
-                        </tr>
-                    ))}
-                        
-                </thead>
-                <tbody {...getTableBodyProps() } >
-                    {rows.map(row => {
-                    prepareRow(row)
-                    return (
-                        <tr {...row.getRowProps()} onClick={() => handleRowClick(row.original)}>
-                        {row.cells.map(cell => {
-                            return (
-                            <>
-                            {/* Here added onClick function to get cell value */}
-                            <td
-                            // onClick={()=> getCellValue(cell)}
-                            //     {...cell.getCellProps()}
-                            //     style={{
-                            //     padding: '10px',
-                            //     border: 'solid 1px gray',
-                            //     background: 'papayawhip',
-                            //     }}
+
+                                <Modal.Body>
+                                    <div className="col-md-12">
+                                        <Form.Group className="row" controlId="validation_Supplier">
+                                            <label className="col-sm-4 col-form-label">Supplier:</label>
+                                            <div className="col-sm-8">
+                                            <label className="col-sm-10 form-label">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Supplier}
+                                                    value={selected_Supplier}
+                                                    onChange={setSelected_Supplier} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </label>
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                        <Form.Group className="row" controlId="validation_Description">
+                                            <label className="col-sm-4 col-form-label">Description:</label>
+                                            <div className="col-sm-8 form-label">
+                                            <label className="col-sm-10 form-label">
+                                                <Form.Control  
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="text"  
+                                                    value={Description} 
+                                                    onChange={(e) => setDescription(e.target.value)}
+                                                    />
+                                            </label>
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                        <Form.Group className="row" controlId="validation_TaxCode">
+                                            <label className="col-sm-4 col-form-label">Tax Code:</label>
+                                            <div className="col-sm-8">
+                                            <label className="col-sm-10 form-label">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={TaxCode}
+                                                    value={selected_TaxCode}
+                                                    onChange={setSelected_TaxCode} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </label>
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                        <Form.Group className="row" controlId="validation_UOM">
+                                            <label className="col-sm-4 col-form-label">UOM:</label>
+                                            <div className="col-sm-8">
+                                            <label className="col-sm-10 form-label">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={UOM}
+                                                    value={selected_UOM}
+                                                    onChange={setSelected_UOM} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </label>
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                        <Form.Group className="row" controlId="validation_QtyNeeded">
+                                            <label className="col-sm-4 col-form-label">Qty Needed:</label>
+                                            <div className="col-sm-8 form-label">
+                                            <label className="col-sm-10 form-label">
+                                                <Form.Control  
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="number"  
+                                                    placeholder=".00" 
+                                                    value={QtyNeeded} 
+                                                    onChange={(e) => setQtyNeeded(e.target.value)}
+                                                    />
+                                            </label>
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                        <Form.Group className="row" controlId="validation_ItemCost">
+                                            <label className="col-sm-4 col-form-label">Item Cost:</label>
+                                            <div className="col-sm-8 form-label">
+                                            <label className="col-sm-10 form-label">
+                                            <Form.Control  
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                    type="number"  
+                                                    placeholder=".00" 
+                                                    value={ItemCost} 
+                                                    onChange={(e) => setItemCost(e.target.value)}
+                                                    />
+                                            </label>
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                        <Form.Group className="row" controlId="validation_ItemCost">
+                                            <label className="col-sm-4 col-form-label">Cost Center:</label>
+                                            <div className="col-sm-8">
+                                            <label className="col-sm-10 form-label">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={CostCenter}
+                                                    value={selected_CostCenter}
+                                                    onChange={setSelected_CostCenter} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </label>
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                        <Form.Group className="row" controlId="validation_Account">
+                                            <label className="col-sm-4 col-form-label">Account:</label>
+                                            <div className="col-sm-8">
+                                            <label className="col-sm-10 form-label">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Account}
+                                                    value={selected_Account}
+                                                    onChange={setSelected_Account} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </label>
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </Modal.Body>
+                                
+
+                                <Modal.Footer>
+
+                                    <Button variant="secondary" onClick={handleClose}>Close</Button>
+                                    <Button variant="primary" onClick={handleAddButtonClick}>
+                                    {/* {Button_save} */}
+                                    Submit
+                                    </Button>
+                                </Modal.Footer>
+
+                            </Modal>
+
+
+                            {showModal && (
+                            <Modal show={showModal} onHide={handleCloseModal} centered >
+
+                            <Modal.Header closeButton>
+                                <Modal.Title>Special Order (PR)</Modal.Title>
+                            </Modal.Header>
+
+
+                            <Modal.Body>
+                                
+                                <div className="col-md-12">
+                                    <Form.Group className="row" controlId="validation_AssetNo">
+                                        <label className="col-sm-4 col-form-label">Asset No:</label>
+                                        <div className="col-sm-8">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value ={AssetNo} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_Supplier">
+                                        <label className="col-sm-4 col-form-label">Supplier:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value ={Supplier} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_Description">
+                                        <label className="col-sm-4 col-form-label">Description:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value ={Description} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_TaxCode">
+                                        <label className="col-sm-4 col-form-label">Tax Code:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value ={TaxCode} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_UOM">
+                                        <label className="col-sm-4 col-form-label">UOM:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value ={UOM} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_QtyNeeded">
+                                        <label className="col-sm-4 col-form-label">Qty Needed:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value ={QtyNeeded} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_ItemCost">
+                                        <label className="col-sm-4 col-form-label">Item Cost:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value ={ItemCost} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_CostCenter">
+                                        <label className="col-sm-4 col-form-label">Cost Center:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value ={CostCenter} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_Account">
+                                        <label className="col-sm-4 col-form-label">Account:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value ={Account} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_PrNo">
+                                        <label className="col-sm-4 col-form-label">Pr No:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value ={PrNo} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_PrLineNo">
+                                        <label className="col-sm-4 col-form-label">Pr Line No:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value ={PrLineNo} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_ApprovalStatus">
+                                        <label className="col-sm-4 col-form-label">Approval Status:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={ ApprovalStatus === 'W' ? 'Awaiting (W)' :
+                                                    ApprovalStatus === 'A' ? 'Approve (A)' :
+                                                    ApprovalStatus === 'D' ? 'Disapprove (D)' :
+                                                    ApprovalStatus}
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_PoNo">
+                                        <label className="col-sm-4 col-form-label">Po No:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value ={PoNo} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_PoLineNo">
+                                        <label className="col-sm-4 col-form-label">Po Line No:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value ={PoLineNo} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_ContractPoNo">
+                                        <label className="col-sm-4 col-form-label">Contract Po No:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value ={ContractPoNo} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_ContractPoLine">
+                                        <label className="col-sm-4 col-form-label">Contract Po Line:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value ={ContractPoLine} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+                            </Modal.Body>
+                            
+                            </Modal>
+                            )}
+                        </div> 
+
+                        <div className="table-responsive">
+                            <table
+                            className="table table-hover table-bordered"
+                            style={{ color: "#000", border: 1 }}
                             >
-                                {cell.render('Cell')}
-                            </td>
-                            </>
-                            )
-                        })}
-                        </tr>
-                    )
-                    })}                                
-                </tbody>
-            </table>
+                            <thead
+                                style={{
+                                color: "#000",
+                                fontWeight: "bold",
+                                fontFamily: "montserrat",
+                                margin: "5px",
+                                }}
+                            >
+                                <tr>{renderTableHeader()}</tr>
+                            </thead>
+                            <tbody>{renderTableRows()}</tbody>
+                            </table>
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                            <button type="button" style={{ padding: '5px 10px', background: 'none', color: 'blue', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                            onClick={handleShow}>
+                               + Add Special Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br/>
+
+        {/*************************************** Outsource Contract (PR) **************************************************/}
+        <div>
+            {/* <div style={{ paddingBottom: '20px', backgroundColor: 'white' }}>
+                <h3 className="page-title">Outsource Contract (PR)</h3>
+            </div> */}
+
+            <div className="card">
+                <div className="card-body" style={{ borderRadius: '4px', boxShadow: '2px 2px 15px 2px #f0f0f0'}}>
+
+                    <WorkOrderOutsourceContract name={'WorkOrderFrom'} data={{RowID: location.state.RowID }}/>
+                
+                </div>
+            </div>
+        </div>
+
+        <br/>
+
+        {/*************************************** Misc **************************************************/}
+        <div>
+            {/* <div style={{ paddingBottom: '20px', backgroundColor: 'white' }}>
+                <h3 className="page-title">Misc</h3>
+            </div> */}
+
+            <div className="card">
+                <div className="card-body" style={{ borderRadius: '4px', boxShadow: '2px 2px 15px 2px #f0f0f0'}}>
+
+                    <WorkOrderMisc name={'WorkOrderFrom'} data={{RowID: location.state.RowID }}/>
+                
+                </div>
+            </div>
         </div>
     </div>
   );
