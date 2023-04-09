@@ -289,6 +289,7 @@ function WorkOrder(props) {
                     result.wko_mst_status === 'CMP' ? '#2196F3' : 
                     result.wko_mst_status === 'OPE' || result.wko_mst_status === 'WIP' || result.wko_mst_status === 'AWC' ? '#19D895' :
                     result.wko_mst_status === 'CLO' ? '#FF6258' :
+                    result.wko_mst_status === 'CNX' ? '#FFE152' :
                     null, 
                   color: 'white', 
                   padding: '5px', 
@@ -299,6 +300,7 @@ function WorkOrder(props) {
               { result.wko_mst_status === 'CMP' ? 'Completed (CMP)' :
                 result.wko_mst_status === 'OPE' || result.wko_mst_status === 'WIP' || result.wko_mst_status === 'AWC' ? 'Open (OPEN)' :
                 result.wko_mst_status === 'CLO' ? 'Closed (CLO)' :
+                result.wko_mst_status === 'CNX' ? 'Cancel (CNX)' :
                 result.wko_mst_status}
             </span>
           </td>

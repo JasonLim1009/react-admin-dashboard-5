@@ -51,7 +51,7 @@ const WorkOrderFrom = (props) => {
     const [Button_save, setButton_save] = useState("");
 
     const [RowID, setRowID] = useState("");
-
+    const [edited, setEdited] = useState(false);
     
 
     const [WorkOrderNo, setWorkOrderNo] = useState("");
@@ -451,7 +451,7 @@ const WorkOrderFrom = (props) => {
               text: e,          
             })
           });
-    }
+    };
 
 
     const get_workordermaster_select = () => {
@@ -662,7 +662,7 @@ const WorkOrderFrom = (props) => {
             })
           });
 
-    }
+    };
     
 
     useEffect(() => {
@@ -813,7 +813,34 @@ const WorkOrderFrom = (props) => {
                 }
         // }
    
-    }
+    };
+
+    const onClickCancel = () => {
+        if (edited) {
+            Swal.fire({
+                title: 'Warning',
+                text: 'You have made some changes. Do you want to update these changes?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+              }).then((result) => {
+                
+                if (result.isConfirmed) {
+                    Update_WorkOrder();
+                }
+
+                window.history.back();
+              });
+
+            } else {
+              window.history.back();
+            }
+    };
+
+    const handleInputChange = () => {
+        setEdited(true);
+    };
 
 
     const New_WorkOrder = () => {
@@ -1418,7 +1445,7 @@ const WorkOrderFrom = (props) => {
         })
       });
 
-  }
+    };
 
   
     const Update_WorkOrder = () => {
@@ -1592,7 +1619,6 @@ const WorkOrderFrom = (props) => {
 
         //Select Description
         console.log("Description: ", Description)
-
 
 
         //Select Corrective Action
@@ -2059,7 +2085,7 @@ const WorkOrderFrom = (props) => {
       });
 
 
-  }
+    };
 
   
     const resetData = () => {
@@ -2133,7 +2159,7 @@ const WorkOrderFrom = (props) => {
         setUDFDate_5('');
 
         setButton_save('Save');
-    }
+    };
   
 
     const handleOnChangeTemporaryAsset = () => {
@@ -2146,7 +2172,7 @@ const WorkOrderFrom = (props) => {
         console.log('0')
         setCheckBox_Temporary_Asset('0')
     }
-    }
+    };
 
     const handleOnChangeApproved = () => {
     setApproved(!Approved);
@@ -2158,7 +2184,7 @@ const WorkOrderFrom = (props) => {
         console.log('0')
         setCheckBox_Approved('0')
     }
-    }
+    };
 
     const handleOnChangeSafety = () => {
     setSafety(!Safety);
@@ -2170,7 +2196,7 @@ const WorkOrderFrom = (props) => {
         console.log('0')
         setCheckBox_Safety('0')
     }
-    }
+    };
 
 
     const get_assetmaster_select = (selected_asset)=>{
@@ -2241,7 +2267,7 @@ const WorkOrderFrom = (props) => {
             })
           });
 
-    }
+    };
 
 
     const handleSelectedAssetNo = (selectedOption) => {
@@ -2257,14 +2283,14 @@ const WorkOrderFrom = (props) => {
         setSelected_Work_Area(Work_Area[0]);
         setSelected_Asset_Level(Asset_Level[0]);
         setSelected_Asset_Location(Asset_Location[0]);
-    }
+    };
 
     const handleSelectedFaultCode = (selectedOption) => {
         setSelected_Fault_Code(selectedOption);
 
         console.log(selectedOption.value);
         setDescription(selectedOption.value);
-    }
+    };
 
 
 
@@ -2286,7 +2312,7 @@ const WorkOrderFrom = (props) => {
                             <i className="mdi mdi-file-check btn-icon-prepend" ></i>  {Button_save}
                         </button>
 
-                        <button type="button" className="btn btn-danger btn-icon-text">
+                        <button type="button" className="btn btn-danger btn-icon-text" onClick={onClickCancel}>
                             <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i> Cancel 
                         </button>
                     
@@ -2308,26 +2334,29 @@ const WorkOrderFrom = (props) => {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_WorkOrderNo">
-                                            <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Work Order No:</label>
+                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px", fontWeight: 'bold' }}>Work Order No:<span style={{color: "red"}} class="required-asterisk">* </span></label>
                                             <div className="col-sm-8">
-                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={WorkOrderNo} onChange={(e) => setWorkOrderNo(e.target.value)}  disabled={WorkOrderNo_disabled}/>
+                                                <Form.Control style={{ fontSize: "12px", height: "34px" }} type="text" value={WorkOrderNo} onChange={(e) => setWorkOrderNo(e.target.value)}  disabled={WorkOrderNo_disabled}/>
                                             </div>
                                         </Form.Group>
                                     </div>
 
                                     <div className="col-md-6">                                
                                         <Form.Group className="row" controlId="validation_Asset_No">
-                                            <Form.Label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Asset No:</Form.Label>
+                                            <Form.Label className="col-sm-4 col-form-label" style={{ fontSize: "12px", fontWeight: 'bold' }}><span style={{color: "red"}} class="required-asterisk">* </span>Asset No:</Form.Label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={Asset_No}
                                                     value={selected_Asset_No}
-                                                    onChange={handleSelectedAssetNo} // using id as it is unique
+                                                    onChange={value => {
+                                                        handleSelectedAssetNo(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
                                                     }}
                                                 />
                                             </div>
@@ -2335,20 +2364,23 @@ const WorkOrderFrom = (props) => {
                                     </div>
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
+                                <div className="row" style={{ marginTop: "-34px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Status">                                  
-                                            <Form.Label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Status:</Form.Label>
+                                            <Form.Label className="col-sm-4 col-form-label" style={{ fontSize: "13px", fontWeight: 'bold' }}>Status:<span style={{color: "red"}} class="required-asterisk">* </span></Form.Label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={Status}
                                                     value={selected_Status}
-                                                    onChange={setSelected_Status}// using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Status(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px",height: '30' }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
                                                     }}
                                                 />
                                             </div>
@@ -2358,17 +2390,20 @@ const WorkOrderFrom = (props) => {
 
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Asset_Status"> 
-                                            <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Asset Status:</label>
+                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}><span style={{color: "red"}} class="required-asterisk">* </span>Asset Status:</label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={Asset_Status}
                                                     value={selected_Asset_Status}
-                                                    onChange={setSelected_Asset_Status} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Asset_Status(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
                                                     }}
                                                 />
                                             </div>
@@ -2376,20 +2411,23 @@ const WorkOrderFrom = (props) => {
                                     </div>  
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
+                                <div className="row" style={{ marginTop: "-34px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Plan_Priority">
-                                            <label className="col-sm-4 col-form-label">Plan Periority:</label>
+                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}>Plan Periority:</label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={Plan_Priority}
                                                     value={selected_Plan_Priority}
-                                                    onChange={setSelected_Plan_Priority} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Plan_Priority(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
                                                     }}
                                                 />
                                             </div>
@@ -2398,17 +2436,20 @@ const WorkOrderFrom = (props) => {
 
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Asset_Group_Code">
-                                            <label className="col-sm-4 col-form-label">Asset Group Code:</label>
+                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}>Asset Group Code:</label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={Asset_Group_Code}
                                                     value={selected_Asset_Group_Code}
-                                                    onChange={setSelected_Asset_Group_Code} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Asset_Group_Code(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
                                                     }}
                                                 />
                                             </div>
@@ -2416,16 +2457,16 @@ const WorkOrderFrom = (props) => {
                                     </div>  
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
+                                <div className="row" style={{ marginTop: "-28px" }}>
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_OriginationDate">
-                                            <label className="col-sm-4 col-form-label">Origination Date:</label>
+                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}>Origination Date:</label>
                                             <div className="col-sm-8">
                                                         <Form.Control
                                                         type="datetime-local"  
                                                         value={OriginationDate} 
-                                                        onChange={(date) => setOriginationDate(Moment().utcOffset('+08:00').format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        onChange={(date) => {setOriginationDate(Moment().utcOffset('+08:00').format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
+                                                        style={{ fontSize: "12px", height: "38px" }}
                                                         /> 
                                             </div>
                                         </Form.Group>
@@ -2433,17 +2474,20 @@ const WorkOrderFrom = (props) => {
 
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Charge_Cost_Center">
-                                            <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Charge Cost Center:</label>
+                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}><span style={{color: "red"}} class="required-asterisk">* </span>Charge Cost Center:</label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={Charge_Cost_Center}
                                                     value={selected_Charge_Cost_Center}
-                                                    onChange={setSelected_Charge_Cost_Center} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Charge_Cost_Center(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
                                                     }}
                                                 />
                                             </div>
@@ -2451,16 +2495,16 @@ const WorkOrderFrom = (props) => {
                                     </div>
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>                         
+                                <div className="row" style={{ marginTop: "-28px" }}>                         
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_DueDate">
-                                            <label className="col-sm-4 col-form-label">Due Date:</label>
+                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}>Due Date:</label>
                                             <div className="col-sm-8">
                                                     <Form.Control
                                                     type="datetime-local"
                                                     value ={DueDate} 
-                                                    onChange={date => setDueDate(Moment().utcOffset('+08:00').format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    onChange={date => {setDueDate(Moment().utcOffset('+08:00').format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
+                                                    style={{ fontSize: "12px", height: "38px" }}
                                                     />
                                                 </div>
                                         </Form.Group>
@@ -2468,17 +2512,20 @@ const WorkOrderFrom = (props) => {
 
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Work_Area">
-                                            <label className="col-sm-4 col-form-label">Work Area:</label>
+                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}>Work Area:</label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={Work_Area}
                                                     value={selected_Work_Area}
-                                                    onChange={setSelected_Work_Area} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Work_Area(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
                                                     }}
                                                 />
                                             </div>
@@ -2486,20 +2533,23 @@ const WorkOrderFrom = (props) => {
                                     </div>
                                 </div>  
 
-                                <div className="row" style={{ marginTop: "-20px" }}>                 
+                                <div className="row" style={{ marginTop: "-28px" }}>                 
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Originator">
-                                            <label className="col-sm-4 col-form-label">Originator:</label>
+                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}>Originator:</label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={Originator}
                                                     value={selected_Originator}
-                                                    onChange={setSelected_Originator} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Originator(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
                                                     }}
                                                 />
                                             </div>
@@ -2508,17 +2558,20 @@ const WorkOrderFrom = (props) => {
 
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Asset_Level">
-                                            <label className="col-sm-4 col-form-label">Asset Level:</label>
+                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}>Asset Level:</label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={Asset_Level}
                                                     value={selected_Asset_Level}
-                                                    onChange={setSelected_Asset_Level} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Asset_Level(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
                                                     }}
                                                 />
                                             </div>
@@ -2526,29 +2579,32 @@ const WorkOrderFrom = (props) => {
                                     </div>
                                 </div>  
 
-                                <div className="row" style={{ marginTop: "-20px" }}>                        
+                                <div className="row" style={{ marginTop: "-28px" }}>                        
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Phone">
-                                            <label className="col-sm-4 col-form-label">Phone:</label>
+                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}>Phone:</label>
                                             <div className="col-sm-8">
-                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value={Phone} onChange={(e) => setPhone(e.target.value)}/>
+                                                <Form.Control style={{ fontSize: "12px", height: "38px" }} type="number" value={Phone} onChange={(e) => {setPhone(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>
 
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Asset_Location">
-                                            <label className="col-sm-4 col-form-label">Asset Location:</label>
+                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}>Asset Location:</label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={Asset_Location}
                                                     value={selected_Asset_Location}
-                                                    onChange={setSelected_Asset_Location} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Asset_Location(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
                                                     }}
                                                 />
                                             </div>
@@ -2556,20 +2612,23 @@ const WorkOrderFrom = (props) => {
                                     </div>
                                 </div>  
 
-                                <div className="row" style={{ marginTop: "-20px" }}>             
+                                <div className="row" style={{ marginTop: "-28px" }}>             
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Fault_Code">
-                                            <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Fault Code:</label>
+                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}><span style={{color: "red"}} class="required-asterisk">* </span>Fault Code:</label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={Fault_Code}
                                                     value={selected_Fault_Code}
-                                                    onChange={handleSelectedFaultCode} // using id as it is unique
+                                                    onChange={value => {
+                                                        handleSelectedFaultCode(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
                                                     }}
                                                 />
                                             </div>
@@ -2578,30 +2637,31 @@ const WorkOrderFrom = (props) => {
 
                                     <div className="col-md-3">
                                         <Form.Group className="row" controlId="validation_CreatedBy">
-                                            <label className="col-sm-6 col-form-label"><span style={{color: "blue"}} class="required-asterisk"> Created By: </span></label>
+                                            <label className="col-sm-6 col-form-label" style={{ fontSize: "13px" }}><span style={{color: "blue"}} class="required-asterisk"> Created By: </span></label>
                                         </Form.Group>
                                     </div>
 
                                     <div className="col-md-3">
                                         <Form.Group className="row" controlId="validation_CreatedDate">
-                                            <label className="col-sm-6 col-form-label"><span style={{color: "blue"}} class="required-asterisk"> Created Date: </span></label>
+                                            <label className="col-sm-6 col-form-label" style={{ fontSize: "13px" }}><span style={{color: "blue"}} class="required-asterisk"> Created Date: </span></label>
                                         </Form.Group>
                                     </div>
                                 </div>  
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
+                                <div className="row" style={{ marginTop: "-28px" }}>
                                     <div className="col-md-12">
                                         <Form.Group className="row" controlId="validation_Description">
-                                            <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Description:</label>
+                                            <label className="col-sm-2 col-form-label" style={{ fontSize: "13px" }}><span style={{color: "red"}} class="required-asterisk">* </span>Description:</label>
                                             <div className="col-sm-10">
                                             <Form.Control 
-                                                style={{ fontSize: "13px" }}
+                                                style={{ fontSize: "12px" }}
                                                 as="textarea" 
                                                 rows={19} 
                                                 value={Description}
                                                 onChange={(e) => {
                                                     console.log(e.target.value)
                                                     setDescription(e.target.value);
+                                                    handleInputChange();
                                                 }}
                                             />
                                             </div>
@@ -2639,7 +2699,7 @@ const WorkOrderFrom = (props) => {
                                         <img src={require("../../assets/images/product_images_2/thumb_image11.jpg")} className="sliderimg" alt=""/>
                                         <img src={require("../../assets/images/product_images_2/thumb_image12.jpg")} className="sliderimg" alt=""/> */}
                                         
-                                        </AliceCarousel>
+                                    </AliceCarousel>
                                         
                                 </div>
 
@@ -2649,12 +2709,12 @@ const WorkOrderFrom = (props) => {
 
                         <section id="tab-menus">
 
-                        <Tabs defaultActiveKey="Status Audit" id="uncontrolled-tab-example" className="mb-4">
+                        <Tabs defaultActiveKey="Special Order (PR)" id="uncontrolled-tab-example" className="mb-4">
 
 
                             {/* ************************************* Details **************************************** */}
 
-                            <Tab eventKey="Details" title="Details" class="nav-link active">
+                            <Tab eventKey="Details" title={<><i className="mdi mdi-information"></i><span className="d-none d-md-inline"> Details</span></>} class="nav-link active">
                                 
                                     <div className="row">
                                         <div className="col-md-12">
@@ -2666,7 +2726,7 @@ const WorkOrderFrom = (props) => {
                                                     as="textarea" 
                                                     rows={19} 
                                                     value={CorrectiveAction}
-                                                    onChange={(e) => setCorrectiveAction(e.target.value)}
+                                                    onChange={(e) => {setCorrectiveAction(e.target.value); handleInputChange();}}
                                                 />
                                                 </div>
                                             </Form.Group>
@@ -2682,7 +2742,10 @@ const WorkOrderFrom = (props) => {
                                                         isClearable={true}  
                                                         options={Project_ID}
                                                         value={selected_Project_ID}
-                                                        onChange={setSelected_Project_ID} // using id as it is unique
+                                                        onChange={value => {
+                                                            setSelected_Project_ID(value);
+                                                            handleInputChange();
+                                                          }} // using id as it is unique
                                                         required
                                                         styles={{ 
                                                             control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -2701,7 +2764,10 @@ const WorkOrderFrom = (props) => {
                                                         isClearable={true}  
                                                         options={Original_Periority}
                                                         value={selected_Original_Periority}
-                                                        onChange={setSelected_Original_Periority} // using id as it is unique
+                                                        onChange={value => {
+                                                            setSelected_Original_Periority(value);
+                                                            handleInputChange();
+                                                          }} // using id as it is unique
                                                         required
                                                         styles={{ 
                                                             control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -2722,7 +2788,10 @@ const WorkOrderFrom = (props) => {
                                                     isClearable={true}  
                                                     options={Cause_Code}
                                                     value={selected_Cause_Code}
-                                                    onChange={setSelected_Cause_Code} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Cause_Code(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
                                                     control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -2741,7 +2810,7 @@ const WorkOrderFrom = (props) => {
                                                     style={{ fontSize: "13px", height: "38px" }}                                          
                                                     type="datetime-local"  
                                                     value={ScheduleDate} 
-                                                    onChange={(e) => setScheduleDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                    onChange={(e) => {setScheduleDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                     /> 
                                                 </div>
                                             </Form.Group>
@@ -2757,7 +2826,10 @@ const WorkOrderFrom = (props) => {
                                                     isClearable={true}  
                                                     options={Action_Code}
                                                     value={selected_Action_Code}
-                                                    onChange={setSelected_Action_Code} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Action_Code(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -2776,7 +2848,7 @@ const WorkOrderFrom = (props) => {
                                                     style={{ fontSize: "13px", height: "38px" }}                                     
                                                     type="datetime-local"  
                                                     value={ExceptionDate} 
-                                                    onChange={(e) => setExceptionDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                    onChange={(e) => {setExceptionDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                     /> 
                                                 </div>
                                             </Form.Group>
@@ -2792,7 +2864,10 @@ const WorkOrderFrom = (props) => {
                                                         isClearable={true}  
                                                         options={Delay_Code}
                                                         value={selected_Delay_Code}
-                                                        onChange={setSelected_Delay_Code} // using id as it is unique
+                                                        onChange={value => {
+                                                            setSelected_Delay_Code(value);
+                                                            handleInputChange();
+                                                          }} // using id as it is unique
                                                         required
                                                         styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -2811,7 +2886,7 @@ const WorkOrderFrom = (props) => {
                                                     style={{ fontSize: "13px", height: "38px" }}                                           
                                                     type="datetime-local"  
                                                     value={StatusChangeDate} 
-                                                    onChange={(e) => setStatusChangeDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                    onChange={(e) => {setStatusChangeDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                     /> 
                                                 </div>
                                             </Form.Group>
@@ -2827,7 +2902,10 @@ const WorkOrderFrom = (props) => {
                                                     isClearable={true}  
                                                     options={Work_Type}
                                                     value={selected_Work_Type}
-                                                    onChange={setSelected_Work_Type} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Work_Type(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -2846,7 +2924,7 @@ const WorkOrderFrom = (props) => {
                                                     style={{ fontSize: "13px", height: "38px" }}                                        
                                                     type="datetime-local"  
                                                     value={CompletionDate} 
-                                                    onChange={(e) => setCompletionDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                    onChange={(e) => {setCompletionDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                     /> 
                                                 </div>
                                             </Form.Group>
@@ -2862,7 +2940,10 @@ const WorkOrderFrom = (props) => {
                                                     isClearable={true}  
                                                     options={Work_Class}
                                                     value={selected_Work_Class}
-                                                    onChange={setSelected_Work_Class} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Work_Class(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -2881,7 +2962,7 @@ const WorkOrderFrom = (props) => {
                                                     style={{ fontSize: "13px", height: "38px" }}                                       
                                                     type="datetime-local"  
                                                     value={CloseDate} 
-                                                    onChange={(e) => setCloseDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                    onChange={(e) => {setCloseDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                     /> 
                                                 </div>
                                             </Form.Group>
@@ -2897,7 +2978,10 @@ const WorkOrderFrom = (props) => {
                                                     isClearable={true}  
                                                     options={Work_Group}
                                                     value={selected_Work_Group}
-                                                    onChange={setSelected_Work_Group} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Work_Group(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -2925,7 +3009,10 @@ const WorkOrderFrom = (props) => {
                                                     isClearable={true}  
                                                     options={Supervisor_ID}
                                                     value={selected_Supervisor_ID}
-                                                    onChange={setSelected_Supervisor_ID} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Supervisor_ID(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -2944,7 +3031,10 @@ const WorkOrderFrom = (props) => {
                                                     <input type="checkbox" 
                                                     className="form-check-input"
                                                     checked={Temporary_Asset}
-                                                    onChange={handleOnChangeTemporaryAsset}
+                                                    onChange={value => {
+                                                        handleOnChangeTemporaryAsset(value);
+                                                        handleInputChange();
+                                                      }}
                                                     />
                                                     <i className="input-helper"></i>
                                                 </label>
@@ -2962,7 +3052,10 @@ const WorkOrderFrom = (props) => {
                                                     isClearable={true}  
                                                     options={Planner}
                                                     value={selected_Planner}
-                                                    onChange={setSelected_Planner} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Planner(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -2981,7 +3074,10 @@ const WorkOrderFrom = (props) => {
                                                     <input type="checkbox" 
                                                     className="form-check-input"
                                                     checked={Approved}
-                                                    onChange={handleOnChangeApproved}
+                                                    onChange={value => {
+                                                        handleOnChangeApproved(value);
+                                                        handleInputChange();
+                                                      }}
                                                     />
                                                     <i className="input-helper"></i>
                                                 </label>
@@ -3000,7 +3096,10 @@ const WorkOrderFrom = (props) => {
                                                     isClearable={true}  
                                                     options={Approver}
                                                     value={selected_Approver}
-                                                    onChange={setSelected_Approver} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Approver(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -3031,7 +3130,10 @@ const WorkOrderFrom = (props) => {
                                                     isClearable={true}  
                                                     options={Assign_To}
                                                     value={selected_Assign_To}
-                                                    onChange={setSelected_Assign_To} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Assign_To(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -3050,7 +3152,10 @@ const WorkOrderFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={Safety}
-                                                        onChange={handleOnChangeSafety}
+                                                        onChange={value => {
+                                                            handleOnChangeSafety(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -3065,7 +3170,7 @@ const WorkOrderFrom = (props) => {
                                             <Form.Group className="row">
                                                 <label className="col-sm-4 col-form-label">Permanent ID:</label>
                                                 <div className="col-sm-8">
-                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Permanent_ID} onChange={(e) => setPermanent_ID(e.target.value)}/>
+                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Permanent_ID} onChange={(e) => {setPermanent_ID(e.target.value); handleInputChange();}}/>
                                                 </div>
                                             </Form.Group>
                                         </div>
@@ -3108,7 +3213,7 @@ const WorkOrderFrom = (props) => {
 
                             {/* ************************************* Financial *************************************** */}
 
-                            <Tab eventKey="Financial" title="Financial" class="nav nav-tabs nav-item nav-link active">
+                            <Tab eventKey="Financial" title={<><i className="mdi mdi-currency-usd"></i><span className="d-none d-md-inline"> Financial</span></>} class="nav nav-tabs nav-item nav-link active">
                                 
 
                                 <div className="row">
@@ -3122,7 +3227,10 @@ const WorkOrderFrom = (props) => {
                                                     isClearable={true}  
                                                     options={Customer_Code}
                                                     value={selected_Customer_Code}
-                                                    onChange={setSelected_Customer_Code} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Customer_Code(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -3143,7 +3251,10 @@ const WorkOrderFrom = (props) => {
                                                     isClearable={true}  
                                                     options={Labor_Account}
                                                     value={selected_Labor_Account}
-                                                    onChange={setSelected_Labor_Account} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Labor_Account(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -3164,7 +3275,10 @@ const WorkOrderFrom = (props) => {
                                                 isClearable={true}  
                                                 options={Material_Account}
                                                 value={selected_Material_Account}
-                                                onChange={setSelected_Material_Account} // using id as it is unique
+                                                onChange={value => {
+                                                    setSelected_Material_Account(value);
+                                                    handleInputChange();
+                                                  }} // using id as it is unique
                                                 required
                                                 styles={{ 
                                                     control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -3187,7 +3301,10 @@ const WorkOrderFrom = (props) => {
                                                     isClearable={true}  
                                                     options={Credit_Cost_Center}
                                                     value={selected_Credit_Cost_Center}
-                                                    onChange={setSelected_Credit_Cost_Center} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Credit_Cost_Center(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -3208,7 +3325,10 @@ const WorkOrderFrom = (props) => {
                                                     isClearable={true}  
                                                     options={Contract_Account}
                                                     value={selected_Contract_Account}
-                                                    onChange={setSelected_Contract_Account} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Contract_Account(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -3229,7 +3349,10 @@ const WorkOrderFrom = (props) => {
                                                     isClearable={true}  
                                                     options={Miscellaneous_Account}
                                                     value={selected_Miscellaneous_Account}
-                                                    onChange={setSelected_Miscellaneous_Account} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Miscellaneous_Account(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{ 
                                                         control: (styles) => ({ ...styles, fontSize: "13px" }), 
@@ -3246,7 +3369,7 @@ const WorkOrderFrom = (props) => {
 
                             {/* ************************************* UDF ******************************************* */}
 
-                            <Tab eventKey="UDF1" title="UDF1" class="nav-link active">
+                            <Tab eventKey="UDF1" title={<><i className="mdi mdi-calendar-text"></i><span className="d-none d-md-inline"> UDF1</span></>} class="nav-link active">
 
 
                                 <div className="row">
@@ -3261,7 +3384,7 @@ const WorkOrderFrom = (props) => {
                                                     style={{ fontSize: "13px", height: "38px" }}
                                                     type="text"
                                                     value={UDFText_1}
-                                                    onChange={(e) => setUDFText_1(e.target.value)}
+                                                    onChange={(e) => {setUDFText_1(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -3277,7 +3400,7 @@ const WorkOrderFrom = (props) => {
                                                     style={{ fontSize: "13px", height: "38px" }}
                                                     type="text"
                                                     value={UDFText_2}
-                                                    onChange={(e) => setUDFText_2(e.target.value)}
+                                                    onChange={(e) => {setUDFText_2(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -3293,7 +3416,7 @@ const WorkOrderFrom = (props) => {
                                                     style={{ fontSize: "13px", height: "38px" }}
                                                     type="text"
                                                     value={UDFText_3}
-                                                    onChange={(e) => setUDFText_3(e.target.value)}
+                                                    onChange={(e) => {setUDFText_3(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -3309,7 +3432,7 @@ const WorkOrderFrom = (props) => {
                                                     style={{ fontSize: "13px", height: "38px" }}
                                                     type="text"
                                                     value={UDFText_4}
-                                                    onChange={(e) => setUDFText_4(e.target.value)}
+                                                    onChange={(e) => {setUDFText_4(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -3325,7 +3448,7 @@ const WorkOrderFrom = (props) => {
                                                     style={{ fontSize: "13px", height: "38px" }}
                                                     type="text"
                                                     value={UDFText_5}
-                                                    onChange={(e) => setUDFText_5(e.target.value)}
+                                                    onChange={(e) => {setUDFText_5(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -3343,7 +3466,7 @@ const WorkOrderFrom = (props) => {
                                                 as="textarea" 
                                                 rows={19} 
                                                 value={UDFNote1}
-                                                onChange={(e) => setUDFNote1(e.target.value)}
+                                                onChange={(e) => {setUDFNote1(e.target.value); handleInputChange();}}
                                             />
                                             </div>
                                         </Form.Group>
@@ -3361,7 +3484,7 @@ const WorkOrderFrom = (props) => {
                                                 style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_6}
-                                                onChange={(e) => setUDFText_6(e.target.value)}
+                                                onChange={(e) => {setUDFText_6(e.target.value); handleInputChange();}}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -3378,7 +3501,7 @@ const WorkOrderFrom = (props) => {
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_1} 
-                                                onChange={(e) => setUDFNumber_1(e.target.value)}
+                                                onChange={(e) => {setUDFNumber_1(e.target.value); handleInputChange();}}
                                             />
                                         </div>
                                         </Form.Group>
@@ -3394,7 +3517,7 @@ const WorkOrderFrom = (props) => {
                                             style={{ fontSize: "13px", height: "38px" }}                                          
                                             type="datetime-local"  
                                             value={UDFDate_1} 
-                                            onChange={(e) => setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                            onChange={(e) => {setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                             />
                                         </div>
                                         </Form.Group>
@@ -3412,7 +3535,7 @@ const WorkOrderFrom = (props) => {
                                                 style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_7}
-                                                onChange={(e) => setUDFText_7(e.target.value)}
+                                                onChange={(e) => {setUDFText_7(e.target.value); handleInputChange();}}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -3429,7 +3552,7 @@ const WorkOrderFrom = (props) => {
                                             type="number"  
                                             placeholder=".0000" 
                                             value={UDFNumber_2} 
-                                            onChange={(e) => setUDFNumber_2(e.target.value)}
+                                            onChange={(e) => {setUDFNumber_2(e.target.value); handleInputChange();}}
                                             />
                                         </div>
                                         </Form.Group>
@@ -3445,7 +3568,7 @@ const WorkOrderFrom = (props) => {
                                                 style={{ fontSize: "13px", height: "38px" }}
                                                 type="datetime-local"
                                                 value={UDFDate_2} 
-                                                onChange={(e) => setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                onChange={(e) => {setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 
                                             />
                                         </div>
                                         </Form.Group>
@@ -3463,7 +3586,7 @@ const WorkOrderFrom = (props) => {
                                                 style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_8}
-                                                onChange={(e) => setUDFText_8(e.target.value)}
+                                                onChange={(e) => {setUDFText_8(e.target.value); handleInputChange();}}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -3480,7 +3603,7 @@ const WorkOrderFrom = (props) => {
                                             type="number"  
                                             placeholder=".0000" 
                                             value={UDFNumber_3} 
-                                            onChange={(e) => setUDFNumber_3(e.target.value)}
+                                            onChange={(e) => {setUDFNumber_3(e.target.value); handleInputChange();}}
                                             />
                                         </div>
                                         </Form.Group>
@@ -3496,7 +3619,7 @@ const WorkOrderFrom = (props) => {
                                                 style={{ fontSize: "13px", height: "38px" }}
                                                 type="datetime-local"
                                                 value={UDFDate_3} 
-                                                onChange={(e) => setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                onChange={(e) => {setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 
                                             />
                                         </div>
                                         </Form.Group>
@@ -3514,7 +3637,7 @@ const WorkOrderFrom = (props) => {
                                                 style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_9}
-                                                onChange={(e) => setUDFText_9(e.target.value)}
+                                                onChange={(e) => {setUDFText_9(e.target.value); handleInputChange();}}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -3531,7 +3654,7 @@ const WorkOrderFrom = (props) => {
                                             type="number"  
                                             placeholder=".0000" 
                                             value={UDFNumber_4} 
-                                            onChange={(e) => setUDFNumber_4(e.target.value)}
+                                            onChange={(e) => {setUDFNumber_4(e.target.value); handleInputChange();}}
                                             />
                                         </div>
                                         </Form.Group>
@@ -3547,7 +3670,7 @@ const WorkOrderFrom = (props) => {
                                                 style={{ fontSize: "13px", height: "38px" }}
                                                 type="datetime-local"
                                                 value={UDFDate_4} 
-                                                onChange={(e) => setUDFDate_4(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                onChange={(e) => {setUDFDate_4(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                             />
                                         </div>
                                         </Form.Group>
@@ -3565,7 +3688,7 @@ const WorkOrderFrom = (props) => {
                                                 style={{ fontSize: "13px", height: "38px" }}
                                                 type="text"
                                                 value={UDFText_10}
-                                                onChange={(e) => setUDFText_10(e.target.value)}
+                                                onChange={(e) => {setUDFText_10(e.target.value); handleInputChange();}}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -3582,7 +3705,7 @@ const WorkOrderFrom = (props) => {
                                             type="number"  
                                             placeholder=".0000" 
                                             value={UDFNumber_5} 
-                                            onChange={(e) => setUDFNumber_5(e.target.value)}
+                                            onChange={(e) => {setUDFNumber_5(e.target.value); handleInputChange();}}
                                             />
                                         </div>
                                         </Form.Group>
@@ -3598,7 +3721,7 @@ const WorkOrderFrom = (props) => {
                                                 style={{ fontSize: "13px", height: "38px" }}
                                                 type="datetime-local"
                                                 value={UDFDate_5} 
-                                                onChange={(e) => setUDFDate_5(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                onChange={(e) => {setUDFDate_5(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 
                                             />
                                         </div>
                                         </Form.Group>
@@ -3609,51 +3732,51 @@ const WorkOrderFrom = (props) => {
 
                             {/* ************************************* Material ************************************ */}
 
-                            <Tab eventKey="Material" title="Material" class="nav-link active">
+                            {/* <Tab eventKey="Material" title="Material" class="nav-link active">
 
-                                {/* <WorkOrderMaterial name={'WorkOrderFrom'} /> */}
+                                <WorkOrderMaterial name={'WorkOrderFrom'} data={{RowID: location.state.RowID }}/>
 
-                            </Tab>
+                            </Tab> */}
 
 
                             {/* ************************************* Special Order (PR) ************************************ */}
 
-                            <Tab eventKey="Special Order (PR)" title="Special Order (PR)" class="nav-link active" >
+                            <Tab eventKey="Special Order (PR)" title={<><i className="mdi mdi-file-document"></i><span className="d-none d-md-inline"> Planning</span></>} class="nav-link active" >
 
-                                {/* <WorkOrderSpecialOrder name={'WorkOrderFrom'} /> */}
+                                <WorkOrderSpecialOrder name={'WorkOrderFrom'} data={{RowID: location.state.RowID }}/>
 
                             </Tab>
 
 
                             {/* ************************************* Outsource Contract (PR) ************************************ */}
 
-                            <Tab eventKey="Outsource Contract (PR)" title="Outsource Contract (PR)" class="nav-link active">
+                            {/* <Tab eventKey="Outsource Contract (PR)" title={<><i className="mdi mdi-account-box"></i><span className="d-none d-md-inline"> Outsource Contract (PR)</span></>} class="nav-link active">
 
-                                {/* <WorkOrderOutsourceContract name={'WorkOrderFrom'} /> */}
+                                <WorkOrderOutsourceContract name={'WorkOrderFrom'} data={{RowID: location.state.RowID }}/>
 
-                            </Tab>
+                            </Tab> */}
 
 
                             {/* ************************************* Time Card ********************************* */}
 
-                            <Tab eventKey="Time Card" title="Time Card" class="nav-link active" >
+                            <Tab eventKey="Time Card" title={<><i className="mdi mdi-timetable"></i><span className="d-none d-md-inline"> Time Card</span></>} class="nav-link active" >
 
-                                {/* <WorkOrderTimeCard name={'WorkOrderFrom'} /> */}
+                                <WorkOrderTimeCard name={'WorkOrderFrom'} data={{RowID: location.state.RowID }}/>
 
                             </Tab>
 
 
                             {/* ************************************* Misc ************************************** */}
 
-                            <Tab eventKey="Misc" title="Misc" class="nav-link active" >
+                            {/* <Tab eventKey="Misc" title={<><i className="mdi mdi-chart-bar"></i><span className="d-none d-md-inline"> Misc</span></>} class="nav-link active" >
 
-                                {/* <WorkOrderMisc name={'WorkOrderFrom'} /> */}
+                                <WorkOrderMisc name={'WorkOrderFrom'} data={{RowID: location.state.RowID }}/>
 
-                            </Tab>
+                            </Tab> */}
 
                             {/* ************************************* Reference ************************************** */}
 
-                            <Tab eventKey="Reference" title="Reference" class="nav-link active" >
+                            <Tab eventKey="Reference" title={<><i className="mdi mdi-folder-upload"></i><span className="d-none d-md-inline"> Reference</span></>} class="nav-link active" >
                                 
                                 <Form.Group>
                                     <label>File upload</label>
@@ -3667,7 +3790,7 @@ const WorkOrderFrom = (props) => {
 
                             {/* ************************************* Status Audit ************************************** */}
 
-                            <Tab eventKey="Status Audit" title="Status Audit" class="nav-link active" >
+                            <Tab eventKey="Status Audit" title={<><i className="mdi mdi-package-variant-closed"></i><span className="d-none d-md-inline"> Status Audit</span></>} class="nav-link active" >
 
                                 <WorkOrderStatusAudit name={'WorkOrderFrom'} data={{RowID: location.state.RowID , Workorderno : location.state.Workorderno}}/>
 
@@ -3695,13 +3818,10 @@ const WorkOrderFrom = (props) => {
                             {Button_save}
                             </button>
 
-                            <button
-                            type="button"
-                            className="btn btn-danger btn-icon-text"
-                            >
+                            <button type="button" className="btn btn-danger btn-icon-text" onClick={onClickCancel}>
                             <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i>{" "}
                             Cancel
-                            </button>
+                        </button>
                         </div>
                         </ol>
                     </nav>

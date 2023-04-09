@@ -2202,7 +2202,7 @@ const WorkRequestForm = (props) => {
 
                             {/* ************************************* Details ******************************************* */}
 
-                            <Tab eventKey="Details" title="Details" class="nav-link active">
+                            <Tab eventKey="Details" title={<><i className="mdi mdi-information"></i><span className="d-none d-md-inline"> Details</span></>} class="nav-link active">
 
                                 <div className="row">
                                     <div className="col-md-6">
@@ -2902,7 +2902,7 @@ const WorkRequestForm = (props) => {
 
                             {/* ************************************* UDF 1 ******************************************* */}
 
-                            <Tab eventKey="UDF1" title="UDF1" class="nav-link active">
+                            <Tab eventKey="UDF1" title={<><i className="mdi mdi-calendar-text"></i><span className="d-none d-md-inline"> UDF1</span></>} class="nav-link active">
 
                                 <div className="row">
 
@@ -3413,28 +3413,25 @@ const WorkRequestForm = (props) => {
 
                             {/* ************************************* List 1 ********************************* */}
 
-                            <Tab eventKey="List 1" title="List 1" class="nav-link active">
+                            <Tab eventKey="List 1" title={<><i className="mdi mdi-format-float-left"></i><span className="d-none d-md-inline"> List 1</span></>} class="nav-link active">
 
-                                <WorkRequestList1 name={'WorkRequestFrom'} />
+                                {/* <WorkRequestList1 name={'WorkRequestFrom'} data={{RowID: location.state.RowID }}/> */}
 
                             </Tab>
 
 
                             {/* ************************************* List 2 ************************************** */}
 
-                            <Tab eventKey="List 2" title="List 2" class="nav-link active" >
+                            <Tab eventKey="List 2" title={<><i className="mdi mdi-format-float-right"></i><span className="d-none d-md-inline"> List 2</span></>} class="nav-link active" >
 
-                                <WorkRequestList2 name={'WorkRequestFrom'} />
+                                {/* <WorkRequestList2 name={'WorkRequestFrom'} data={{RowID: location.state.RowID }}/> */}
 
                             </Tab>
 
                             {/* ************************************* Reference ************************************** */}
 
-                            <Tab
-                                eventKey="Reference"
-                                title="Reference"
-                                class="nav-link active"
-                            >
+                            <Tab eventKey="Reference" title={<><i className="mdi mdi-folder-upload"></i><span className="d-none d-md-inline"> Reference</span></>} class="nav-link active" >
+                                
                                 <Form.Group>
                                     <label>File upload</label>
                                     <div className="custom-file">
@@ -3442,6 +3439,7 @@ const WorkRequestForm = (props) => {
                                         <label className="custom-file-label" htmlFor="customFileLang">Upload image</label>
                                     </div>
                                 </Form.Group> 
+                                
                             </Tab>
                             
 
