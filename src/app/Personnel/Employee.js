@@ -75,7 +75,7 @@ function Employee(props) {
     return (
       <>
         <th key="select">
-          <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} />
+          <IndeterminateCheckbox checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} />
         </th>
         {Object.keys(Header).map((attr) => (
           <th key={attr}> {attr.toUpperCase()}</th>

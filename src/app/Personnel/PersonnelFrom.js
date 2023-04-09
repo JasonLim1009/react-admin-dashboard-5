@@ -17,6 +17,9 @@ import {useTable,useSortBy,usePagination,useRowSelect,useResizeColumns  }  from 
 import moment from 'moment';
 
 import PersonnelMaintenance from "../tables/PersonnelMaintenance";
+import PersonnelPRApproval from "../tables/PersonnelPRApproval";
+import PersonnelMRApproval from "../tables/PersonnelMRApproval";
+import PersonnelStockLocation from "../tables/PersonnelStockLocation";
 
 
 
@@ -1931,1593 +1934,1588 @@ const PersonnalFrom = (props) => {
                     </div>
                 
             </nav>       
-        
         </div> 
 
-    <div className="col-12 grid-margin">
-        <div className="card" style={{marginLeft: "-15px", marginRight: "-15px"}}>
-            <div className="card-body"> 
-            <form className="form-sample" validated={validated}>  
-
-                <div className="row">
-
-                    <div className="col-md-10">
+        <div className="col-12 grid-margin">
+            <div className="card" style={{marginLeft: "-15px", marginRight: "-15px"}}>
+                <div className="card-body"> 
+                    <form className="form-sample" validated={validated}>  
 
                         <div className="row">
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Emp_EmployeeID">
-                                    <label className="col-sm-5 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Employee ID:</label>
-                                    <div className="col-sm-7">
-                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_EmployeeID} onChange={(e) => setEmp_EmployeeID(e.target.value)}/>
-                                    </div>
-                                </Form.Group>
-                            </div>
 
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Emp_Name">
-                                    <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Name:</label>
-                                    <div className="col-sm-10">
-                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_Name} onChange={(e) => setEmp_Name(e.target.value)}/>
-                                    </div>
-                                </Form.Group>                        
-                            </div> 
-                        </div>
+                            <div className="col-md-10">
 
-                        <div className="row">
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Employee_Status">                                  
-                                    <Form.Label className="col-sm-5 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Status:</Form.Label>
-                                    <div className="col-sm-7">
-                                        <Select  
-                                            isClearable={true}  
-                                            options={Employee_Status}
-                                            value={selected_Employee_Status}
-                                            onChange={setSelected_Employee_Status} // using id as it is unique
-                                            required
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                              }}
-                                        />
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Emp_EmployeeID">
+                                            <label className="col-sm-5 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Employee ID:</label>
+                                            <div className="col-sm-7">
+                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_EmployeeID} onChange={(e) => setEmp_EmployeeID(e.target.value)}/>
+                                            </div>
+                                        </Form.Group>
                                     </div>
-                                    
-                                </Form.Group>
-                            </div>
 
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Emp_Title">
-                                    <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Title:</label>
-                                    <div className="col-sm-10">
-                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_Title} onChange={(e) => setEmp_Title(e.target.value)}/>
-                                    </div>
-                                </Form.Group>
-                            </div>                         
-                        </div>
-
-                        <div className="row">
-                            <div className="col-md-6">                                
-                                <Form.Group className="row" controlId="validation_Employee_User_Group">
-                                    <Form.Label className="col-sm-5 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>User Group:</Form.Label>
-                                    <div className="col-sm-7">
-                                        <Select  
-                                            isClearable={true}  
-                                            options={Employee_User_Group}
-                                            value={selected_Employee_User_Group}
-                                            onChange={setSelected_Employee_User_Group} // using id as it is unique
-                                            required
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                              }}
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </div>
-
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Employee_Login_Id">
-                                    <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Login ID:</label>
-                                    <div className="col-sm-5">
-                                    <Select  
-                                        isClearable={true}  
-                                        options={Employee_Login_Id}
-                                        value={selected_Employee_Login_Id}
-                                        onChange={setSelected_Employee_Login_Id} // using id as it is unique
-                                        required
-                                        styles={{ 
-                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                          }}
-                                    />
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Emp_Name">
+                                            <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Name:</label>
+                                            <div className="col-sm-10">
+                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_Name} onChange={(e) => setEmp_Name(e.target.value)}/>
+                                            </div>
+                                        </Form.Group>                        
+                                    </div> 
                                 </div>
 
-                                <div className="col-sm-5">
-                                    <label className="col-form-label"><a href="">Create New User Login</a></label>
-                                </div>
-                                </Form.Group>
-                            </div> 
-                        </div>
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Employee_Status">                                  
+                                            <Form.Label className="col-sm-5 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Status:</Form.Label>
+                                            <div className="col-sm-7">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Employee_Status}
+                                                    value={selected_Employee_Status}
+                                                    onChange={setSelected_Employee_Status} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </div>
+                                            
+                                        </Form.Group>
+                                    </div>
 
-                        <div className="row">              
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_Dashboard_Access">
-                                    <label className="col-sm-5 col-form-label">Dashboard Access:</label>
-                                    <div className="col-sm-7">
-                                        <Select  
-                                            isClearable={true}  
-                                            value={selected_dashboard_access}
-                                            onChange={setSelected_dashboard_access}
-                                            options={dashboard_access}
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Emp_Title">
+                                            <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Title:</label>
+                                            <div className="col-sm-10">
+                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_Title} onChange={(e) => setEmp_Title(e.target.value)}/>
+                                            </div>
+                                        </Form.Group>
+                                    </div>                         
+                                </div>
+
+                                <div className="row">
+                                    <div className="col-md-6">                                
+                                        <Form.Group className="row" controlId="validation_Employee_User_Group">
+                                            <Form.Label className="col-sm-5 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>User Group:</Form.Label>
+                                            <div className="col-sm-7">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={Employee_User_Group}
+                                                    value={selected_Employee_User_Group}
+                                                    onChange={setSelected_Employee_User_Group} // using id as it is unique
+                                                    required
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    }}
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Employee_Login_Id">
+                                            <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Login ID:</label>
+                                            <div className="col-sm-5">
+                                            <Select  
+                                                isClearable={true}  
+                                                options={Employee_Login_Id}
+                                                value={selected_Employee_Login_Id}
+                                                onChange={setSelected_Employee_Login_Id} // using id as it is unique
+                                                required
+                                                styles={{ 
+                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
                                                 }}
                                             />
-                                    </div>
-                                </Form.Group>
-                            </div>  
+                                        </div>
 
-                            <div className="col-md-6">
-                                <Form.Group className="row" controlId="validation_PrivilegeTemplate">
-                                    <label className="col-sm-5 col-form-label">Privilege Template:</label>
-                                </Form.Group>
+                                        <div className="col-sm-5">
+                                            <label className="col-form-label"><a href="">Create New User Login</a></label>
+                                        </div>
+                                        </Form.Group>
+                                    </div> 
+                                </div>
+
+                                <div className="row">              
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_Dashboard_Access">
+                                            <label className="col-sm-5 col-form-label">Dashboard Access:</label>
+                                            <div className="col-sm-7">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    value={selected_dashboard_access}
+                                                    onChange={setSelected_dashboard_access}
+                                                    options={dashboard_access}
+                                                    styles={{ 
+                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        }}
+                                                    />
+                                            </div>
+                                        </Form.Group>
+                                    </div>  
+
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_PrivilegeTemplate">
+                                            <label className="col-sm-5 col-form-label">Privilege Template:</label>
+                                        </Form.Group>
+                                    </div>
+                                </div>  
+
                             </div>
+
+                        {/* ************************************* img ******************************************* */}
+
+                            <div className="col-md-2">
+
+                                <div className="row">
+
+                                    <AliceCarousel 
+                                        autoPlay 
+                                        autoPlayInterval="3000"  
+                                        animationDuration={1000}
+                                        animationType="fadeout"
+                                        infinite
+                                        touchTracking={false}
+                                        disableDotsControls
+                                        >
+                                        <img src={require("../../assets/images/product_images_2/thumb_image1.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image2.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image3.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image4.jpg")} className="sliderimg" alt=""/>
+                                        {/* <img src={require("../../assets/images/product_images_2/thumb_image5.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image6.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image7.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image8.jpg")} className="sliderimg" alt=""/>                                    
+                                        <img src={require("../../assets/images/product_images_2/thumb_image9.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image10.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image11.jpg")} className="sliderimg" alt=""/>
+                                        <img src={require("../../assets/images/product_images_2/thumb_image12.jpg")} className="sliderimg" alt=""/> */}
+                                        
+                                    </AliceCarousel>
+                                        
+                                </div>
+
+                            </div>
+                            
                         </div>  
 
-                    </div>
+                        <section id="tab-menus">
 
-                {/* ************************************* img ******************************************* */}
-
-                    <div className="col-md-2">
-
-                        <div className="row">
-
-                            <AliceCarousel 
-                                autoPlay 
-                                autoPlayInterval="3000"  
-                                animationDuration={1000}
-                                animationType="fadeout"
-                                infinite
-                                touchTracking={false}
-                                disableDotsControls
-                                >
-                                <img src={require("../../assets/images/product_images_2/thumb_image1.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image2.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image3.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image4.jpg")} className="sliderimg" alt=""/>
-                                {/* <img src={require("../../assets/images/product_images_2/thumb_image5.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image6.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image7.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image8.jpg")} className="sliderimg" alt=""/>                                    
-                                <img src={require("../../assets/images/product_images_2/thumb_image9.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image10.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image11.jpg")} className="sliderimg" alt=""/>
-                                <img src={require("../../assets/images/product_images_2/thumb_image12.jpg")} className="sliderimg" alt=""/> */}
-                                
-                            </AliceCarousel>
-                                
-                        </div>
-
-                    </div>
-                    
-                </div>  
-
-                <section id="tab-menus">
-
-                    <Tabs defaultActiveKey="Details" id="uncontrolled-tab-example" className="mb-4">
+                            <Tabs defaultActiveKey="Details" id="uncontrolled-tab-example" className="mb-4">
 
 
-                        {/* ************************************* Details **************************************** */}
+                                {/* ************************************* Details **************************************** */}
 
-                        <Tab eventKey="Details" title="Details" class="nav-link active">
-                            
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_Emp_HomePhone">
-                                                <label className="col-sm-3 col-form-label">Home Phone:</label>
-                                                <div className="col-sm-9">
-                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value={Emp_HomePhone} onChange={(e) => setEmp_HomePhone(e.target.value)}/>
+                                <Tab eventKey="Details" title={<><i className="mdi mdi-information"></i><span className="d-none d-md-inline"> Details</span></>} class="nav-link active">
+                                    
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_Emp_HomePhone">
+                                                        <label className="col-sm-3 col-form-label">Home Phone:</label>
+                                                        <div className="col-sm-9">
+                                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value={Emp_HomePhone} onChange={(e) => setEmp_HomePhone(e.target.value)}/>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>  
+
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_BirthDate">
+                                                        <label className="col-sm-3 col-form-label">Date of Birth:</label>
+                                                        <div className="col-sm-9">
+                                                            <Form.Control
+                                                                style={{ fontSize: "13px", height: "38px" }}
+                                                                type="datetime-local"
+                                                                value ={BirthDate} 
+                                                                onChange={(e) => setBirthDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                                />
+                                                        </div>
+                                                    </Form.Group>
+                                                </div> 
+                                            </div>
+
+                                            <div className="row" style={{ marginTop: "-20px" }}>
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_Emp_EmergencyName">
+                                                        <label className="col-sm-3 col-form-label">Emergency Name:</label>
+                                                        <div className="col-sm-9">
+                                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_EmergencyName} onChange={(e) => setEmp_EmergencyName(e.target.value)}/>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>  
+
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_HireDate">
+                                                        <label className="col-sm-3 col-form-label">Date of Hire:</label>
+                                                        <div className="col-sm-9">
+                                                        <Form.Control    
+                                                            style={{ fontSize: "13px", height: "38px" }}                                        
+                                                            type="datetime-local"  
+                                                            value={HireDate} 
+                                                            onChange={(e) => setHireDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                            /> 
+                                                            </div>
+                                                    </Form.Group>
+                                                </div>  
+                                            </div> 
+
+                                            <div className="row" style={{ marginTop: "-20px" }}>
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_Emp_EmergencyPhone">
+                                                        <label className="col-sm-3 col-form-label">Emergency Phone:</label>
+                                                        <div className="col-sm-9">
+                                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value={Emp_EmergencyPhone} onChange={(e) => setEmp_EmergencyPhone(e.target.value)}/>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>  
+
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_Emp_PayRate">
+                                                        <label className="col-sm-3 col-form-label">Pay Rate:</label>
+                                                        <div className="col-sm-9">
+                                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value={Emp_PayRate} onChange={(e) => setEmp_PayRate(e.target.value)}/>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div> 
+                                            </div>  
+
+                                            <div className='row' style={{ marginTop: "-20px" }}>
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_sex">
+                                                        <label className="col-sm-3 col-form-label">Sex:</label>
+                                                        <div className="col-sm-9">
+                                                        <Select  
+                                                            isClearable={true}  
+                                                            value={selected_sex}
+                                                            onChange={setSelected_sex}
+                                                            options={sex}
+                                                            styles={{ 
+                                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>  
+
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_Emp_PayPeriod">
+                                                        <label className="col-sm-3 col-form-label">Pay Period:</label>
+                                                        <div className="col-sm-9">
+                                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_PayPeriod} onChange={(e) => setEmp_PayPeriod(e.target.value)}/>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>  
+                                            </div>
+
+                                            <div className='row' style={{ marginTop: "-20px" }}>                                    
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_marital_statuse">
+                                                        <label className="col-sm-3 col-form-label">Marital Status:</label>
+                                                        <div className="col-sm-9">
+                                                        <Select  
+                                                            isClearable={true}  
+                                                            value={selected_marital_status}
+                                                            onChange={setSelected_marital_status}
+                                                            options={marital_status}
+                                                            styles={{ 
+                                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>  
+
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row" controlId="validation_marital_statuse">
+                                                        <label className="col-sm-3 col-form-label">Shift:</label>
+                                                        <div className="col-sm-9">
+                                                            <Select  
+                                                                isClearable={true}  
+                                                                value={selected_shift}
+                                                                onChange={setSelected_shift}
+                                                                options={shift}
+                                                                styles={{ 
+                                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>                                        
+                                            </div>
+
+                                            <div className='row' style={{ marginTop: "-20px" }}>
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row">
+                                                        <label className="col-sm-3 col-form-label">Email ID:</label>
+                                                        <div className="col-sm-9">
+                                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_EmailID} onChange={(e) => setEmp_EmailID(e.target.value)}/>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>    
+
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row">
+                                                        <label className="col-sm-3 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Supervisor ID:</label>
+                                                        <div className="col-sm-9">
+                                                            <Select  
+                                                                isClearable={true}  
+                                                                options={Employee_Supervisor_Id}
+                                                                value={selected_Employee_Supervisor_Id}
+                                                                onChange={setSelected_Employee_Supervisor_Id} // using id as it is unique
+                                                                required
+                                                                styles={{ 
+                                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                                    }}
+                                                                />
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>    
+                                            </div>
+
+                                            <div className='row' style={{ marginTop: "-20px" }}>
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row">
+                                                        <label className="col-sm-3 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Primary Craft:</label>
+                                                        <div className="col-sm-9">
+                                                            <Select  
+                                                                isClearable={true}  
+                                                                options={Employee_Primary_Craft}
+                                                                value={selected_Employee_Primary_Craft}
+                                                                onChange={setSelected_Employee_Primary_Craft} // using id as it is unique
+                                                                required
+                                                                styles={{ 
+                                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </Form.Group>
                                                 </div>
-                                            </Form.Group>
-                                        </div>  
 
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_BirthDate">
-                                                <label className="col-sm-3 col-form-label">Date of Birth:</label>
-                                                <div className="col-sm-9">
-                                                    <Form.Control
-                                                        style={{ fontSize: "13px", height: "38px" }}
-                                                        type="datetime-local"
-                                                        value ={BirthDate} 
-                                                        onChange={(e) => setBirthDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row">
+                                                        <label className="col-sm-3 col-form-label">Supervisor Name:</label>
+                                                        <div className="col-sm-9"></div>
+                                                    </Form.Group>
+                                                </div>                                      
+                                            </div>
+
+                                            <div className='row' style={{ marginTop: "-20px" }}>
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row">
+                                                        <label className="col-sm-3 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Work Area:</label>
+                                                        <div className="col-sm-9">
+                                                            <Select  
+                                                                isClearable={true}  
+                                                                options={Employee_Work_Id}
+                                                                value={selected_Employee_Work_Id}
+                                                                onChange={setSelected_Employee_Work_Id} // using id as it is unique
+                                                                required
+                                                                styles={{ 
+                                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                                    }}
+                                                                />
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>          
+
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row">
+                                                        <label className="col-sm-3 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Work Group:</label>
+                                                        <div className="col-sm-9">
+                                                            <Select  
+                                                                isClearable={true}  
+                                                                options={Employee_Work_Group}
+                                                                value={selected_Employee_Work_Group}
+                                                                onChange={setSelected_Employee_Work_Group} // using id as it is unique
+                                                                required
+                                                                styles={{ 
+                                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </Form.Group>
+                                                </div> 
+                                            </div>
+
+                                            <div className="row" style={{ marginTop: "-20px" }}>
+                                                <div className="col-md-6">
+                                                    <Form.Group className="row">
+                                                        <label className="col-sm-3 col-form-label">Remarks:</label>
+                                                        <div className="col-sm-9">
+                                                        <Form.Control 
+                                                            style={{ fontSize: "13px" }}
+                                                            as="textarea" 
+                                                            rows={19} 
+                                                            value={Remarks}
+                                                            onChange={(e) => setRemarks(e.target.value)}
                                                         />
+                                                        </div>
+                                                    </Form.Group>
                                                 </div>
+                                            </div>  
+                        
+                                </Tab>
+
+
+                                {/* ************************************* Settings *************************************** */}
+
+                                <Tab eventKey="Settings" title={<><i className="mdi mdi-wrench"></i><span className="d-none d-md-inline"> Settings</span></>} class="nav nav-tabs nav-item nav-link active">
+                                    
+                                    <div className="row">
+                                        <div className='col-md-3'>
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">MR Approver / Global Limit:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={MrApprover}
+                                                        onChange={handleOnChangeMrApprover}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                </div>    
+                                            </Form.Group>          
+                                        </div>
+
+                                        <div className="col-md-3">
+                                            <Form.Group className="mb-3">
+                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder=".00" value={selected_MrApprover} disabled ={MrApprover} onChange={(e) => setselected_MrApprover(e.target.value)} />
                                             </Form.Group>
-                                        </div> 
-                                    </div>
+                                        </div>
+
+                                        <div className="col-md-3">
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">Schedule Work Order:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={WoSched}
+                                                        onChange={handleOnChangeWoSched}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                </div> 
+                                            </Form.Group>
+                                        </div>
+                                    </div> 
 
                                     <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_Emp_EmergencyName">
-                                                <label className="col-sm-3 col-form-label">Emergency Name:</label>
-                                                <div className="col-sm-9">
-                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_EmergencyName} onChange={(e) => setEmp_EmergencyName(e.target.value)}/>
-                                                </div>
+                                        <div className="col-md-3">
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">WO Budget Approver / Limit:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={WoBudgetApprover}
+                                                        onChange={handleOnChangeWoBudgetApprover}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                </div> 
                                             </Form.Group>
-                                        </div>  
+                                        </div>   
 
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_HireDate">
-                                                <label className="col-sm-3 col-form-label">Date of Hire:</label>
-                                                <div className="col-sm-9">
-                                                <Form.Control    
-                                                    style={{ fontSize: "13px", height: "38px" }}                                        
-                                                    type="datetime-local"  
-                                                    value={HireDate} 
-                                                    onChange={(e) => setHireDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                                    /> 
-                                                    </div>
+                                        <div className="col-md-3">
+                                            <Form.Group className="mb-3">
+                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" placeholder=".00" value={selected_WoBudgetApprover} disabled ={WoBudgetApprover} onChange={(e) => setselected_WoBudgetApprover(e.target.value)} />
+                                            </Form.Group>
+                                        </div> 
+                                        
+                                        <div className="col-md-3">
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">PO Buyer:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={PoBuyer}
+                                                        onChange={handleOnChangePoBuyer}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                </div> 
                                             </Form.Group>
                                         </div>  
                                     </div> 
 
                                     <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_Emp_EmergencyPhone">
-                                                <label className="col-sm-3 col-form-label">Emergency Phone:</label>
-                                                <div className="col-sm-9">
-                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value={Emp_EmergencyPhone} onChange={(e) => setEmp_EmergencyPhone(e.target.value)}/>
-                                                </div>
+                                        <div className="col-md-3">
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">PR Approver / Global Limit:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={PrApprover}
+                                                        onChange={handleOnChangePrApprover}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                </div> 
+                                            </Form.Group>
+                                        </div>   
+
+                                        <div className="col-md-3">
+                                            <Form.Group className="mb-3">
+                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" placeholder=".00" value={selected_PrApprover} disabled ={PrApprover} onChange={(e) => setselected_PrApprover(e.target.value)} />
                                             </Form.Group>
                                         </div>  
 
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_Emp_PayRate">
-                                                <label className="col-sm-3 col-form-label">Pay Rate:</label>
-                                                <div className="col-sm-9">
-                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value={Emp_PayRate} onChange={(e) => setEmp_PayRate(e.target.value)}/>
+                                        <div className="col-md-3">
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">Supervisor:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={Supervisor}
+                                                        onChange={handleOnChangeSupervisor}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                </div> 
+                                            </Form.Group>
+                                        </div>   
+                                    </div> 
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-3">
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">WR Approver:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={WrApprover}
+                                                        onChange={handleOnChangeWrApprover}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                </div>
+                                            </Form.Group>
+                                        </div>    
+
+                                        <div className="col-md-3"></div> 
+
+                                        <div className="col-md-3">
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">Foreman:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={Foreman}
+                                                        onChange={handleOnChangeForeman}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                </div>
+                                            </Form.Group>
+                                        </div>   
+                                    </div> 
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-3">
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">Assign To:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={Planner}
+                                                        onChange={handleOnChangePlanner}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                </div>
+                                            </Form.Group>
+                                        </div>    
+
+                                        <div className="col-md-3"></div>  
+
+                                        <div className="col-md-3">
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">Asset Tagging Posting:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={AssetTagFlag}
+                                                        onChange={handleOnChangeAssetTagFlag}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
                                                 </div>
                                             </Form.Group>
                                         </div> 
-                                    </div>  
+                                    </div> 
 
-                                    <div className='row' style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_sex">
-                                                <label className="col-sm-3 col-form-label">Sex:</label>
-                                                <div className="col-sm-9">
-                                                <Select  
-                                                    isClearable={true}  
-                                                    value={selected_sex}
-                                                    onChange={setSelected_sex}
-                                                    options={sex}
-                                                    styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                        }}
-                                                    />
-                                                </div>
-                                            </Form.Group>
-                                        </div>  
-
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_Emp_PayPeriod">
-                                                <label className="col-sm-3 col-form-label">Pay Period:</label>
-                                                <div className="col-sm-9">
-                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_PayPeriod} onChange={(e) => setEmp_PayPeriod(e.target.value)}/>
-                                                </div>
-                                            </Form.Group>
-                                        </div>  
-                                    </div>
-
-                                    <div className='row' style={{ marginTop: "-20px" }}>                                    
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_marital_statuse">
-                                                <label className="col-sm-3 col-form-label">Marital Status:</label>
-                                                <div className="col-sm-9">
-                                                <Select  
-                                                    isClearable={true}  
-                                                    value={selected_marital_status}
-                                                    onChange={setSelected_marital_status}
-                                                    options={marital_status}
-                                                    styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                        }}
-                                                    />
-                                                </div>
-                                            </Form.Group>
-                                        </div>  
-
-                                        <div className="col-md-6">
-                                            <Form.Group className="row" controlId="validation_marital_statuse">
-                                                <label className="col-sm-3 col-form-label">Shift:</label>
-                                                <div className="col-sm-9">
-                                                    <Select  
-                                                        isClearable={true}  
-                                                        value={selected_shift}
-                                                        onChange={setSelected_shift}
-                                                        options={shift}
-                                                        styles={{ 
-                                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                          }}
-                                                    />
-                                                </div>
-                                            </Form.Group>
-                                        </div>                                        
-                                    </div>
-
-                                    <div className='row' style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-6">
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-3">
                                             <Form.Group className="row">
-                                                <label className="col-sm-3 col-form-label">Email ID:</label>
-                                                <div className="col-sm-9">
-                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_EmailID} onChange={(e) => setEmp_EmailID(e.target.value)}/>
+                                                <label className="col-sm-9 col-form-label">Request Pats & Services:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={WoGenMrPr}
+                                                        onChange={handleOnChangeWoGenMrPr}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                </div>
+                                            </Form.Group>
+                                        </div>     
+
+                                        <div className="col-md-3"></div> 
+
+                                        <div className="col-md-3">
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">Mobile User:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={MsetupMobileUser}
+                                                        onChange={handleOnChangeMsetupMobileUser}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                </div>
+                                            </Form.Group>
+                                        </div>  
+                                    </div> 
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-3">
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">PM Generator:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={PmGenerator}
+                                                        onChange={handleOnChangePmGenerator}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                </div>
+                                            </Form.Group>
+                                        </div>   
+
+                                        <div className="col-md-3"></div> 
+
+                                        <div className="col-md-3">
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">Mobile Device ID:</label>
+                                                <div className="col-sm-2 form-check"></div>
+                                            </Form.Group>
+                                        </div>   
+                                    </div> 
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-3">
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">Enter Time Card:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={TimeCardEnter}
+                                                        onChange={handleOnChangeTimeCardEnter}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                </div>
+                                            </Form.Group>
+                                        </div>   
+
+                                        <div className="col-md-3"></div> 
+
+                                        <div className="col-md-3">
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">Add/Delete Check List:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={Checklist}
+                                                        onChange={handleOnChangeChecklist}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                </div>
+                                            </Form.Group>
+                                        </div> 
+                                    </div> 
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-3">
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">Void Time Card:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={TimeCardVoid}
+                                                        onChange={handleOnChangeTimeCardVoid}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                </div>
+                                            </Form.Group>
+                                        </div>   
+
+                                        <div className="col-md-3"></div> 
+
+                                        <div className="col-md-3">
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">Mobile Access:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={Mobile}
+                                                        onChange={handleOnChangeMobile}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                </div>
+                                            </Form.Group>
+                                        </div>  
+                                    </div> 
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-3">
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">Core Access:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={Core}
+                                                        onChange={handleOnChangeCore}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                </div>
+                                            </Form.Group>
+                                        </div>      
+
+                                        <div className="col-md-3"></div> 
+
+                                        <div className="col-md-3">
+                                            <Form.Group className="row">
+                                                <label className="col-sm-9 col-form-label">Webwork Access:</label>
+                                                <div className="col-sm-2 form-check">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={Webwork}
+                                                        onChange={handleOnChangeWebwork}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
                                                 </div>
                                             </Form.Group>
                                         </div>    
+                                    </div> 
+                                </Tab>
 
-                                        <div className="col-md-6">
-                                            <Form.Group className="row">
-                                                <label className="col-sm-3 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Supervisor ID:</label>
-                                                <div className="col-sm-9">
-                                                    <Select  
-                                                        isClearable={true}  
-                                                        options={Employee_Supervisor_Id}
-                                                        value={selected_Employee_Supervisor_Id}
-                                                        onChange={setSelected_Employee_Supervisor_Id} // using id as it is unique
-                                                        required
-                                                        styles={{ 
-                                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                            }}
+
+                                {/* ************************************* UDF1 ******************************************* */}
+
+                                <Tab eventKey="UDF1" title={<><i className="mdi mdi-calendar-text"></i><span className="d-none d-md-inline"> UDF1</span></>} class="nav-link active">
+
+
+                                    <div className="row">
+                                        <div className='col'>
+                                            <div className="col-md-13">
+                                                <Form.Group className="row">
+                                                <label className="col-sm-4 col-form-label">
+                                                    EPS ID:
+                                                </label>
+                                                <div className="col-sm-8">
+                                                    <Form.Control
+                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        type="text"
+                                                        value={UDFText_1}
+                                                        onChange={(e) => setUDFText_1(e.target.value)}
+                                                    />
+                                                </div>
+                                                </Form.Group>
+                                            </div>
+
+                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                                <Form.Group className="row">
+                                                <label className="col-sm-4 col-form-label">
+                                                    Varchar2:
+                                                </label>
+                                                <div className="col-sm-8">
+                                                    <Form.Control
+                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        type="text"
+                                                        value={UDFText_2}
+                                                        onChange={(e) => setUDFText_2(e.target.value)}
                                                         />
                                                 </div>
-                                            </Form.Group>
-                                        </div>    
-                                    </div>
+                                                </Form.Group>
+                                            </div>
 
-                                    <div className='row' style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-6">
+                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                                <Form.Group className="row">
+                                                <label className="col-sm-4 col-form-label">
+                                                    Varchar3:
+                                                </label>
+                                                <div className="col-sm-8">
+                                                    <Form.Control
+                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        type="text"
+                                                        value={UDFText_3}
+                                                        onChange={(e) => setUDFText_3(e.target.value)}
+                                                        />
+                                                </div>
+                                                </Form.Group>
+                                            </div>
+
+                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                                <Form.Group className="row">
+                                                <label className="col-sm-4 col-form-label">
+                                                    Varchar4:
+                                                </label>
+                                                <div className="col-sm-8">
+                                                    <Form.Control
+                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        type="text"
+                                                        value={UDFText_4}
+                                                        onChange={(e) => setUDFText_4(e.target.value)}
+                                                        />
+                                                </div>
+                                                </Form.Group>
+                                            </div>
+
+                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                                <Form.Group className="row">
+                                                <label className="col-sm-4 col-form-label">
+                                                    Varchar5:
+                                                </label>
+                                                <div className="col-sm-8">
+                                                    <Form.Control
+                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        type="text"
+                                                        value={UDFText_5}
+                                                        onChange={(e) => setUDFText_5(e.target.value)}
+                                                        />
+                                                </div>
+                                                </Form.Group>
+                                            </div>
+                                        </div>
+
+                                        <div className="col-md-8">
                                             <Form.Group className="row">
-                                                <label className="col-sm-3 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Primary Craft:</label>
-                                                <div className="col-sm-9">
-                                                    <Select  
-                                                        isClearable={true}  
-                                                        options={Employee_Primary_Craft}
-                                                        value={selected_Employee_Primary_Craft}
-                                                        onChange={setSelected_Employee_Primary_Craft} // using id as it is unique
-                                                        required
-                                                        styles={{ 
-                                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                          }}
-                                                    />
+                                            <label className="col-sm-2 col-form-label">
+                                                    Note1:
+                                            </label>
+                                            <div className="col-sm-10">
+                                                <Form.Control
+                                                    style={{ fontSize: "13px" }} 
+                                                    as="textarea" 
+                                                    rows={19} 
+                                                    value={UDFNote1} 
+                                                    onChange={(e) => setUDFNote1(e.target.value)}
+                                                />
                                                 </div>
                                             </Form.Group>
                                         </div>
-
-                                        <div className="col-md-6">
-                                            <Form.Group className="row">
-                                                <label className="col-sm-3 col-form-label">Supervisor Name:</label>
-                                                <div className="col-sm-9"></div>
-                                            </Form.Group>
-                                        </div>                                      
-                                    </div>
-
-                                    <div className='row' style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-6">
-                                            <Form.Group className="row">
-                                                <label className="col-sm-3 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Work Area:</label>
-                                                <div className="col-sm-9">
-                                                    <Select  
-                                                        isClearable={true}  
-                                                        options={Employee_Work_Id}
-                                                        value={selected_Employee_Work_Id}
-                                                        onChange={setSelected_Employee_Work_Id} // using id as it is unique
-                                                        required
-                                                        styles={{ 
-                                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                            }}
-                                                        />
-                                                </div>
-                                            </Form.Group>
-                                        </div>          
-
-                                        <div className="col-md-6">
-                                            <Form.Group className="row">
-                                                <label className="col-sm-3 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Work Group:</label>
-                                                <div className="col-sm-9">
-                                                    <Select  
-                                                        isClearable={true}  
-                                                        options={Employee_Work_Group}
-                                                        value={selected_Employee_Work_Group}
-                                                        onChange={setSelected_Employee_Work_Group} // using id as it is unique
-                                                        required
-                                                        styles={{ 
-                                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                          }}
-                                                    />
-                                                </div>
-                                            </Form.Group>
-                                        </div> 
                                     </div>
 
                                     <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-6">
+                                        <div className="col-md-4">
                                             <Form.Group className="row">
-                                                <label className="col-sm-3 col-form-label">Remarks:</label>
-                                                <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label">
+                                                Varchar6:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_6}
+                                                onChange={(e) => setUDFText_6(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Numeric1:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control  
+                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    type="number"  
+                                                    placeholder=".0000" 
+                                                    value={UDFNumber_1} 
+                                                    onChange={(e) => setUDFNumber_1(e.target.value)}
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Datetime1:
+                                            </label>
+                                            <div className="col-sm-8">
+                                            <Form.Control   
+                                                style={{ fontSize: "13px", height: "38px" }}                                         
+                                                type="datetime-local"  
+                                                value={UDFDate_1} 
+                                                onChange={(e) => setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Varchar7:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_7}
+                                                onChange={(e) => setUDFText_7(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Numeric2:
+                                            </label>
+                                            <div className="col-sm-8">
+                                            <Form.Control  
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="number"  
+                                                placeholder=".0000" 
+                                                value={UDFNumber_2} 
+                                                onChange={(e) => setUDFNumber_2(e.target.value)}
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Datetime2:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="datetime-local"
+                                                value={UDFDate_2} 
+                                                onChange={(e) => setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Varchar8:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_8}
+                                                onChange={(e) => setUDFText_8(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Numeric3:
+                                            </label>
+                                            <div className="col-sm-8">
+                                            <Form.Control  
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="number"  
+                                                placeholder=".0000" 
+                                                value={UDFNumber_3} 
+                                                onChange={(e) => setUDFNumber_3(e.target.value)}
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Datetime3:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="datetime-local"
+                                                value={UDFDate_3} 
+                                                onChange={(e) => setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Varchar9:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_9}
+                                                onChange={(e) => setUDFText_9(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Numeric4:
+                                            </label>
+                                            <div className="col-sm-8">
+                                            <Form.Control  
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="number"  
+                                                placeholder=".0000" 
+                                                value={UDFNumber_4} 
+                                                onChange={(e) => setUDFNumber_4(e.target.value)}
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Datetime4:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="datetime-local"
+                                                value={UDFDate_4} 
+                                                onChange={(e) => setUDFDate_4(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Varchar10:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_10}
+                                                onChange={(e) => setUDFText_10(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Numeric5:
+                                            </label>
+                                            <div className="col-sm-8">
+                                            <Form.Control  
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="number"  
+                                                placeholder=".0000" 
+                                                value={UDFNumber_5} 
+                                                onChange={(e) => setUDFNumber_5(e.target.value)}
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Datetime5:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="datetime-local"
+                                                value={UDFDate_5} 
+                                                onChange={(e) => setUDFDate_5(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+                                </Tab>
+
+
+                                {/* ************************************* UDF2 ******************************************* */}
+
+                                <Tab eventKey="UDF2" title={<><i className="mdi mdi-calendar-text"></i><span className="d-none d-md-inline"> UDF2</span></>} class="nav-link active">
+
+
+                                    <div className="row">
+                                        <div className='col'>
+                                            <div className="col-md-13">
+                                                <Form.Group className="row">
+                                                <label className="col-sm-4 col-form-label">
+                                                    Varchar11:
+                                                </label>
+                                                <div className="col-sm-8">
+                                                    <Form.Control
+                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        type="text"
+                                                        value={UDFText_11}
+                                                        onChange={(e) => setUDFText_11(e.target.value)}
+                                                    />
+                                                </div>
+                                                </Form.Group>
+                                            </div>
+
+                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                                <Form.Group className="row">
+                                                <label className="col-sm-4 col-form-label">
+                                                    Varchar12:
+                                                </label>
+                                                <div className="col-sm-8">
+                                                    <Form.Control
+                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        type="text"
+                                                        value={UDFText_12}
+                                                        onChange={(e) => setUDFText_12(e.target.value)}
+                                                        />
+                                                </div>
+                                                </Form.Group>
+                                            </div>
+
+                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                                <Form.Group className="row">
+                                                <label className="col-sm-4 col-form-label">
+                                                    Varchar13:
+                                                </label>
+                                                <div className="col-sm-8">
+                                                    <Form.Control
+                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        type="text"
+                                                        value={UDFText_13}
+                                                        onChange={(e) => setUDFText_13(e.target.value)}
+                                                        />
+                                                </div>
+                                                </Form.Group>
+                                            </div>
+
+                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                                <Form.Group className="row">
+                                                <label className="col-sm-4 col-form-label">
+                                                    Varchar14:
+                                                </label>
+                                                <div className="col-sm-8">
+                                                    <Form.Control
+                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        type="text"
+                                                        value={UDFText_14}
+                                                        onChange={(e) => setUDFText_14(e.target.value)}
+                                                        />
+                                                </div>
+                                                </Form.Group>
+                                            </div>
+
+                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                                <Form.Group className="row">
+                                                <label className="col-sm-4 col-form-label">
+                                                    Varchar15:
+                                                </label>
+                                                <div className="col-sm-8">
+                                                    <Form.Control
+                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        type="text"
+                                                        value={UDFText_15}
+                                                        onChange={(e) => setUDFText_15(e.target.value)}
+                                                        />
+                                                </div>
+                                                </Form.Group>
+                                            </div>
+                                        </div>
+
+                                        <div className="col-md-8">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-2 col-form-label">
+                                                    Note2:
+                                            </label>
+                                            <div className="col-sm-10">
                                                 <Form.Control 
                                                     style={{ fontSize: "13px" }}
                                                     as="textarea" 
                                                     rows={19} 
-                                                    value={Remarks}
-                                                    onChange={(e) => setRemarks(e.target.value)}
+                                                    value={UDFNote2}
+                                                    onChange={(e) => setUDFNote2(e.target.value)}
                                                 />
                                                 </div>
                                             </Form.Group>
                                         </div>
-                                    </div>  
-                
-                        </Tab>
+                                    </div>
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Varchar16:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_16}
+                                                onChange={(e) => setUDFText_16(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Numeric6:
+                                            </label>
+                                            <div className="col-sm-8">
+                                            <Form.Control  
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="number"  
+                                                placeholder=".0000" 
+                                                value={UDFNumber_6} 
+                                                onChange={(e) => setUDFNumber_6(e.target.value)}
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Datetime6:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="datetime-local"
+                                                value={UDFDate_6} 
+                                                onChange={(e) => setUDFDate_6(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Varchar17:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_17}
+                                                onChange={(e) => setUDFText_17(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Numeric7:
+                                            </label>
+                                            <div className="col-sm-8">
+                                            <Form.Control  
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="number"  
+                                                placeholder=".0000" 
+                                                value={UDFNumber_7} 
+                                                onChange={(e) => setUDFNumber_7(e.target.value)}
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Datetime7:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="datetime-local"
+                                                value={UDFDate_7} 
+                                                onChange={(e) => setUDFDate_7(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Varchar18:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_18}
+                                                onChange={(e) => setUDFText_18(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Numeric8:
+                                            </label>
+                                            <div className="col-sm-8">
+                                            <Form.Control  
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="number"  
+                                                placeholder=".0000" 
+                                                value={UDFNumber_8} 
+                                                onChange={(e) => setUDFNumber_8(e.target.value)}
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Datetime8:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="datetime-local"
+                                                value={UDFDate_8} 
+                                                onChange={(e) => setUDFDate_8(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Varchar19:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_19}
+                                                onChange={(e) => setUDFText_19(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Numeric9:
+                                            </label>
+                                            <div className="col-sm-8">
+                                            <Form.Control 
+                                                style={{ fontSize: "13px", height: "38px" }} 
+                                                type="number"  
+                                                placeholder=".0000" 
+                                                value={UDFNumber_9} 
+                                                onChange={(e) => setUDFNumber_9(e.target.value)}
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Datetime9:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="datetime-local"
+                                                value={UDFDate_9} 
+                                                onChange={(e) => setUDFDate_9(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Varchar20:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_20}
+                                                onChange={(e) => setUDFText_20(e.target.value)}
+                                                    />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Numeric10:
+                                            </label>
+                                            <div className="col-sm-8">
+                                            <Form.Control  
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="number"  
+                                                placeholder=".0000" 
+                                                value={UDFNumber_10} 
+                                                onChange={(e) => setUDFNumber_10(e.target.value)}
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label">
+                                                Datetime10:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="datetime-local"
+                                                value={UDFDate_10} 
+                                                onChange={(e) => setUDFDate_10(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+                                </Tab>
 
 
-                        {/* ************************************* Settings *************************************** */}
+                                {/* ************************************* Maintenance ************************************ */}
 
-                        <Tab eventKey="Settings" title="Settings" class="nav nav-tabs nav-item nav-link active">
+                                <Tab eventKey="Maintenance" title={<><i className="mdi mdi-medical-bag"></i><span className="d-none d-md-inline"> Maintenance</span></>} class="nav-link active">
+
+                                    {/* <PersonnelMaintenance name={'PersonnelFrom'} data={{RowID: location.state.RowID }}/> */}
+
+                                </Tab>
+
+
+                                {/* ************************************* PR Approval ************************************ */}
+
+                                <Tab eventKey="PR Approval" title={<><i className="mdi mdi-rotate-left-variant"></i><span className="d-none d-md-inline"> PR Approval</span></>} class="nav-link active" >
+
+                                    {/* <PersonnelPRApproval name={'PersonnelFrom'} data={{RowID: location.state.RowID }}/> */}
+
+                                </Tab>
+
+
+                                {/* ************************************* MR Approval ************************************ */}
+
+                                <Tab eventKey="MR Approval" title={<><i className="mdi mdi-rotate-right-variant"></i><span className="d-none d-md-inline"> MR Approval</span></>} class="nav-link active">
+
+                                    {/* <PersonnelMRApproval name={'PersonnelFrom'} data={{RowID: location.state.RowID }}/> */}
+
+                                </Tab>
+
+
+                                {/* ************************************* Stock Location ********************************* */}
+
+                                <Tab eventKey="Stock Location" title={<><i className="mdi mdi-map"></i><span className="d-none d-md-inline"> Stock Location</span></>} class="nav-link active">
+
+                                    {/* <PersonnelStockLocation name={'PersonnelFrom'} data={{RowID: location.state.RowID }}/> */}
+
+                                </Tab>
+
+
+                                {/* ************************************* Reference ************************************** */}
+
+                                <Tab eventKey="Reference" title={<><i className="mdi mdi-folder-upload"></i><span className="d-none d-md-inline"> Reference</span></>} class="nav-link active"  >
+                                    <Form.Group>
+                                        <label>File upload</label>
+                                        <div className="custom-file">
+                                            <Form.Control type="file" className="form-control visibility-hidden" id="customFileLang" lang="es"/>
+                                            <label className="custom-file-label" htmlFor="customFileLang">Upload image</label>
+                                        </div>
+                                    </Form.Group> 
+                                </Tab>
+
+                            </Tabs>
                             
-                            <div className="row">
-                                <div className='col-md-3'>
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">MR Approver / Global Limit:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                className="form-check-input"
-                                                checked={MrApprover}
-                                                onChange={handleOnChangeMrApprover}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div>    
-                                    </Form.Group>          
-                                </div>
+                        </section>
 
-                                <div className="col-md-3">
-                                    <Form.Group className="mb-3">
-                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder=".00" value={selected_MrApprover} disabled ={MrApprover} onChange={(e) => setselected_MrApprover(e.target.value)} />
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">Schedule Work Order:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                className="form-check-input"
-                                                checked={WoSched}
-                                                onChange={handleOnChangeWoSched}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div> 
-                                    </Form.Group>
-                                </div>
-                            </div> 
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">WO Budget Approver / Limit:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                className="form-check-input"
-                                                checked={WoBudgetApprover}
-                                                onChange={handleOnChangeWoBudgetApprover}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div> 
-                                    </Form.Group>
-                                </div>   
-
-                                <div className="col-md-3">
-                                    <Form.Group className="mb-3">
-                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" placeholder=".00" value={selected_WoBudgetApprover} disabled ={WoBudgetApprover} onChange={(e) => setselected_WoBudgetApprover(e.target.value)} />
-                                    </Form.Group>
-                                </div> 
-                                
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">PO Buyer:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                className="form-check-input"
-                                                checked={PoBuyer}
-                                                onChange={handleOnChangePoBuyer}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div> 
-                                    </Form.Group>
-                                </div>  
-                            </div> 
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">PR Approver / Global Limit:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                className="form-check-input"
-                                                checked={PrApprover}
-                                                onChange={handleOnChangePrApprover}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div> 
-                                    </Form.Group>
-                                </div>   
-
-                                <div className="col-md-3">
-                                    <Form.Group className="mb-3">
-                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" placeholder=".00" value={selected_PrApprover} disabled ={PrApprover} onChange={(e) => setselected_PrApprover(e.target.value)} />
-                                    </Form.Group>
-                                </div>  
-
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">Supervisor:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                className="form-check-input"
-                                                checked={Supervisor}
-                                                onChange={handleOnChangeSupervisor}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div> 
-                                    </Form.Group>
-                                </div>   
-                            </div> 
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">WR Approver:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                 className="form-check-input"
-                                                 checked={WrApprover}
-                                                 onChange={handleOnChangeWrApprover}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div>
-                                    </Form.Group>
-                                </div>    
-
-                                <div className="col-md-3"></div> 
-
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">Foreman:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                className="form-check-input"
-                                                checked={Foreman}
-                                                onChange={handleOnChangeForeman}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div>
-                                    </Form.Group>
-                                </div>   
-                            </div> 
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">Assign To:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                className="form-check-input"
-                                                checked={Planner}
-                                                onChange={handleOnChangePlanner}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div>
-                                    </Form.Group>
-                                </div>    
-
-                                <div className="col-md-3"></div>  
-
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">Asset Tagging Posting:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                className="form-check-input"
-                                                checked={AssetTagFlag}
-                                                onChange={handleOnChangeAssetTagFlag}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div>
-                                    </Form.Group>
-                                </div> 
-                            </div> 
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">Request Pats & Services:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                className="form-check-input"
-                                                checked={WoGenMrPr}
-                                                onChange={handleOnChangeWoGenMrPr}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div>
-                                    </Form.Group>
-                                </div>     
-
-                                <div className="col-md-3"></div> 
-
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">Mobile User:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                className="form-check-input"
-                                                checked={MsetupMobileUser}
-                                                onChange={handleOnChangeMsetupMobileUser}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div>
-                                    </Form.Group>
-                                </div>  
-                            </div> 
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">PM Generator:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                className="form-check-input"
-                                                checked={PmGenerator}
-                                                onChange={handleOnChangePmGenerator}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div>
-                                    </Form.Group>
-                                </div>   
-
-                                <div className="col-md-3"></div> 
-
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">Mobile Device ID:</label>
-                                        <div className="col-sm-2 form-check"></div>
-                                    </Form.Group>
-                                </div>   
-                            </div> 
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">Enter Time Card:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                className="form-check-input"
-                                                checked={TimeCardEnter}
-                                                onChange={handleOnChangeTimeCardEnter}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div>
-                                    </Form.Group>
-                                </div>   
-
-                                <div className="col-md-3"></div> 
-
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">Add/Delete Check List:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                className="form-check-input"
-                                                checked={Checklist}
-                                                onChange={handleOnChangeChecklist}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div>
-                                    </Form.Group>
-                                </div> 
-                            </div> 
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">Void Time Card:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                className="form-check-input"
-                                                checked={TimeCardVoid}
-                                                onChange={handleOnChangeTimeCardVoid}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div>
-                                    </Form.Group>
-                                </div>   
-
-                                <div className="col-md-3"></div> 
-
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">Mobile Access:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                className="form-check-input"
-                                                checked={Mobile}
-                                                onChange={handleOnChangeMobile}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div>
-                                    </Form.Group>
-                                </div>  
-                            </div> 
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">Core Access:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                className="form-check-input"
-                                                checked={Core}
-                                                onChange={handleOnChangeCore}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div>
-                                    </Form.Group>
-                                </div>      
-
-                                <div className="col-md-3"></div> 
-
-                                <div className="col-md-3">
-                                    <Form.Group className="row">
-                                        <label className="col-sm-9 col-form-label">Webwork Access:</label>
-                                        <div className="col-sm-2 form-check">
-                                            <label className="form-check-label">
-                                                <input type="checkbox" 
-                                                className="form-check-input"
-                                                checked={Webwork}
-                                                onChange={handleOnChangeWebwork}
-                                                />
-                                                <i className="input-helper"></i>
-                                            </label>
-                                        </div>
-                                    </Form.Group>
-                                </div>    
-                            </div> 
-                        </Tab>
-
-
-                        {/* ************************************* UDF1 ******************************************* */}
-
-                        <Tab eventKey="UDF1" title="UDF1" class="nav-link active">
-
-
-                            <div className="row">
-                                <div className='col'>
-                                    <div className="col-md-13">
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            EPS ID:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
-                                                type="text"
-                                                value={UDFText_1}
-                                                onChange={(e) => setUDFText_1(e.target.value)}
-                                            />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-
-                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            Varchar2:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
-                                                type="text"
-                                                value={UDFText_2}
-                                                onChange={(e) => setUDFText_2(e.target.value)}
-                                                />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-
-                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            Varchar3:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
-                                                type="text"
-                                                value={UDFText_3}
-                                                onChange={(e) => setUDFText_3(e.target.value)}
-                                                />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-
-                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            Varchar4:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
-                                                type="text"
-                                                value={UDFText_4}
-                                                onChange={(e) => setUDFText_4(e.target.value)}
-                                                />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-
-                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            Varchar5:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
-                                                type="text"
-                                                value={UDFText_5}
-                                                onChange={(e) => setUDFText_5(e.target.value)}
-                                                />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-                                </div>
-
-                                <div className="col-md-8">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-2 col-form-label">
-                                            Note1:
-                                    </label>
-                                    <div className="col-sm-10">
-                                        <Form.Control
-                                            style={{ fontSize: "13px" }} 
-                                            as="textarea" 
-                                            rows={19} 
-                                            value={UDFNote1} 
-                                            onChange={(e) => setUDFNote1(e.target.value)}
-                                        />
-                                        </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Varchar6:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="text"
-                                        value={UDFText_6}
-                                        onChange={(e) => setUDFText_6(e.target.value)}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Numeric1:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control  
-                                            style={{ fontSize: "13px", height: "38px" }}
-                                            type="number"  
-                                            placeholder=".0000" 
-                                            value={UDFNumber_1} 
-                                            onChange={(e) => setUDFNumber_1(e.target.value)}
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Datetime1:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control   
-                                        style={{ fontSize: "13px", height: "38px" }}                                         
-                                        type="datetime-local"  
-                                        value={UDFDate_1} 
-                                        onChange={(e) => setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Varchar7:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="text"
-                                        value={UDFText_7}
-                                        onChange={(e) => setUDFText_7(e.target.value)}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Numeric2:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control  
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="number"  
-                                        placeholder=".0000" 
-                                        value={UDFNumber_2} 
-                                        onChange={(e) => setUDFNumber_2(e.target.value)}
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Datetime2:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="datetime-local"
-                                        value={UDFDate_2} 
-                                        onChange={(e) => setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Varchar8:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="text"
-                                        value={UDFText_8}
-                                        onChange={(e) => setUDFText_8(e.target.value)}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Numeric3:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control  
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="number"  
-                                        placeholder=".0000" 
-                                        value={UDFNumber_3} 
-                                        onChange={(e) => setUDFNumber_3(e.target.value)}
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Datetime3:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="datetime-local"
-                                        value={UDFDate_3} 
-                                        onChange={(e) => setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Varchar9:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="text"
-                                        value={UDFText_9}
-                                        onChange={(e) => setUDFText_9(e.target.value)}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Numeric4:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control  
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="number"  
-                                        placeholder=".0000" 
-                                        value={UDFNumber_4} 
-                                        onChange={(e) => setUDFNumber_4(e.target.value)}
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Datetime4:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="datetime-local"
-                                        value={UDFDate_4} 
-                                        onChange={(e) => setUDFDate_4(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Varchar10:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="text"
-                                        value={UDFText_10}
-                                        onChange={(e) => setUDFText_10(e.target.value)}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Numeric5:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control  
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="number"  
-                                        placeholder=".0000" 
-                                        value={UDFNumber_5} 
-                                        onChange={(e) => setUDFNumber_5(e.target.value)}
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Datetime5:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="datetime-local"
-                                        value={UDFDate_5} 
-                                        onChange={(e) => setUDFDate_5(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-                        </Tab>
-
-
-                        {/* ************************************* UDF2 ******************************************* */}
-
-                        <Tab eventKey="UDF2" title="UDF2" class="nav-link active">
-
-
-                            <div className="row">
-                                <div className='col'>
-                                    <div className="col-md-13">
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            Varchar11:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
-                                                type="text"
-                                                value={UDFText_11}
-                                                onChange={(e) => setUDFText_11(e.target.value)}
-                                            />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-
-                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            Varchar12:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
-                                                type="text"
-                                                value={UDFText_12}
-                                                onChange={(e) => setUDFText_12(e.target.value)}
-                                                />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-
-                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            Varchar13:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
-                                                type="text"
-                                                value={UDFText_13}
-                                                onChange={(e) => setUDFText_13(e.target.value)}
-                                                />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-
-                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            Varchar14:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
-                                                type="text"
-                                                value={UDFText_14}
-                                                onChange={(e) => setUDFText_14(e.target.value)}
-                                                />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-
-                                    <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                        <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
-                                            Varchar15:
-                                        </label>
-                                        <div className="col-sm-8">
-                                            <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
-                                                type="text"
-                                                value={UDFText_15}
-                                                onChange={(e) => setUDFText_15(e.target.value)}
-                                                />
-                                        </div>
-                                        </Form.Group>
-                                    </div>
-                                </div>
-
-                                <div className="col-md-8">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-2 col-form-label">
-                                            Note2:
-                                    </label>
-                                    <div className="col-sm-10">
-                                        <Form.Control 
-                                            style={{ fontSize: "13px" }}
-                                            as="textarea" 
-                                            rows={19} 
-                                            value={UDFNote2}
-                                            onChange={(e) => setUDFNote2(e.target.value)}
-                                        />
-                                        </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Varchar16:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="text"
-                                        value={UDFText_16}
-                                        onChange={(e) => setUDFText_16(e.target.value)}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Numeric6:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control  
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="number"  
-                                        placeholder=".0000" 
-                                        value={UDFNumber_6} 
-                                        onChange={(e) => setUDFNumber_6(e.target.value)}
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Datetime6:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="datetime-local"
-                                        value={UDFDate_6} 
-                                        onChange={(e) => setUDFDate_6(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Varchar17:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="text"
-                                        value={UDFText_17}
-                                        onChange={(e) => setUDFText_17(e.target.value)}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Numeric7:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control  
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="number"  
-                                        placeholder=".0000" 
-                                        value={UDFNumber_7} 
-                                        onChange={(e) => setUDFNumber_7(e.target.value)}
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Datetime7:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="datetime-local"
-                                        value={UDFDate_7} 
-                                        onChange={(e) => setUDFDate_7(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Varchar18:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="text"
-                                        value={UDFText_18}
-                                        onChange={(e) => setUDFText_18(e.target.value)}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Numeric8:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control  
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="number"  
-                                        placeholder=".0000" 
-                                        value={UDFNumber_8} 
-                                        onChange={(e) => setUDFNumber_8(e.target.value)}
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Datetime8:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="datetime-local"
-                                        value={UDFDate_8} 
-                                        onChange={(e) => setUDFDate_8(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Varchar19:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="text"
-                                        value={UDFText_19}
-                                        onChange={(e) => setUDFText_19(e.target.value)}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Numeric9:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control 
-                                        style={{ fontSize: "13px", height: "38px" }} 
-                                        type="number"  
-                                        placeholder=".0000" 
-                                        value={UDFNumber_9} 
-                                        onChange={(e) => setUDFNumber_9(e.target.value)}
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Datetime9:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="datetime-local"
-                                        value={UDFDate_9} 
-                                        onChange={(e) => setUDFDate_9(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row" style={{ marginTop: "-20px" }}>
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Varchar20:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="text"
-                                        value={UDFText_20}
-                                        onChange={(e) => setUDFText_20(e.target.value)}
-                                            />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Numeric10:
-                                    </label>
-                                    <div className="col-sm-8">
-                                    <Form.Control  
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="number"  
-                                        placeholder=".0000" 
-                                        value={UDFNumber_10} 
-                                        onChange={(e) => setUDFNumber_10(e.target.value)}
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4">
-                                    <Form.Group className="row">
-                                    <label className="col-sm-4 col-form-label">
-                                        Datetime10:
-                                    </label>
-                                    <div className="col-sm-8">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="datetime-local"
-                                        value={UDFDate_10} 
-                                        onChange={(e) => setUDFDate_10(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                        />
-                                    </div>
-                                    </Form.Group>
-                                </div>
-                            </div>
-                        </Tab>
-
-
-                        {/* ************************************* Maintenance ************************************ */}
-
-                        <Tab eventKey="Maintenance" title="Maintenance" class="nav-link active">
-
-                            <PersonnelMaintenance name={'PersonnelFrom'} />
-
-                        </Tab>
-
-
-                        {/* ************************************* PR Approval ************************************ */}
-
-                        <Tab
-                            eventKey="PR Approval"
-                            title="PR Approval"
-                            class="nav-link active"
-                        ></Tab>
-
-
-                        {/* ************************************* MR Approval ************************************ */}
-
-                        <Tab
-                            eventKey="MR Approval"
-                            title="MR Approval"
-                            class="nav-link active"
-                        ></Tab>
-
-
-                        {/* ************************************* Stock Location ********************************* */}
-
-                        <Tab
-                            eventKey="Stock Location"
-                            title="Stock Location"
-                            class="nav-link active"
-                        ></Tab>
-
-
-                        {/* ************************************* Reference ************************************** */}
-
-                        <Tab
-                            eventKey="Reference"
-                            title="Reference"
-                            class="nav-link active"
-                        >
-                            <Form.Group>
-                                <label>File upload</label>
-                                <div className="custom-file">
-                                    <Form.Control type="file" className="form-control visibility-hidden" id="customFileLang" lang="es"/>
-                                    <label className="custom-file-label" htmlFor="customFileLang">Upload image</label>
-                                </div>
-                            </Form.Group> 
-                        </Tab>
-
-                    </Tabs>
-                    
-                </section>
-
-            </form>
+                    </form>
 
 
                         {/* ************************************* button ***************************************** */}
@@ -3548,9 +3546,9 @@ const PersonnalFrom = (props) => {
                     </nav>
                     </div>
                 </div>
-                </div>
             </div>
         </div>
+    </div>
     );
 };
 
