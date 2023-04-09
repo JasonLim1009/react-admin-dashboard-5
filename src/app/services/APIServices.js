@@ -699,8 +699,23 @@ const get_employee_level_delete = (site_cd, rowid) => {
 };
 
 //EmployeeMaster Maintenance
-const get_employeemaster_maintenance = (site_cd) => {
-  return http.get(`/get_employeemaster_maintenance.php?site_cd=${site_cd}`);
+const get_employeemaster_maintenance = (site_cd, RowID) => {
+  return http.get(`/get_employeemaster_maintenance.php?site_cd=${site_cd}&RowID=${RowID}`);
+};
+
+//EmployeeMaster Pr Approval
+const get_employeemaster_pr_approval = (site_cd, RowID) => {
+  return http.get(`/get_employeemaster_pr_approval.php?site_cd=${site_cd}&RowID=${RowID}`);
+};
+
+//EmployeeMaster Mr Approval
+const get_employeemaster_mr_approval = (site_cd, RowID) => {
+  return http.get(`/get_employeemaster_mr_approval.php?site_cd=${site_cd}&RowID=${RowID}`);
+};
+
+//EmployeeMaster Stock Location
+const get_employeemaster_stock_location = (site_cd, RowID) => {
+  return http.get(`/get_employeemaster_stock_location.php?site_cd=${site_cd}&RowID=${RowID}`);
 };
 
 
@@ -1804,13 +1819,13 @@ const get_workrequest_level_delete = (site_cd, rowid) => {
 };
 
 //WorkRequest Master Maintenance 1
-const get_workrequestmaster_list1 = (site_cd) => {
-  return http.get(`/get_workrequestmaster_list1.php?site_cd=${site_cd}`);
+const get_workrequestmaster_list1 = (site_cd, RowID) => {
+  return http.get(`/get_workrequestmaster_list1.php?site_cd=${site_cd}&RowID=${RowID}`);
 };
 
 //WorkRequest Master Maintenance 2
-const get_workrequestmaster_list2 = (site_cd) => {
-  return http.get(`/get_workrequestmaster_list2.php?site_cd=${site_cd}`);
+const get_workrequestmaster_list2 = (site_cd, RowID) => {
+  return http.get(`/get_workrequestmaster_list2.php?site_cd=${site_cd}&RowID=${RowID}`);
 };
 
 
@@ -2092,28 +2107,28 @@ const get_workorder_level_delete = (site_cd, rowid) => {
 };
 
 //WorkOrder Master Material
-const get_workordermaster_material = (site_cd) => {
-  return http.get(`/get_workordermaster_material.php?site_cd=${site_cd}`);
+const get_workordermaster_material = (site_cd, RowID) => {
+  return http.get(`/get_workordermaster_material.php?site_cd=${site_cd}&RowID=${RowID}`);
 };
 
 //WorkOrder Master Special Order
-const get_workordermaster_specialorder = (site_cd) => {
-  return http.get(`/get_workordermaster_specialorder.php?site_cd=${site_cd}`);
+const get_workordermaster_specialorder = (site_cd, RowID) => {
+  return http.get(`/get_workordermaster_specialorder.php?site_cd=${site_cd}&RowID=${RowID}`);
 };
 
 //WorkOrder Master Out Source Contract
-const get_workordermaster_outsourcecontract = (site_cd) => {
-  return http.get(`/get_workordermaster_outsourcecontract.php?site_cd=${site_cd}`);
+const get_workordermaster_outsourcecontract = (site_cd, RowID) => {
+  return http.get(`/get_workordermaster_outsourcecontract.php?site_cd=${site_cd}&RowID=${RowID}`);
 };
 
 //WorkOrder Master Time Card
-const get_workordermaster_timecard = (site_cd) => {
-  return http.get(`/get_workordermaster_timecard.php?site_cd=${site_cd}`);
+const get_workordermaster_timecard = (site_cd, RowID) => {
+  return http.get(`/get_workordermaster_timecard.php?site_cd=${site_cd}&RowID=${RowID}`);
 };
 
 //WorkOrder Master Misc
-const get_workordermaster_misc = (site_cd) => {
-  return http.get(`/get_workordermaster_misc.php?site_cd=${site_cd}`);
+const get_workordermaster_misc = (site_cd, RowID) => {
+  return http.get(`/get_workordermaster_misc.php?site_cd=${site_cd}&RowID=${RowID}`);
 };
 
 //WorkOrder Master Status Audit
@@ -2400,13 +2415,13 @@ const get_inventory_level_delete = (site_cd, rowid) => {
 };
 
 //Inventory Master Location
-const get_inventorymaster_location = (site_cd) => {
-  return http.get(`/get_inventorymaster_location.php?site_cd=${site_cd}`);
+const get_inventorymaster_location = (site_cd, RowID) => {
+  return http.get(`/get_inventorymaster_location.php?site_cd=${site_cd}&RowID=${RowID}`);
 };
 
 //Inventory Master Location
-const get_inventorymaster_supplier = (site_cd) => {
-  return http.get(`/get_inventorymaster_supplier.php?site_cd=${site_cd}`);
+const get_inventorymaster_supplier = (site_cd, RowID) => {
+  return http.get(`/get_inventorymaster_supplier.php?site_cd=${site_cd}&RowID=${RowID}`);
 };
 
 
@@ -2469,6 +2484,9 @@ const APIServices = {
   get_employee_level_delete,
 
   get_employeemaster_maintenance,
+  get_employeemaster_pr_approval,
+  get_employeemaster_mr_approval,
+  get_employeemaster_stock_location,
 
   get_sitecode,
   authenticate_login,
