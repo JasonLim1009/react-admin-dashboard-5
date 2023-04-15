@@ -189,7 +189,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $stmt = sqlsrv_query($conn, $sql);
 
     if (!$stmt) {
-        $error_message = "Error selecting table (dft_mst)";
+        $error_message = "Error selecting table (dft_mst1)";
         returnError($error_message);
         die(print_r(sqlsrv_errors(), true));
     }
@@ -220,7 +220,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $stmt = sqlsrv_query($conn, $sql);
 
         if (!$stmt) {
-            $error_message = "Error selecting table (dft_mst)";
+            $error_message = "Error selecting table (dft_mst2)";
             returnError($error_message);
             die(print_r(sqlsrv_errors(), true));
         }

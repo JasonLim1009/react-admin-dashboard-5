@@ -119,6 +119,17 @@ emp_det_datetime8,
 emp_det_datetime9,
 emp_det_datetime10,
 
+emp_ls1_craft,
+emp_ls1_supervisor_id,
+emp_ls1_pay_rate,
+emp_ls1_charge_rate,
+
+emp_ls2_costcenter,
+emp_ls2_pr_approval_limit,
+
+emp_ls3_costcenter,
+emp_ls3_approval_limit,
+
 emp_mst_create_by,
 emp_mst_create_date
 

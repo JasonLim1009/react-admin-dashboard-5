@@ -65,7 +65,7 @@ $RowID = $_REQUEST['RowID'];
 	ON				wko_sts.site_cd = wrk_sts.site_cd
 	AND				wko_sts.wko_sts_status = wrk_sts.wrk_sts_status
 
-	WHERE 	wko_mst.RowID ='".$RowID."'";
+	WHERE 	wko_mst.RowID ='".$RowID."' order by wko_sts_start_date ASC";
 
 	$stmt_wko_sts = sqlsrv_query( $conn, $sql);
 
