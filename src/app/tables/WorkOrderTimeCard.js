@@ -166,7 +166,8 @@ const WorkOrderTimeCard = (props) => {
 
 
                     //get_dropdown_ParentFlag(site_ID,selected_asset);    
-                    get_workordermaster_select(site_ID,selected_asset);              
+                    get_workordermaster_select(site_ID,selected_asset);    
+                    // New_WorkOrderTimeCard();          
                     Swal.close();
                 
             }else{
@@ -348,7 +349,14 @@ const WorkOrderTimeCard = (props) => {
 
 const resetData = () => {
 
- 
+    setSelected_ChargeAccount(0);
+    setSelected_ChargeCostCenter(0);
+    setSelected_Craft(0);
+    setSelected_CreditAccount(0);
+    setSelected_CreditCostCenter(0);
+    setSelected_EmployeeID(0);
+    setSelected_HourType(0);
+    setActualHour('');
   
 };
 
@@ -368,6 +376,9 @@ const handleAddButtonClick  = () => {
         setEmployeeID = EmployeeID[0];
         console.log("EmployeeID ", EmployeeID[0])
     }
+
+    //Select Actual Hour
+    console.log("ActualHour: ", ActualHour)
 
     //Select Craft
     let Craft, setCraft;
@@ -393,18 +404,15 @@ const handleAddButtonClick  = () => {
     console.log("HourType ", HourType[0])
     }
 
-    //Select Actual Hour
-    console.log("ActualHour: ", ActualHour)
+    //Select Time Card Date
+    let Time_Card_Date = ''
+    if (TimeCardDate == '' || TimeCardDate == null) {
 
-    //Select Actual Hour
-    let Actual_Hour = ''
-    if (ActualHour == '' || ActualHour == null) {
-
-        Actual_Hour = '';
+        Time_Card_Date = '';
     } else {
 
-        Actual_Hour = Moment(ActualHour).format('yyyy-MM-DD HH:mm:ss').trim();
-        console.log("Date1 ", Actual_Hour);
+        Time_Card_Date = Moment(TimeCardDate).format('yyyy-MM-DD HH:mm:ss').trim();
+        console.log("TC Date ", TimeCardDate);
     }
 
     //Select Charge Cost Center
@@ -467,7 +475,7 @@ const handleAddButtonClick  = () => {
         wko_ls8_craft: setCraft.trim(),
         wko_ls8_crd_account: setCreditAccount.trim(),
         wko_ls8_crd_costcenter: setCreditCostCenter.trim(),
-        //wko_ls8_datetime1: Actual_Hour,
+        //wko_ls8_datetime1: Time_Card_Date,
         wko_ls8_empl_id: setEmployeeID.trim(),
         wko_ls8_hours_type: setHourType.trim(),
         wko_ls8_hrs: ActualHour,
@@ -482,6 +490,44 @@ const handleAddButtonClick  = () => {
       // Close modal
       handleClose();
 };
+
+
+
+// const New_WorkOrderTimeCard = () => {
+//     APIServices.insert_new_workorder_timecard().then((responseJson)=>{
+//         if (responseJson.data.status === 'SUCCESS') { 
+            
+//             Swal.close();
+
+//             Swal.fire({
+//                 icon: 'success',
+//                 title: responseJson.data.status,
+//                 text: responseJson.data.message,
+                
+//             })
+
+//         }else{
+//             Swal.close();
+//             Swal.fire({
+//                 icon: 'error',
+//                 title: 'Oops...',
+//                 text: responseJson.data,
+                
+//             })
+
+//         }
+        
+// }).catch((e) => {
+//     Swal.close();
+  
+//     Swal.fire({
+//       icon: 'error',
+//       title: 'Oops get_WorkOrder_select...',
+//       text: e,          
+//     })
+//   });
+
+// };
 
 
 
@@ -513,7 +559,7 @@ const handleAddButtonClick  = () => {
                 <Modal.Body>
                     <div className="col-md-12">
                         <Form.Group className="row" controlId="validation_EmployeeID">
-                            <label className="col-sm-4 col-form-label">Employee ID:</label>
+                            <label className="col-sm-4 col-form-label down left">Employee ID:</label>
                             <div className="col-sm-8">
                             <label className="col-sm-10 form-label">
                                 <Select  
@@ -532,9 +578,9 @@ const handleAddButtonClick  = () => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUoPopUp">
                         <Form.Group className="row" controlId="validation_Craft">
-                            <label className="col-sm-4 col-form-label">Craft:</label>
+                            <label className="col-sm-4 col-form-label top down left">Craft:</label>
                             <div className="col-sm-8">
                             <label className="col-sm-10 form-label">
                                 <Select  
@@ -553,9 +599,9 @@ const handleAddButtonClick  = () => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUoPopUp">
                             <Form.Group className="row" controlId="validation_TimeCardDate">
-                                <label className="col-sm-4 col-form-label">Time Card Date:</label>
+                                <label className="col-sm-4 col-form-label top down left">Time Card Date:</label>
                                 <div className="col-sm-8 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control    
@@ -569,9 +615,9 @@ const handleAddButtonClick  = () => {
                             </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUoPopUp">
                         <Form.Group className="row" controlId="validation_HourType">
-                            <label className="col-sm-4 col-form-label">Hour Type:</label>
+                            <label className="col-sm-4 col-form-label top down left">Hour Type:</label>
                             <div className="col-sm-8">
                             <label className="col-sm-10 form-label">
                                 <Select  
@@ -590,9 +636,9 @@ const handleAddButtonClick  = () => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUoPopUp">
                         <Form.Group className="row" controlId="validation_ActualHour">
-                            <label className="col-sm-4 col-form-label">Actual Hour:</label>
+                            <label className="col-sm-4 col-form-label top down left">Actual Hour:</label>
                             <div className="col-sm-8 form-label">
                             <label className="col-sm-10 form-label">
                                 <Form.Control  
@@ -607,9 +653,9 @@ const handleAddButtonClick  = () => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUoPopUp">
                         <Form.Group className="row" controlId="validation_ChargeCostCenter">
-                            <label className="col-sm-4 col-form-label">Charge Cost Center:</label>
+                            <label className="col-sm-4 col-form-label top down left">Charge Cost Center:</label>
                             <div className="col-sm-8">
                             <label className="col-sm-10 form-label">
                                 <Select  
@@ -628,9 +674,9 @@ const handleAddButtonClick  = () => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUoPopUp">
                         <Form.Group className="row" controlId="validation_ChargeAccount">
-                            <label className="col-sm-4 col-form-label">Charge Account:</label>
+                            <label className="col-sm-4 col-form-label top down left">Charge Account:</label>
                             <div className="col-sm-8">
                             <label className="col-sm-10 form-label">
                                 <Select  
@@ -649,9 +695,9 @@ const handleAddButtonClick  = () => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUoPopUp">
                         <Form.Group className="row" controlId="validation_CreditCostCenter">
-                            <label className="col-sm-4 col-form-label">Credit Cost Center:</label>
+                            <label className="col-sm-4 col-form-label top down left">Credit Cost Center:</label>
                             <div className="col-sm-8">
                             <label className="col-sm-10 form-label">
                                 <Select  
@@ -670,9 +716,9 @@ const handleAddButtonClick  = () => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUoPopUp">
                         <Form.Group className="row" controlId="validation_CreditAccount">
-                            <label className="col-sm-4 col-form-label">Credit Account:</label>
+                            <label className="col-sm-4 col-form-label top down left">Credit Account:</label>
                             <div className="col-sm-8">
                             <label className="col-sm-10 form-label">
                                 <Select  
@@ -717,7 +763,7 @@ const handleAddButtonClick  = () => {
                   
                   <div className="col-md-12">
                       <Form.Group className="row" controlId="validation_AssetNo">
-                          <label className="col-sm-4 col-form-label">Asset No:</label>
+                          <label className="col-sm-4 col-form-label down left">Asset No:</label>
                           <div className="col-sm-8">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -731,9 +777,9 @@ const handleAddButtonClick  = () => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUoPopUp">
                       <Form.Group className="row" controlId="validation_EmployeeID">
-                          <label className="col-sm-4 col-form-label">Employee ID:</label>
+                          <label className="col-sm-4 col-form-label top down left">Employee ID:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -747,9 +793,9 @@ const handleAddButtonClick  = () => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUoPopUp">
                       <Form.Group className="row" controlId="validation_Craft">
-                          <label className="col-sm-4 col-form-label">Craft:</label>
+                          <label className="col-sm-4 col-form-label top down left">Craft:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -763,14 +809,14 @@ const handleAddButtonClick  = () => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUoPopUp">
                       <Form.Group className="row" controlId="validation_TimeCardDate">
-                          <label className="col-sm-4 col-form-label">Time Card Date:</label>
+                          <label className="col-sm-4 col-form-label top down left">Time Card Date:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
                                   style={{ fontSize: "13px", height: "38px" }}
-                                  type="text"
+                                  type="datetime-local"  
                                   value ={TimeCardDate} 
                                   readOnly
                                 />
@@ -779,9 +825,9 @@ const handleAddButtonClick  = () => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUoPopUp">
                       <Form.Group className="row" controlId="validation_HourType">
-                          <label className="col-sm-4 col-form-label">Hour Type:</label>
+                          <label className="col-sm-4 col-form-label top down left">Hour Type:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -795,9 +841,9 @@ const handleAddButtonClick  = () => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUoPopUp">
                       <Form.Group className="row" controlId="validation_ActualHour">
-                          <label className="col-sm-4 col-form-label">Actual Hour:</label>
+                          <label className="col-sm-4 col-form-label top down left">Actual Hour:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -811,9 +857,9 @@ const handleAddButtonClick  = () => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUoPopUp">
                       <Form.Group className="row" controlId="validation_Rate">
-                          <label className="col-sm-4 col-form-label">Rate:</label>
+                          <label className="col-sm-4 col-form-label top down left">Rate:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -827,9 +873,9 @@ const handleAddButtonClick  = () => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUoPopUp">
                       <Form.Group className="row" controlId="validation_Multiplier">
-                          <label className="col-sm-4 col-form-label">Multiplier:</label>
+                          <label className="col-sm-4 col-form-label top down left">Multiplier:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -843,9 +889,9 @@ const handleAddButtonClick  = () => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUoPopUp">
                       <Form.Group className="row" controlId="validation_Adder">
-                          <label className="col-sm-4 col-form-label">Adder:</label>
+                          <label className="col-sm-4 col-form-label top down left">Adder:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -859,9 +905,9 @@ const handleAddButtonClick  = () => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUoPopUp">
                       <Form.Group className="row" controlId="validation_ActualCost">
-                          <label className="col-sm-4 col-form-label">Actual Cost:</label>
+                          <label className="col-sm-4 col-form-label top down left">Actual Cost:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -875,9 +921,9 @@ const handleAddButtonClick  = () => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUoPopUp">
                       <Form.Group className="row" controlId="validation_ChargeCostCenter">
-                          <label className="col-sm-4 col-form-label">Charge Cost Center:</label>
+                          <label className="col-sm-4 col-form-label top down left">Charge Cost Center:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -891,9 +937,9 @@ const handleAddButtonClick  = () => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUoPopUp">
                         <Form.Group className="row" controlId="validation_ChargeAccount">
-                            <label className="col-sm-4 col-form-label">Charge Account:</label>
+                            <label className="col-sm-4 col-form-label top down left">Charge Account:</label>
                             <div className="col-sm-8 form-label">
                             <label className="col-sm-10 form-label">
                                 <Form.Control
@@ -907,9 +953,9 @@ const handleAddButtonClick  = () => {
                         </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUoPopUp">
                       <Form.Group className="row" controlId="validation_CreditCostCenter">
-                          <label className="col-sm-4 col-form-label">Credit Cost Center:</label>
+                          <label className="col-sm-4 col-form-label top down left">Credit Cost Center:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -923,9 +969,9 @@ const handleAddButtonClick  = () => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUoPopUp">
                       <Form.Group className="row" controlId="validation_CreditAccount">
-                          <label className="col-sm-4 col-form-label">Credit Account:</label>
+                          <label className="col-sm-4 col-form-label top down left">Credit Account:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -939,9 +985,9 @@ const handleAddButtonClick  = () => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUoPopUp">
                       <Form.Group className="row" controlId="validation_TimeCardNo">
-                          <label className="col-sm-4 col-form-label">Time Card No:</label>
+                          <label className="col-sm-4 col-form-label top down left">Time Card No:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control

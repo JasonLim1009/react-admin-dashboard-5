@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 import APIServices from "../services/APIServices";
 
+import '../style.css';
 import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Moment from 'moment';
@@ -460,7 +461,7 @@ const WorkOrderMaterial = (props) => {
                 <Modal.Body>
                     <div className="col-md-12">
                         <Form.Group className="row" controlId="validation_StockNo">
-                            <label className="col-sm-4 col-form-label">Stock No:</label>
+                            <label className="col-sm-4 col-form-label down left">Stock No:</label>
                             <div className="col-sm-8">
                             <label className="col-sm-10 form-label">
                                 <Select  
@@ -479,9 +480,9 @@ const WorkOrderMaterial = (props) => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUpPopUp">
                         <Form.Group className="row" controlId="validation_StockLocation">
-                            <label className="col-sm-4 col-form-label">Stock Location:</label>
+                            <label className="col-sm-4 col-form-label down left">Stock Location:</label>
                             <div className="col-sm-8">
                             <label className="col-sm-10 form-label">
                                 <Select  
@@ -500,9 +501,9 @@ const WorkOrderMaterial = (props) => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUpPopUp">
                         <Form.Group className="row" controlId="validation_Description">
-                            <label className="col-sm-4 col-form-label">Description:</label>
+                            <label className="col-sm-4 col-form-label down left">Description:</label>
                             <div className="col-sm-8 form-label">
                             <label className="col-sm-10 form-label">
                                 <Form.Control  
@@ -516,9 +517,9 @@ const WorkOrderMaterial = (props) => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUpPopUp">
                         <Form.Group className="row" controlId="validation_ChargeCostCenter">
-                            <label className="col-sm-4 col-form-label">Charge Cost Center:</label>
+                            <label className="col-sm-4 col-form-label down left">Charge Cost Center:</label>
                             <div className="col-sm-8">
                             <label className="col-sm-10 form-label">
                                 <Select  
@@ -537,9 +538,9 @@ const WorkOrderMaterial = (props) => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUpPopUp">
                         <Form.Group className="row" controlId="validation_ChargeAccount">
-                            <label className="col-sm-4 col-form-label">Charge Account:</label>
+                            <label className="col-sm-4 col-form-label down left">Charge Account:</label>
                             <div className="col-sm-8">
                             <label className="col-sm-10 form-label">
                                 <Select  
@@ -558,9 +559,9 @@ const WorkOrderMaterial = (props) => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUpPopUp">
                         <Form.Group className="row" controlId="validation_QtyNeeded">
-                            <label className="col-sm-4 col-form-label">Qty Needed:</label>
+                            <label className="col-sm-4 col-form-label down left">Qty Needed:</label>
                             <div className="col-sm-8 form-label">
                             <label className="col-sm-10 form-label">
                                 <Form.Control  
@@ -601,7 +602,7 @@ const WorkOrderMaterial = (props) => {
                   
                   <div className="col-md-12">
                       <Form.Group className="row" controlId="validation_AssetNo">
-                          <label className="col-sm-4 col-form-label">Asset No:</label>
+                          <label className="col-sm-4 col-form-label down left">Asset No:</label>
                           <div className="col-sm-8">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -615,9 +616,9 @@ const WorkOrderMaterial = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_StockNo">
-                          <label className="col-sm-4 col-form-label">Stock No:</label>
+                          <label className="col-sm-4 col-form-label down left">Stock No:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -631,9 +632,9 @@ const WorkOrderMaterial = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_StockLocation">
-                          <label className="col-sm-4 col-form-label">Stock Location:</label>
+                          <label className="col-sm-4 col-form-label down left">Stock Location:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -647,9 +648,9 @@ const WorkOrderMaterial = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_Description">
-                          <label className="col-sm-4 col-form-label">Description:</label>
+                          <label className="col-sm-4 col-form-label down left">Description:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -663,9 +664,9 @@ const WorkOrderMaterial = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_ChargeCostCenter">
-                          <label className="col-sm-4 col-form-label">Charge Cost Center:</label>
+                          <label className="col-sm-4 col-form-label down left">Charge Cost Center:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -679,9 +680,9 @@ const WorkOrderMaterial = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_ChargeAccount">
-                          <label className="col-sm-4 col-form-label">Charge Account:</label>
+                          <label className="col-sm-4 col-form-label down left">Charge Account:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -695,9 +696,9 @@ const WorkOrderMaterial = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_QtyNeeded">
-                          <label className="col-sm-4 col-form-label">Qty Needed:</label>
+                          <label className="col-sm-4 col-form-label down left">Qty Needed:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -711,9 +712,9 @@ const WorkOrderMaterial = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_UOM">
-                          <label className="col-sm-4 col-form-label">UOM:</label>
+                          <label className="col-sm-4 col-form-label down left">UOM:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -727,9 +728,9 @@ const WorkOrderMaterial = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_ItemCost">
-                          <label className="col-sm-4 col-form-label">Item Cost:</label>
+                          <label className="col-sm-4 col-form-label down left">Item Cost:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -743,9 +744,9 @@ const WorkOrderMaterial = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_MaterialRequestNo">
-                          <label className="col-sm-4 col-form-label">Material Request No:</label>
+                          <label className="col-sm-4 col-form-label down left">Material Request No:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -759,9 +760,9 @@ const WorkOrderMaterial = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_MrLineNo">
-                          <label className="col-sm-4 col-form-label">Mr Line No:</label>
+                          <label className="col-sm-4 col-form-label down left">Mr Line No:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -775,9 +776,9 @@ const WorkOrderMaterial = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_MrApprovalStatus">
-                          <label className="col-sm-4 col-form-label">Mr_Approval_Status:</label>
+                          <label className="col-sm-4 col-form-label down left">Mr_Approval_Status:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -794,9 +795,9 @@ const WorkOrderMaterial = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_ActualQuantity">
-                          <label className="col-sm-4 col-form-label">Actual Quantity:</label>
+                          <label className="col-sm-4 col-form-label down left">Actual Quantity:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -810,9 +811,9 @@ const WorkOrderMaterial = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_ContractPoNo">
-                          <label className="col-sm-4 col-form-label">Contract Po No:</label>
+                          <label className="col-sm-4 col-form-label down left">Contract Po No:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -826,9 +827,9 @@ const WorkOrderMaterial = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_ContractPoLine">
-                          <label className="col-sm-4 col-form-label">Contract Po Line:</label>
+                          <label className="col-sm-4 col-form-label down left">Contract Po Line:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control

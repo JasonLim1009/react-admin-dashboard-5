@@ -23,12 +23,13 @@ const WorkRequestList1 = (props) => {
   const [Header, setHeader] = React.useState([]);
   const [Result, setResult] = React.useState([]);
 
-  const [isHeaderCheckboxChecked, setIsHeaderCheckboxChecked] = useState(false);
-  const [isCheckedList, setIsCheckedList] = useState(Result.map(() => false));
-
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {setShow(false); resetData(); };
   const handleShow = () => setShow(true);
+
+  const [showModal, setShowModal] = useState(false);
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
 
   const [UDFText_1, setUDFText_1] = useState("");
   const [UDFText_2, setUDFText_2] = useState("");
@@ -218,7 +219,7 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
     return (
       <>
         <th key="select">
-          <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} />
+          {/* <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} /> */}
         </th>
         {Object.keys(Header).map((attr) => (
           <th key={attr}> {attr.toUpperCase()}</th>
@@ -256,9 +257,9 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
           }
 
       return (
-        <tr key={result.site_cd}>
-          <td>{ <IndeterminateCheckbox {...result} checked={isCheckedList[index]} onChange={() => handleCheckboxChange(index)} />}</td>
-         
+        <tr key={index} onClick={(event) =>handleRowClick(result, event)}>
+          
+          <td>{index + 1}</td>
           <td>{result.wkr_ls1_varchar1}</td>
           <td>{result.wkr_ls1_varchar2}</td>
           <td>{result.wkr_ls1_varchar3}</td>
@@ -273,40 +274,107 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
     });
     };
 
-    //Checkbox
-    const IndeterminateCheckbox = React.forwardRef(
-    ({ indeterminate, onChange, ...rest }, ref) => {
+    const handleRowClick = (data) => {
+        console.log(data);
+    
+        setUDFText_1( data.wkr_ls1_varchar1 )
+        setUDFText_2( data.wkr_ls1_varchar2 )
+        setUDFText_3( data.wkr_ls1_varchar3 )
+        setUDFDate_1( data.wkr_ls1_datetime1 )
+        setUDFDate_2( data.wkr_ls1_datetime2 )
+        setUDFDate_3( data.wkr_ls1_datetime3 )
+        setUDFNumber_1( data.wkr_ls1_numeric1 )
+        setUDFNumber_2( data.wkr_ls1_numeric2 )
+     
+        setShowModal(true);
+    };
+    
+    const resetData = () => {
+    
+        setUDFDate_1('');
+        setUDFDate_2('');
+        setUDFNumber_1('');
+        setUDFNumber_2('');
+        setUDFText_1('');
+        setUDFText_2('');
+        setUDFText_3('');
       
-      const defaultRef = React.useRef()
-      const resolvedRef = ref || defaultRef;
-  
-      React.useEffect(() => {
-        resolvedRef.current.indeterminate = indeterminate
-      }, [resolvedRef, indeterminate])
+    };
+    
+    
+    const handleAddButtonClick  = () => {
+    
+        let site_ID = localStorage.getItem("site_ID");
+       
+       //Select Date 1
+       let date_1 = ''
+       if (UDFDate_1 == '' || UDFDate_1 == null) {
 
-      const handleChange = (event) => {
-        onChange(event);
-        //setShowButton(event.target.checked);
-      };
-  
-      return (
-        <>
-          <input type="checkbox" ref={resolvedRef} onChange={handleChange} {...rest} />
-        </>
-      )
-    }
-    )
+           date_1 = '';
+       } else {
 
-    const handleHeaderCheckboxChange = () => {
-setIsHeaderCheckboxChecked(!isHeaderCheckboxChecked);
-setIsCheckedList(Result.map(() => !isHeaderCheckboxChecked));
+           date_1 = Moment(UDFDate_1).format('yyyy-MM-DD HH:mm:ss').trim();
+           console.log("Date1 ", date_1);
+       }
+
+       //Select Date 2
+       let date_2 = ''
+       if (UDFDate_2 == '' || UDFDate_2 == null) {
+
+           date_2 = '';
+       } else {
+
+           date_2 = Moment(UDFDate_2).format('yyyy-MM-DD HH:mm:ss').trim();
+           console.log("Date2 ", date_2);
+       }
+
+       //Select Date 3
+       let date_3 = ''
+       if (UDFDate_3 == '' || UDFDate_3 == null) {
+
+           date_3 = '';
+       } else {
+
+           date_3 = Moment(UDFDate_3).format('yyyy-MM-DD HH:mm:ss').trim();
+           console.log("Date1 ", date_3);
+       }
+
+        //Select UDFNumber_1
+        console.log("UDFNumber_1: ", UDFNumber_1)
+
+        //Select UDFNumber_2
+        console.log("UDFNumber_2: ", UDFNumber_2)
+
+        //Select UDFText_1
+        console.log("UDFText_1: ", UDFText_1)
+
+        //Select UDFText_2
+        console.log("UDFText_2: ", UDFText_2)
+
+        //Select UDFText_3
+        console.log("UDFText_3: ", UDFText_3)
+
+        const newPart = {
+            
+            mst_RowID: location.state.RowID,
+            site_cd: site_ID,
+            // wkr_ls1_datetime1: date_1,
+            // wkr_ls1_datetime2: date_2,
+            // wkr_ls1_datetime3: date_3,
+            wkr_ls1_numeric1: UDFNumber_1,
+            wkr_ls1_numeric2: UDFNumber_2,
+            wkr_ls1_varchar1: UDFText_1,
+            wkr_ls1_varchar2: UDFText_2,
+            wkr_ls1_varchar3: UDFText_3,
+    
+          };
+          // Add new part to partsList
+          setResult([...Result, newPart]);
+          console.log(Result);
+          // Close modal
+          handleClose();
     };
 
-    const handleCheckboxChange = (index) => {
-const newCheckedList = [...isCheckedList];
-newCheckedList[index] = !isCheckedList[index];
-setIsCheckedList(newCheckedList);
-    };
 
 
 
@@ -469,15 +537,157 @@ setIsCheckedList(newCheckedList);
                 <Modal.Footer>
 
                     <Button variant="secondary" onClick={handleClose}>Close</Button>
-                    <Button variant="primary" onClick={() => {
-                        // Close modal
-                        handleClose();
-                    }}>
+                    <Button variant="primary" onClick={handleAddButtonClick}>
                     {/* {Button_save} */}
                     Submit
                     </Button>
                 </Modal.Footer>
             </Modal>
+
+
+            {showModal && (
+              <Modal show={showModal} onHide={handleCloseModal} centered >
+
+              <Modal.Header closeButton>
+                  <Modal.Title>Work Request List 1</Modal.Title>
+              </Modal.Header>
+
+
+              <Modal.Body>
+                    <div className="col-md-12">
+                        <Form.Group className="row" controlId="validation_Varchar1">
+                            <label className="col-sm-4 col-form-label">Varchar1:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                    style={{ fontSize: "13px", height: "38px" }}
+                                    type="text"
+                                    value={UDFText_1}
+                                    readOnly
+                                    />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <Form.Group className="row" controlId="validation_Varchar2">
+                            <label className="col-sm-4 col-form-label">Varchar2:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                    style={{ fontSize: "13px", height: "38px" }}
+                                    type="text"
+                                    value={UDFText_2}
+                                    readOnly
+                                    />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <Form.Group className="row" controlId="validation_Varchar3">
+                            <label className="col-sm-4 col-form-label">Varchar3:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                    style={{ fontSize: "13px", height: "38px" }}
+                                    type="text"
+                                    value={UDFText_3}
+                                    readOnly
+                                    />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+                    
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <Form.Group className="row" controlId="validation_Datetime1">
+                            <label className="col-sm-4 col-form-label">Datetime1:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control     
+                                    style={{ fontSize: "13px", height: "38px" }}                                       
+                                    type="datetime-local"  
+                                    value={UDFDate_1} 
+                                    readOnly
+                                    />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+                    
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <Form.Group className="row" controlId="validation_Datetime2">
+                            <label className="col-sm-4 col-form-label">Datetime2:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control         
+                                    style={{ fontSize: "13px", height: "38px" }}                                   
+                                    type="datetime-local"  
+                                    value={UDFDate_2} 
+                                    readOnly
+                                    />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+                    
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <Form.Group className="row" controlId="validation_Datetime3">
+                            <label className="col-sm-4 col-form-label">Datetime3:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control    
+                                    style={{ fontSize: "13px", height: "38px" }}                                        
+                                    type="datetime-local"  
+                                    value={UDFDate_3} 
+                                    readOnly
+                                    />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+                    
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <Form.Group className="row" controlId="validation_Numeric1">
+                            <label className="col-sm-4 col-form-label">Numeric1:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control  
+                                    style={{ fontSize: "13px", height: "38px" }}
+                                    type="number"  
+                                    placeholder=".0000" 
+                                    value={UDFNumber_1} 
+                                    readOnly
+                                    />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+                    
+                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <Form.Group className="row" controlId="validation_Numeric2">
+                            <label className="col-sm-4 col-form-label">Numeric2:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control  
+                                    style={{ fontSize: "13px", height: "38px" }}
+                                    type="number"  
+                                    placeholder=".0000" 
+                                    value={UDFNumber_2} 
+                                    readOnly
+                                    />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+              </Modal.Body>
+              
+              </Modal>
+            )}
         </div> 
 
         <div className="table-responsive">

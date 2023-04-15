@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 import APIServices from "../services/APIServices";
 
+import '../style.css';
 import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Moment from 'moment';
@@ -264,51 +265,51 @@ const WorkOrderOutsourceContract = (props) => {
 
     //Body
     const renderTableRows = () => {
-    return Result.map((result, index) => {
+        return Result.map((result, index) => {
 
-      return (
-        <tr key={index} onClick={(event) =>handleRowClick(result, event)}>
+        return (
+            <tr key={index} onClick={(event) =>handleRowClick(result, event)}>
 
-          <td>{index + 1}</td>
-          <td>{result.wko_ls4_assetno}</td>
-          <td>{result.wko_ls4_supplier}</td>
+            <td>{index + 1}</td>
+            <td>{result.wko_ls4_assetno}</td>
+            <td>{result.wko_ls4_supplier}</td>
 
-          <td>{result.wko_ls4_descr}</td>
-          <td>{result.wko_ls4_tax_cd}</td>
-          <td>{result.wko_ls4_svc_uom}</td>
-          <td>{result.wko_ls4_qty_needed}</td>
-          <td>{result.wko_ls4_est_cost}</td>
-          <td>{result.wko_ls4_chg_costcenter}</td>
-          <td>{result.wko_ls4_chg_account}</td>
-          <td>{result.wko_ls4_pr_no}</td>
-          <td>{result.wko_ls4_pr_lineno}</td>
-          <td>
-            <span style={{ 
-                  backgroundColor: 
-                    result.pur_mst_purq_approve === 'W' ? '#FF6258' : 
-                    result.pur_mst_purq_approve === 'A' ? '#19D895' :
-                    result.pur_mst_purq_approve === 'D' ? '#2196F3' :
-                    null, 
-                  color: 'white', 
-                  padding: '5px', 
-                  borderRadius: '5px', 
-                  fontSize:'13px',
-                  fontWeight: 'bold'
-                }}>
-              { result.pur_mst_purq_approve === 'W' ? 'Awaiting (W)' :
-                result.pur_mst_purq_approve === 'A' ? 'Approve (A)' :
-                result.pur_mst_purq_approve === 'D' ? 'Disapprove (D)' :
-                result.pur_mst_purq_approve}
-            </span>
-          </td>
-          <td>{result.pur_ls1_po_no}</td>
-          <td>{result.pur_ls1_po_lineno}</td>
-          <td>{result.wko_ls4_po_no}</td>
-          <td>{result.wko_ls4_po_lineno}</td>
-         
-        </tr>
-      );
-    });
+            <td>{result.wko_ls4_descr}</td>
+            <td>{result.wko_ls4_tax_cd}</td>
+            <td>{result.wko_ls4_svc_uom}</td>
+            <td>{result.wko_ls4_qty_needed}</td>
+            <td>{result.wko_ls4_est_cost}</td>
+            <td>{result.wko_ls4_chg_costcenter}</td>
+            <td>{result.wko_ls4_chg_account}</td>
+            <td>{result.wko_ls4_pr_no}</td>
+            <td>{result.wko_ls4_pr_lineno}</td>
+            <td>
+                <span style={{ 
+                    backgroundColor: 
+                        result.pur_mst_purq_approve === 'W' ? '#FF6258' : 
+                        result.pur_mst_purq_approve === 'A' ? '#19D895' :
+                        result.pur_mst_purq_approve === 'D' ? '#2196F3' :
+                        null, 
+                    color: 'white', 
+                    padding: '5px', 
+                    borderRadius: '5px', 
+                    fontSize:'13px',
+                    fontWeight: 'bold'
+                    }}>
+                { result.pur_mst_purq_approve === 'W' ? 'Awaiting (W)' :
+                    result.pur_mst_purq_approve === 'A' ? 'Approve (A)' :
+                    result.pur_mst_purq_approve === 'D' ? 'Disapprove (D)' :
+                    result.pur_mst_purq_approve}
+                </span>
+            </td>
+            <td>{result.pur_ls1_po_no}</td>
+            <td>{result.pur_ls1_po_lineno}</td>
+            <td>{result.wko_ls4_po_no}</td>
+            <td>{result.wko_ls4_po_lineno}</td>
+            
+            </tr>
+        );
+        });
     };
 
 
@@ -337,7 +338,14 @@ const WorkOrderOutsourceContract = (props) => {
     
     const resetData = () => {
     
-     
+     setSelected_Supplier(0);
+     setDescription('');
+     setSelected_TaxCode(0);
+     setSelected_UOM(0);
+     setQtyNeeded('');
+     setEstimateCost('');
+     setSelected_CostCenter(0);
+     setSelected_Account(0);
       
     };
 
@@ -481,7 +489,7 @@ const WorkOrderOutsourceContract = (props) => {
                 <Modal.Body>
                     <div className="col-md-12">
                         <Form.Group className="row" controlId="validation_Supplier">
-                            <label className="col-sm-4 col-form-label">Supplier:</label>
+                            <label className="col-sm-4 col-form-label down left">Supplier:</label>
                             <div className="col-sm-8">
                             <label className="col-sm-10 form-label">
                                 <Select  
@@ -500,9 +508,9 @@ const WorkOrderOutsourceContract = (props) => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUpPopUp">
                         <Form.Group className="row" controlId="validation_Description">
-                            <label className="col-sm-4 col-form-label">Description:</label>
+                            <label className="col-sm-4 col-form-label down left">Description:</label>
                             <div className="col-sm-8 form-label">
                             <label className="col-sm-10 form-label">
                                 <Form.Control  
@@ -516,9 +524,9 @@ const WorkOrderOutsourceContract = (props) => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUpPopUp">
                         <Form.Group className="row" controlId="validation_TaxCode">
-                            <label className="col-sm-4 col-form-label">Tax Code:</label>
+                            <label className="col-sm-4 col-form-label down left">Tax Code:</label>
                             <div className="col-sm-8">
                             <label className="col-sm-10 form-label">
                                 <Select  
@@ -537,9 +545,9 @@ const WorkOrderOutsourceContract = (props) => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUpPopUp">
                         <Form.Group className="row" controlId="validation_UOM">
-                            <label className="col-sm-4 col-form-label">UOM:</label>
+                            <label className="col-sm-4 col-form-label down left">UOM:</label>
                             <div className="col-sm-8">
                             <label className="col-sm-10 form-label">
                                 <Select  
@@ -558,9 +566,9 @@ const WorkOrderOutsourceContract = (props) => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUpPopUp">
                         <Form.Group className="row" controlId="validation_QtyNeeded">
-                            <label className="col-sm-4 col-form-label">Qty Needed:</label>
+                            <label className="col-sm-4 col-form-label down left">Qty Needed:</label>
                             <div className="col-sm-8 form-label">
                             <label className="col-sm-10 form-label">
                                 <Form.Control  
@@ -575,9 +583,9 @@ const WorkOrderOutsourceContract = (props) => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUpPopUp">
                         <Form.Group className="row" controlId="validation_EstimateCost">
-                            <label className="col-sm-4 col-form-label">Estimate Cost:</label>
+                            <label className="col-sm-4 col-form-label down left">Estimate Cost:</label>
                             <div className="col-sm-8 form-label">
                             <label className="col-sm-10 form-label">
                             <Form.Control  
@@ -592,9 +600,9 @@ const WorkOrderOutsourceContract = (props) => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUpPopUp">
                         <Form.Group className="row" controlId="validation_ItemCost">
-                            <label className="col-sm-4 col-form-label">Cost Center:</label>
+                            <label className="col-sm-4 col-form-label down left">Cost Center:</label>
                             <div className="col-sm-8">
                             <label className="col-sm-10 form-label">
                                 <Select  
@@ -613,9 +621,9 @@ const WorkOrderOutsourceContract = (props) => {
                         </Form.Group>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                    <div className="col-md-12 moveUpPopUp">
                         <Form.Group className="row" controlId="validation_Account">
-                            <label className="col-sm-4 col-form-label">Account:</label>
+                            <label className="col-sm-4 col-form-label down left">Account:</label>
                             <div className="col-sm-8">
                             <label className="col-sm-10 form-label">
                                 <Select  
@@ -660,7 +668,7 @@ const WorkOrderOutsourceContract = (props) => {
                   
                   <div className="col-md-12">
                       <Form.Group className="row" controlId="validation_StockNo">
-                          <label className="col-sm-4 col-form-label">Stock No:</label>
+                          <label className="col-sm-4 col-form-label down left">Stock No:</label>
                           <div className="col-sm-8">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -674,9 +682,9 @@ const WorkOrderOutsourceContract = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_Supplier">
-                          <label className="col-sm-4 col-form-label">Supplier:</label>
+                          <label className="col-sm-4 col-form-label down left">Supplier:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -690,9 +698,9 @@ const WorkOrderOutsourceContract = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_Description">
-                          <label className="col-sm-4 col-form-label">Description:</label>
+                          <label className="col-sm-4 col-form-label down left">Description:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -706,9 +714,9 @@ const WorkOrderOutsourceContract = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_TaxCode">
-                          <label className="col-sm-4 col-form-label">Tax Code:</label>
+                          <label className="col-sm-4 col-form-label down left">Tax Code:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -722,9 +730,9 @@ const WorkOrderOutsourceContract = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_UOM">
-                          <label className="col-sm-4 col-form-label">UOM:</label>
+                          <label className="col-sm-4 col-form-label down left">UOM:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -738,9 +746,9 @@ const WorkOrderOutsourceContract = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_QtyNeeded">
-                          <label className="col-sm-4 col-form-label">Qty Needed:</label>
+                          <label className="col-sm-4 col-form-label down left">Qty Needed:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -754,9 +762,9 @@ const WorkOrderOutsourceContract = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_EstimateCost">
-                          <label className="col-sm-4 col-form-label">Estimate Cost:</label>
+                          <label className="col-sm-4 col-form-label down left">Estimate Cost:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -770,9 +778,9 @@ const WorkOrderOutsourceContract = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_CostCenter">
-                          <label className="col-sm-4 col-form-label">Cost Center:</label>
+                          <label className="col-sm-4 col-form-label down left">Cost Center:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -786,9 +794,9 @@ const WorkOrderOutsourceContract = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_Account">
-                          <label className="col-sm-4 col-form-label">Account:</label>
+                          <label className="col-sm-4 col-form-label down left">Account:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -802,9 +810,9 @@ const WorkOrderOutsourceContract = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_PrNo">
-                          <label className="col-sm-4 col-form-label">Pr No:</label>
+                          <label className="col-sm-4 col-form-label down left">Pr No:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -818,9 +826,9 @@ const WorkOrderOutsourceContract = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_PrLineNo">
-                          <label className="col-sm-4 col-form-label">Pr Line No:</label>
+                          <label className="col-sm-4 col-form-label down left">Pr Line No:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -834,9 +842,9 @@ const WorkOrderOutsourceContract = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                         <Form.Group className="row" controlId="validation_ApprovalStatus">
-                            <label className="col-sm-4 col-form-label">Approval Status:</label>
+                            <label className="col-sm-4 col-form-label down left">Approval Status:</label>
                             <div className="col-sm-8 form-label">
                             <label className="col-sm-10 form-label">
                                 <Form.Control
@@ -853,9 +861,9 @@ const WorkOrderOutsourceContract = (props) => {
                         </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_PoNo">
-                          <label className="col-sm-4 col-form-label">Po No:</label>
+                          <label className="col-sm-4 col-form-label down left">Po No:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -869,9 +877,9 @@ const WorkOrderOutsourceContract = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_PoLine">
-                          <label className="col-sm-4 col-form-label">Po Line:</label>
+                          <label className="col-sm-4 col-form-label down left">Po Line:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -885,9 +893,9 @@ const WorkOrderOutsourceContract = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_ContractPoNo">
-                          <label className="col-sm-4 col-form-label">Contract Po No:</label>
+                          <label className="col-sm-4 col-form-label down left">Contract Po No:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control
@@ -901,9 +909,9 @@ const WorkOrderOutsourceContract = (props) => {
                       </Form.Group>
                   </div>
 
-                  <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                  <div className="col-md-12 moveUpPopUp">
                       <Form.Group className="row" controlId="validation_ContractPoLine">
-                          <label className="col-sm-4 col-form-label">Contract Po Line:</label>
+                          <label className="col-sm-4 col-form-label down left">Contract Po Line:</label>
                           <div className="col-sm-8 form-label">
                           <label className="col-sm-10 form-label">
                               <Form.Control

@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 import APIServices from "../services/APIServices";
 
+import '../style.css';
 import { format } from "date-fns";
 import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
@@ -23,12 +24,13 @@ const InventorySupplier = (props) => {
   const [Header, setHeader] = React.useState([]);
   const [Result, setResult] = React.useState([]);
 
-  const [isHeaderCheckboxChecked, setIsHeaderCheckboxChecked] = useState(false);
-  const [isCheckedList, setIsCheckedList] = useState(Result.map(() => false));
-
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {setShow(false); resetData(); };
   const handleShow = () => setShow(true);
+
+  const [showModal, setShowModal] = useState(false);
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
 
   const [Supplier, setSupplier] = useState([]);
   const [selected_Supplier, setSelected_Supplier] = useState([]);
@@ -43,7 +45,7 @@ const InventorySupplier = (props) => {
 
   const [LastItemCost, setLastItemCost] = useState("0");
 
-  const [RetailItemCost, setRetailItemCost] = useState("0");
+  const [RetailPrice, setRetailPrice] = useState("0");
 
   const [MinimumOrderQty, setMinimumOrderQty] = useState("0");
 
@@ -59,6 +61,15 @@ const InventorySupplier = (props) => {
 
   const [RowID, setRowID] = useState("");
 
+  const [Rank, setRank] = useState(1);
+  const [OrderUOM, setOrderUOM] = useState("");
+  const [LastQuotation, setLastQuotation] = useState("");
+  const [TotalOrderedQuantity, setTotalOrderedQuantity] = useState("");
+  const [TotalReceivedQuantity, setTotalReceivedQuantity] = useState("");
+  const [TotalLateQuantity, setTotalLateQuantity] = useState("");
+  const [TotalHighQuantity, setTotalHighQuantity] = useState("");
+  const [DeliveryIndex, setDeliveryIndex] = useState("");
+  const [CostIndex, setCostIndex] = useState("");
 
 
   const get_inventorymaster_supplier = (site_ID, RowID) => {
@@ -183,7 +194,7 @@ const InventorySupplier = (props) => {
                 setSupplierPartNo( responseJson.data.data[index].itm_sup_supplier_partno )
                 setManufacturer( responseJson.data.data[index].itm_sup_partmfg )
                 setLastItemCost( responseJson.data.data[index].itm_sup_last_itemcost )
-                setRetailItemCost( responseJson.data.data[index].itm_sup_retail_price )
+                setRetailPrice( responseJson.data.data[index].itm_sup_retail_price )
                
                 if(responseJson.data.data[index].itm_sup_last_rcvd_date == null){
                     setLastReceiveDate('')
@@ -241,7 +252,7 @@ const InventorySupplier = (props) => {
     return (
         <>
         <th key="select">
-            <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} />
+            {/* <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} /> */}
         </th>
         {Object.keys(Header).map((attr) => (
             <th key={attr}> {attr.toUpperCase()}</th>
@@ -263,9 +274,9 @@ const InventorySupplier = (props) => {
             }
 
         return (
-        <tr key={result.site_cd}>
-            <td>{ <IndeterminateCheckbox {...result} checked={isCheckedList[index]} onChange={() => handleCheckboxChange(index)} />}</td>
-            
+        <tr key={index} onClick={(event) =>handleRowClick(result, event)}>
+          
+            <td>{index + 1}</td>
             <td>{result.itm_sup_mfgrank}</td>
             <td>{result.itm_sup_supplier}</td>
             <td>{result.itm_sup_tax_cd}</td>
@@ -291,39 +302,148 @@ const InventorySupplier = (props) => {
     });
     };
 
-    //Checkbox
-    const IndeterminateCheckbox = React.forwardRef(
-    ({ indeterminate, onChange, ...rest }, ref) => {
-        
-        const defaultRef = React.useRef()
-        const resolvedRef = ref || defaultRef;
-    
-        React.useEffect(() => {
-        resolvedRef.current.indeterminate = indeterminate
-        }, [resolvedRef, indeterminate])
 
-        const handleChange = (event) => {
-        onChange(event);
-        //setShowButton(event.target.checked);
-        };
+    const handleRowClick = (data) => {
+        console.log(data);
     
-        return (
-        <>
-            <input type="checkbox" ref={resolvedRef} onChange={handleChange} {...rest} />
-        </>
-        )
-    }
-    )
-
-    const handleHeaderCheckboxChange = () => {
-setIsHeaderCheckboxChecked(!isHeaderCheckboxChecked);
-setIsCheckedList(Result.map(() => !isHeaderCheckboxChecked));
+        setRank( data.itm_sup_mfgrank )
+        setSupplier( data.itm_sup_supplier )
+        setTaxCode( data.itm_sup_tax_cd )
+        setSupplierPartNo( data.itm_sup_supplier_partno )
+        setManufacturer( data.itm_sup_partmfg )
+        setLastQuotation( data.itm_sup_file_name )
+        setLastItemCost( data.itm_sup_last_itemcost )
+        setRetailPrice( data.itm_sup_retail_price )
+        //setLastReceiveDate( data.itm_sup_last_rcvd_date )
+        setOrderUOM( data.itm_sup_order_uom )
+        setMinimumOrderQty( data.itm_sup_min_orderqty )
+        setMultiplierQuantity( data.itm_sup_rcpts_ctr )
+        setDiscount( data.itm_sup_discount_pct )
+        setTotalOrderedQuantity( data.itm_sup_ord_qty )
+        setTotalReceivedQuantity( data.itm_sup_rcv_qty )
+        setTotalLateQuantity( data.itm_sup_late_qty )
+        setTotalHighQuantity( data.itm_sup_high_qty )
+        setDeliveryIndex( data.itm_sup_di )
+        setCostIndex( data.itm_sup_ci )
+     
+        setShowModal(true);
     };
+    
+    const resetData = () => {
+    
+        setSelected_Supplier(0);
+        setSelected_TaxCode(0);
+        setSupplierPartNo('');
+        setSelected_Manufacturer(0);
+        setLastItemCost('');
+        setRetailPrice('');
+        setLastReceiveDate('');
+        setMinimumOrderQty('');
+        setMultiplierQuantity('');
+        setDiscount('');
+      
+    };
+    
+    const handleAddButtonClick  = () => {
+    
+        let site_ID = localStorage.getItem("site_ID");
+       
+        //Select Discount
+        console.log("Discount: ", Discount)
 
-    const handleCheckboxChange = (index) => {
-const newCheckedList = [...isCheckedList];
-newCheckedList[index] = !isCheckedList[index];
-setIsCheckedList(newCheckedList);
+        //Select Manufacturer
+        let Manufacturer, setManufacturer;
+        if(selected_Manufacturer == '' || selected_Manufacturer == null){
+
+            setManufacturer=''
+        }else{
+
+            Manufacturer = selected_Manufacturer.label.split(":")
+            setManufacturer = Manufacturer[0];
+            console.log("Manufacturer ", Manufacturer[0])
+        }
+
+        //Select Last Item Cost
+        console.log("LastItemCost: ", LastItemCost)
+
+        //Select Retail Price
+        console.log("RetailPrice: ", RetailPrice)
+
+        //Select Last Receive Date
+        let Last_Receive_Date = ''
+        if (LastReceiveDate == '' || LastReceiveDate == null) {
+
+            Last_Receive_Date = '';
+        } else {
+
+            Last_Receive_Date = Moment(LastReceiveDate).format('yyyy-MM-DD HH:mm:ss').trim();
+            console.log("LR Date ", LastReceiveDate);
+        }
+
+        //Select Minimum Order Qty
+        console.log("MinimumOrderQty: ", MinimumOrderQty)
+
+        //Select Multiplier Quantity
+        console.log("MultiplierQuantity: ", MultiplierQuantity)
+
+        //Select Supplier
+        let Supplier, setSupplier;
+        if(selected_Supplier == '' || selected_Supplier == null){
+
+            setSupplier=''
+        }else{
+
+            Supplier = selected_Supplier.label.split(":")
+            setSupplier = Supplier[0];
+            console.log("Supplier ", Supplier[0])
+        }
+
+        //Select Tax Code
+        let TaxCode, setTaxCode;
+        if(selected_TaxCode == '' || selected_TaxCode == null){
+
+            setTaxCode=''
+        }else{
+
+            TaxCode = selected_TaxCode.label.split(":")
+            setTaxCode = TaxCode[0];
+            console.log("TaxCode ", TaxCode[0])
+        }
+
+        //Select Supplier Part No
+        console.log("SupplierPartNo: ", SupplierPartNo)
+
+        const newPart = {
+            
+            mst_RowID: location.state.RowID,
+            site_cd: site_ID,
+            itm_sup_ci: ".0000",
+            itm_sup_di: ".0000",
+            itm_sup_discount_pct: Discount,
+            itm_sup_file_name: null,
+            itm_sup_high_qty: ".0000",
+            itm_sup_last_itemcost: LastItemCost,
+            //itm_sup_last_rcvd_date: Last_Receive_Date,
+            itm_sup_late_qty: ".0000",
+            itm_sup_mfgrank: Rank,
+            itm_sup_min_orderqty: MinimumOrderQty,
+            itm_sup_ord_qty: ".0000",
+            itm_sup_order_uom: "PIECES",
+            itm_sup_partmfg: setManufacturer.trim(),
+            itm_sup_rcpts_ctr: MultiplierQuantity,
+            itm_sup_rcv_qty: ".0000",
+            itm_sup_retail_price: RetailPrice,
+            itm_sup_supplier: setSupplier.trim(),
+            itm_sup_supplier_partno: SupplierPartNo,
+            itm_sup_tax_cd: setTaxCode.trim(),
+    
+          };
+          // Add new part to partsList
+          setResult([...Result, newPart]);
+          console.log(Result);
+          // Close modal
+          handleClose();
+          setRank(Rank + 1);
     };
 
 
@@ -356,7 +476,7 @@ setIsCheckedList(newCheckedList);
                     <Modal.Body>
                         <div className="col-md-12">
                             <Form.Group className="row" controlId="validation_Supplier">
-                                <label className="col-sm-4 col-form-label">Supplier:</label>
+                                <label className="col-sm-4 col-form-label down left">Supplier:</label>
                                 <div className="col-sm-8">
                                 <label className="col-sm-10 form-label">
                                     <Select  
@@ -375,9 +495,9 @@ setIsCheckedList(newCheckedList);
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <div className="col-md-12 moveUoPopUp">
                             <Form.Group className="row" controlId="validation_TaxCode">
-                                <label className="col-sm-4 col-form-label">Tax Code:</label>
+                                <label className="col-sm-4 col-form-label top down left">Tax Code:</label>
                                 <div className="col-sm-8">
                                 <label className="col-sm-10 form-label">
                                     <Select  
@@ -396,9 +516,9 @@ setIsCheckedList(newCheckedList);
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <div className="col-md-12 moveUoPopUp">
                             <Form.Group className="row" controlId="validation_SupplierPartNo">
-                                <label className="col-sm-4 col-form-label">Supplier Part No:</label>
+                                <label className="col-sm-4 col-form-label top down left">Supplier Part No:</label>
                                 <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -412,9 +532,9 @@ setIsCheckedList(newCheckedList);
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <div className="col-md-12 moveUoPopUp">
                             <Form.Group className="row" controlId="validation_Manufacturer">
-                                <label className="col-sm-4 col-form-label">Manufacturer:</label>
+                                <label className="col-sm-4 col-form-label top down left">Manufacturer:</label>
                                 <div className="col-sm-8">
                                 <label className="col-sm-10 form-label">
                                     <Select  
@@ -433,9 +553,9 @@ setIsCheckedList(newCheckedList);
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <div className="col-md-12 moveUoPopUp">
                             <Form.Group className="row" controlId="validation_LastItemCost">
-                                <label className="col-sm-4 col-form-label">Last Item Cost:</label>
+                                <label className="col-sm-4 col-form-label top down left">Last Item Cost:</label>
                                 <div className="col-sm-8 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control  
@@ -450,26 +570,26 @@ setIsCheckedList(newCheckedList);
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                            <Form.Group className="row" controlId="validation_RetailItemCost">
-                                <label className="col-sm-4 col-form-label">Retail Item Cost:</label>
+                        <div className="col-md-12 moveUoPopUp">
+                            <Form.Group className="row" controlId="validation_RetailPrice">
+                                <label className="col-sm-4 col-form-label top down left">Retail Price:</label>
                                 <div className="col-sm-8 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control  
                                         style={{ fontSize: "13px", height: "38px" }}
                                         type="number"  
                                         placeholder=".00" 
-                                        value={RetailItemCost} 
-                                        onChange={(e) => setRetailItemCost(e.target.value)}
+                                        value={RetailPrice} 
+                                        onChange={(e) => setRetailPrice(e.target.value)}
                                         />
                                 </label>
                                 </div>
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <div className="col-md-12 moveUoPopUp">
                             <Form.Group className="row" controlId="validation_LastReceiveDate">
-                                <label className="col-sm-4 col-form-label">Last Receive Date:</label>
+                                <label className="col-sm-4 col-form-label top down left">Last Receive Date:</label>
                                 <div className="col-sm-8 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control        
@@ -483,9 +603,9 @@ setIsCheckedList(newCheckedList);
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <div className="col-md-12 moveUoPopUp">
                             <Form.Group className="row" controlId="validation_MinimumOrderQty">
-                                <label className="col-sm-4 col-form-label">Minimum Order Qty:</label>
+                                <label className="col-sm-4 col-form-label top down left">Minimum Order Qty:</label>
                                 <div className="col-sm-8 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control  
@@ -500,9 +620,9 @@ setIsCheckedList(newCheckedList);
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <div className="col-md-12 moveUoPopUp">
                             <Form.Group className="row" controlId="validation_MultiplierQuantity">
-                                <label className="col-sm-4 col-form-label">Multiplier Quantity:</label>
+                                <label className="col-sm-4 col-form-label top down left">Multiplier Quantity:</label>
                                 <div className="col-sm-8 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control  
@@ -517,9 +637,9 @@ setIsCheckedList(newCheckedList);
                             </Form.Group>
                         </div>
                         
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <div className="col-md-12 moveUoPopUp">
                             <Form.Group className="row" controlId="validation_Discount">
-                                <label className="col-sm-4 col-form-label">Discount %:</label>
+                                <label className="col-sm-4 col-form-label top down left">Discount %:</label>
                                 <div className="col-sm-8 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control  
@@ -539,10 +659,7 @@ setIsCheckedList(newCheckedList);
                     <Modal.Footer>
 
                         <Button variant="secondary" onClick={handleClose}>Close</Button>
-                        <Button variant="primary" onClick={() => {
-                            // Close modal
-                            handleClose();
-                        }}>
+                        <Button variant="primary" onClick={handleAddButtonClick}>
                         {/* {Button_save} */}
                         Submit
                         </Button>
@@ -550,26 +667,344 @@ setIsCheckedList(newCheckedList);
 
                 </Modal>
 
+
+                {showModal && (
+                <Modal show={showModal} onHide={handleCloseModal} centered >
+
+                <Modal.Header closeButton>
+                    <Modal.Title>Supplier</Modal.Title>
+                </Modal.Header>
+
+
+                <Modal.Body>
+                    <div className="col-md-12">
+                        <Form.Group className="row" controlId="validation_Rank">
+                            <label className="col-sm-4 col-form-label down left">Rank:</label>
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                style={{ fontSize: "13px", height: "38px" }}
+                                type="text"
+                                value ={Rank} 
+                                readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_Supplier">
+                            <label className="col-sm-4 col-form-label top down left">Supplier:</label>
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                style={{ fontSize: "13px", height: "38px" }}
+                                type="text"
+                                value ={Supplier} 
+                                readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_TaxCode">
+                            <label className="col-sm-4 col-form-label top down left">Tax Code:</label>
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                style={{ fontSize: "13px", height: "38px" }}
+                                type="text"
+                                value ={TaxCode} 
+                                readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_SupplierPartNo">
+                            <label className="col-sm-4 col-form-label top down left">Supplier Part No:</label>
+                            <div className="col-sm-8 form-label">
+                                <label className="col-sm-10 form-label">
+                                    <Form.Control
+                                    style={{ fontSize: "13px", height: "38px" }}
+                                    type="text"
+                                    value ={SupplierPartNo} 
+                                    readOnly
+                                    />
+                                </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_Manufacturer">
+                            <label className="col-sm-4 col-form-label top down left">Manufacturer:</label>
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                style={{ fontSize: "13px", height: "38px" }}
+                                type="text"
+                                value ={Manufacturer} 
+                                readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_LastQuotation">
+                            <label className="col-sm-4 col-form-label top down left">Last Quotation:</label>
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                style={{ fontSize: "13px", height: "38px" }}
+                                type="text"
+                                value ={LastQuotation} 
+                                readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_LastItemCost">
+                            <label className="col-sm-4 col-form-label top down left">Last Item Cost:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                style={{ fontSize: "13px", height: "38px" }}
+                                type="text"
+                                value ={LastItemCost} 
+                                readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_RetailPrice">
+                            <label className="col-sm-4 col-form-label top down left">Retail Price:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                style={{ fontSize: "13px", height: "38px" }}
+                                type="text"
+                                value ={RetailPrice} 
+                                readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_LastReceiveDate">
+                            <label className="col-sm-4 col-form-label top down left">Last Receive Date:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                style={{ fontSize: "13px", height: "38px" }}
+                                type="datetime-local" 
+                                value ={LastReceiveDate} 
+                                readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_OrderUOM">
+                            <label className="col-sm-4 col-form-label top down left">Order UOM:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                style={{ fontSize: "13px", height: "38px" }}
+                                type="text"
+                                value ={OrderUOM} 
+                                readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_MinimumOrderQty">
+                            <label className="col-sm-4 col-form-label top down left">Minimum Order Qty:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                style={{ fontSize: "13px", height: "38px" }}
+                                type="text"
+                                value ={MinimumOrderQty} 
+                                readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_MultiplierQuantity">
+                            <label className="col-sm-4 col-form-label top down left">Multiplier Quantity:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                style={{ fontSize: "13px", height: "38px" }}
+                                type="text"
+                                value ={MultiplierQuantity} 
+                                readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+                    
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_Discount">
+                            <label className="col-sm-4 col-form-label top down left">Discount %:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                style={{ fontSize: "13px", height: "38px" }}
+                                type="text"
+                                value ={Discount} 
+                                readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_TotalOrderedQuantity">
+                            <label className="col-sm-4 col-form-label top down left">Total Ordered Quantity:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                style={{ fontSize: "13px", height: "38px" }}
+                                type="text"
+                                value ={TotalOrderedQuantity} 
+                                readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_TotalReceivedQuantity">
+                            <label className="col-sm-4 col-form-label top down left">Total Received Quantity:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                style={{ fontSize: "13px", height: "38px" }}
+                                type="text"
+                                value ={TotalReceivedQuantity} 
+                                readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_TotalLateQuantityt">
+                            <label className="col-sm-4 col-form-label top down left">Total Late Quantity:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                style={{ fontSize: "13px", height: "38px" }}
+                                type="text"
+                                value ={TotalLateQuantity} 
+                                readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_TotalHighQuantity">
+                            <label className="col-sm-4 col-form-label top down left">Total High Quantity:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                style={{ fontSize: "13px", height: "38px" }}
+                                type="text"
+                                value ={TotalHighQuantity} 
+                                readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_DeliveryIndex">
+                            <label className="col-sm-4 col-form-label top down left">Delivery Index:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                style={{ fontSize: "13px", height: "38px" }}
+                                type="text"
+                                value ={DeliveryIndex} 
+                                readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_CostIndex">
+                            <label className="col-sm-4 col-form-label top down left">Cost Index:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                style={{ fontSize: "13px", height: "38px" }}
+                                type="text"
+                                value ={CostIndex} 
+                                readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+                    
+                </Modal.Body>
+                
+                </Modal>
+                )}
             </div> 
 
-        <div className="table-responsive">
-            <table
-              className="table table-hover table-bordered"
-              style={{ color: "#000", border: 1 }}
-              >
-              <thead
-                  style={{
-                  color: "#000",
-                  fontWeight: "bold",
-                  fontFamily: "montserrat",
-                  margin: "5px",
-                  }}
-              >
-                  <tr>{renderTableHeader()}</tr>
-              </thead>
-              <tbody>{renderTableRows()}</tbody>
-            </table>
-        </div>
+            <div className="table-responsive">
+                <table
+                className="table table-hover table-bordered"
+                style={{ color: "#000", border: 1 }}
+                >
+                <thead
+                    style={{
+                    color: "#000",
+                    fontWeight: "bold",
+                    fontFamily: "montserrat",
+                    margin: "5px",
+                    }}
+                >
+                    <tr>{renderTableHeader()}</tr>
+                </thead>
+                <tbody>{renderTableRows()}</tbody>
+                </table>
+            </div>
     </div>
   );
 };

@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 import APIServices from "../services/APIServices";
 
+import '../style.css';
 import { format } from "date-fns";
 import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
@@ -23,12 +24,13 @@ const PersonnelMRApproval = (props) => {
   const [Header, setHeader] = React.useState([]);
   const [Result, setResult] = React.useState([]);
 
-  const [isHeaderCheckboxChecked, setIsHeaderCheckboxChecked] = useState(false);
-  const [isCheckedList, setIsCheckedList] = useState(Result.map(() => false));
-
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {setShow(false); resetData(); };
   const handleShow = () => setShow(true);
+
+  const [showModal, setShowModal] = useState(false);
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
 
   const [CostCenter, setCostCenter] = useState([]);
   const [selected_CostCenter, setSelected_CostCenter] = useState([]);
@@ -194,7 +196,7 @@ const PersonnelMRApproval = (props) => {
         return (
             <>
             <th key="select">
-                <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} />
+                {/* <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} /> */}
             </th>
             {Object.keys(Header).map((attr) => (
                 <th key={attr}> {attr.toUpperCase()}</th>
@@ -209,9 +211,9 @@ const PersonnelMRApproval = (props) => {
 
 
         return (
-        <tr key={result.site_cd}>
-            <td>{ <IndeterminateCheckbox {...result} checked={isCheckedList[index]} onChange={() => handleCheckboxChange(index)} />}</td>
-            
+        <tr key={index} onClick={(event) =>handleRowClick(result, event)}>
+          
+            <td>{index + 1}</td>
             <td>{result.emp_ls3_costcenter}</td>
             <td>{result.emp_ls3_approval_limit}</td>
             
@@ -220,39 +222,56 @@ const PersonnelMRApproval = (props) => {
     });
     };
 
-    //Checkbox
-    const IndeterminateCheckbox = React.forwardRef(
-    ({ indeterminate, onChange, ...rest }, ref) => {
-        
-        const defaultRef = React.useRef()
-        const resolvedRef = ref || defaultRef;
-    
-        React.useEffect(() => {
-        resolvedRef.current.indeterminate = indeterminate
-        }, [resolvedRef, indeterminate])
 
-        const handleChange = (event) => {
-        onChange(event);
-        //setShowButton(event.target.checked);
-        };
+    const handleRowClick = (data) => {
+        console.log(data);
     
-        return (
-        <>
-            <input type="checkbox" ref={resolvedRef} onChange={handleChange} {...rest} />
-        </>
-        )
-    }
-    )
-        
-    const handleHeaderCheckboxChange = () => {
-        setIsHeaderCheckboxChecked(!isHeaderCheckboxChecked);
-        setIsCheckedList(Result.map(() => !isHeaderCheckboxChecked));
+        setCostCenter( data.emp_ls3_costcenter )
+        setApprovalLimit( data.emp_ls3_approval_limit )
+     
+        setShowModal(true);
     };
-        
-    const handleCheckboxChange = (index) => {
-        const newCheckedList = [...isCheckedList];
-        newCheckedList[index] = !isCheckedList[index];
-        setIsCheckedList(newCheckedList);
+    
+    const resetData = () => {
+    
+        setSelected_CostCenter(0);
+        setApprovalLimit('');
+      
+    };
+    
+    
+    const handleAddButtonClick  = () => {
+    
+        let site_ID = localStorage.getItem("site_ID");
+       
+        //Select Cost Center
+        let CostCenter, setCostCenter;
+        if(selected_CostCenter == '' || selected_CostCenter == null){
+
+            setCostCenter=''
+        }else{
+
+            CostCenter = selected_CostCenter.label.split(":")
+            setCostCenter = CostCenter[0];
+            console.log("CostCenter ", CostCenter[0])
+        }
+
+        //Select Approval Limit
+        console.log("ApprovalLimit: ", ApprovalLimit)
+
+        const newPart = {
+            
+            mst_RowID: location.state.RowID,
+            site_cd: site_ID,
+            emp_ls3_costcenter: setCostCenter.trim(),
+            emp_ls3_approval_limit: ApprovalLimit,
+    
+          };
+          // Add new part to partsList
+          setResult([...Result, newPart]);
+          console.log(Result);
+          // Close modal
+          handleClose();
     };
 
 
@@ -284,7 +303,7 @@ const PersonnelMRApproval = (props) => {
                     <Modal.Body>
                         <div className="col-md-12">
                             <Form.Group className="row" controlId="validation_CostCenter">
-                                <label className="col-sm-4 col-form-label">Cost Center:</label>
+                                <label className="col-sm-4 col-form-label down left">Cost Center:</label>
                                 <div className="col-sm-8">
                                 <label className="col-sm-10 form-label">
                                     <Select  
@@ -303,9 +322,9 @@ const PersonnelMRApproval = (props) => {
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <div className="col-md-12 moveUoPopUp">
                             <Form.Group className="row" controlId="validation_ApprovalLimit">
-                                <label className="col-sm-4 col-form-label">Approval Limit:</label>
+                                <label className="col-sm-4 col-form-label top down left">Approval Limit:</label>
                                 <div className="col-sm-8 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control  
@@ -325,10 +344,7 @@ const PersonnelMRApproval = (props) => {
                     <Modal.Footer>
 
                         <Button variant="secondary" onClick={handleClose}>Close</Button>
-                        <Button variant="primary" onClick={() => {
-                            // Close modal
-                            handleClose();
-                        }}>
+                        <Button variant="primary" onClick={handleAddButtonClick}>
                         {/* {Button_save} */}
                         Submit
                         </Button>
@@ -336,6 +352,51 @@ const PersonnelMRApproval = (props) => {
 
                 </Modal>
 
+
+                {showModal && (
+                <Modal show={showModal} onHide={handleCloseModal} centered >
+
+                <Modal.Header closeButton>
+                    <Modal.Title>MR Approval</Modal.Title>
+                </Modal.Header>
+
+
+                <Modal.Body>
+                    <div className="col-md-12">
+                        <Form.Group className="row" controlId="validation_CostCenter">
+                            <label className="col-sm-4 col-form-label down left">Cost Center:</label>
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={CostCenter} 
+                                  readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_ApprovalLimit">
+                            <label className="col-sm-4 col-form-label  top down left">Approval Limit:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={ApprovalLimit} 
+                                  readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+                </Modal.Body>
+                
+                </Modal>
+                )}
             </div> 
 
         <div className="table-responsive">

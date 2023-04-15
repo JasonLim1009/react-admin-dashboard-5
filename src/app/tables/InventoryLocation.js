@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import { useHistory } from "react-router-dom";
 import APIServices from "../services/APIServices";
 
+import '../style.css';
 import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Moment from 'moment';
@@ -23,12 +24,13 @@ const InventoryLocation = (props) => {
   const [Header, setHeader] = React.useState([]);
   const [Result, setResult] = React.useState([]);
 
-  const [isHeaderCheckboxChecked, setIsHeaderCheckboxChecked] = useState(false);
-  const [isCheckedList, setIsCheckedList] = useState(Result.map(() => false));
-
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {setShow(false); resetData(); };
   const handleShow = () => setShow(true);
+
+  const [showModal, setShowModal] = useState(false);
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
 
   const [Master_Location, setMaster_Location] = useState([]);
   const [selected_Master_Location, setSelected_Master_Location] = useState([]);
@@ -47,6 +49,18 @@ const InventoryLocation = (props) => {
   const [Button_save, setButton_save] = useState("");
 
   const [RowID, setRowID] = useState("");
+
+  const [LockoutForCount, setLockoutForCount] = useState("");
+  const [OhQuantity, setOhQuantity] = useState("");
+  const [OrderPoint, setOrderPoint] = useState("");
+  const [Maximum, setMaximum] = useState("");
+  const [PrOutstanding, setPrOutstanding] = useState("");
+  const [PoOutstanding, setPoOutstanding] = useState("");
+  const [HardReserve, setHardReserve] = useState("");
+  const [ShortQty, setShortQty] = useState("");
+  const [LastActivityDate, setLastActivityDate] = useState("");
+  const [LastCountDate, setLastCountDate] = useState("");
+  const [NextCountDate, setNextCountDate] = useState("");
 
 
   const get_inventorymaster_location = (site_ID, RowID) => {
@@ -201,7 +215,7 @@ const InventoryLocation = (props) => {
     return (
         <>
         <th key="select">
-            <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} />
+            {/* <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} /> */}
         </th>
         {Object.keys(Header).map((attr) => (
             <th key={attr}> {attr.toUpperCase()}</th>
@@ -247,9 +261,9 @@ const InventoryLocation = (props) => {
                 }
     
             return (
-            <tr key={result.site_cd}>
-                <td>{ <IndeterminateCheckbox {...result} checked={isCheckedList[index]} onChange={() => handleCheckboxChange(index)} />}</td>
-                
+            <tr key={index} onClick={(event) =>handleRowClick(result, event)}>
+          
+                <td>{index + 1}</td>
                 {/* <td>{result.itm_loc_order_pt}</td> */}
                 <td>{result.itm_loc_lockout4count}</td>
                 <td>{result.itm_loc_prim_locn_flg}</td>
@@ -275,40 +289,94 @@ const InventoryLocation = (props) => {
         });
     };
 
-    //Checkbox
-    const IndeterminateCheckbox = React.forwardRef(
-    ({ indeterminate, onChange, ...rest }, ref) => {
+    
+    const handleRowClick = (data) => {
+        console.log(data);
         
-        const defaultRef = React.useRef()
-        const resolvedRef = ref || defaultRef;
-    
-        React.useEffect(() => {
-        resolvedRef.current.indeterminate = indeterminate
-        }, [resolvedRef, indeterminate])
+        setLockoutForCount( data.itm_loc_lockout4count )
+        setPrimaryLocation( data.itm_loc_prim_locn_flg )
+        setMaster_Location( data.itm_loc_stk_loc )
+        setIncreaseTotalOH( data.itm_loc_inc_ttloh )
+        setUpdateStockCosting( data.itm_loc_stock_cost_flag )
+        setOhQuantity( data.itm_loc_oh_qty )
+        setOrderPoint( data.itm_loc_order_pt )
+        setMaximum( data.itm_loc_maximum )
+        setPrOutstanding( data.itm_loc_pr_due_in )
+        setPoOutstanding( data.itm_loc_due_in )
+        setHardReserve( data.itm_loc_hard_resrv )
+        setShortQty( data.itm_loc_short_qty )
+        setLastActivityDate( data.itm_loc_lastactdate )
+        setLastCountDate( data.itm_loc_lastcntdate )
+        setNextCountDate( data.itm_loc_next_cnt_date )
 
-        const handleChange = (event) => {
-        onChange(event);
-        //setShowButton(event.target.checked);
-        };
+        setShowModal(true);
+    };
     
-        return (
-        <>
-            <input type="checkbox" ref={resolvedRef} onChange={handleChange} {...rest} />
-        </>
-        )
-    }
-    )
+    const resetData = () => {
+    
+        setPrimaryLocation('');
+        setSelected_Master_Location(0);
+        setIncreaseTotalOH('');
+        setUpdateStockCosting('');
+      
+    };
+    
+    
+    const handleAddButtonClick  = () => {
+    
+        let site_ID = localStorage.getItem("site_ID");
+       
+        //Select Primary Location
+        console.log("PrimaryLocation: ", PrimaryLocation)
 
-    const handleHeaderCheckboxChange = () => {
-setIsHeaderCheckboxChecked(!isHeaderCheckboxChecked);
-setIsCheckedList(Result.map(() => !isHeaderCheckboxChecked));
+        //Select Master Location
+        let Master_Location, setMaster_Location;
+        if(selected_Master_Location == '' || selected_Master_Location == null){
+
+            setMaster_Location=''
+        }else{
+
+            Master_Location = selected_Master_Location.label.split(":")
+            setMaster_Location = Master_Location[0];
+            console.log("Master_Location ", Master_Location[0])
+        }
+
+        //Select Increase Total OH
+        console.log("IncreaseTotalOH: ", IncreaseTotalOH)
+
+        //Select Update Stock Costing
+        console.log("UpdateStockCosting: ", UpdateStockCosting)
+
+        const newPart = {
+            
+            mst_RowID: location.state.RowID,
+            site_cd: site_ID,
+            //itm_loc_create_date: ".0000",
+            itm_loc_due_in: ".0000",
+            itm_loc_hard_resrv: ".0000",
+            itm_loc_inc_ttloh: IncreaseTotalOH,
+            itm_loc_lastactdate: null,
+            itm_loc_lastcntdate: null,
+            itm_loc_lockout4count: "0",
+            itm_loc_maximum: ".0000",
+            itm_loc_next_cnt_date: null,
+            itm_loc_oh_qty: ".0000",
+            itm_loc_order_pt: ".0000",
+            itm_loc_pr_due_in: ".0000",
+            itm_loc_prim_locn_flg: PrimaryLocation,
+            itm_loc_short_qty: ".0000",
+            itm_loc_stock_cost_flag: UpdateStockCosting,
+            itm_loc_stk_loc: setMaster_Location.trim(),
+            itm_loc_stock_cost_flag: "1",
+    
+          };
+          // Add new part to partsList
+          setResult([...Result, newPart]);
+          console.log(Result);
+          // Close modal
+          handleClose();
     };
 
-    const handleCheckboxChange = (index) => {
-const newCheckedList = [...isCheckedList];
-newCheckedList[index] = !isCheckedList[index];
-setIsCheckedList(newCheckedList);
-    };
 
 
     const handleOnChangePrimaryLocation = () => {
@@ -375,8 +443,8 @@ setIsCheckedList(newCheckedList);
                     <Modal.Body>
                         <div className="col-md-12">
                             <Form.Group className="row" controlId="validation_PrimaryLocation">
-                                <label className="col-sm-5 col-form-label">Primary Location:</label>
-                                <div className="col-sm-6 form-check">
+                                <label className="col-sm-5 col-form-label down">Primary Location:</label>
+                                <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
                                 <label className="form-check-label">
                                     <input type="checkbox" 
                                     className="form-check-input"
@@ -389,9 +457,9 @@ setIsCheckedList(newCheckedList);
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <div className="col-md-12 moveUoPopUp">
                             <Form.Group className="row" controlId="validation_StockLocation">
-                                <label className="col-sm-5 col-form-label">Stock Location:</label>
+                                <label className="col-sm-5 col-form-label top down">Stock Location:</label>
                                 <div className="col-sm-7 form-check">
                                 <label className="col-sm-10 form-label">
                                 <Select  
@@ -410,10 +478,10 @@ setIsCheckedList(newCheckedList);
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <div className="col-md-12 moveUoPopUp">
                             <Form.Group className="row" controlId="validation_IncreaseTotalOH">
-                                <label className="col-sm-5 col-form-label">Increase Total OH:</label>
-                                <div className="col-sm-6 form-check">
+                                <label className="col-sm-5 col-form-label top down">Increase Total OH:</label>
+                                <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
                                 <label className="form-check-label">
                                     <input type="checkbox" 
                                     className="form-check-input"
@@ -426,10 +494,10 @@ setIsCheckedList(newCheckedList);
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <div className="col-md-12 moveUoPopUp">
                             <Form.Group className="row" controlId="validation_UpdateStockCosting">
-                                <label className="col-sm-5 col-form-label">Update Stock Costing:</label>
-                                <div className="col-sm-6 form-check">
+                                <label className="col-sm-5 col-form-label top down">Update Stock Costing:</label>
+                                <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
                                 <label className="form-check-label">
                                     <input type="checkbox" 
                                     className="form-check-input"
@@ -446,14 +514,273 @@ setIsCheckedList(newCheckedList);
                     <Modal.Footer>
 
                         <Button variant="secondary" onClick={handleClose}>Close</Button>
-                        <Button variant="primary" onClick={() => {
-                            // Close modal
-                            handleClose();
-                        }}>
+                        <Button variant="primary" onClick={handleAddButtonClick}>
+                        {/* {Button_save} */}
                         Submit
                         </Button>
                     </Modal.Footer>
                 </Modal>
+
+
+                {showModal && (
+                <Modal show={showModal} onHide={handleCloseModal} centered >
+
+                <Modal.Header closeButton>
+                    <Modal.Title>Location</Modal.Title>
+                </Modal.Header>
+
+
+                <Modal.Body>
+                    <div className="col-md-12">
+                        <Form.Group className="row" controlId="validation_LockoutForCount">
+                            <label className="col-sm-5 col-form-label down">Lockout For Count:</label>
+                            <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                            <label className="form-check-label">
+                                <input
+                                    style={{ fontSize: "13px", height: "38px" }}
+                                    type="checkbox" 
+                                    className="form-check-input"
+                                    checked={LockoutForCount} 
+                                    readOnly
+                                />
+                                <i className="input-helper"></i>
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_PrimaryLocation">
+                            <label className="col-sm-5 col-form-label top down">Primary Location:</label>
+                            <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                            <label className="form-check-label">
+                                <input
+                                    style={{ fontSize: "13px", height: "38px" }}
+                                    type="checkbox" 
+                                    checked={PrimaryLocation} 
+                                    readOnly
+                                />
+                                <i className="input-helper"></i>
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_StockLocation">
+                            <label className="col-sm-5 col-form-label top down">Stock Location:</label>
+                            <div className="col-sm-7 form-check">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={Master_Location} 
+                                  readOnly
+                                />
+                                <i className="input-helper"></i>
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_IncreaseTotalOH">
+                            <label className="col-sm-5 col-form-label top down">Increase Total OH:</label>
+                            <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                            <label className="form-check-label">
+                                <input
+                                    style={{ fontSize: "13px", height: "38px" }}
+                                    type="checkbox" 
+                                    checked={IncreaseTotalOH} 
+                                    readOnly
+                                />
+                                <i className="input-helper"></i>
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_UpdateStockCosting">
+                            <label className="col-sm-5 col-form-label top down">Update Stock Costing:</label>
+                            <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                            <label className="form-check-label">
+                                <input
+                                    style={{ fontSize: "13px", height: "38px" }}
+                                    type="checkbox" 
+                                    checked={UpdateStockCosting} 
+                                    readOnly
+                                />
+                                <i className="input-helper"></i>
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_OhQuantity">
+                            <label className="col-sm-5 col-form-label top down">Oh Quantity:</label>
+                            <div className="col-sm-7 form-check">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={OhQuantity} 
+                                  readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_OrderPoint">
+                            <label className="col-sm-5 col-form-label top down">Order Point:</label>
+                            <div className="col-sm-7 form-check">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={OrderPoint} 
+                                  readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_Maximum">
+                            <label className="col-sm-5 col-form-label top down">Maximum:</label>
+                            <div className="col-sm-7 form-check">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={Maximum} 
+                                  readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_PrOutstanding">
+                            <label className="col-sm-5 col-form-label top down">Pr Outstanding:</label>
+                            <div className="col-sm-7 form-check">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={PrOutstanding} 
+                                  readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_PoOutstanding">
+                            <label className="col-sm-5 col-form-label top down">Po Outstanding:</label>
+                            <div className="col-sm-7 form-check">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={PoOutstanding} 
+                                  readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_HardReserve">
+                            <label className="col-sm-5 col-form-label top down">Hard Reserve:</label>
+                            <div className="col-sm-7 form-check">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={HardReserve} 
+                                  readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+                    
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_ShortQty">
+                            <label className="col-sm-5 col-form-label top down">Short Qty:</label>
+                            <div className="col-sm-7 form-check">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={ShortQty} 
+                                  readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_LastActivityDate">
+                            <label className="col-sm-5 col-form-label top down">Last Activity Date:</label>
+                            <div className="col-sm-7 form-check">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="datetime-local"  
+                                  value ={LastActivityDate} 
+                                  readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_LastCountDate">
+                            <label className="col-sm-5 col-form-label top down">Last Count Date:</label>
+                            <div className="col-sm-7 form-check">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="datetime-local"  
+                                  value ={LastCountDate} 
+                                  readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_NextCountDate">
+                            <label className="col-sm-5 col-form-label top down">Next Count Date:</label>
+                            <div className="col-sm-7 form-check">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="datetime-local"  
+                                  value ={NextCountDate} 
+                                  readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+                        
+                </Modal.Body>
+                
+                </Modal>
+                )}
             </div> 
 
         <div className="table-responsive">

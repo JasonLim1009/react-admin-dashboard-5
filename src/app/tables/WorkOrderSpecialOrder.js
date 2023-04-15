@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 import APIServices from "../services/APIServices";
 
+import '../style.css';
 import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Moment from 'moment';
@@ -517,7 +518,7 @@ useEffect(() => {
                                 <Modal.Body>
                                     <div className="col-md-12">
                                         <Form.Group className="row" controlId="validation_Supplier">
-                                            <label className="col-sm-4 col-form-label">Supplier:</label>
+                                            <label className="col-sm-4 col-form-label down left">Supplier:</label>
                                             <div className="col-sm-8">
                                             <label className="col-sm-10 form-label">
                                                 <Select  
@@ -536,9 +537,9 @@ useEffect(() => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-12 moveUpPopUp">
                                         <Form.Group className="row" controlId="validation_Description">
-                                            <label className="col-sm-4 col-form-label">Description:</label>
+                                            <label className="col-sm-4 col-form-label down left">Description:</label>
                                             <div className="col-sm-8 form-label">
                                             <label className="col-sm-10 form-label">
                                                 <Form.Control  
@@ -552,9 +553,9 @@ useEffect(() => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-12 moveUpPopUp">
                                         <Form.Group className="row" controlId="validation_TaxCode">
-                                            <label className="col-sm-4 col-form-label">Tax Code:</label>
+                                            <label className="col-sm-4 col-form-label down left">Tax Code:</label>
                                             <div className="col-sm-8">
                                             <label className="col-sm-10 form-label">
                                                 <Select  
@@ -573,9 +574,9 @@ useEffect(() => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-12 moveUpPopUp">
                                         <Form.Group className="row" controlId="validation_UOM">
-                                            <label className="col-sm-4 col-form-label">UOM:</label>
+                                            <label className="col-sm-4 col-form-label down left">UOM:</label>
                                             <div className="col-sm-8">
                                             <label className="col-sm-10 form-label">
                                                 <Select  
@@ -594,9 +595,9 @@ useEffect(() => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-12 moveUpPopUp">
                                         <Form.Group className="row" controlId="validation_QtyNeeded">
-                                            <label className="col-sm-4 col-form-label">Qty Needed:</label>
+                                            <label className="col-sm-4 col-form-label down left">Qty Needed:</label>
                                             <div className="col-sm-8 form-label">
                                             <label className="col-sm-10 form-label">
                                                 <Form.Control  
@@ -611,9 +612,9 @@ useEffect(() => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-12 moveUpPopUp">
                                         <Form.Group className="row" controlId="validation_ItemCost">
-                                            <label className="col-sm-4 col-form-label">Item Cost:</label>
+                                            <label className="col-sm-4 col-form-label down left">Item Cost:</label>
                                             <div className="col-sm-8 form-label">
                                             <label className="col-sm-10 form-label">
                                             <Form.Control  
@@ -628,9 +629,9 @@ useEffect(() => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-12 moveUpPopUp">
                                         <Form.Group className="row" controlId="validation_ItemCost">
-                                            <label className="col-sm-4 col-form-label">Cost Center:</label>
+                                            <label className="col-sm-4 col-form-label down left">Cost Center:</label>
                                             <div className="col-sm-8">
                                             <label className="col-sm-10 form-label">
                                                 <Select  
@@ -649,9 +650,9 @@ useEffect(() => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <div className="col-md-12 moveUpPopUp">
                                         <Form.Group className="row" controlId="validation_Account">
-                                            <label className="col-sm-4 col-form-label">Account:</label>
+                                            <label className="col-sm-4 col-form-label down left">Account:</label>
                                             <div className="col-sm-8">
                                             <label className="col-sm-10 form-label">
                                                 <Select  
@@ -696,7 +697,7 @@ useEffect(() => {
                                 
                                 <div className="col-md-12">
                                     <Form.Group className="row" controlId="validation_AssetNo">
-                                        <label className="col-sm-4 col-form-label">Asset No:</label>
+                                        <label className="col-sm-4 col-form-label down left">Asset No:</label>
                                         <div className="col-sm-8">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -710,9 +711,9 @@ useEffect(() => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_Supplier">
-                                        <label className="col-sm-4 col-form-label">Supplier:</label>
+                                        <label className="col-sm-4 col-form-label down left">Supplier:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -726,9 +727,9 @@ useEffect(() => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_Description">
-                                        <label className="col-sm-4 col-form-label">Description:</label>
+                                        <label className="col-sm-4 col-form-label down left">Description:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -742,9 +743,9 @@ useEffect(() => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_TaxCode">
-                                        <label className="col-sm-4 col-form-label">Tax Code:</label>
+                                        <label className="col-sm-4 col-form-label down left">Tax Code:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -758,9 +759,9 @@ useEffect(() => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_UOM">
-                                        <label className="col-sm-4 col-form-label">UOM:</label>
+                                        <label className="col-sm-4 col-form-label down left">UOM:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -774,9 +775,9 @@ useEffect(() => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_QtyNeeded">
-                                        <label className="col-sm-4 col-form-label">Qty Needed:</label>
+                                        <label className="col-sm-4 col-form-label down left">Qty Needed:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -790,9 +791,9 @@ useEffect(() => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_ItemCost">
-                                        <label className="col-sm-4 col-form-label">Item Cost:</label>
+                                        <label className="col-sm-4 col-form-label down left">Item Cost:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -806,9 +807,9 @@ useEffect(() => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_CostCenter">
-                                        <label className="col-sm-4 col-form-label">Cost Center:</label>
+                                        <label className="col-sm-4 col-form-label down left">Cost Center:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -822,9 +823,9 @@ useEffect(() => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_Account">
-                                        <label className="col-sm-4 col-form-label">Account:</label>
+                                        <label className="col-sm-4 col-form-label down left">Account:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -838,9 +839,9 @@ useEffect(() => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_PrNo">
-                                        <label className="col-sm-4 col-form-label">Pr No:</label>
+                                        <label className="col-sm-4 col-form-label down left">Pr No:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -854,9 +855,9 @@ useEffect(() => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_PrLineNo">
-                                        <label className="col-sm-4 col-form-label">Pr Line No:</label>
+                                        <label className="col-sm-4 col-form-label down left">Pr Line No:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -870,9 +871,9 @@ useEffect(() => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_ApprovalStatus">
-                                        <label className="col-sm-4 col-form-label">Approval Status:</label>
+                                        <label className="col-sm-4 col-form-label down left">Approval Status:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -889,9 +890,9 @@ useEffect(() => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_PoNo">
-                                        <label className="col-sm-4 col-form-label">Po No:</label>
+                                        <label className="col-sm-4 col-form-label down left">Po No:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -905,9 +906,9 @@ useEffect(() => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_PoLineNo">
-                                        <label className="col-sm-4 col-form-label">Po Line No:</label>
+                                        <label className="col-sm-4 col-form-label down left">Po Line No:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -921,9 +922,9 @@ useEffect(() => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_ContractPoNo">
-                                        <label className="col-sm-4 col-form-label">Contract Po No:</label>
+                                        <label className="col-sm-4 col-form-label down left">Contract Po No:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -937,9 +938,9 @@ useEffect(() => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_ContractPoLine">
-                                        <label className="col-sm-4 col-form-label">Contract Po Line:</label>
+                                        <label className="col-sm-4 col-form-label down left">Contract Po Line:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control

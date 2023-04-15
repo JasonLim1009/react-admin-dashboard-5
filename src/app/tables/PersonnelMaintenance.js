@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 import APIServices from "../services/APIServices";
 
+import '../style.css';
 import { format } from "date-fns";
 import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
@@ -23,12 +24,13 @@ const PersonnelMaintenance = (props) => {
   const [Header, setHeader] = React.useState([]);
   const [Result, setResult] = React.useState([]);
 
-  const [isHeaderCheckboxChecked, setIsHeaderCheckboxChecked] = useState(false);
-  const [isCheckedList, setIsCheckedList] = useState(Result.map(() => false));
-
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {setShow(false); resetData(); };
   const handleShow = () => setShow(true);
+
+  const [showModal, setShowModal] = useState(false);
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
 
   const [Craft, setCraft] = useState([]);
   const [selected_Craft, setSelected_Craft] = useState([]);
@@ -207,7 +209,7 @@ const PersonnelMaintenance = (props) => {
         return (
             <>
             <th key="select">
-                <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} />
+                {/* <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} /> */}
             </th>
             {Object.keys(Header).map((attr) => (
                 <th key={attr}> {attr.toUpperCase()}</th>
@@ -222,9 +224,9 @@ const PersonnelMaintenance = (props) => {
 
 
         return (
-        <tr key={result.site_cd}>
-            <td>{ <IndeterminateCheckbox {...result} checked={isCheckedList[index]} onChange={() => handleCheckboxChange(index)} />}</td>
-            
+        <tr key={index} onClick={(event) =>handleRowClick(result, event)}>
+          
+            <td>{index + 1}</td>
             <td>{result.emp_ls1_craft}</td>
             <td>{result.emp_ls1_supervisor_id}</td>
             <td>{result.emp_ls1_pay_rate}</td>
@@ -235,40 +237,79 @@ const PersonnelMaintenance = (props) => {
     });
     };
 
-    //Checkbox
-    const IndeterminateCheckbox = React.forwardRef(
-    ({ indeterminate, onChange, ...rest }, ref) => {
-        
-        const defaultRef = React.useRef()
-        const resolvedRef = ref || defaultRef;
-    
-        React.useEffect(() => {
-        resolvedRef.current.indeterminate = indeterminate
-        }, [resolvedRef, indeterminate])
 
-        const handleChange = (event) => {
-        onChange(event);
-        //setShowButton(event.target.checked);
-        };
+    const handleRowClick = (data) => {
+        console.log(data);
     
-        return (
-        <>
-            <input type="checkbox" ref={resolvedRef} onChange={handleChange} {...rest} />
-        </>
-        )
-    }
-    )
-        
-    const handleHeaderCheckboxChange = () => {
-        setIsHeaderCheckboxChecked(!isHeaderCheckboxChecked);
-        setIsCheckedList(Result.map(() => !isHeaderCheckboxChecked));
+        setCraft( data.emp_ls1_craft )
+        setSupervisorID( data.emp_ls1_supervisor_id )
+        setPayRate( data.emp_ls1_pay_rate )
+        setChargeRate( data.emp_ls1_charge_rate )
+     
+        setShowModal(true);
     };
-        
-    const handleCheckboxChange = (index) => {
-        const newCheckedList = [...isCheckedList];
-        newCheckedList[index] = !isCheckedList[index];
-        setIsCheckedList(newCheckedList);
+    
+    const resetData = () => {
+    
+        setSelected_Craft(0);
+        setSelected_SupervisorID(0);
+        setPayRate('');
+        setChargeRate('');
+      
     };
+    
+    
+    const handleAddButtonClick  = () => {
+    
+        let site_ID = localStorage.getItem("site_ID");
+       
+        //Select Craft
+        let Craft, setCraft;
+        if(selected_Craft == '' || selected_Craft == null){
+
+            setCraft=''
+        }else{
+
+            Craft = selected_Craft.label.split(":")
+            setCraft = Craft[0];
+            console.log("Craft ", Craft[0])
+        }
+
+        //Select Supervisor ID
+        let SupervisorID, setSupervisorID;
+        if(selected_SupervisorID == '' || selected_SupervisorID == null){
+
+            setSupervisorID=''
+        }else{
+
+            SupervisorID = selected_SupervisorID.label.split(":")
+            setSupervisorID = SupervisorID[0];
+            console.log("SupervisorID ", SupervisorID[0])
+        }
+
+        //Select Pay Rate
+        console.log("PayRate: ", PayRate)
+
+        //Select Charge Rate
+        console.log("ChargeRate: ", ChargeRate)
+
+        const newPart = {
+            
+            mst_RowID: location.state.RowID,
+            site_cd: site_ID,
+            emp_ls1_craft: setCraft.trim(),
+            emp_ls1_supervisor_id: setSupervisorID.trim(),
+            emp_ls1_pay_rate: PayRate,
+            emp_ls1_charge_rate: ChargeRate,
+    
+          };
+          // Add new part to partsList
+          setResult([...Result, newPart]);
+          console.log(Result);
+          // Close modal
+          handleClose();
+    };
+
 
 
 
@@ -299,7 +340,7 @@ const PersonnelMaintenance = (props) => {
                     <Modal.Body>
                         <div className="col-md-12">
                             <Form.Group className="row" controlId="validation_Craft">
-                                <label className="col-sm-4 col-form-label">Craft:</label>
+                                <label className="col-sm-4 col-form-label down left">Craft:</label>
                                 <div className="col-sm-8">
                                 <label className="col-sm-10 form-label">
                                     <Select  
@@ -318,9 +359,9 @@ const PersonnelMaintenance = (props) => {
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <div className="col-md-12 moveUoPopUp">
                             <Form.Group className="row" controlId="validation_SupervisorID">
-                                <label className="col-sm-4 col-form-label">Supervisor ID:</label>
+                                <label className="col-sm-4 col-form-label top down left">Supervisor ID:</label>
                                 <div className="col-sm-8">
                                 <label className="col-sm-10 form-label">
                                     <Select  
@@ -339,9 +380,9 @@ const PersonnelMaintenance = (props) => {
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <div className="col-md-12 moveUoPopUp">
                             <Form.Group className="row" controlId="validation_PayRate">
-                                <label className="col-sm-4 col-form-label">Pay Rate:</label>
+                                <label className="col-sm-4 col-form-label top down left">Pay Rate:</label>
                                 <div className="col-sm-8 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control  
@@ -356,9 +397,9 @@ const PersonnelMaintenance = (props) => {
                             </Form.Group>
                         </div>
 
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                        <div className="col-md-12 moveUoPopUp">
                             <Form.Group className="row" controlId="validation_ChargeRate">
-                                <label className="col-sm-4 col-form-label">Charge Rate:</label>
+                                <label className="col-sm-4 col-form-label top down left">Charge Rate:</label>
                                 <div className="col-sm-8 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control  
@@ -378,17 +419,90 @@ const PersonnelMaintenance = (props) => {
                     <Modal.Footer>
 
                         <Button variant="secondary" onClick={handleClose}>Close</Button>
-                        <Button variant="primary" onClick={() => {
-                            // Close modal
-                            handleClose();
-                        }}>
+                        <Button variant="primary" onClick={handleAddButtonClick}>
                         {/* {Button_save} */}
                         Submit
                         </Button>
                     </Modal.Footer>
-
                 </Modal>
 
+
+                {showModal && (
+                <Modal show={showModal} onHide={handleCloseModal} centered >
+
+                <Modal.Header closeButton>
+                    <Modal.Title>Maintenance</Modal.Title>
+                </Modal.Header>
+
+
+                <Modal.Body>
+                    <div className="col-md-12">
+                        <Form.Group className="row" controlId="validation_Craft">
+                            <label className="col-sm-4 col-form-label down left">Craft:</label>
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={Craft} 
+                                  readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_SupervisorID">
+                            <label className="col-sm-4 col-form-label top down left">Supervisor ID:</label>
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={SupervisorID} 
+                                  readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_PayRate">
+                            <label className="col-sm-4 col-form-label top down left">Pay Rate:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={PayRate} 
+                                  readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUoPopUp">
+                        <Form.Group className="row" controlId="validation_ChargeRate">
+                            <label className="col-sm-4 col-form-label top down left">Charge Rate:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control
+                                  style={{ fontSize: "13px", height: "38px" }}
+                                  type="text"
+                                  value ={ChargeRate} 
+                                  readOnly
+                                />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+                </Modal.Body>
+                
+                </Modal>
+                )}
             </div> 
 
         <div className="table-responsive">

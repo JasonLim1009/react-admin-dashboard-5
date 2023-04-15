@@ -151,7 +151,7 @@ const WorkOrderStatusAudit = (props) => {
                     <StepContainer>
                       {steps.map(({ step, label, label1, label2, label3, label4, label5 }) => (
                         <div key={step} style={{ position: "relative", zIndex: 1 }}>
-                          <div style={{ fontSize: "11px", color: "grey", position: 'absolute', left: '-81px', top: '45px', width: '80px', height: '20px', borderRadius: '5%' }}>{label5}</div>
+                          <div style={{ fontSize: "11px", color: "grey", position: 'absolute', left: '-81px', top: '45px', width: '80px', height: '20px', borderRadius: '5%', textAlign: 'right' }}>{label5}</div>
                             <div step={step} style={{ width: '30px', height: '30px', borderRadius: '50%', backgroundColor: '#4694d1', border: `3px solid ${step === 'completed' ? '#0080FF' : '#F3E7F3'}`, transition: '0.4s ease', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                 <div style={{ fontSize: "15px", color: "#f3e7f3" }}>{step}</div>
                             </div>
