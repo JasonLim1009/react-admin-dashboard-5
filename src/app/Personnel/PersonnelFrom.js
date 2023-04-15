@@ -16,6 +16,7 @@ import 'react-alice-carousel/lib/alice-carousel.css';
 import {useTable,useSortBy,usePagination,useRowSelect,useResizeColumns  }  from 'react-table';
 import moment from 'moment';
 
+import '../style.css';
 import PersonnelMaintenance from "../tables/PersonnelMaintenance";
 import PersonnelPRApproval from "../tables/PersonnelPRApproval";
 import PersonnelMRApproval from "../tables/PersonnelMRApproval";
@@ -1948,27 +1949,27 @@ const PersonnalFrom = (props) => {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Emp_EmployeeID">
-                                            <label className="col-sm-5 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Employee ID:</label>
+                                            <label className="col-sm-5 col-form-label down" style={{ fontSize: "13px" }}>Employee ID:<span style={{color: "red"}} class="required-asterisk">* </span></label>
                                             <div className="col-sm-7">
-                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_EmployeeID} onChange={(e) => setEmp_EmployeeID(e.target.value)}/>
+                                                <Form.Control className='formControl' type="text" value={Emp_EmployeeID} onChange={(e) => setEmp_EmployeeID(e.target.value)}/>
                                             </div>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_Emp_Name">
-                                            <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Name:</label>
-                                            <div className="col-sm-10">
-                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_Name} onChange={(e) => setEmp_Name(e.target.value)}/>
+                                            <label className="col-sm-2 col-form-label top down" style={{ fontSize: "13px" }}>Name:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                            <div className="col-sm-10 Empleft-md Empleft-ms">
+                                                <Form.Control className='formControl' type="text" value={Emp_Name} onChange={(e) => setEmp_Name(e.target.value)}/>
                                             </div>
                                         </Form.Group>                        
                                     </div> 
                                 </div>
 
-                                <div className="row">
+                                <div className="row moveUp moveUp-md moveUp-sm">
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Employee_Status">                                  
-                                            <Form.Label className="col-sm-5 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Status:</Form.Label>
+                                            <Form.Label className="col-sm-5 col-form-label top down" style={{ fontSize: "13px" }}>Status:<span style={{color: "red"}} class="required-asterisk">* </span></Form.Label>
                                             <div className="col-sm-7">
                                                 <Select  
                                                     isClearable={true}  
@@ -1976,9 +1977,21 @@ const PersonnalFrom = (props) => {
                                                     value={selected_Employee_Status}
                                                     onChange={setSelected_Employee_Status} // using id as it is unique
                                                     required
-                                                    styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
                                                     }}
                                                 />
                                             </div>
@@ -1986,20 +1999,20 @@ const PersonnalFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_Emp_Title">
-                                            <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Title:</label>
-                                            <div className="col-sm-10">
-                                                <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_Title} onChange={(e) => setEmp_Title(e.target.value)}/>
+                                            <label className="col-sm-2 col-form-label top down" style={{ fontSize: "13px" }}>Title:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                            <div className="col-sm-10 Empleft-md Empleft-ms">
+                                                <Form.Control className='formControl' type="text" value={Emp_Title} onChange={(e) => setEmp_Title(e.target.value)}/>
                                             </div>
                                         </Form.Group>
                                     </div>                         
                                 </div>
 
-                                <div className="row">
+                                <div className="row moveUp moveUp-md moveUp-sm">
                                     <div className="col-md-6">                                
                                         <Form.Group className="row" controlId="validation_Employee_User_Group">
-                                            <Form.Label className="col-sm-5 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>User Group:</Form.Label>
+                                            <Form.Label className="col-sm-5 col-form-label top down" style={{ fontSize: "13px" }}>User Group:<span style={{color: "red"}} class="required-asterisk">* </span></Form.Label>
                                             <div className="col-sm-7">
                                                 <Select  
                                                     isClearable={true}  
@@ -2007,18 +2020,30 @@ const PersonnalFrom = (props) => {
                                                     value={selected_Employee_User_Group}
                                                     onChange={setSelected_Employee_User_Group} // using id as it is unique
                                                     required
-                                                    styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
                                                     }}
                                                 />
                                             </div>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_Employee_Login_Id">
-                                            <label className="col-sm-2 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Login ID:</label>
+                                            <label className="col-sm-2 col-form-label top down" style={{ fontSize: "13px" }}>Login ID:<span style={{color: "red"}} class="required-asterisk">* </span></label>
                                             <div className="col-sm-5">
                                             <Select  
                                                 isClearable={true}  
@@ -2026,42 +2051,66 @@ const PersonnalFrom = (props) => {
                                                 value={selected_Employee_Login_Id}
                                                 onChange={setSelected_Employee_Login_Id} // using id as it is unique
                                                 required
-                                                styles={{ 
-                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                styles={{
+                                                    control: (styles, { isDisabled }) => ({
+                                                    ...styles,
+                                                    backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                    color: isDisabled ? 'black' : 'inherit',
+                                                    fontSize: '12px', minHeight:'30px',height: "34px"
+                                                    }),
+                                                    singleValue: (styles, { isDisabled }) => ({
+                                                    ...styles,
+                                                    color: isDisabled ? '#495057' : 'inherit',
+                                                    fontSize: '12px', paddingLeft:'2px'
+                                                    }),
+                                                    menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                    dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                    noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
                                                 }}
                                             />
                                         </div>
 
                                         <div className="col-sm-5">
-                                            <label className="col-form-label"><a href="">Create New User Login</a></label>
+                                            <label className="col-form-label labelTop down"><a href="" style={{ fontSize: "13px" }}>Create New User Login</a></label>
                                         </div>
                                         </Form.Group>
                                     </div> 
                                 </div>
 
-                                <div className="row">              
+                                <div className="row moveUp moveUp-md moveUp-sm">              
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Dashboard_Access">
-                                            <label className="col-sm-5 col-form-label">Dashboard Access:</label>
+                                            <label className="col-sm-5 col-form-label top down" style={{ fontSize: "13px" }}>Dashboard Access:</label>
                                             <div className="col-sm-7">
                                                 <Select  
                                                     isClearable={true}  
                                                     value={selected_dashboard_access}
                                                     onChange={setSelected_dashboard_access}
                                                     options={dashboard_access}
-                                                    styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                        }}
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                     />
                                             </div>
                                         </Form.Group>
                                     </div>  
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_PrivilegeTemplate">
-                                            <label className="col-sm-5 col-form-label">Privilege Template:</label>
+                                            <label className="col-sm-5 col-form-label top down" style={{ fontSize: "13px" }}>Privilege Template:</label>
                                         </Form.Group>
                                     </div>
                                 </div>  
@@ -2116,19 +2165,19 @@ const PersonnalFrom = (props) => {
                                             <div className="row">
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_Emp_HomePhone">
-                                                        <label className="col-sm-3 col-form-label">Home Phone:</label>
+                                                        <label className="col-sm-3 col-form-label down" style={{ fontSize: "13px" }}>Home Phone:</label>
                                                         <div className="col-sm-9">
-                                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value={Emp_HomePhone} onChange={(e) => setEmp_HomePhone(e.target.value)}/>
+                                                            <Form.Control className='formControl' type="number" value={Emp_HomePhone} onChange={(e) => setEmp_HomePhone(e.target.value)}/>
                                                         </div>
                                                     </Form.Group>
                                                 </div>  
 
-                                                <div className="col-md-6">
+                                                <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row" controlId="validation_BirthDate">
-                                                        <label className="col-sm-3 col-form-label">Date of Birth:</label>
+                                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Date of Birth:</label>
                                                         <div className="col-sm-9">
                                                             <Form.Control
-                                                                style={{ fontSize: "13px", height: "38px" }}
+                                                                className='formControl'
                                                                 type="datetime-local"
                                                                 value ={BirthDate} 
                                                                 onChange={(e) => setBirthDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -2138,22 +2187,22 @@ const PersonnalFrom = (props) => {
                                                 </div> 
                                             </div>
 
-                                            <div className="row" style={{ marginTop: "-20px" }}>
+                                            <div className="row moveUp">
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_Emp_EmergencyName">
-                                                        <label className="col-sm-3 col-form-label">Emergency Name:</label>
+                                                        <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Emergency Name:</label>
                                                         <div className="col-sm-9">
-                                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_EmergencyName} onChange={(e) => setEmp_EmergencyName(e.target.value)}/>
+                                                            <Form.Control className='formControl' type="text" value={Emp_EmergencyName} onChange={(e) => setEmp_EmergencyName(e.target.value)}/>
                                                         </div>
                                                     </Form.Group>
                                                 </div>  
 
-                                                <div className="col-md-6">
+                                                <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row" controlId="validation_HireDate">
-                                                        <label className="col-sm-3 col-form-label">Date of Hire:</label>
+                                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Date of Hire:</label>
                                                         <div className="col-sm-9">
                                                         <Form.Control    
-                                                            style={{ fontSize: "13px", height: "38px" }}                                        
+                                                            className='formControl'                                        
                                                             type="datetime-local"  
                                                             value={HireDate} 
                                                             onChange={(e) => setHireDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -2163,86 +2212,122 @@ const PersonnalFrom = (props) => {
                                                 </div>  
                                             </div> 
 
-                                            <div className="row" style={{ marginTop: "-20px" }}>
+                                            <div className="row moveUp">
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_Emp_EmergencyPhone">
-                                                        <label className="col-sm-3 col-form-label">Emergency Phone:</label>
+                                                        <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Emergency Phone:</label>
                                                         <div className="col-sm-9">
-                                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value={Emp_EmergencyPhone} onChange={(e) => setEmp_EmergencyPhone(e.target.value)}/>
+                                                            <Form.Control className='formControl' type="number" value={Emp_EmergencyPhone} onChange={(e) => setEmp_EmergencyPhone(e.target.value)}/>
                                                         </div>
                                                     </Form.Group>
                                                 </div>  
 
-                                                <div className="col-md-6">
+                                                <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row" controlId="validation_Emp_PayRate">
-                                                        <label className="col-sm-3 col-form-label">Pay Rate:</label>
+                                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Pay Rate:</label>
                                                         <div className="col-sm-9">
-                                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value={Emp_PayRate} onChange={(e) => setEmp_PayRate(e.target.value)}/>
+                                                            <Form.Control className='formControl' type="number" value={Emp_PayRate} onChange={(e) => setEmp_PayRate(e.target.value)}/>
                                                         </div>
                                                     </Form.Group>
                                                 </div> 
                                             </div>  
 
-                                            <div className='row' style={{ marginTop: "-20px" }}>
+                                            <div className='row moveUp'>
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_sex">
-                                                        <label className="col-sm-3 col-form-label">Sex:</label>
+                                                        <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Sex:</label>
                                                         <div className="col-sm-9">
                                                         <Select  
                                                             isClearable={true}  
                                                             value={selected_sex}
                                                             onChange={setSelected_sex}
                                                             options={sex}
-                                                            styles={{ 
-                                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                                }}
+                                                            styles={{
+                                                                control: (styles, { isDisabled }) => ({
+                                                                ...styles,
+                                                                backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                                color: isDisabled ? 'black' : 'inherit',
+                                                                fontSize: '12px', minHeight:'30px',height: "34px"
+                                                                }),
+                                                                singleValue: (styles, { isDisabled }) => ({
+                                                                ...styles,
+                                                                color: isDisabled ? '#495057' : 'inherit',
+                                                                fontSize: '12px', paddingLeft:'2px'
+                                                                }),
+                                                                menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                                dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                                noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                            }}
                                                             />
                                                         </div>
                                                     </Form.Group>
                                                 </div>  
 
-                                                <div className="col-md-6">
+                                                <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row" controlId="validation_Emp_PayPeriod">
-                                                        <label className="col-sm-3 col-form-label">Pay Period:</label>
+                                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Pay Period:</label>
                                                         <div className="col-sm-9">
-                                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_PayPeriod} onChange={(e) => setEmp_PayPeriod(e.target.value)}/>
+                                                            <Form.Control className='formControl' type="text" value={Emp_PayPeriod} onChange={(e) => setEmp_PayPeriod(e.target.value)}/>
                                                         </div>
                                                     </Form.Group>
                                                 </div>  
                                             </div>
 
-                                            <div className='row' style={{ marginTop: "-20px" }}>                                    
+                                            <div className='row moveUp'>                                  
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_marital_statuse">
-                                                        <label className="col-sm-3 col-form-label">Marital Status:</label>
+                                                        <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Marital Status:</label>
                                                         <div className="col-sm-9">
                                                         <Select  
                                                             isClearable={true}  
                                                             value={selected_marital_status}
                                                             onChange={setSelected_marital_status}
                                                             options={marital_status}
-                                                            styles={{ 
-                                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                                }}
+                                                            styles={{
+                                                                control: (styles, { isDisabled }) => ({
+                                                                ...styles,
+                                                                backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                                color: isDisabled ? 'black' : 'inherit',
+                                                                fontSize: '12px', minHeight:'30px',height: "34px"
+                                                                }),
+                                                                singleValue: (styles, { isDisabled }) => ({
+                                                                ...styles,
+                                                                color: isDisabled ? '#495057' : 'inherit',
+                                                                fontSize: '12px', paddingLeft:'2px'
+                                                                }),
+                                                                menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                                dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                                noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                            }}
                                                             />
                                                         </div>
                                                     </Form.Group>
                                                 </div>  
 
-                                                <div className="col-md-6">
+                                                <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row" controlId="validation_marital_statuse">
-                                                        <label className="col-sm-3 col-form-label">Shift:</label>
+                                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Shift:</label>
                                                         <div className="col-sm-9">
                                                             <Select  
                                                                 isClearable={true}  
                                                                 value={selected_shift}
                                                                 onChange={setSelected_shift}
                                                                 options={shift}
-                                                                styles={{ 
-                                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                                styles={{
+                                                                    control: (styles, { isDisabled }) => ({
+                                                                    ...styles,
+                                                                    backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                                    color: isDisabled ? 'black' : 'inherit',
+                                                                    fontSize: '12px', minHeight:'30px',height: "34px"
+                                                                    }),
+                                                                    singleValue: (styles, { isDisabled }) => ({
+                                                                    ...styles,
+                                                                    color: isDisabled ? '#495057' : 'inherit',
+                                                                    fontSize: '12px', paddingLeft:'2px'
+                                                                    }),
+                                                                    menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                                    dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                                    noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
                                                                 }}
                                                             />
                                                         </div>
@@ -2250,19 +2335,19 @@ const PersonnalFrom = (props) => {
                                                 </div>                                        
                                             </div>
 
-                                            <div className='row' style={{ marginTop: "-20px" }}>
+                                            <div className='row moveUp'>
                                                 <div className="col-md-6">
                                                     <Form.Group className="row">
-                                                        <label className="col-sm-3 col-form-label">Email ID:</label>
+                                                        <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Email ID:</label>
                                                         <div className="col-sm-9">
-                                                            <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Emp_EmailID} onChange={(e) => setEmp_EmailID(e.target.value)}/>
+                                                            <Form.Control className='formControl' type="text" value={Emp_EmailID} onChange={(e) => setEmp_EmailID(e.target.value)}/>
                                                         </div>
                                                     </Form.Group>
                                                 </div>    
 
-                                                <div className="col-md-6">
+                                                <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row">
-                                                        <label className="col-sm-3 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Supervisor ID:</label>
+                                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Supervisor ID:<span style={{color: "red"}} class="required-asterisk">* </span></label>
                                                         <div className="col-sm-9">
                                                             <Select  
                                                                 isClearable={true}  
@@ -2270,20 +2355,32 @@ const PersonnalFrom = (props) => {
                                                                 value={selected_Employee_Supervisor_Id}
                                                                 onChange={setSelected_Employee_Supervisor_Id} // using id as it is unique
                                                                 required
-                                                                styles={{ 
-                                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                                    }}
+                                                                styles={{
+                                                                    control: (styles, { isDisabled }) => ({
+                                                                    ...styles,
+                                                                    backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                                    color: isDisabled ? 'black' : 'inherit',
+                                                                    fontSize: '12px', minHeight:'30px',height: "34px"
+                                                                    }),
+                                                                    singleValue: (styles, { isDisabled }) => ({
+                                                                    ...styles,
+                                                                    color: isDisabled ? '#495057' : 'inherit',
+                                                                    fontSize: '12px', paddingLeft:'2px'
+                                                                    }),
+                                                                    menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                                    dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                                    noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                                }}
                                                                 />
                                                         </div>
                                                     </Form.Group>
                                                 </div>    
                                             </div>
 
-                                            <div className='row' style={{ marginTop: "-20px" }}>
+                                            <div className='row moveUp'>
                                                 <div className="col-md-6">
                                                     <Form.Group className="row">
-                                                        <label className="col-sm-3 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Primary Craft:</label>
+                                                        <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Primary Craft:<span style={{color: "red"}} class="required-asterisk">* </span></label>
                                                         <div className="col-sm-9">
                                                             <Select  
                                                                 isClearable={true}  
@@ -2291,27 +2388,39 @@ const PersonnalFrom = (props) => {
                                                                 value={selected_Employee_Primary_Craft}
                                                                 onChange={setSelected_Employee_Primary_Craft} // using id as it is unique
                                                                 required
-                                                                styles={{ 
-                                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                                styles={{
+                                                                    control: (styles, { isDisabled }) => ({
+                                                                    ...styles,
+                                                                    backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                                    color: isDisabled ? 'black' : 'inherit',
+                                                                    fontSize: '12px', minHeight:'30px',height: "34px"
+                                                                    }),
+                                                                    singleValue: (styles, { isDisabled }) => ({
+                                                                    ...styles,
+                                                                    color: isDisabled ? '#495057' : 'inherit',
+                                                                    fontSize: '12px', paddingLeft:'2px'
+                                                                    }),
+                                                                    menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                                    dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                                    noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
                                                                 }}
                                                             />
                                                         </div>
                                                     </Form.Group>
                                                 </div>
 
-                                                <div className="col-md-6">
+                                                <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row">
-                                                        <label className="col-sm-3 col-form-label">Supervisor Name:</label>
+                                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Supervisor Name:</label>
                                                         <div className="col-sm-9"></div>
                                                     </Form.Group>
                                                 </div>                                      
                                             </div>
 
-                                            <div className='row' style={{ marginTop: "-20px" }}>
+                                            <div className='row moveUp'>
                                                 <div className="col-md-6">
                                                     <Form.Group className="row">
-                                                        <label className="col-sm-3 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Work Area:</label>
+                                                        <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Work Area:<span style={{color: "red"}} class="required-asterisk">* </span></label>
                                                         <div className="col-sm-9">
                                                             <Select  
                                                                 isClearable={true}  
@@ -2319,18 +2428,30 @@ const PersonnalFrom = (props) => {
                                                                 value={selected_Employee_Work_Id}
                                                                 onChange={setSelected_Employee_Work_Id} // using id as it is unique
                                                                 required
-                                                                styles={{ 
-                                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                                    }}
+                                                                styles={{
+                                                                    control: (styles, { isDisabled }) => ({
+                                                                    ...styles,
+                                                                    backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                                    color: isDisabled ? 'black' : 'inherit',
+                                                                    fontSize: '12px', minHeight:'30px',height: "34px"
+                                                                    }),
+                                                                    singleValue: (styles, { isDisabled }) => ({
+                                                                    ...styles,
+                                                                    color: isDisabled ? '#495057' : 'inherit',
+                                                                    fontSize: '12px', paddingLeft:'2px'
+                                                                    }),
+                                                                    menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                                    dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                                    noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                                }}
                                                                 />
                                                         </div>
                                                     </Form.Group>
                                                 </div>          
 
-                                                <div className="col-md-6">
+                                                <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row">
-                                                        <label className="col-sm-3 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Work Group:</label>
+                                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Work Group:<span style={{color: "red"}} class="required-asterisk">* </span></label>
                                                         <div className="col-sm-9">
                                                             <Select  
                                                                 isClearable={true}  
@@ -2338,9 +2459,21 @@ const PersonnalFrom = (props) => {
                                                                 value={selected_Employee_Work_Group}
                                                                 onChange={setSelected_Employee_Work_Group} // using id as it is unique
                                                                 required
-                                                                styles={{ 
-                                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                                styles={{
+                                                                    control: (styles, { isDisabled }) => ({
+                                                                    ...styles,
+                                                                    backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                                    color: isDisabled ? 'black' : 'inherit',
+                                                                    fontSize: '12px', minHeight:'30px',height: "34px"
+                                                                    }),
+                                                                    singleValue: (styles, { isDisabled }) => ({
+                                                                    ...styles,
+                                                                    color: isDisabled ? '#495057' : 'inherit',
+                                                                    fontSize: '12px', paddingLeft:'2px'
+                                                                    }),
+                                                                    menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                                    dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                                    noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
                                                                 }}
                                                             />
                                                         </div>
@@ -2348,15 +2481,15 @@ const PersonnalFrom = (props) => {
                                                 </div> 
                                             </div>
 
-                                            <div className="row" style={{ marginTop: "-20px" }}>
+                                            <div className="row moveUp">
                                                 <div className="col-md-6">
                                                     <Form.Group className="row">
-                                                        <label className="col-sm-3 col-form-label">Remarks:</label>
+                                                        <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Remarks:</label>
                                                         <div className="col-sm-9">
                                                         <Form.Control 
-                                                            style={{ fontSize: "13px" }}
+                                                            className='formControlBox'
                                                             as="textarea" 
-                                                            rows={19} 
+                                                            rows={6} 
                                                             value={Remarks}
                                                             onChange={(e) => setRemarks(e.target.value)}
                                                         />
@@ -2375,8 +2508,8 @@ const PersonnalFrom = (props) => {
                                     <div className="row">
                                         <div className='col-md-3'>
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">MR Approver / Global Limit:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label down" style={{ fontSize: "13px" }}>MR Approver / Global Limit:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2389,16 +2522,16 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>          
                                         </div>
 
-                                        <div className="col-md-3">
+                                        <div className="col-md-3 moveUpBox-md moveUpBox-sm moveUpBoxRight-md moveUpBoxRight-sm">
                                             <Form.Group className="mb-3">
-                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder=".00" value={selected_MrApprover} disabled ={MrApprover} onChange={(e) => setselected_MrApprover(e.target.value)} />
+                                                    <Form.Control className='formControl' type="number" placeholder=".00" value={selected_MrApprover} disabled ={MrApprover} onChange={(e) => setselected_MrApprover(e.target.value)} />
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-3">
+                                        <div className="col-md-3 moveUpCheckBox-md moveUpCheckBox-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">Schedule Work Order:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label down" style={{ fontSize: "13px" }}>Schedule Work Order:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2412,11 +2545,11 @@ const PersonnalFrom = (props) => {
                                         </div>
                                     </div> 
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-3">
+                                    <div className="row moveUp">
+                                        <div className="col-md-3 moveUpCheckBox-md moveUpCheckBox-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">WO Budget Approver / Limit:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label down" style={{ fontSize: "13px" }}>WO Budget Approver / Limit:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2429,16 +2562,16 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>   
 
-                                        <div className="col-md-3">
+                                        <div className="col-md-3 moveUpBox-md moveUpBox-sm moveUpBoxRight-md moveUpBoxRight-sm">
                                             <Form.Group className="mb-3">
-                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" placeholder=".00" value={selected_WoBudgetApprover} disabled ={WoBudgetApprover} onChange={(e) => setselected_WoBudgetApprover(e.target.value)} />
+                                                    <Form.Control className='formControl' type="text" placeholder=".00" value={selected_WoBudgetApprover} disabled ={WoBudgetApprover} onChange={(e) => setselected_WoBudgetApprover(e.target.value)} />
                                             </Form.Group>
                                         </div> 
                                         
-                                        <div className="col-md-3">
+                                        <div className="col-md-3 moveUpCheckBox-md moveUpCheckBox-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">PO Buyer:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label down" style={{ fontSize: "13px" }}>PO Buyer:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2452,11 +2585,11 @@ const PersonnalFrom = (props) => {
                                         </div>  
                                     </div> 
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-3">
+                                    <div className="row moveUp">
+                                        <div className="col-md-3 moveUpCheckBox-md moveUpCheckBox-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">PR Approver / Global Limit:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label down" style={{ fontSize: "13px" }}>PR Approver / Global Limit:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2469,16 +2602,16 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>   
 
-                                        <div className="col-md-3">
+                                        <div className="col-md-3 moveUpBox-md moveUpBox-sm moveUpBoxRight-md moveUpBoxRight-sm">
                                             <Form.Group className="mb-3">
-                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" placeholder=".00" value={selected_PrApprover} disabled ={PrApprover} onChange={(e) => setselected_PrApprover(e.target.value)} />
+                                                    <Form.Control className='formControl' type="text" placeholder=".00" value={selected_PrApprover} disabled ={PrApprover} onChange={(e) => setselected_PrApprover(e.target.value)} />
                                             </Form.Group>
                                         </div>  
 
-                                        <div className="col-md-3">
+                                        <div className="col-md-3 moveUpCheckBox-md moveUpCheckBox-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">Supervisor:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label down" style={{ fontSize: "13px" }}>Supervisor:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2492,11 +2625,11 @@ const PersonnalFrom = (props) => {
                                         </div>   
                                     </div> 
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-3">
+                                    <div className="row moveUp">
+                                        <div className="col-md-3 moveUpCheckBox-md moveUpCheckBox-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">WR Approver:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label down" style={{ fontSize: "13px" }}>WR Approver:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2511,10 +2644,10 @@ const PersonnalFrom = (props) => {
 
                                         <div className="col-md-3"></div> 
 
-                                        <div className="col-md-3">
+                                        <div className="col-md-3 moveUpCheckBoxSpace-md moveUpNote-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">Foreman:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label top down" style={{ fontSize: "13px" }}>Foreman:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2528,11 +2661,11 @@ const PersonnalFrom = (props) => {
                                         </div>   
                                     </div> 
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-3">
+                                    <div className="row moveUp">
+                                        <div className="col-md-3 moveUpCheckBox-md moveUpCheckBox-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">Assign To:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label down" style={{ fontSize: "13px" }}>Assign To:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2547,10 +2680,10 @@ const PersonnalFrom = (props) => {
 
                                         <div className="col-md-3"></div>  
 
-                                        <div className="col-md-3">
+                                        <div className="col-md-3 moveUpCheckBoxSpace-md moveUpNote-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">Asset Tagging Posting:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label top down" style={{ fontSize: "13px" }}>Asset Tagging Posting:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2564,11 +2697,11 @@ const PersonnalFrom = (props) => {
                                         </div> 
                                     </div> 
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-3">
+                                    <div className="row moveUp">
+                                        <div className="col-md-3 moveUpCheckBox-md moveUpCheckBox-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">Request Pats & Services:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label down" style={{ fontSize: "13px" }}>Request Pats & Services:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2583,10 +2716,10 @@ const PersonnalFrom = (props) => {
 
                                         <div className="col-md-3"></div> 
 
-                                        <div className="col-md-3">
+                                        <div className="col-md-3 moveUpCheckBoxSpace-md moveUpNote-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">Mobile User:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label top down" style={{ fontSize: "13px" }}>Mobile User:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2600,11 +2733,11 @@ const PersonnalFrom = (props) => {
                                         </div>  
                                     </div> 
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-3">
+                                    <div className="row moveUp">
+                                        <div className="col-md-3 moveUpCheckBox-md moveUpCheckBox-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">PM Generator:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label down" style={{ fontSize: "13px" }}>PM Generator:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2619,19 +2752,19 @@ const PersonnalFrom = (props) => {
 
                                         <div className="col-md-3"></div> 
 
-                                        <div className="col-md-3">
+                                        <div className="col-md-3 moveUpCheckBoxSpace-md moveUpNote-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">Mobile Device ID:</label>
-                                                <div className="col-sm-2 form-check"></div>
+                                                <label className="col-sm-9 col-form-label top down" style={{ fontSize: "13px" }}>Mobile Device ID:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft"></div>
                                             </Form.Group>
                                         </div>   
                                     </div> 
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-3">
+                                    <div className="row moveUp">
+                                        <div className="col-md-3 moveUpCheckBox-md moveUpCheckBox-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">Enter Time Card:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label labelTop down" style={{ fontSize: "13px" }}>Enter Time Card:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2646,10 +2779,10 @@ const PersonnalFrom = (props) => {
 
                                         <div className="col-md-3"></div> 
 
-                                        <div className="col-md-3">
+                                        <div className="col-md-3 moveUpCheckBoxSpace-md moveUpNote-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">Add/Delete Check List:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label top down" style={{ fontSize: "13px" }}>Add/Delete Check List:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2663,11 +2796,11 @@ const PersonnalFrom = (props) => {
                                         </div> 
                                     </div> 
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-3">
+                                    <div className="row moveUp">
+                                        <div className="col-md-3 moveUpCheckBox-md moveUpCheckBox-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">Void Time Card:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label down" style={{ fontSize: "13px" }}>Void Time Card:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2682,10 +2815,10 @@ const PersonnalFrom = (props) => {
 
                                         <div className="col-md-3"></div> 
 
-                                        <div className="col-md-3">
+                                        <div className="col-md-3 moveUpCheckBoxSpace-md moveUpNote-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">Mobile Access:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label top down" style={{ fontSize: "13px" }}>Mobile Access:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2699,11 +2832,11 @@ const PersonnalFrom = (props) => {
                                         </div>  
                                     </div> 
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-3">
+                                    <div className="row moveUp">
+                                        <div className="col-md-3 moveUpCheckBox-md moveUpCheckBox-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">Core Access:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label down" style={{ fontSize: "13px" }}>Core Access:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2718,10 +2851,10 @@ const PersonnalFrom = (props) => {
 
                                         <div className="col-md-3"></div> 
 
-                                        <div className="col-md-3">
+                                        <div className="col-md-3 moveUpCheckBoxSpace-md moveUpNote-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-9 col-form-label">Webwork Access:</label>
-                                                <div className="col-sm-2 form-check">
+                                                <label className="col-sm-9 col-form-label top down" style={{ fontSize: "13px" }}>Webwork Access:</label>
+                                                <div className="col-sm-2 form-check checkBoxLeft">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -2746,12 +2879,12 @@ const PersonnalFrom = (props) => {
                                         <div className='col'>
                                             <div className="col-md-13">
                                                 <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">
+                                                <label className="col-sm-4 col-form-label down" style={{ fontSize: "13px" }}>
                                                     EPS ID:
                                                 </label>
                                                 <div className="col-sm-8">
                                                     <Form.Control
-                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        className='formControl'
                                                         type="text"
                                                         value={UDFText_1}
                                                         onChange={(e) => setUDFText_1(e.target.value)}
@@ -2760,14 +2893,14 @@ const PersonnalFrom = (props) => {
                                                 </Form.Group>
                                             </div>
 
-                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                                <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">
+                                            <div className="col-md-13 moveUp">
+                                                <Form.Group className="row moveUp-md moveUp-sm">
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                                     Varchar2:
                                                 </label>
                                                 <div className="col-sm-8">
                                                     <Form.Control
-                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        className='formControl'
                                                         type="text"
                                                         value={UDFText_2}
                                                         onChange={(e) => setUDFText_2(e.target.value)}
@@ -2776,14 +2909,14 @@ const PersonnalFrom = (props) => {
                                                 </Form.Group>
                                             </div>
 
-                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                                <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">
+                                            <div className="col-md-13 moveUp">
+                                                <Form.Group className="row moveUp-md moveUp-sm">
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                                     Varchar3:
                                                 </label>
                                                 <div className="col-sm-8">
                                                     <Form.Control
-                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        className='formControl'
                                                         type="text"
                                                         value={UDFText_3}
                                                         onChange={(e) => setUDFText_3(e.target.value)}
@@ -2792,14 +2925,14 @@ const PersonnalFrom = (props) => {
                                                 </Form.Group>
                                             </div>
 
-                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                                <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">
+                                            <div className="col-md-13 moveUp">
+                                                <Form.Group className="row moveUp-md moveUp-sm">
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                                     Varchar4:
                                                 </label>
                                                 <div className="col-sm-8">
                                                     <Form.Control
-                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        className='formControl'
                                                         type="text"
                                                         value={UDFText_4}
                                                         onChange={(e) => setUDFText_4(e.target.value)}
@@ -2808,14 +2941,14 @@ const PersonnalFrom = (props) => {
                                                 </Form.Group>
                                             </div>
 
-                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                                <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">
+                                            <div className="col-md-13 moveUp">
+                                                <Form.Group className="row moveUp-md moveUp-sm">
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                                     Varchar5:
                                                 </label>
                                                 <div className="col-sm-8">
                                                     <Form.Control
-                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        className='formControl'
                                                         type="text"
                                                         value={UDFText_5}
                                                         onChange={(e) => setUDFText_5(e.target.value)}
@@ -2826,15 +2959,15 @@ const PersonnalFrom = (props) => {
                                         </div>
 
                                         <div className="col-md-8">
-                                            <Form.Group className="row">
-                                            <label className="col-sm-2 col-form-label">
+                                            <Form.Group className="row moveUp-md moveUp-sm">
+                                            <label className="col-sm-2 col-form-label top down" style={{ fontSize: "13px" }}>
                                                     Note1:
                                             </label>
-                                            <div className="col-sm-10">
+                                            <div className="col-sm-10 descLeft-md descLeft-sm">
                                                 <Form.Control
-                                                    style={{ fontSize: "13px" }} 
+                                                    className='formControlBox'
                                                     as="textarea" 
-                                                    rows={19} 
+                                                    rows={15} 
                                                     value={UDFNote1} 
                                                     onChange={(e) => setUDFNote1(e.target.value)}
                                                 />
@@ -2843,15 +2976,15 @@ const PersonnalFrom = (props) => {
                                         </div>
                                     </div>
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="row moveUp emailMoveUp-md">
                                         <div className="col-md-4">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label labelTopEmail down" style={{ fontSize: "13px" }}>
                                                 Varchar6:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="text"
                                                 value={UDFText_6}
                                                 onChange={(e) => setUDFText_6(e.target.value)}
@@ -2860,14 +2993,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top-sm down" style={{ fontSize: "13px" }}>
                                                 Numeric1:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control  
-                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    className='formControl'
                                                     type="number"  
                                                     placeholder=".0000" 
                                                     value={UDFNumber_1} 
@@ -2877,14 +3010,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top-sm down" style={{ fontSize: "13px" }}>
                                                 Datetime1:
                                             </label>
                                             <div className="col-sm-8">
                                             <Form.Control   
-                                                style={{ fontSize: "13px", height: "38px" }}                                         
+                                                className='formControl'                                         
                                                 type="datetime-local"  
                                                 value={UDFDate_1} 
                                                 onChange={(e) => setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -2894,15 +3027,15 @@ const PersonnalFrom = (props) => {
                                         </div>
                                     </div>
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-4">
+                                    <div className="row moveUp emailMoveUp-md">
+                                        <div className="col-md-4 EmpMoveUp-md EmpMoveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label labelTopEmail down" style={{ fontSize: "13px" }}>
                                                 Varchar7:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="text"
                                                 value={UDFText_7}
                                                 onChange={(e) => setUDFText_7(e.target.value)}
@@ -2911,14 +3044,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top-sm down" style={{ fontSize: "13px" }}>
                                                 Numeric2:
                                             </label>
                                             <div className="col-sm-8">
                                             <Form.Control  
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_2} 
@@ -2928,14 +3061,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top-sm down" style={{ fontSize: "13px" }}>
                                                 Datetime2:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_2} 
                                                 onChange={(e) => setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
@@ -2945,15 +3078,15 @@ const PersonnalFrom = (props) => {
                                         </div>
                                     </div>
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-4">
+                                    <div className="row moveUp emailMoveUp-md">
+                                        <div className="col-md-4 EmpMoveUp-md EmpMoveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label labelTopEmail down" style={{ fontSize: "13px" }}>
                                                 Varchar8:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="text"
                                                 value={UDFText_8}
                                                 onChange={(e) => setUDFText_8(e.target.value)}
@@ -2962,14 +3095,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top-sm down" style={{ fontSize: "13px" }}>
                                                 Numeric3:
                                             </label>
                                             <div className="col-sm-8">
                                             <Form.Control  
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_3} 
@@ -2979,14 +3112,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top-sm down" style={{ fontSize: "13px" }}>
                                                 Datetime3:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_3} 
                                                 onChange={(e) => setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
@@ -2996,15 +3129,15 @@ const PersonnalFrom = (props) => {
                                         </div>
                                     </div>
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-4">
+                                    <div className="row moveUp emailMoveUp-md">
+                                        <div className="col-md-4 EmpMoveUp-md EmpMoveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label labelTopEmail down" style={{ fontSize: "13px" }}>
                                                 Varchar9:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="text"
                                                 value={UDFText_9}
                                                 onChange={(e) => setUDFText_9(e.target.value)}
@@ -3013,14 +3146,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                                 Numeric4:
                                             </label>
                                             <div className="col-sm-8">
                                             <Form.Control  
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_4} 
@@ -3030,14 +3163,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top-sm down" style={{ fontSize: "13px" }}>
                                                 Datetime4:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_4} 
                                                 onChange={(e) => setUDFDate_4(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -3047,15 +3180,15 @@ const PersonnalFrom = (props) => {
                                         </div>
                                     </div>
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-4">
+                                    <div className="row moveUp emailMoveUp-md">
+                                        <div className="col-md-4 EmpMoveUp-md EmpMoveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label labelTopEmail down" style={{ fontSize: "13px" }}>
                                                 Varchar10:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="text"
                                                 value={UDFText_10}
                                                 onChange={(e) => setUDFText_10(e.target.value)}
@@ -3064,14 +3197,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top-sm down" style={{ fontSize: "13px" }}>
                                                 Numeric5:
                                             </label>
                                             <div className="col-sm-8">
                                             <Form.Control  
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_5} 
@@ -3081,14 +3214,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top-sm down" style={{ fontSize: "13px" }}>
                                                 Datetime5:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_5} 
                                                 onChange={(e) => setUDFDate_5(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
@@ -3109,12 +3242,12 @@ const PersonnalFrom = (props) => {
                                         <div className='col'>
                                             <div className="col-md-13">
                                                 <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">
+                                                <label className="col-sm-4 col-form-label down" style={{ fontSize: "13px" }}>
                                                     Varchar11:
                                                 </label>
                                                 <div className="col-sm-8">
                                                     <Form.Control
-                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        className='formControl'
                                                         type="text"
                                                         value={UDFText_11}
                                                         onChange={(e) => setUDFText_11(e.target.value)}
@@ -3123,14 +3256,14 @@ const PersonnalFrom = (props) => {
                                                 </Form.Group>
                                             </div>
 
-                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                                <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">
+                                            <div className="col-md-13 moveUp">
+                                                <Form.Group className="row moveUp-md moveUp-sm">
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                                     Varchar12:
                                                 </label>
                                                 <div className="col-sm-8">
                                                     <Form.Control
-                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        className='formControl'
                                                         type="text"
                                                         value={UDFText_12}
                                                         onChange={(e) => setUDFText_12(e.target.value)}
@@ -3139,14 +3272,14 @@ const PersonnalFrom = (props) => {
                                                 </Form.Group>
                                             </div>
 
-                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                                <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">
+                                            <div className="col-md-13 moveUp">
+                                                <Form.Group className="row moveUp-md moveUp-sm">
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                                     Varchar13:
                                                 </label>
                                                 <div className="col-sm-8">
                                                     <Form.Control
-                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        className='formControl'
                                                         type="text"
                                                         value={UDFText_13}
                                                         onChange={(e) => setUDFText_13(e.target.value)}
@@ -3155,14 +3288,14 @@ const PersonnalFrom = (props) => {
                                                 </Form.Group>
                                             </div>
 
-                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                                <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">
+                                            <div className="col-md-13 moveUp">
+                                                <Form.Group className="row moveUp-md moveUp-sm">
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                                     Varchar14:
                                                 </label>
                                                 <div className="col-sm-8">
                                                     <Form.Control
-                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        className='formControl'
                                                         type="text"
                                                         value={UDFText_14}
                                                         onChange={(e) => setUDFText_14(e.target.value)}
@@ -3171,14 +3304,14 @@ const PersonnalFrom = (props) => {
                                                 </Form.Group>
                                             </div>
 
-                                            <div className="col-md-13" style={{ marginTop: "-20px" }}>
-                                                <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">
+                                            <div className="col-md-13 moveUp">
+                                                <Form.Group className="row moveUp-md moveUp-sm">
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                                     Varchar15:
                                                 </label>
                                                 <div className="col-sm-8">
                                                     <Form.Control
-                                                        style={{ fontSize: "13px", height: "38px" }}
+                                                        className='formControl'
                                                         type="text"
                                                         value={UDFText_15}
                                                         onChange={(e) => setUDFText_15(e.target.value)}
@@ -3189,15 +3322,15 @@ const PersonnalFrom = (props) => {
                                         </div>
 
                                         <div className="col-md-8">
-                                            <Form.Group className="row">
-                                            <label className="col-sm-2 col-form-label">
+                                            <Form.Group className="row moveUp-md moveUp-sm">
+                                            <label className="col-sm-2 col-form-label top down" style={{ fontSize: "13px" }}>
                                                     Note2:
                                             </label>
-                                            <div className="col-sm-10">
+                                            <div className="col-sm-10 descLeft-md descLeft-sm">
                                                 <Form.Control 
-                                                    style={{ fontSize: "13px" }}
+                                                    className='formControlBox'
                                                     as="textarea" 
-                                                    rows={19} 
+                                                    rows={15} 
                                                     value={UDFNote2}
                                                     onChange={(e) => setUDFNote2(e.target.value)}
                                                 />
@@ -3206,15 +3339,15 @@ const PersonnalFrom = (props) => {
                                         </div>
                                     </div>
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="row moveUp emailMoveUp-md">
                                         <div className="col-md-4">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label labelTopEmail down" style={{ fontSize: "13px" }}>
                                                 Varchar16:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="text"
                                                 value={UDFText_16}
                                                 onChange={(e) => setUDFText_16(e.target.value)}
@@ -3223,14 +3356,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                                 Numeric6:
                                             </label>
                                             <div className="col-sm-8">
                                             <Form.Control  
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_6} 
@@ -3240,14 +3373,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                                 Datetime6:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_6} 
                                                 onChange={(e) => setUDFDate_6(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
@@ -3257,15 +3390,15 @@ const PersonnalFrom = (props) => {
                                         </div>
                                     </div>
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-4">
+                                    <div className="row moveUp moveUpDesc-md">
+                                        <div className="col-md-4 EmpMoveUp-md EmpMoveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label labelTopEmail down" style={{ fontSize: "13px" }}>
                                                 Varchar17:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="text"
                                                 value={UDFText_17}
                                                 onChange={(e) => setUDFText_17(e.target.value)}
@@ -3274,14 +3407,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                                 Numeric7:
                                             </label>
                                             <div className="col-sm-8">
                                             <Form.Control  
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_7} 
@@ -3291,14 +3424,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top-sm down" style={{ fontSize: "13px" }}>
                                                 Datetime7:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_7} 
                                                 onChange={(e) => setUDFDate_7(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -3308,15 +3441,15 @@ const PersonnalFrom = (props) => {
                                         </div>
                                     </div>
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-4">
+                                    <div className="row moveUp moveUpDesc-md">
+                                        <div className="col-md-4 EmpMoveUp-md EmpMoveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label labelTopEmail down" style={{ fontSize: "13px" }}>
                                                 Varchar18:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="text"
                                                 value={UDFText_18}
                                                 onChange={(e) => setUDFText_18(e.target.value)}
@@ -3325,14 +3458,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                                 Numeric8:
                                             </label>
                                             <div className="col-sm-8">
                                             <Form.Control  
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_8} 
@@ -3342,14 +3475,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top-ms down" style={{ fontSize: "13px" }}>
                                                 Datetime8:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_8} 
                                                 onChange={(e) => setUDFDate_8(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -3359,15 +3492,15 @@ const PersonnalFrom = (props) => {
                                         </div>
                                     </div>
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-4">
+                                    <div className="row moveUp moveUpDesc-md">
+                                        <div className="col-md-4 EmpMoveUp-md EmpMoveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                                 Varchar19:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="text"
                                                 value={UDFText_19}
                                                 onChange={(e) => setUDFText_19(e.target.value)}
@@ -3376,14 +3509,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top-ms down" style={{ fontSize: "13px" }}>
                                                 Numeric9:
                                             </label>
                                             <div className="col-sm-8">
                                             <Form.Control 
-                                                style={{ fontSize: "13px", height: "38px" }} 
+                                                className='formControl' 
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_9} 
@@ -3393,14 +3526,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top-sm down" style={{ fontSize: "13px" }}>
                                                 Datetime9:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_9} 
                                                 onChange={(e) => setUDFDate_9(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
@@ -3410,15 +3543,15 @@ const PersonnalFrom = (props) => {
                                         </div>
                                     </div>
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
-                                        <div className="col-md-4">
+                                    <div className="row moveUp moveUpDesc-md">
+                                        <div className="col-md-4 EmpMoveUp-md EmpMoveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                                 Varchar20:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="text"
                                                 value={UDFText_20}
                                                 onChange={(e) => setUDFText_20(e.target.value)}
@@ -3427,14 +3560,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top-sm down" style={{ fontSize: "13px" }}>
                                                 Numeric10:
                                             </label>
                                             <div className="col-sm-8">
                                             <Form.Control  
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_10} 
@@ -3444,14 +3577,14 @@ const PersonnalFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label top-sm down" style={{ fontSize: "13px" }}>
                                                 Datetime10:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_10} 
                                                 onChange={(e) => setUDFDate_10(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
