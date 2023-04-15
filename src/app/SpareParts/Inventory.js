@@ -5,6 +5,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import SearchBar from "material-ui-search-bar";
 import Swal from "sweetalert2";
 import APIServices from "../services/APIServices";
+import '../style.css';
 
 function Inventory(props) {
   const [Header, setHeader] = React.useState([]);
@@ -152,9 +153,9 @@ function Inventory(props) {
                           <button
                             type="button"
                             onClick={() => handleEdit(result)}
-                            className="btn btn-light btn-icon-text"
+                            className="btn btn-primary btn-icon-text"
                             title="Edit"
-                            style={{padding: "5px" }}
+                            style={{width: "30px", height: "30px",padding: "7px", borderRadius: "50%"  }}
                           >
                             <i className="mdi mdi-file-document btn-icon-prepend"></i>
                           </button>
@@ -162,9 +163,9 @@ function Inventory(props) {
                           <button
                             type="button"
                             onClick={() => handleDelete(result)}
-                            className="btn btn-light btn-icon-text"
+                            className="btn btn-warning btn-icon-text"
                             title="Delete"
-                            style={{padding: "5px" }}
+                            style={{marginLeft: "-12px", width: "30px", height: "30px",padding: "7px", borderRadius: "50%"  }}
                           >
                             <i className="mdi mdi-delete-forever btn-icon-prepend"></i>
                           </button>
@@ -365,16 +366,18 @@ function Inventory(props) {
                   <button type="button" className="btn btn-outline-secondary">
                     <i className="mdi mdi mdi-code-equal"></i>
                   </button>
+
                   <button type="button" className="btn btn-outline-secondary">
                     <i className="mdi mdi mdi-credit-card"></i>
                   </button>
+
                   <button type="button" className="btn btn-outline-secondary">
                     <i className="mdi mdi-calendar"></i>
                   </button>
                 </div>
               </div>
 
-              <div className="col">
+              <div className="col searchButton-md">
                 <SearchBar
                   className="form-control"
                   onChange={(e) => setFiltereddata(e)}
@@ -382,7 +385,7 @@ function Inventory(props) {
                 />
               </div>
 
-              <div className="col">
+              <div className="col searchButton-md">
                 <button type="button" className="btn btn-primary btn-rounded">
                   Search
                 </button>
@@ -390,7 +393,7 @@ function Inventory(props) {
 
               <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
-                  <div className="template-demo">
+                  <div className="template-demo moveUpFilterButton-md moveUpFilterButton-sm">
                     <button
                       type="button"
                       className="btn btn-outline-secondary btn-rounded btn-icon"
@@ -411,14 +414,13 @@ function Inventory(props) {
             </div>
 
             <div className="page-header">
-              <div className="template-demo" isVisible={show}>
+              <div className="template-demo moveUp3Button-md" isVisible={show}>
                 <button
                   type="button"
                   className="btn btn-outline-primary btn-icon-text"
                   onClick={handleNewClick}
                 >
                   <i className="mdi mdi-file-check btn-icon-prepend"></i> New
-                  Inventory
                 </button>
 
                 {showButton &&<button
@@ -439,8 +441,9 @@ function Inventory(props) {
                   </button>
                 )}
               </div>
+              
               <nav aria-label="breadcrumb">
-                <div className="row">
+                <div className="row moveUpPaginationButton-md moveUpPaginationButton-sm">
                   <Pagination
                     count={count}
                     page={page}
