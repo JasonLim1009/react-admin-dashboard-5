@@ -7,6 +7,7 @@ import APIServices from "../../services/APIServices";
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import  {useLocation}  from 'react-router-dom';
 import moment from 'moment';
+import '../../style.css';
 
 
 const System_Default_Setting = (props) => {
@@ -1141,7 +1142,7 @@ const System_Default_Setting = (props) => {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_DefaultLaborAccount">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label down">
                                             Default Labor Account:
                                         </label>
                                         <div className="col-sm-6">
@@ -1156,9 +1157,9 @@ const System_Default_Setting = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultMRStatus">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down">
                                             Default MR Status:
                                         </label>
                                         <div className="col-sm-6">
@@ -1175,10 +1176,10 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
-                                    <div className="col-md-6">
+                                <div className="row moveUpPopUp">
+                                    <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultMaterialAccount">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label labelTopEmail down">
                                             Default Material Account:
                                         </label>
                                         <div className="col-sm-6">
@@ -1193,9 +1194,9 @@ const System_Default_Setting = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultPRStatus">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down">
                                             Default PR Status:
                                         </label>
                                         <div className="col-sm-6">
@@ -1212,10 +1213,10 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
-                                    <div className="col-md-6">
+                                <div className="row moveUpPopUp">
+                                    <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultContractAccount">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label labelTopEmail down">
                                             Default Contract Account:
                                         </label>
                                         <div className="col-sm-6">
@@ -1230,9 +1231,9 @@ const System_Default_Setting = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultPOStatus">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down">
                                             Default PO Status:
                                         </label>
                                         <div className="col-sm-6">
@@ -1249,10 +1250,10 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
-                                    <div className="col-md-6">
+                                <div className="row moveUpPopUp">
+                                    <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultWRWorkPriority">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label labelTopEmail down">
                                             Default WR Work Priority:
                                         </label>
                                         <div className="col-sm-6">
@@ -1267,9 +1268,9 @@ const System_Default_Setting = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultWRAssetNo">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down">
                                             Default WR Asset No:
                                         </label>
                                         <div className="col-sm-6">
@@ -1286,10 +1287,10 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
-                                    <div className="col-md-6">
+                                <div className="row moveUpPopUp">
+                                    <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultWOWorkPriority">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label labelTopEmail down">
                                             Default WO Work Priority:
                                         </label>
                                         <div className="col-sm-6">
@@ -1304,9 +1305,9 @@ const System_Default_Setting = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultWROriginator">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down">
                                             Default WR Originator:
                                         </label>
                                         <div className="col-sm-6">
@@ -1323,10 +1324,10 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
-                                    <div className="col-md-6">
+                                <div className="row moveUpPopUp">
+                                    <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultPMWorkPriority">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label labelTopEmail down">
                                             Default PM Work Priority:
                                         </label>
                                         <div className="col-sm-6">
@@ -1341,9 +1342,9 @@ const System_Default_Setting = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultWOAssetNo">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down">
                                             Default WO Asset No:
                                         </label>
                                         <div className="col-sm-6">
@@ -1360,10 +1361,10 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
-                                    <div className="col-md-6">
+                                <div className="row moveUpPopUp">
+                                    <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultAssetStatus">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label labelTopEmail down">
                                             Default Asset Status:
                                         </label>
                                         <div className="col-sm-6">
@@ -1378,9 +1379,9 @@ const System_Default_Setting = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultPRApprovalType">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down">
                                             Default PR Approval Type:
                                         </label>
                                         <div className="col-sm-6">
@@ -1396,10 +1397,10 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
-                                    <div className="col-md-6">
+                                <div className="row moveUpPopUp">
+                                    <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultWOWorkStatus">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label labelTopEmail down">
                                             Default WO Work Status:
                                         </label>
                                         <div className="col-sm-6">
@@ -1414,9 +1415,9 @@ const System_Default_Setting = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultMRApprovalType">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down">
                                             Default MR Approval Type:
                                         </label>
                                         <div className="col-sm-6">
@@ -1432,10 +1433,10 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
-                                    <div className="col-md-6">
+                                <div className="row moveUpPopUp">
+                                    <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_TimeCardEntryBy">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label labelTopEmail down">
                                             Time Card Entry By:
                                         </label>
                                         <div className="col-sm-6">
@@ -1451,10 +1452,10 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
-                                    <div className="col-md-6">
+                                <div className="row moveUpPopUp">
+                                    <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultPOCurrencyCode">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label labelTopEmail down">
                                             Default PO Currency Code:
                                         </label>
                                         <div className="col-sm-6">
@@ -1469,9 +1470,9 @@ const System_Default_Setting = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_WOGracePeriod">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down">
                                             WO Grace Period:
                                         </label>
                                         <div className="col-sm-6">
@@ -1482,10 +1483,10 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
-                                    <div className="col-md-6">
+                                <div className="row moveUpPopUp">
+                                    <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_DashboardRefreshInterval">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label labelTopEmail down">
                                             Dashboard Refresh Interval (Minutes):
                                         </label>
                                         <div className="col-sm-6">
@@ -1494,9 +1495,9 @@ const System_Default_Setting = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_EOQCarryCostRate">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down">
                                             EOQ Carry Cost Rate(%):
                                         </label>
                                         <div className="col-sm-6">
@@ -1507,10 +1508,10 @@ const System_Default_Setting = (props) => {
 
                                 </div>
                                 
-                                <div className="row" style={{ marginTop: "-20px" }}>
-                                    <div className="col-md-6">
+                                <div className="row moveUpPopUp">
+                                    <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_PMLeadDay">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label labelTopEmail down">
                                             PM Lead Day:
                                         </label>
                                         <div className="col-sm-6">
@@ -1519,9 +1520,9 @@ const System_Default_Setting = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_EOQPOProcessCost">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down">
                                             EOQ PO Process Cost:
                                         </label>
                                         <div className="col-sm-6">
@@ -1545,8 +1546,8 @@ const System_Default_Setting = (props) => {
                                         <legend className="w-auto">Dashboard</legend>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">Show Dashboard:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label down">Show Dashboard:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1568,14 +1569,14 @@ const System_Default_Setting = (props) => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-4 p-4 mb-3">
+                                <div className="col-md-4 p-4 mb-3 moveUpSetting-md moveUpSetting-sm">
                                     <Form.Group className="row">
                                     <fieldset className="border p-3 w-100">
                                         <legend className="w-auto">Asset</legend>
 
                                             <div className="row" controlId="validation_AssetSelectionByLocation">
-                                                <label className="col-sm-9 col-form-label">Asset Selection by Location:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label down">Asset Selection by Location:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1597,14 +1598,14 @@ const System_Default_Setting = (props) => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-4 p-4 mb-3">
+                                <div className="col-md-4 p-4 mb-3 moveUpSetting-md moveUpSetting-sm">
                                     <Form.Group className="row">
                                     <fieldset className="border p-3 w-100">
                                         <legend className="w-auto">Inventory</legend>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">Material Reserved:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label down">Material Reserved:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1617,8 +1618,8 @@ const System_Default_Setting = (props) => {
                                             </div>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">Print Transaction Document:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">Print Transaction Document:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1635,14 +1636,14 @@ const System_Default_Setting = (props) => {
                             </div>
 
                             <div className="row">
-                                <div className="col-md-4 p-4 mb-3">
+                                <div className="col-md-4 p-4 mb-3 moveUpSetting-md moveUpSetting-sm">
                                     <Form.Group className="row">
                                     <fieldset className="border p-3 w-100">
                                         <legend className="w-auto">Material Request</legend>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">MR Email Notification:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label down">MR Email Notification:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1655,8 +1656,8 @@ const System_Default_Setting = (props) => {
                                             </div>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">MR Approval Required:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">MR Approval Required:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1669,8 +1670,8 @@ const System_Default_Setting = (props) => {
                                             </div>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">Default MR Release For Approval:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">Default MR Release For Approval:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1683,8 +1684,8 @@ const System_Default_Setting = (props) => {
                                             </div>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">MR Approval Closed Loop:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">MR Approval Closed Loop:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1697,8 +1698,8 @@ const System_Default_Setting = (props) => {
                                             </div>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">Email MR Approver:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">Email MR Approver:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1711,8 +1712,8 @@ const System_Default_Setting = (props) => {
                                             </div>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">Auto MR Approval Email:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">Auto MR Approval Email:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1725,8 +1726,8 @@ const System_Default_Setting = (props) => {
                                             </div>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">Email Requested By (MR Approved):</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">Email Requested By (MR Approved):</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1748,14 +1749,14 @@ const System_Default_Setting = (props) => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-4 p-4 mb-3">
+                                <div className="col-md-4 p-4 mb-3 moveUpSetting-md moveUpSetting-sm">
                                     <Form.Group className="row">
                                     <fieldset className="border p-3 w-100">
                                         <legend className="w-auto">Maintenance</legend>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">WR Email Notification:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label down">WR Email Notification:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1768,8 +1769,8 @@ const System_Default_Setting = (props) => {
                                             </div>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">Default WO CC to Planning:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">Default WO CC to Planning:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1783,8 +1784,8 @@ const System_Default_Setting = (props) => {
 
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">Auto WO Plan from WR:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">Auto WO Plan from WR:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1798,8 +1799,8 @@ const System_Default_Setting = (props) => {
 
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">Generate WO Invoice:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">Generate WO Invoice:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1813,8 +1814,8 @@ const System_Default_Setting = (props) => {
 
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">Temporary Asset Flag:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">Temporary Asset Flag:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1828,8 +1829,8 @@ const System_Default_Setting = (props) => {
 
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">PM Closed Loop:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">PM Closed Loop:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1842,8 +1843,8 @@ const System_Default_Setting = (props) => {
                                             </div>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">PM Schedule Date:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">PM Schedule Date:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1865,14 +1866,14 @@ const System_Default_Setting = (props) => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-4 p-4 mb-3">
+                                <div className="col-md-4 p-4 mb-3 moveUpSetting-md moveUpSetting-sm">
                                     <Form.Group className="row">
                                     <fieldset className="border p-3 w-100">
                                         <legend className="w-auto">Purchasing</legend>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">Default PR Release for Approval:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label down">Default PR Release for Approval:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1885,8 +1886,8 @@ const System_Default_Setting = (props) => {
                                             </div>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">PR Approval Closed Loop:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">PR Approval Closed Loop:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1899,8 +1900,8 @@ const System_Default_Setting = (props) => {
                                             </div>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">Email PR Approver:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">Email PR Approver:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1913,8 +1914,8 @@ const System_Default_Setting = (props) => {
                                             </div>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">Auto PR Approval Email:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">Auto PR Approval Email:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1927,8 +1928,8 @@ const System_Default_Setting = (props) => {
                                             </div>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">Email Requested By (PR Approved):</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">Email Requested By (PR Approved):</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1941,8 +1942,8 @@ const System_Default_Setting = (props) => {
                                             </div>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">Order Point Auto Generate PR:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">Order Point Auto Generate PR:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1955,8 +1956,8 @@ const System_Default_Setting = (props) => {
                                             </div>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">Auto Generate PO:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">Auto Generate PO:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -1969,8 +1970,8 @@ const System_Default_Setting = (props) => {
                                             </div>
 
                                             <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label">Auto Close PO:</label>
-                                                <div className="col-sm-3 form-check">
+                                                <label className="col-sm-9 col-form-label settingTop-sm down">Auto Close PO:</label>
+                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
