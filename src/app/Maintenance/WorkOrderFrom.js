@@ -16,12 +16,43 @@ import 'react-alice-carousel/lib/alice-carousel.css';
 import {useTable,useSortBy,usePagination,useRowSelect,useResizeColumns  }  from 'react-table';
 import moment from 'moment';
 
+import '../style.css';
 import WorkOrderMaterial from "../tables/WorkOrderMaterial";
 import WorkOrderSpecialOrder from "../tables/WorkOrderSpecialOrder";
 import WorkOrderOutsourceContract from "../tables/WorkOrderOutsourceContract";
 import WorkOrderTimeCard from "../tables/WorkOrderTimeCard";
 import WorkOrderMisc from "../tables/WorkOrderMisc";
 import WorkOrderStatusAudit from "../tables/WorkOrderStatusAudit";
+import styled from 'styled-components';
+
+
+const StepContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 70px;
+  position: relative;
+  :before {
+    content: '';
+    position: absolute;
+    background: #4694d1;
+    height: 90%;
+    width: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 15px;
+  }
+  :after {
+    content: '';
+    position: absolute;
+    background: #f3e7f3;
+    height: ${({ width }) => width};
+    width: 2px;
+    top: 45%;
+    transition: 0.4s ease;
+    transform: translateY(-50%);
+    left: 14px;
+  }
+`
 
 const WorkOrderFrom = (props) => {
 
@@ -53,6 +84,10 @@ const WorkOrderFrom = (props) => {
     const [RowID, setRowID] = useState("");
     const [edited, setEdited] = useState(false);
     
+    const [steps, setsteps] = useState([]);
+    const [StatusShow, setStatusShow] = useState(false);
+    const StatushandleClose = () => setStatusShow(false);
+    const StatushandleShow = () => setStatusShow(true);
 
     const [WorkOrderNo, setWorkOrderNo] = useState("");
     const [WorkOrderNo_disabled, setWorkOrderNo_disabled] = useState(false);
@@ -673,7 +708,7 @@ const WorkOrderFrom = (props) => {
         console.log('select WKOID',location.state.RowID);
         console.log('select Workorderno',location.state.Workorderno);
     
-        //get_workorder_status(site_ID, "All", location.state.select);       
+       //get_workorder_status(site_ID, "All", location.state.select);       
        
 
     },[location]);
@@ -2238,12 +2273,21 @@ const WorkOrderFrom = (props) => {
                 
                 setSelected_Asset_No( {label:responseJson.data.data[index].ast_mst_asset_no} )
                 setSelected_Asset_Status({label:responseJson.data.data[index].ast_mst_asset_status } )
-                setSelected_Asset_Group_Code( responseJson.data.data[index].ast_mst_asset_grpcode+" : "+ responseJson.data.data[index]. ast_grp_desc )
+                setSelected_Asset_Group_Code( {label:responseJson.data.data[index].ast_mst_asset_grpcode+" : "+ responseJson.data.data[index]. ast_grp_desc} )
                 setSelected_Charge_Cost_Center( {label:responseJson.data.data[index].ast_mst_cost_center +" : "+ responseJson.data.data[index].descs})
                 setSelected_Work_Area( {label:responseJson.data.data[index].ast_mst_work_area +" : "+ responseJson.data.data[index].mst_war_desc} )
                 setSelected_Asset_Level({ label:responseJson.data.data[index].ast_mst_ast_lvl +" : "+ responseJson.data.data[index].ast_lvl_desc})
                 setSelected_Asset_Location( {label:responseJson.data.data[index].ast_mst_asset_locn +" : "+ responseJson.data.data[index].ast_loc_desc})
                 setSelected_Work_Group( {label:responseJson.data.data[index].ast_mst_wrk_grp+" : "+ responseJson.data.data[index].wrk_grp_desc })
+
+                // setSelected_Asset_No( {label:responseJson.data.data[index].wko_mst_assetno} )
+                // setSelected_Asset_Status( {label:responseJson.data.data[index].wko_mst_asset_status} )
+                // setSelected_Asset_Group_Code( {label:responseJson.data.data[index].wko_mst_asset_group_code} )
+                // setSelected_Charge_Cost_Center( {label:responseJson.data.data[index].wko_mst_chg_costcenter} )
+                // setSelected_Work_Area( {label:responseJson.data.data[index].wko_mst_work_area} )
+                // setSelected_Asset_Level( {label:responseJson.data.data[index].wko_mst_asset_level} )
+                // setSelected_Asset_Location( {label:responseJson.data.data[index].wko_mst_asset_location} )
+                // setSelected_Work_Group( {label:responseJson.data.data[index].wko_det_work_grp} )
 
               }
 
@@ -2295,7 +2339,86 @@ const WorkOrderFrom = (props) => {
 
 
 
+    // Status Audit PopUp
+    const formatDuration = (duration) => {
+        // const seconds = Math.floor(duration % 60);
+         const minutes = Math.floor((duration % 60));
+         const hours = Math.floor((duration % 1440) / 60);
+         const days = Math.floor(duration / 1440);
+         
+         if (days > 0) {
+           return `${days}d: ${hours}h: ${minutes}m`;
+         } else if (hours > 0) {
+           return `${hours}h: ${minutes}m`;
+         } else if (minutes > 0) {
+           return `${minutes}m`;
+         } else {
+           return "";
+         }
+         // return `${days}d: ${hours}h: ${minutes}m`;
+    };
 
+    const getsteps = (site_ID, RowID, wko_sts_wo_no) => {
+   
+        Swal.fire({ title: 'Please Wait !', allowOutsideClick: false });
+        Swal.showLoading();
+    
+        APIServices.get_workordermaster_statusaudit(site_ID, wko_sts_wo_no, RowID).then((responseJson) => {
+          console.log('get_workordermaster_statusaudit', responseJson.data.data)
+    
+          if (responseJson.data.status === 'SUCCESS') {
+    
+            console.log('get_workordermaster_statusaudit', responseJson.data.data)
+    
+            let Status = responseJson.data.data.map((item, index) => ({
+              label: item.wrk_sts_desc,
+              label1: item.wko_sts_status,
+              label2: item.emp_mst_name,
+              label3: item.wko_sts_originator,
+              label4: `${new Date(item.wko_sts_start_date.date).toLocaleString("default", {
+                weekday: "short",
+                day: "numeric",
+                month: "numeric",
+                year: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+                second: "numeric",
+              })}`,
+              label5: formatDuration(item.duration),
+              step: index + 1
+            
+            }));
+            setsteps(Status);
+       
+            Swal.close();
+    
+          } else {
+            Swal.close();
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: responseJson.data.message,
+    
+            })
+          }
+    
+        }).catch((e) => {
+          Swal.close();
+    
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops get_sitecode...',
+            text: e,
+          })
+        });
+    };
+
+    useEffect(() => {
+        let site_ID = localStorage.getItem("site_ID");
+      
+        getsteps(site_ID, location.state.RowID, location.state.Workorderno);
+        console.log('getsteps here: ', getsteps(site_ID, location.state.RowID, location.state.Workorderno));
+    }, []);
 
 
   return (   
@@ -2331,19 +2454,63 @@ const WorkOrderFrom = (props) => {
 
                             <div className="col-md-10">
 
+                            {/******************** Status Details ********************/}
+                            <div>
+                                <Modal show={StatusShow} onHide={StatushandleClose} centered size="xl">
+
+                                    <Modal.Header closeButton>
+                                         {/************* * {location.state.Workorderno} * ************/}
+                                        <Modal.Title>Work Order Status Audit</Modal.Title>
+                                    </Modal.Header>
+
+                                    <Modal.Body>
+                                            <Form.Group className="row StatusAuditPopUp-sm" controlId="validation_StatusAudit">
+                                                
+                                            <div style={{ width: "100%", maxWidth: "600px" , marginLeft: "110px" , marginTop: "-30px" }}>
+                                            <StepContainer>
+                                            {steps.map(({ step, label, label1, label2, label3, label4, label5 }) => (
+                                                <div key={step} style={{ position: "relative", zIndex: 1 }}>
+                                                <div style={{ fontSize: "11px", color: "grey", position: 'absolute', left: '-81px', top: '45px', width: '80px', height: '20px', borderRadius: '5%', textAlign: 'right' }}>{label5}</div>
+                                                  <div step={step} style={{ width: '30px', height: '30px', borderRadius: '50%', backgroundColor: '#4694d1', border: `3px solid ${step === 'completed' ? '#0080FF' : '#F3E7F3'}`, transition: '0.4s ease', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                      <div style={{ fontSize: "15px", color: "#f3e7f3" }}>{step}</div>
+                                                  </div>
+                      
+                                                  <div style={{ position: 'relative', bottom: '30px', textAlign: 'left', left: '50px' }}>
+                                                    <div key={step} style={{ fontSize: "15px", color: "#4a154b" }}>{label} ({label1})</div>
+                                                  </div>
+                      
+                                                  <div style={{ position: 'relative', bottom: '30px', textAlign: 'left', left: '50px' }}>
+                                                    <div key={step} style={{ fontSize: "11px", color: "grey" }}>Status Update By: {label2} ({label3})</div>
+                                                  </div>
+                      
+                                                  <div style={{ position: 'relative', bottom: '30px', textAlign: 'left', left: '50px' }}>
+                                                    <div key={step} style={{ fontSize: "11px", color: "grey" }}>On Start Date: {label4}</div>
+                                                  </div>
+                                                  
+                                              </div>
+                                            ))}
+                                            </StepContainer>
+                                            </div>
+                                                     
+                                            </Form.Group>
+                                    </Modal.Body>
+                                </Modal>
+
+                            </div> 
+                                                    
                                 <div className="row">
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_WorkOrderNo">
-                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px", fontWeight: 'bold' }}>Work Order No:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                            <label className="col-sm-4 col-form-label down" style={{ fontSize: "13px" }}>Work Order No:<span style={{color: "red"}} class="required-asterisk">* </span></label>
                                             <div className="col-sm-8">
-                                                <Form.Control style={{ fontSize: "12px", height: "34px" }} type="text" value={WorkOrderNo} onChange={(e) => setWorkOrderNo(e.target.value)}  disabled={WorkOrderNo_disabled}/>
+                                                <Form.Control className='formControl' type="text" value={WorkOrderNo} onChange={(e) => setWorkOrderNo(e.target.value)}  disabled={WorkOrderNo_disabled}/>
                                             </div>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">                                
+                                    <div className="col-md-6 moveUp-md moveUp-sm">                                
                                         <Form.Group className="row" controlId="validation_Asset_No">
-                                            <Form.Label className="col-sm-4 col-form-label" style={{ fontSize: "12px", fontWeight: 'bold' }}><span style={{color: "red"}} class="required-asterisk">* </span>Asset No:</Form.Label>
+                                            <Form.Label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Asset No:<span style={{color: "red"}} class="required-asterisk">* </span></Form.Label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -2355,8 +2522,10 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                     }}
                                                 />
                                             </div>
@@ -2364,11 +2533,11 @@ const WorkOrderFrom = (props) => {
                                     </div>
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-34px" }}>
+                                <div className="row moveUp">
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Status">                                  
-                                            <Form.Label className="col-sm-4 col-form-label" style={{ fontSize: "13px", fontWeight: 'bold' }}>Status:<span style={{color: "red"}} class="required-asterisk">* </span></Form.Label>
-                                            <div className="col-sm-8">
+                                            <Form.Label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Status:<span style={{color: "red"}} class="required-asterisk">* </span></Form.Label>
+                                            <div className="col-sm-7 StatusBox-md StatusBox-sm">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={Status}
@@ -2379,18 +2548,20 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "12px",height: '30' }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px" ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                     }}
                                                 />
                                             </div>
-                                            
+                                            <i type="button" className="mdi mdi-information-outline StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm" onClick={StatushandleShow}></i>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_Asset_Status"> 
-                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}><span style={{color: "red"}} class="required-asterisk">* </span>Asset Status:</label>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Asset Status:<span style={{color: "red"}} class="required-asterisk">* </span></label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -2402,8 +2573,10 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                     }}
                                                 />
                                             </div>
@@ -2411,10 +2584,10 @@ const WorkOrderFrom = (props) => {
                                     </div>  
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-34px" }}>
+                                <div className="row moveUp">
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Plan_Priority">
-                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}>Plan Periority:</label>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Plan Periority:</label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -2426,17 +2599,19 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                     }}
                                                 />
                                             </div>
                                         </Form.Group>                        
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_Asset_Group_Code">
-                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}>Asset Group Code:</label>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Asset Group Code:</label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -2448,8 +2623,10 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                     }}
                                                 />
                                             </div>
@@ -2457,24 +2634,24 @@ const WorkOrderFrom = (props) => {
                                     </div>  
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-28px" }}>
+                                <div className="row moveUp">
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_OriginationDate">
-                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}>Origination Date:</label>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Origination Date:</label>
                                             <div className="col-sm-8">
                                                         <Form.Control
                                                         type="datetime-local"  
                                                         value={OriginationDate} 
                                                         onChange={(date) => {setOriginationDate(Moment().utcOffset('+08:00').format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
-                                                        style={{ fontSize: "12px", height: "38px" }}
+                                                        style={{ fontSize: "12px", height: "34px" }}
                                                         /> 
                                             </div>
                                         </Form.Group>
                                     </div> 
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_Charge_Cost_Center">
-                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}><span style={{color: "red"}} class="required-asterisk">* </span>Charge Cost Center:</label>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Charge Cost Center:<span style={{color: "red"}} class="required-asterisk">* </span></label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -2486,8 +2663,10 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                     }}
                                                 />
                                             </div>
@@ -2495,24 +2674,24 @@ const WorkOrderFrom = (props) => {
                                     </div>
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-28px" }}>                         
+                                <div className="row moveUp">                         
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_DueDate">
-                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}>Due Date:</label>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Due Date:</label>
                                             <div className="col-sm-8">
                                                     <Form.Control
                                                     type="datetime-local"
                                                     value ={DueDate} 
                                                     onChange={date => {setDueDate(Moment().utcOffset('+08:00').format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
-                                                    style={{ fontSize: "12px", height: "38px" }}
+                                                    style={{ fontSize: "12px", height: "34px" }}
                                                     />
                                                 </div>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_Work_Area">
-                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}>Work Area:</label>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Work Area:</label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -2524,8 +2703,10 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                     }}
                                                 />
                                             </div>
@@ -2533,10 +2714,10 @@ const WorkOrderFrom = (props) => {
                                     </div>
                                 </div>  
 
-                                <div className="row" style={{ marginTop: "-28px" }}>                 
+                                <div className="row moveUp">                 
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Originator">
-                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}>Originator:</label>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Originator:</label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -2548,17 +2729,19 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                     }}
                                                 />
                                             </div>
                                         </Form.Group>
                                     </div>  
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_Asset_Level">
-                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}>Asset Level:</label>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Asset Level:</label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -2570,8 +2753,10 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                     }}
                                                 />
                                             </div>
@@ -2579,19 +2764,19 @@ const WorkOrderFrom = (props) => {
                                     </div>
                                 </div>  
 
-                                <div className="row" style={{ marginTop: "-28px" }}>                        
+                                <div className="row moveUp">                        
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Phone">
-                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}>Phone:</label>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Phone:</label>
                                             <div className="col-sm-8">
-                                                <Form.Control style={{ fontSize: "12px", height: "38px" }} type="number" value={Phone} onChange={(e) => {setPhone(e.target.value); handleInputChange();}}/>
+                                                <Form.Control style={{ fontSize: "12px", height: "34px" }} type="number" value={Phone} onChange={(e) => {setPhone(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_Asset_Location">
-                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}>Asset Location:</label>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Asset Location:</label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -2603,8 +2788,10 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                     }}
                                                 />
                                             </div>
@@ -2612,10 +2799,10 @@ const WorkOrderFrom = (props) => {
                                     </div>
                                 </div>  
 
-                                <div className="row" style={{ marginTop: "-28px" }}>             
+                                <div className="row moveUp">             
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Fault_Code">
-                                            <label className="col-sm-4 col-form-label" style={{ fontSize: "13px" }}><span style={{color: "red"}} class="required-asterisk">* </span>Fault Code:</label>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Fault Code:<span style={{color: "red"}} class="required-asterisk">* </span></label>
                                             <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -2627,36 +2814,38 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "12px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                     }}
                                                 />
                                             </div>
                                         </Form.Group>
                                     </div>  
 
-                                    <div className="col-md-3">
+                                    <div className="col-md-3 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_CreatedBy">
-                                            <label className="col-sm-6 col-form-label" style={{ fontSize: "13px" }}><span style={{color: "blue"}} class="required-asterisk"> Created By: </span></label>
+                                            <label className="col-sm-6 col-form-label top " style={{ fontSize: "13px" }}><span style={{color: "blue"}} class="required-asterisk"> Created By: </span></label>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-3">
+                                    <div className="col-md-3 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_CreatedDate">
-                                            <label className="col-sm-6 col-form-label" style={{ fontSize: "13px" }}><span style={{color: "blue"}} class="required-asterisk"> Created Date: </span></label>
+                                            <label className="col-sm-6 col-form-label top " style={{ fontSize: "13px" }}><span style={{color: "blue"}} class="required-asterisk"> Created Date: </span></label>
                                         </Form.Group>
                                     </div>
                                 </div>  
 
-                                <div className="row" style={{ marginTop: "-28px" }}>
+                                <div className="row moveUp">
                                     <div className="col-md-12">
                                         <Form.Group className="row" controlId="validation_Description">
-                                            <label className="col-sm-2 col-form-label" style={{ fontSize: "13px" }}><span style={{color: "red"}} class="required-asterisk">* </span>Description:</label>
-                                            <div className="col-sm-10">
+                                            <label className="col-sm-2 col-form-label labelTop down" style={{ fontSize: "13px" }}>Description:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                            <div className="col-sm-10 descLeft-md descLeft-sm">
                                             <Form.Control 
                                                 style={{ fontSize: "12px" }}
                                                 as="textarea" 
-                                                rows={19} 
+                                                rows={6} 
                                                 value={Description}
                                                 onChange={(e) => {
                                                     console.log(e.target.value)
@@ -2709,7 +2898,7 @@ const WorkOrderFrom = (props) => {
 
                         <section id="tab-menus">
 
-                        <Tabs defaultActiveKey="Special Order (PR)" id="uncontrolled-tab-example" className="mb-4">
+                        <Tabs defaultActiveKey="Details" id="uncontrolled-tab-example" className="mb-4">
 
 
                             {/* ************************************* Details **************************************** */}
@@ -2719,12 +2908,12 @@ const WorkOrderFrom = (props) => {
                                     <div className="row">
                                         <div className="col-md-12">
                                             <Form.Group className="row">
-                                                <label className="col-sm-2 col-form-label">Corrective Action:</label>
-                                                <div className="col-sm-10">
+                                                <label className="col-sm-2 col-form-label down" style={{ fontSize: "13px" }}>Corrective Action:</label>
+                                                <div className="col-sm-10 descLeft-md descLeft-sm">
                                                 <Form.Control 
-                                                    style={{ fontSize: "13px" }}
+                                                    style={{ fontSize: "12px" }}
                                                     as="textarea" 
-                                                    rows={19} 
+                                                    rows={6} 
                                                     value={CorrectiveAction}
                                                     onChange={(e) => {setCorrectiveAction(e.target.value); handleInputChange();}}
                                                 />
@@ -2733,10 +2922,10 @@ const WorkOrderFrom = (props) => {
                                         </div>
                                     </div>  
 
-                                    <div className="row">                      
+                                    <div className="row projectIdMoveUp">                      
                                         <div className="col-md-6">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Project ID:</label>
+                                                <label className="col-sm-4 col-form-label labelTopProjectId down" style={{ fontSize: "13px" }}>Project ID:</label>
                                                 <div className="col-sm-8">
                                                     <Select  
                                                         isClearable={true}  
@@ -2748,17 +2937,19 @@ const WorkOrderFrom = (props) => {
                                                           }} // using id as it is unique
                                                         required
                                                         styles={{ 
-                                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                            }}
+                                                            control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                            singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                            dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                            noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
+                                                        }}
                                                     />
                                                 </div>
                                             </Form.Group>
                                         </div>  
 
-                                        <div className="col-md-6">
+                                        <div className="col-md-6 moveUp-md moveUp-sm">
                                             <Form.Group className="row" controlId="validation_AssetStatus">
-                                                <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Original Periority:</label>
+                                                <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Original Periority:<span style={{color: "red"}} class="required-asterisk">* </span></label>
                                                 <div className="col-sm-8">
                                                     <Select  
                                                         isClearable={true}  
@@ -2770,19 +2961,21 @@ const WorkOrderFrom = (props) => {
                                                           }} // using id as it is unique
                                                         required
                                                         styles={{ 
-                                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                            }}
+                                                            control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                            singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                            dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                            noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
+                                                        }}
                                                     />
                                                 </div>
                                             </Form.Group>                        
                                         </div>
                                     </div>  
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="row moveUp">
                                         <div className="col-md-6">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Cause Code:</label>
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Cause Code:</label>
                                                 <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -2794,20 +2987,22 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                     }}
                                                 />
                                             </div>
                                             </Form.Group>
                                         </div>  
 
-                                        <div className="col-md-6">
+                                        <div className="col-md-6 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Schedule Date:</label>
+                                                <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Schedule Date:</label>
                                                 <div className="col-sm-8">
                                                 <Form.Control  
-                                                    style={{ fontSize: "13px", height: "38px" }}                                          
+                                                    style={{ fontSize: "12px", height: "34px" }}                                          
                                                     type="datetime-local"  
                                                     value={ScheduleDate} 
                                                     onChange={(e) => {setScheduleDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
@@ -2817,10 +3012,10 @@ const WorkOrderFrom = (props) => {
                                         </div>  
                                     </div> 
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="row moveUp">
                                         <div className="col-md-6">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Action Code:</label>
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Action Code:</label>
                                                 <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -2832,20 +3027,22 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                        }}
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
+                                                    }}
                                                 />
                                             </div>
                                             </Form.Group>
                                         </div>  
 
-                                        <div className="col-md-6">
+                                        <div className="col-md-6 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Exception Date:</label>
+                                                <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Exception Date:</label>
                                                 <div className="col-sm-8">
                                                 <Form.Control       
-                                                    style={{ fontSize: "13px", height: "38px" }}                                     
+                                                    style={{ fontSize: "12px", height: "34px" }}                                     
                                                     type="datetime-local"  
                                                     value={ExceptionDate} 
                                                     onChange={(e) => {setExceptionDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
@@ -2855,10 +3052,10 @@ const WorkOrderFrom = (props) => {
                                         </div>  
                                     </div>  
 
-                                    <div className='row' style={{ marginTop: "-20px" }}>
+                                    <div className='row moveUp'>
                                         <div className="col-md-6">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Delay Code:</label>
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Delay Code:</label>
                                                 <div className="col-sm-8">
                                                 <Select  
                                                         isClearable={true}  
@@ -2870,20 +3067,22 @@ const WorkOrderFrom = (props) => {
                                                           }} // using id as it is unique
                                                         required
                                                         styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                            control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                            singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                            dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                            noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                         }}
                                                 />
                                             </div>
                                             </Form.Group>
                                         </div>  
 
-                                        <div className="col-md-6">
+                                        <div className="col-md-6 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Status Change Date:</label>
+                                                <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Status Change Date:</label>
                                                 <div className="col-sm-8">
                                                 <Form.Control 
-                                                    style={{ fontSize: "13px", height: "38px" }}                                           
+                                                    style={{ fontSize: "12px", height: "34px" }}                                           
                                                     type="datetime-local"  
                                                     value={StatusChangeDate} 
                                                     onChange={(e) => {setStatusChangeDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
@@ -2893,10 +3092,10 @@ const WorkOrderFrom = (props) => {
                                         </div>   
                                     </div>
 
-                                    <div className='row' style={{ marginTop: "-20px" }}>                           
+                                    <div className='row moveUp'>                           
                                         <div className="col-md-6">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Work Type:</label>
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Work Type:<span style={{color: "red"}} class="required-asterisk">* </span></label>
                                                 <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -2908,20 +3107,22 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                        }}
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
+                                                    }}
                                                 />
                                             </div>
                                             </Form.Group>
                                         </div>  
 
-                                        <div className="col-md-6">
+                                        <div className="col-md-6 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Completion Date:</label>
+                                                <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Completion Date:</label>
                                                 <div className="col-sm-8">
                                                 <Form.Control    
-                                                    style={{ fontSize: "13px", height: "38px" }}                                        
+                                                    style={{ fontSize: "12px", height: "34px" }}                                        
                                                     type="datetime-local"  
                                                     value={CompletionDate} 
                                                     onChange={(e) => {setCompletionDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
@@ -2931,10 +3132,10 @@ const WorkOrderFrom = (props) => {
                                         </div>                                    
                                     </div>
 
-                                    <div className='row' style={{ marginTop: "-20px" }}>
+                                    <div className='row moveUp'>
                                         <div className="col-md-6">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Work Permit Type:</label>
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Work Permit Type:</label>
                                                 <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -2946,20 +3147,22 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                        }}
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
+                                                    }}
                                                 />
                                             </div>
                                             </Form.Group>
                                         </div>    
 
-                                        <div className="col-md-6">
+                                        <div className="col-md-6 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Close Date:</label>
+                                                <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Close Date:</label>
                                                 <div className="col-sm-8">
                                                 <Form.Control     
-                                                    style={{ fontSize: "13px", height: "38px" }}                                       
+                                                    style={{ fontSize: "12px", height: "34px" }}                                       
                                                     type="datetime-local"  
                                                     value={CloseDate} 
                                                     onChange={(e) => {setCloseDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
@@ -2969,10 +3172,10 @@ const WorkOrderFrom = (props) => {
                                         </div>     
                                     </div>
 
-                                    <div className='row' style={{ marginTop: "-20px" }}>
+                                    <div className='row moveUp'>
                                         <div className="col-md-6">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label"><span style={{color: "red"}} class="required-asterisk">* </span>Work Group:</label>
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Work Group:<span style={{color: "red"}} class="required-asterisk">* </span></label>
                                                 <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -2984,26 +3187,28 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                        }}
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
+                                                    }}
                                                 />
                                             </div>
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-6">
+                                        <div className="col-md-6 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">WO Print:</label>
+                                                <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>WO Print:</label>
                                                 <div className="col-sm-8"></div>
                                             </Form.Group>
                                         </div>                                          
                                     </div>
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="row moveUp">
                                         <div className="col-md-6">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Supervisor ID:</label>
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Supervisor ID:</label>
                                                 <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -3015,19 +3220,21 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                        }}
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
+                                                    }}
                                                 />
                                             </div>
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-6">
+                                        <div className="col-md-6 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Temporary Asset:</label>
-                                                <div className="col-sm-4 form-check">
-                                                <label className="form-check-label">
+                                                <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Temporary Asset:</label>
+                                                <div className="col-sm-4 form-check checkBoxLeft checkBoxLeft-md checkBoxLeft-ls">
+                                                <label className="form-check-label ">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
                                                     checked={Temporary_Asset}
@@ -3043,10 +3250,10 @@ const WorkOrderFrom = (props) => {
                                         </div> 
                                     </div>  
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="row moveUp">
                                         <div className="col-md-6">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Planner:</label>
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Planner:</label>
                                                 <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -3058,18 +3265,20 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                        }}
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
+                                                    }}
                                                 />
                                             </div>
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-6">
+                                        <div className="col-md-6 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Approved:</label>
-                                                <div className="col-sm-4 form-check">
+                                                <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Approved:</label>
+                                                <div className="col-sm-4 form-check checkBoxLeft checkBoxLeft-md checkBoxLeft-ls">
                                                 <label className="form-check-label">
                                                     <input type="checkbox" 
                                                     className="form-check-input"
@@ -3087,10 +3296,10 @@ const WorkOrderFrom = (props) => {
                                         </div> 
                                     </div>  
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="row moveUp">
                                         <div className="col-md-6">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Approver:</label>
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Approver:</label>
                                                 <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -3102,29 +3311,31 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                        }}
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
+                                                    }}
                                                 />
                                             </div>
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-6">
+                                        <div className="col-md-6 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">WO Open:</label>
-                                                <div className="col-sm-4 form-check">
-                                                    Y
+                                                <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>WO Open:</label>
+                                                <div className="col-sm-4 form-check checkBoxLeft checkBoxLeft-md checkBoxLeft-ls">
+                                                &nbsp;Y
                                                 </div>
                                             </Form.Group>
 
                                         </div> 
                                     </div>  
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="row moveUp">
                                         <div className="col-md-6">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Assign To:</label>
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Assign To:</label>
                                                 <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
@@ -3136,18 +3347,20 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                                        }}
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
+                                                    }}
                                                 />
                                             </div>
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-6">
+                                        <div className="col-md-6 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Safety:</label>
-                                                <div className="col-sm-4 form-check">
+                                                <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Safety:</label>
+                                                <div className="col-sm-4 form-check checkBoxLeft checkBoxLeft-md checkBoxLeft-ls">
                                                     <label className="form-check-label">
                                                         <input type="checkbox" 
                                                         className="form-check-input"
@@ -3165,44 +3378,44 @@ const WorkOrderFrom = (props) => {
                                         </div> 
                                     </div>  
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="row moveUp">
                                         <div className="col-md-6">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Permanent ID:</label>
+                                                <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Permanent ID:</label>
                                                 <div className="col-sm-8">
-                                                    <Form.Control style={{ fontSize: "13px", height: "38px" }} type="text" value={Permanent_ID} onChange={(e) => {setPermanent_ID(e.target.value); handleInputChange();}}/>
+                                                    <Form.Control style={{ fontSize: "12px", height: "34px" }} type="text" value={Permanent_ID} onChange={(e) => {setPermanent_ID(e.target.value); handleInputChange();}}/>
                                                 </div>
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-6">
+                                        <div className="col-md-6 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">Parent WO:</label>
+                                                <label className="col-sm-4 col-form-label top " style={{ fontSize: "13px" }}>Parent WO:</label>
                                                 <div className="col-sm-6"></div>
                                             </Form.Group>
                                         </div> 
                                     </div>  
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="row moveUp">
                                         <div className="col-md-6">
                                                 <Form.Group className="row">
-                                                    <label className="col-sm-4 col-form-label">Work Request No:</label>
+                                                    <label className="col-sm-4 col-form-label labelTop " style={{ fontSize: "13px" }}>Work Request No:</label>
                                                     <div className="col-sm-8"></div>
                                                 </Form.Group>
                                         </div> 
 
-                                        <div className="col-md-6">
+                                        <div className="col-md-6 moveUp-md moveUp-sm">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">WR Origination Date:</label>
+                                                <label className="col-sm-4 col-form-label top " style={{ fontSize: "13px" }}>WR Origination Date:</label>
                                                 <div className="col-sm-6"></div>
                                             </Form.Group>
                                         </div> 
                                     </div> 
 
-                                    <div className="row" style={{ marginTop: "-20px" }}>
+                                    <div className="row moveUp">
                                         <div className="col-md-6">
                                             <Form.Group className="row">
-                                                <label className="col-sm-4 col-form-label">WR Due Date:</label>
+                                                <label className="col-sm-4 col-form-label labelTop " style={{ fontSize: "13px" }}>WR Due Date:</label>
                                                 <div className="col-sm-8"></div>
                                             </Form.Group>
                                         </div> 
@@ -3219,7 +3432,7 @@ const WorkOrderFrom = (props) => {
                                 <div className="row">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                        <label className="col-sm-6 col-form-label">
+                                        <label className="col-sm-6 col-form-label down" style={{ fontSize: "13px" }}>
                                             Customer Code:
                                         </label>
                                         <div className="col-sm-6">
@@ -3233,17 +3446,19 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                     }}
                                                 />
                                         </div>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                        <label className="col-sm-6 col-form-label">
+                                        <label className="col-sm-6 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Labor Account:
                                         </label>
                                         <div className="col-sm-6">
@@ -3257,17 +3472,19 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                     }}
                                                 />
                                         </div>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                        <label className="col-sm-6 col-form-label">
+                                        <label className="col-sm-6 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Material Account:
                                         </label>
                                         <div className="col-sm-6">
@@ -3281,8 +3498,10 @@ const WorkOrderFrom = (props) => {
                                                   }} // using id as it is unique
                                                 required
                                                 styles={{ 
-                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                    control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                    singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                    dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                    noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                 }}
                                                 />
                                         </div>
@@ -3290,10 +3509,10 @@ const WorkOrderFrom = (props) => {
                                     </div>
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
+                                <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                        <label className="col-sm-6 col-form-label">
+                                        <label className="col-sm-6 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                             Credit Cost Center:
                                         </label>
                                         <div className="col-sm-6">
@@ -3307,17 +3526,19 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                     }}
                                                 />
                                         </div>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                        <label className="col-sm-6 col-form-label">
+                                        <label className="col-sm-6 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Contract Account:
                                         </label>
                                         <div className="col-sm-6">
@@ -3331,17 +3552,19 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                     }}
                                                 />
                                         </div>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                        <label className="col-sm-6 col-form-label">
+                                        <label className="col-sm-6 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Miscellaneous Account:
                                         </label>
                                         <div className="col-sm-6">
@@ -3355,8 +3578,10 @@ const WorkOrderFrom = (props) => {
                                                       }} // using id as it is unique
                                                     required
                                                     styles={{ 
-                                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                        control: (styles) => ({ ...styles, fontSize: "12px"  ,minHeight:'30px',height: "34px" }), 
+                                                        singleValue: (styles) => ({ ...styles, fontSize: "12px" }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px'  }),
                                                     }}
                                                 />
                                         </div>
@@ -3376,12 +3601,12 @@ const WorkOrderFrom = (props) => {
                                     <div className='col'>
                                         <div className="col-md-13">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label down" style={{ fontSize: "13px" }}>
                                                 Varchar1:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    className='formControl'
                                                     type="text"
                                                     value={UDFText_1}
                                                     onChange={(e) => {setUDFText_1(e.target.value); handleInputChange();}}
@@ -3390,14 +3615,14 @@ const WorkOrderFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-13 moveUp">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                                 Varchar2:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    className='formControl'
                                                     type="text"
                                                     value={UDFText_2}
                                                     onChange={(e) => {setUDFText_2(e.target.value); handleInputChange();}}
@@ -3406,14 +3631,14 @@ const WorkOrderFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-13 moveUp">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                                 Varchar3:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    className='formControl'
                                                     type="text"
                                                     value={UDFText_3}
                                                     onChange={(e) => {setUDFText_3(e.target.value); handleInputChange();}}
@@ -3422,14 +3647,14 @@ const WorkOrderFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-13 moveUp">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                                 Varchar4:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    className='formControl'
                                                     type="text"
                                                     value={UDFText_4}
                                                     onChange={(e) => {setUDFText_4(e.target.value); handleInputChange();}}
@@ -3438,14 +3663,14 @@ const WorkOrderFrom = (props) => {
                                             </Form.Group>
                                         </div>
 
-                                        <div className="col-md-13" style={{ marginTop: "-20px" }}>
+                                        <div className="col-md-13 moveUp">
                                             <Form.Group className="row">
-                                            <label className="col-sm-4 col-form-label">
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                                 Varchar5:
                                             </label>
                                             <div className="col-sm-8">
                                                 <Form.Control
-                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                    className='formControl'
                                                     type="text"
                                                     value={UDFText_5}
                                                     onChange={(e) => {setUDFText_5(e.target.value); handleInputChange();}}
@@ -3455,16 +3680,16 @@ const WorkOrderFrom = (props) => {
                                         </div>
                                     </div>
 
-                                    <div className="col-md-8">
+                                    <div className="col-md-8 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                        <label className="col-sm-2 col-form-label">
+                                        <label className="col-sm-2 col-form-label top down" style={{ fontSize: "13px" }}>
                                                 Note1:
                                         </label>
-                                        <div className="col-sm-10">
+                                        <div className="col-sm-10 descLeft-md descLeft-sm">
                                             <Form.Control 
-                                                style={{ fontSize: "13px" }}
+                                                className='formControlBox'
                                                 as="textarea" 
-                                                rows={19} 
+                                                rows={15} 
                                                 value={UDFNote1}
                                                 onChange={(e) => {setUDFNote1(e.target.value); handleInputChange();}}
                                             />
@@ -3473,15 +3698,15 @@ const WorkOrderFrom = (props) => {
                                     </div>
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
+                                <div className="row moveUp moveUpNote-md moveUpNote-sm">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                             Varchar6:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="text"
                                                 value={UDFText_6}
                                                 onChange={(e) => {setUDFText_6(e.target.value); handleInputChange();}}
@@ -3490,14 +3715,14 @@ const WorkOrderFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Numeric1:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control  
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_1} 
@@ -3507,14 +3732,14 @@ const WorkOrderFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Date1:
                                         </label>
                                         <div className="col-sm-8">
                                         <Form.Control  
-                                            style={{ fontSize: "13px", height: "38px" }}                                          
+                                            className='formControl'                                       
                                             type="datetime-local"  
                                             value={UDFDate_1} 
                                             onChange={(e) => {setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
@@ -3524,15 +3749,15 @@ const WorkOrderFrom = (props) => {
                                     </div>
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
+                                <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                             Wko Det Varchar7:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="text"
                                                 value={UDFText_7}
                                                 onChange={(e) => {setUDFText_7(e.target.value); handleInputChange();}}
@@ -3541,14 +3766,14 @@ const WorkOrderFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Numeric2:
                                         </label>
                                         <div className="col-sm-8">
                                         <Form.Control
-                                            style={{ fontSize: "13px", height: "38px" }}  
+                                            className='formControl'  
                                             type="number"  
                                             placeholder=".0000" 
                                             value={UDFNumber_2} 
@@ -3558,14 +3783,14 @@ const WorkOrderFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Date2:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_2} 
                                                 onChange={(e) => {setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 
@@ -3575,15 +3800,15 @@ const WorkOrderFrom = (props) => {
                                     </div>
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
+                                <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                             Wko Det Varchar8:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="text"
                                                 value={UDFText_8}
                                                 onChange={(e) => {setUDFText_8(e.target.value); handleInputChange();}}
@@ -3592,14 +3817,14 @@ const WorkOrderFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Numeric3:
                                         </label>
                                         <div className="col-sm-8">
                                         <Form.Control 
-                                            style={{ fontSize: "13px", height: "38px" }}
+                                            className='formControl'
                                             type="number"  
                                             placeholder=".0000" 
                                             value={UDFNumber_3} 
@@ -3609,14 +3834,14 @@ const WorkOrderFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Date3:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_3} 
                                                 onChange={(e) => {setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 
@@ -3626,15 +3851,15 @@ const WorkOrderFrom = (props) => {
                                     </div>
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
+                                <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                             Varchar9:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="text"
                                                 value={UDFText_9}
                                                 onChange={(e) => {setUDFText_9(e.target.value); handleInputChange();}}
@@ -3643,14 +3868,14 @@ const WorkOrderFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Numeric4:
                                         </label>
                                         <div className="col-sm-8">
                                         <Form.Control  
-                                            style={{ fontSize: "13px", height: "38px" }}
+                                            className='formControl'
                                             type="number"  
                                             placeholder=".0000" 
                                             value={UDFNumber_4} 
@@ -3660,14 +3885,14 @@ const WorkOrderFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Date4:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_4} 
                                                 onChange={(e) => {setUDFDate_4(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
@@ -3677,15 +3902,15 @@ const WorkOrderFrom = (props) => {
                                     </div>
                                 </div>
 
-                                <div className="row" style={{ marginTop: "-20px" }}>
+                                <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                             Varchar10:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="text"
                                                 value={UDFText_10}
                                                 onChange={(e) => {setUDFText_10(e.target.value); handleInputChange();}}
@@ -3694,14 +3919,14 @@ const WorkOrderFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Numeric5:
                                         </label>
                                         <div className="col-sm-8">
                                         <Form.Control 
-                                            style={{ fontSize: "13px", height: "38px" }} 
+                                            className='formControl'
                                             type="number"  
                                             placeholder=".0000" 
                                             value={UDFNumber_5} 
@@ -3711,14 +3936,14 @@ const WorkOrderFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                        <label className="col-sm-4 col-form-label">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Date5:
                                         </label>
                                         <div className="col-sm-8">
                                             <Form.Control
-                                                style={{ fontSize: "13px", height: "38px" }}
+                                                className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_5} 
                                                 onChange={(e) => {setUDFDate_5(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 

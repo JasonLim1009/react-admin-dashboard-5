@@ -5,6 +5,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import SearchBar from "material-ui-search-bar";
 import Swal from "sweetalert2";
 import APIServices from "../services/APIServices";
+import '../style.css';
 
 function WorkOrder(props) {
   const [Header, setHeader] = React.useState([]);
@@ -29,45 +30,10 @@ function WorkOrder(props) {
   const [showButton, setShowButton] = useState(false);
   const [hoveredRow, setHoveredRow] = useState(null);
 
-  const [showComplete, setShowComplete] = useState(false);
-  const handleCloseComplete = () => setShowComplete(false);
-  const handleShowComplete = (result) => {
+  const [showClose, setHandleClosed] = useState(false);
+  const handleCloseClose = () => setHandleClosed(false);
 
-    if (result.wko_mst_status === 'A' || result.wko_mst_status === "D" ) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'The record update cannot be done because the record had been updated by another user. Kindly retrieve the Work Request again to continue.',
-      });
-      return; 
-    }
-      
-    console.log(result);
-    sethandlesresult(result)
-    setShowComplete(true)
-
-  };
-
-  const [handlesresult, sethandlesresult] = useState([]);
-
-  const [showClose, setShowClose] = useState(false);
-  const handleCloseClose = () => setShowClose(false);
-  const handleShowClose = (result) => {
-
-    if (result.wko_mst_status === 'D' || result.wko_mst_status === "A" ) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'The record update cannot be done because the record had been updated by another user. Kindly retrieve the Work Request again to continue.',
-      });
-      return; 
-    }
-
-    console.log(result)
-    sethandlesresult(result);
-    setShowClose(true)
-
-  };
+  
 
 
   const get_workordermaster = (site_ID) => {
@@ -238,7 +204,7 @@ function WorkOrder(props) {
                   <div className="template-demo">
                       <button
                           type="button"
-                          onClick={() => handleShowComplete(result)}
+                          onClick={() => HandleCompleted(result)}
                           className="btn btn-success btn-icon-text"
                           title="Complete"
                           style={{width: "30px", height: "30px",padding: "7px", borderRadius: "50%"  }}
@@ -249,7 +215,7 @@ function WorkOrder(props) {
 
                         <button
                           type="button"
-                          onClick={() => handleShowClose(result)}
+                          onClick={() => HandleClosed(result)}
                           className="btn btn-danger btn-icon-text"
                           title="Close"
                           style={{marginLeft: "-12px", width: "30px", height: "30px",padding: "7px", borderRadius: "50%"  }}
@@ -476,6 +442,28 @@ function WorkOrder(props) {
   };
   
 
+  //Completed Button
+  const HandleCompleted = (data) => {
+    
+  }
+
+
+  //Closed Button
+  const HandleClosed = (result) => {
+    
+    if (result.wko_mst_status === 'CNX' || result.wko_mst_status === "CLO" ) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'The Work Order ('+ result.wko_mst_wo_no +') is already closed!',
+      });
+      return; 
+    }
+
+    console.log(result)
+    setHandleClosed(true)
+  }
+
   //Edit Button
   const handleEdit = (data) => {
     //console.log(data)
@@ -530,7 +518,7 @@ function WorkOrder(props) {
                 </div>
               </div>
 
-              <div className="col">
+              <div className="col searchButton-md">
                 <SearchBar
                   className="form-control"
                   onChange={(e) => setFiltereddata(e)}
@@ -538,7 +526,7 @@ function WorkOrder(props) {
                 />
               </div>
 
-              <div className="col">
+              <div className="col searchButton-md">
                 <button type="button" className="btn btn-primary btn-rounded">
                   Search
                 </button>
@@ -546,7 +534,7 @@ function WorkOrder(props) {
 
               <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
-                  <div className="template-demo">
+                  <div className="template-demo moveUpFilterButton-md moveUpFilterButton-sm">
                     <button
                       type="button"
                       className="btn btn-outline-secondary btn-rounded btn-icon"
@@ -567,7 +555,7 @@ function WorkOrder(props) {
             </div>
 
             <div className="page-header">
-              <div className="template-demo" isVisible={show}>
+              <div className="template-demo moveUp3Button-md" isVisible={show}>
                 <button
                   type="button"
                   className="btn btn-outline-primary btn-icon-text"
@@ -603,7 +591,7 @@ function WorkOrder(props) {
                 )}
               </div>
               <nav aria-label="breadcrumb">
-                <div className="row">
+                <div className="row moveUpPaginationButton-md moveUpPaginationButton-sm">
                   <Pagination
                     count={count}
                     page={page}

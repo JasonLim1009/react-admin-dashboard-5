@@ -6,6 +6,7 @@ import SearchBar from "material-ui-search-bar";
 import Swal from "sweetalert2";
 import APIServices from "../services/APIServices";
 
+import '../style.css';
 import Select from 'react-select';
 import { Form, Modal, Button } from 'react-bootstrap';
 import  {useLocation}  from 'react-router-dom';
@@ -784,7 +785,7 @@ APIServices.insert_work_request_disapproval(JSON.stringify(json_workrequest)).th
                 </div>
               </div>
 
-              <div className="col">
+              <div className="col searchButton-md">
                 <SearchBar
                   className="form-control"
                   onChange={(e) => setFiltereddata(e)}
@@ -792,7 +793,7 @@ APIServices.insert_work_request_disapproval(JSON.stringify(json_workrequest)).th
                 />
               </div>
 
-              <div className="col">
+              <div className="col searchButton-md">
                 <button type="button" className="btn btn-primary btn-rounded">
                   Search
                 </button>
@@ -800,7 +801,7 @@ APIServices.insert_work_request_disapproval(JSON.stringify(json_workrequest)).th
 
               <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
-                  <div className="template-demo">
+                  <div className="template-demo moveUpFilterButton-md moveUpFilterButton-sm">
                     <button
                       type="button"
                       className="btn btn-outline-secondary btn-rounded btn-icon"
@@ -821,7 +822,7 @@ APIServices.insert_work_request_disapproval(JSON.stringify(json_workrequest)).th
             </div>
 
             <div className="page-header">
-              <div className="template-demo" isVisible={show}>
+              <div className="template-demo moveUp3Button-md" isVisible={show}>
                 <button
                   type="button"
                   className="btn btn-outline-primary btn-icon-text"
@@ -858,7 +859,7 @@ APIServices.insert_work_request_disapproval(JSON.stringify(json_workrequest)).th
                 )}
               </div>
               <nav aria-label="breadcrumb">
-                <div className="row">
+                <div className="row moveUpPaginationButton-md moveUpPaginationButton-sm">
                   <Pagination
                     count={count}
                     page={page}
