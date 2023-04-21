@@ -48,7 +48,7 @@ const InventoryFrom = (props) => {
     const [Button_save, setButton_save] = useState("");
 
     const [RowID, setRowID] = useState("");
-
+    const [edited, setEdited] = useState(false);
     
 
     const [Type, setType] = useState([{label:"S : Stock",value:""},{label:"T : Tool",value:""},{label:"S : Serialize",value:""},{label:"S : Serialize with Asset",value:""}]);
@@ -642,6 +642,34 @@ const InventoryFrom = (props) => {
    
     }
 
+    const onClickCancel = () => {
+        if (edited) {
+            Swal.fire({
+                title: 'Warning',
+                text: 'You have made some changes. Do you want to update these changes?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+                }).then((result) => {
+                
+                if (result.isConfirmed) {
+                    Update_Inventory();
+                }
+    
+                window.history.back();
+                });
+    
+            } else {
+                window.history.back();
+            }
+    };
+    
+    const handleInputChange = () => {
+        setEdited(true);
+    };
+
+    
 
     const New_Inventory = () => {
 
@@ -1641,6 +1669,9 @@ const InventoryFrom = (props) => {
         )
 
 
+
+
+
       
       
   return (   
@@ -1656,7 +1687,7 @@ const InventoryFrom = (props) => {
                             <i className="mdi mdi-file-check btn-icon-prepend" ></i>  {Button_save}
                         </button>
 
-                        <button type="button" className="btn btn-danger btn-icon-text">
+                        <button type="button" className="btn btn-danger btn-icon-text" onClick={onClickCancel}>
                             <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i> Cancel 
                         </button>
                     
@@ -1683,7 +1714,10 @@ const InventoryFrom = (props) => {
                                             <Select  
                                                 isClearable={true}  
                                                 value={selected_Type}
-                                                onChange={setSelected_Type}
+                                                onChange={value => {
+                                                    setSelected_Type(value);
+                                                    handleInputChange();
+                                                  }}
                                                 options={Type}
                                                 styles={{
                                                     control: (styles, { isDisabled }) => ({
@@ -1714,7 +1748,10 @@ const InventoryFrom = (props) => {
                                                     isClearable={true}  
                                                     options={Commodity_Code}
                                                     value={selected_Commodity_Code}
-                                                    onChange={setSelected_Commodity_Code} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Commodity_Code(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                 styles={{
                                                         control: (styles, { isDisabled }) => ({
@@ -1743,7 +1780,7 @@ const InventoryFrom = (props) => {
                                         <Form.Group className="row" controlId="validation_StockNo">
                                             <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Stock No:<span style={{color: "red"}} class="required-asterisk">* </span></label>
                                             <div className="col-sm-8">
-                                                <Form.Control className='formControl' type="text" value={StockNo} onChange={(e) => setStockNo(e.target.value)}  disabled={StockNo_disabled}/>
+                                                <Form.Control className='formControl' type="text" value={StockNo} onChange={(e) => {setStockNo(e.target.value); handleInputChange();}}  disabled={StockNo_disabled}/>
                                             </div>
                                         </Form.Group>
                                     </div>
@@ -1756,7 +1793,10 @@ const InventoryFrom = (props) => {
                                                     isClearable={true}  
                                                     options={Stock_Group}
                                                     value={selected_Stock_Group}
-                                                    onChange={setSelected_Stock_Group} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Stock_Group(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                 styles={{
                                                         control: (styles, { isDisabled }) => ({
@@ -1789,7 +1829,10 @@ const InventoryFrom = (props) => {
                                                 isClearable={true}  
                                                 options={Master_Location}
                                                 value={selected_Master_Location}
-                                                onChange={setSelected_Master_Location} // using id as it is unique
+                                                onChange={value => {
+                                                    setSelected_Master_Location(value);
+                                                    handleInputChange();
+                                                  }} // using id as it is unique
                                                 required
                                                 styles={{
                                                         control: (styles, { isDisabled }) => ({
@@ -1816,7 +1859,7 @@ const InventoryFrom = (props) => {
                                         <Form.Group className="row" controlId="validation_Part_No">
                                             <Form.Label className="col-sm-4 col-form-label top-sm down" style={{ fontSize: "13px" }}>Part No:</Form.Label>
                                             <div className="col-sm-8">
-                                            <Form.Control className='formControl' type="text" value={Part_No} onChange={(e) => setPart_No(e.target.value)}/>
+                                            <Form.Control className='formControl' type="text" value={Part_No} onChange={(e) => {setPart_No(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>
@@ -1831,7 +1874,10 @@ const InventoryFrom = (props) => {
                                                 isClearable={true}  
                                                 options={Order_Rule}
                                                 value={selected_Order_Rule}
-                                                onChange={setSelected_Order_Rule} // using id as it is unique
+                                                onChange={value => {
+                                                    setSelected_Order_Rule(value);
+                                                    handleInputChange();
+                                                  }}  // using id as it is unique
                                                 required
                                                 styles={{
                                                         control: (styles, { isDisabled }) => ({
@@ -1858,7 +1904,7 @@ const InventoryFrom = (props) => {
                                         <Form.Group className="row" controlId="validation_TotalOH">
                                             <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Total OH:</label>
                                             <div className="col-sm-8">
-                                                <Form.Control className='formControl' type="number" placeholder="0.0000" value={TotalOH} onChange={(e) => setTotalOH(e.target.value)} readOnly/>
+                                                <Form.Control className='formControl' type="number" placeholder="0.0000" value={TotalOH} onChange={(e) => {setTotalOH(e.target.value); handleInputChange();}} readOnly/>
                                             </div>
                                         </Form.Group>
                                     </div>
@@ -1873,7 +1919,10 @@ const InventoryFrom = (props) => {
                                                 isClearable={true}  
                                                 options={Cost_Center}
                                                 value={selected_Cost_Center}
-                                                onChange={setSelected_Cost_Center} // using id as it is unique
+                                                onChange={value => {
+                                                    setSelected_Cost_Center(value);
+                                                    handleInputChange();
+                                                  }} // using id as it is unique
                                                 required
                                                 styles={{
                                                         control: (styles, { isDisabled }) => ({
@@ -1900,7 +1949,7 @@ const InventoryFrom = (props) => {
                                         <Form.Group className="row" controlId="validation_IssuePrice">
                                             <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Issue Price:</label>
                                             <div className="col-sm-8">
-                                                <Form.Control className='formControl' type="number" placeholder="0.00" value={IssuePrice} onChange={(e) => setIssuePrice(e.target.value)} readOnly/>
+                                                <Form.Control className='formControl' type="number" placeholder="0.00" value={IssuePrice} onChange={(e) => {setIssuePrice(e.target.value); handleInputChange();}} readOnly/>
                                             </div>
                                         </Form.Group>
                                     </div>
@@ -1915,7 +1964,10 @@ const InventoryFrom = (props) => {
                                                 isClearable={true}  
                                                 options={Account}
                                                 value={selected_Account}
-                                                onChange={setSelected_Account} // using id as it is unique
+                                                onChange={value => {
+                                                    setSelected_Account(value);
+                                                    handleInputChange();
+                                                  }} // using id as it is unique
                                                 required
                                                 styles={{
                                                         control: (styles, { isDisabled }) => ({
@@ -1942,7 +1994,7 @@ const InventoryFrom = (props) => {
                                         <Form.Group className="row" controlId="validation_SerializeCounter">
                                             <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Serialize Counter:</label>
                                             <div className="col-sm-8">
-                                                <Form.Control className='formControl' type="number" placeholder="100001" value={SerializeCounter} onChange={(e) => setSerializeCounter(e.target.value)} readOnly/>
+                                                <Form.Control className='formControl' type="number" placeholder="100001" value={SerializeCounter} onChange={(e) => {setSerializeCounter(e.target.value); handleInputChange();}} readOnly/>
                                             </div>
                                         </Form.Group>
                                     </div>
@@ -1960,6 +2012,7 @@ const InventoryFrom = (props) => {
                                                 value={Description}
                                                 onChange={(e) => {
                                                     setDescription(e.target.value);
+                                                    handleInputChange();
                                                 }}
                                             />
                                             </div>
@@ -1979,6 +2032,7 @@ const InventoryFrom = (props) => {
                                                 value={ExtendedDescription}
                                                 onChange={(e) => {
                                                     setExtendedDescription(e.target.value);
+                                                    handleInputChange();
                                                 }}
                                             />
                                             </div>
@@ -2037,12 +2091,15 @@ const InventoryFrom = (props) => {
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_PartDeacStatus">
                                                         <label className="col-sm-4 col-form-label down" style={{ fontSize: "13px" }}>Part Deac Status:<span style={{color: "red"}} class="required-asterisk">* </span></label>
-                                                        <div className="col-sm-7">
+                                                        <div className="col-sm-8">
                                                         <Select  
                                                             isClearable={true}  
                                                             options={PartDeacStatus}
                                                             value={selected_PartDeacStatus}
-                                                            onChange={setSelected_PartDeacStatus} // using id as it is unique
+                                                            onChange={value => {
+                                                                setSelected_PartDeacStatus(value);
+                                                                handleInputChange();
+                                                              }} // using id as it is unique
                                                             required 
                                                             styles={{
                                                                 control: (styles, { isDisabled }) => ({
@@ -2073,7 +2130,10 @@ const InventoryFrom = (props) => {
                                                             <input type="checkbox" 
                                                             className="form-check-input"
                                                             checked={AutoSpare}
-                                                            onChange={handleOnChangeAutoSpare}
+                                                            onChange={value => {
+                                                                handleOnChangeAutoSpare(value);
+                                                                handleInputChange();
+                                                              }}
                                                             />
                                                             <i className="input-helper"></i>
                                                         </label>
@@ -2086,12 +2146,15 @@ const InventoryFrom = (props) => {
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_IssueUOM">
                                                         <label className="col-sm-4 col-form-label labelTopEmail down" style={{ fontSize: "13px" }}>Issue UOM:<span style={{color: "red"}} class="required-asterisk">* </span></label>
-                                                        <div className="col-sm-7">
+                                                        <div className="col-sm-8">
                                                         <Select  
                                                             isClearable={true}  
                                                             options={IssueUOM}
                                                             value={selected_IssueUOM}
-                                                            onChange={setSelected_IssueUOM} // using id as it is unique
+                                                            onChange={value => {
+                                                                setSelected_IssueUOM(value);
+                                                                handleInputChange();
+                                                              }} // using id as it is unique
                                                             required
                                                             styles={{
                                                                 control: (styles, { isDisabled }) => ({
@@ -2122,7 +2185,10 @@ const InventoryFrom = (props) => {
                                                             <input type="checkbox" 
                                                             className="form-check-input"
                                                             checked={CriticalSpare}
-                                                            onChange={handleOnChangeCriticalSpare}
+                                                            onChange={value => {
+                                                                handleOnChangeCriticalSpare(value);
+                                                                handleInputChange();
+                                                              }}
                                                             />
                                                             <i className="input-helper"></i>
                                                         </label>
@@ -2135,12 +2201,15 @@ const InventoryFrom = (props) => {
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_ReceiveUOM">
                                                         <label className="col-sm-4 col-form-label labelTopEmail down" style={{ fontSize: "13px" }}>Receive UOM:<span style={{color: "red"}} class="required-asterisk">* </span></label>
-                                                        <div className="col-sm-7">
+                                                        <div className="col-sm-8">
                                                         <Select  
                                                             isClearable={true}  
                                                             options={ReceiveUOM}
                                                             value={selected_ReceiveUOM}
-                                                            onChange={setSelected_ReceiveUOM} // using id as it is unique
+                                                            onChange={value => {
+                                                                setSelected_ReceiveUOM(value);
+                                                                handleInputChange();
+                                                              }} // using id as it is unique
                                                             required
                                                             styles={{
                                                                 control: (styles, { isDisabled }) => ({
@@ -2171,7 +2240,10 @@ const InventoryFrom = (props) => {
                                                             <input type="checkbox" 
                                                             className="form-check-input"
                                                             checked={HazardousMaterial}
-                                                            onChange={handleOnChangeHazardousMaterial}
+                                                            onChange={value => {
+                                                                handleOnChangeHazardousMaterial(value);
+                                                                handleInputChange();
+                                                              }}
                                                             />
                                                             <i className="input-helper"></i>
                                                         </label>
@@ -2184,8 +2256,8 @@ const InventoryFrom = (props) => {
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_ConversionFactor">
                                                         <label className="col-sm-4 col-form-label labelTopEmail down" style={{ fontSize: "13px" }}>Conversion Factor:</label>
-                                                        <div className="col-sm-7">
-                                                        <Form.Control className='formControl' type="number" placeholder='1.0000' value={ConversionFactor} onChange={(e) => setConversionFactor(e.target.value)} readOnly/>
+                                                        <div className="col-sm-8">
+                                                        <Form.Control className='formControl' type="number" placeholder='1.0000' value={ConversionFactor} onChange={(e) => {setConversionFactor(e.target.value); handleInputChange();}} readOnly/>
                                                     </div>
                                                     </Form.Group>
                                                 </div>
@@ -2194,7 +2266,7 @@ const InventoryFrom = (props) => {
                                                     <Form.Group className="row" controlId="validation_ABCClass">
                                                         <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>ABC Class:</label>
                                                         <div className="col-sm-4">
-                                                        <Form.Control className='formControl' type="text" value={ABCClass} onChange={(e) => setABCClass(e.target.value)}/>
+                                                        <Form.Control className='formControl' type="text" value={ABCClass} onChange={(e) => {setABCClass(e.target.value); handleInputChange();}}/>
                                                         </div>
                                                     </Form.Group>
                                                 </div> 
@@ -2204,12 +2276,15 @@ const InventoryFrom = (props) => {
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_StorageType">
                                                         <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Storage Type:</label>
-                                                        <div className="col-sm-7">
+                                                        <div className="col-sm-8">
                                                         <Select  
                                                             isClearable={true}  
                                                             options={StorageType}
                                                             value={selected_StorageType}
-                                                            onChange={setSelected_StorageType} // using id as it is unique
+                                                            onChange={value => {
+                                                                setSelected_StorageType(value);
+                                                                handleInputChange();
+                                                              }} // using id as it is unique
                                                             required
                                                             styles={{
                                                                 control: (styles, { isDisabled }) => ({
@@ -2235,13 +2310,13 @@ const InventoryFrom = (props) => {
                                                 <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row" controlId="validation_OrderPoint">
                                                         <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Order Point:</label>
-                                                        <div className="col-sm-7">
+                                                        <div className="col-sm-8">
                                                         <Form.Control
                                                             className='formControl'
                                                             type="number"  
                                                             placeholder=".0000" 
                                                             value={OrderPoint} 
-                                                            onChange={(e) => setOrderPoint(e.target.value)}
+                                                            onChange={(e) => {setOrderPoint(e.target.value); handleInputChange();}}
                                                             />
                                                         </div>
                                                     </Form.Group>
@@ -2252,13 +2327,13 @@ const InventoryFrom = (props) => {
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_Cube">
                                                         <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Cube:</label>
-                                                        <div className="col-sm-7">
+                                                        <div className="col-sm-8">
                                                         <Form.Control  
                                                             className='formControl'
                                                             type="number"  
                                                             placeholder=".0000" 
                                                             value={Cube} 
-                                                            onChange={(e) => setCube(e.target.value)}
+                                                            onChange={(e) => {setCube(e.target.value); handleInputChange();}}
                                                         />
                                                     </div>
                                                     </Form.Group>
@@ -2267,13 +2342,13 @@ const InventoryFrom = (props) => {
                                                 <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row" controlId="validation_Maximum">
                                                         <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Maximum:</label>
-                                                        <div className="col-sm-7">
+                                                        <div className="col-sm-8">
                                                         <Form.Control  
                                                             className='formControl'
                                                             type="number"  
                                                             placeholder=".0000" 
                                                             value={Maximum} 
-                                                            onChange={(e) => setMaximum(e.target.value)}
+                                                            onChange={(e) => {setMaximum(e.target.value); handleInputChange();}}
                                                             />
                                                         </div>
                                                     </Form.Group>
@@ -2284,12 +2359,12 @@ const InventoryFrom = (props) => {
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_ShelfLife">
                                                         <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Shelf Life:</label>
-                                                        <div className="col-sm-7">
+                                                        <div className="col-sm-8">
                                                         <Form.Control  
                                                             className='formControl'
                                                             type="number"  
                                                             value={ShelfLife} 
-                                                            onChange={(e) => setShelfLife(e.target.value)}
+                                                            onChange={(e) => {setShelfLife(e.target.value); handleInputChange();}}
                                                         />
                                                     </div>
                                                     </Form.Group>
@@ -2298,12 +2373,12 @@ const InventoryFrom = (props) => {
                                                 <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row" controlId="validation_LastActivityDate">
                                                         <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Last Activity Date:</label>
-                                                        <div className="col-sm-7">
+                                                        <div className="col-sm-8">
                                                         <Form.Control   
                                                             className='formControl'                                         
                                                             type="datetime-local"  
                                                             value={LastActivityDate} 
-                                                            onChange={(e) => setLastActivityDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                            onChange={(e) => {setLastActivityDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                             /> 
                                                         </div>
                                                     </Form.Group>
@@ -2314,8 +2389,8 @@ const InventoryFrom = (props) => {
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_EOQ">
                                                         <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>EOQ:</label>
-                                                        <div className="col-sm-7">
-                                                        <Form.Control className='formControl' type="number" placeholder='0' value={EOQ} onChange={(e) => setEOQ(e.target.value)} readOnly/>
+                                                        <div className="col-sm-8">
+                                                        <Form.Control className='formControl' type="number" placeholder='0' value={EOQ} onChange={(e) => {setEOQ(e.target.value); handleInputChange();}} readOnly/>
                                                         </div>
                                                     </Form.Group>
                                                 </div>
@@ -2323,12 +2398,12 @@ const InventoryFrom = (props) => {
                                                 <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row" controlId="validation_LastCountDate">
                                                         <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Last Count Date:</label>
-                                                        <div className="col-sm-7">
+                                                        <div className="col-sm-8">
                                                         <Form.Control  
                                                             className='formControl'                                          
                                                             type="datetime-local"  
                                                             value={LastCountDate} 
-                                                            onChange={(e) => setLastCountDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                            onChange={(e) => {setLastCountDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                             /> 
                                                         </div>
                                                     </Form.Group>
@@ -2339,7 +2414,7 @@ const InventoryFrom = (props) => {
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_CountFrequency">
                                                         <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Count Frequency:</label>
-                                                        <div className="col-sm-7">
+                                                        <div className="col-sm-8">
                                                         </div>
                                                     </Form.Group>
                                                 </div>
@@ -2347,12 +2422,12 @@ const InventoryFrom = (props) => {
                                                 <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row" controlId="validation_NextCountDate">
                                                         <label className="col-sm-4 col-form-label labelTopEmail down" style={{ fontSize: "13px" }}>Next Count Date:</label>
-                                                        <div className="col-sm-7">
+                                                        <div className="col-sm-8">
                                                         <Form.Control  
                                                             className='formControl'                                          
                                                             type="datetime-local"  
                                                             value={NextCountDate} 
-                                                            onChange={(e) => setNextCountDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                            onChange={(e) => {setNextCountDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                             /> 
                                                         </div>
                                                     </Form.Group>
@@ -2363,7 +2438,7 @@ const InventoryFrom = (props) => {
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_AverageLeadTime">
                                                         <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Average Lead Time:</label>
-                                                        <div className="col-sm-7">
+                                                        <div className="col-sm-8">
                                                         </div>
                                                     </Form.Group>
                                                 </div>
@@ -2389,7 +2464,7 @@ const InventoryFrom = (props) => {
                                                         className='formControl'
                                                         type="text"
                                                         value={UDFText_1}
-                                                        onChange={(e) => setUDFText_1(e.target.value)}
+                                                        onChange={(e) => {setUDFText_1(e.target.value); handleInputChange();}}
                                                         />
                                                 </div>
                                                 </Form.Group>
@@ -2405,7 +2480,7 @@ const InventoryFrom = (props) => {
                                                         className='formControl'
                                                         type="text"
                                                         value={UDFText_2}
-                                                        onChange={(e) => setUDFText_2(e.target.value)}
+                                                        onChange={(e) => {setUDFText_2(e.target.value); handleInputChange();}}
                                                         />
                                                 </div>
                                                 </Form.Group>
@@ -2421,7 +2496,7 @@ const InventoryFrom = (props) => {
                                                         className='formControl'
                                                         type="text"
                                                         value={UDFText_3}
-                                                        onChange={(e) => setUDFText_3(e.target.value)}
+                                                        onChange={(e) => {setUDFText_3(e.target.value); handleInputChange();}}
                                                         />
                                                 </div>
                                                 </Form.Group>
@@ -2437,7 +2512,7 @@ const InventoryFrom = (props) => {
                                                         className='formControl'
                                                         type="text"
                                                         value={UDFText_4}
-                                                        onChange={(e) => setUDFText_4(e.target.value)}
+                                                        onChange={(e) => {setUDFText_4(e.target.value); handleInputChange();}}
                                                         />
                                                 </div>
                                                 </Form.Group>
@@ -2453,7 +2528,7 @@ const InventoryFrom = (props) => {
                                                         className='formControl'
                                                         type="text"
                                                         value={UDFText_5}
-                                                        onChange={(e) => setUDFText_5(e.target.value)}
+                                                        onChange={(e) => {setUDFText_5(e.target.value); handleInputChange();}}
                                                         />
                                                 </div>
                                                 </Form.Group>
@@ -2471,7 +2546,7 @@ const InventoryFrom = (props) => {
                                                     as="textarea" 
                                                     rows={15} 
                                                     value={UDFNote1}
-                                                    onChange={(e) => setUDFNote1(e.target.value)}
+                                                    onChange={(e) => {setUDFNote1(e.target.value); handleInputChange();}}
                                                 />
                                                 </div>
                                             </Form.Group>
@@ -2489,7 +2564,7 @@ const InventoryFrom = (props) => {
                                                     className='formControl'
                                                     type="text"
                                                     value={UDFText_6}
-                                                    onChange={(e) => setUDFText_6(e.target.value)}
+                                                    onChange={(e) => {setUDFText_6(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -2506,7 +2581,7 @@ const InventoryFrom = (props) => {
                                                     type="number"  
                                                     placeholder=".0000" 
                                                     value={UDFNumber_1} 
-                                                    onChange={(e) => setUDFNumber_1(e.target.value)}
+                                                    onChange={(e) => {setUDFNumber_1(e.target.value); handleInputChange();}}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -2522,7 +2597,7 @@ const InventoryFrom = (props) => {
                                                 className='formControl'                                         
                                                 type="datetime-local"  
                                                 value={UDFDate_1} 
-                                                onChange={(e) => setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                onChange={(e) => {setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                 />
                                             </div>
                                             </Form.Group>
@@ -2540,7 +2615,7 @@ const InventoryFrom = (props) => {
                                                     className='formControl'
                                                     type="text"
                                                     value={UDFText_7}
-                                                    onChange={(e) => setUDFText_7(e.target.value)}
+                                                    onChange={(e) => {setUDFText_7(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -2557,7 +2632,7 @@ const InventoryFrom = (props) => {
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_2} 
-                                                onChange={(e) => setUDFNumber_2(e.target.value)}
+                                                onChange={(e) => {setUDFNumber_2(e.target.value); handleInputChange();}}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -2573,7 +2648,7 @@ const InventoryFrom = (props) => {
                                                     className='formControl'
                                                     type="datetime-local"
                                                     value={UDFDate_2} 
-                                                    onChange={(e) => setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                    onChange={(e) => {setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 
                                                 />
                                             </div>
                                             </Form.Group>
@@ -2591,7 +2666,7 @@ const InventoryFrom = (props) => {
                                                     className='formControl'
                                                     type="text"
                                                     value={UDFText_8}
-                                                    onChange={(e) => setUDFText_8(e.target.value)}
+                                                    onChange={(e) => {setUDFText_8(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -2608,7 +2683,7 @@ const InventoryFrom = (props) => {
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_3} 
-                                                onChange={(e) => setUDFNumber_3(e.target.value)}
+                                                onChange={(e) => {setUDFNumber_3(e.target.value); handleInputChange();}}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -2624,7 +2699,7 @@ const InventoryFrom = (props) => {
                                                     className='formControl'
                                                     type="datetime-local"
                                                     value={UDFDate_3} 
-                                                    onChange={(e) => setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                    onChange={(e) =>{ setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 
                                                 />
                                             </div>
                                             </Form.Group>
@@ -2642,7 +2717,7 @@ const InventoryFrom = (props) => {
                                                     className='formControl'
                                                     type="text"
                                                     value={UDFText_9}
-                                                    onChange={(e) => setUDFText_9(e.target.value)}
+                                                    onChange={(e) => {setUDFText_9(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -2659,7 +2734,7 @@ const InventoryFrom = (props) => {
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_4} 
-                                                onChange={(e) => setUDFNumber_4(e.target.value)}
+                                                onChange={(e) => {setUDFNumber_4(e.target.value); handleInputChange();}}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -2675,7 +2750,7 @@ const InventoryFrom = (props) => {
                                                     className='formControl'
                                                     type="datetime-local"
                                                     value={UDFDate_4} 
-                                                    onChange={(e) => setUDFDate_4(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                    onChange={(e) => {setUDFDate_4(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                 />
                                             </div>
                                             </Form.Group>
@@ -2693,7 +2768,7 @@ const InventoryFrom = (props) => {
                                                     className='formControl'
                                                     type="text"
                                                     value={UDFText_10}
-                                                    onChange={(e) => setUDFText_10(e.target.value)}
+                                                    onChange={(e) => {setUDFText_10(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -2710,7 +2785,7 @@ const InventoryFrom = (props) => {
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_5} 
-                                                onChange={(e) => setUDFNumber_5(e.target.value)}
+                                                onChange={(e) => {setUDFNumber_5(e.target.value); handleInputChange();}}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -2726,7 +2801,7 @@ const InventoryFrom = (props) => {
                                                     className='formControl'
                                                     type="datetime-local"
                                                     value={UDFDate_5} 
-                                                    onChange={(e) => setUDFDate_5(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                    onChange={(e) => {setUDFDate_5(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 
                                                 />
                                             </div>
                                             </Form.Group>
@@ -2746,11 +2821,14 @@ const InventoryFrom = (props) => {
                                             <label className="col-sm-4 col-form-label down" style={{ fontSize: "13px" }}>
                                                 Account Type:
                                             </label>
-                                            <div className="col-sm-6">
+                                            <div className="col-sm-8">
                                                     <Select  
                                                         isClearable={true}  
                                                         value={selected_AccountType}
-                                                        onChange={setSelected_AccountType}
+                                                        onChange={value => {
+                                                            setSelected_AccountType(value);
+                                                            handleInputChange();
+                                                          }}
                                                         options={AccountType}
                                                         styles={{
                                                             control: (styles, { isDisabled }) => ({
@@ -2778,12 +2856,15 @@ const InventoryFrom = (props) => {
                                             <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                                 Tax Code:
                                             </label>
-                                            <div className="col-sm-6">
+                                            <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={TaxCode}
                                                     value={selected_TaxCode}
-                                                    onChange={setSelected_TaxCode} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_TaxCode(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{
                                                         control: (styles, { isDisabled }) => ({
@@ -2813,8 +2894,8 @@ const InventoryFrom = (props) => {
                                             <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                                 YTD Usage:
                                             </label>
-                                            <div className="col-sm-6">
-                                            <Form.Control className='formControl' type="number" placeholder="0.0000" value={YTDUsage} onChange={(e) => setYTDUsage(e.target.value)} readOnly/>
+                                            <div className="col-sm-8">
+                                            <Form.Control className='formControl' type="number" placeholder="0.0000" value={YTDUsage} onChange={(e) => {setYTDUsage(e.target.value); handleInputChange();}} readOnly/>
                                             </div>
                                             </Form.Group>
                                         </div>
@@ -2824,8 +2905,8 @@ const InventoryFrom = (props) => {
                                             <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                                 Last Year Usage:
                                             </label>
-                                            <div className="col-sm-6">
-                                            <Form.Control className='formControl' type="number" placeholder="0.0000" value={LastYearUsage} onChange={(e) => setLastYearUsage(e.target.value)} readOnly/>
+                                            <div className="col-sm-8">
+                                            <Form.Control className='formControl' type="number" placeholder="0.0000" value={LastYearUsage} onChange={(e) => {setLastYearUsage(e.target.value); handleInputChange();}} readOnly/>
                                             </div>
                                             </Form.Group>
                                         </div>
@@ -2837,8 +2918,8 @@ const InventoryFrom = (props) => {
                                             <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
                                                 YTD Turns:
                                             </label>
-                                            <div className="col-sm-6">
-                                            <Form.Control className='formControl' type="number" placeholder="0.0000" value={YTDTurns} onChange={(e) => setYTDTurns(e.target.value)} readOnly/>
+                                            <div className="col-sm-8">
+                                            <Form.Control className='formControl' type="number" placeholder="0.0000" value={YTDTurns} onChange={(e) => {setYTDTurns(e.target.value); handleInputChange();}} readOnly/>
                                             </div>
                                             </Form.Group>
                                         </div>
@@ -2848,8 +2929,8 @@ const InventoryFrom = (props) => {
                                             <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                                 Last Year Turns:
                                             </label>
-                                            <div className="col-sm-6">
-                                            <Form.Control className='formControl' type="number" placeholder="0.0000" value={LastYearTurns} onChange={(e) => setLastYearTurns(e.target.value)} readOnly/>
+                                            <div className="col-sm-8">
+                                            <Form.Control className='formControl' type="number" placeholder="0.0000" value={LastYearTurns} onChange={(e) => {setLastYearTurns(e.target.value); handleInputChange();}} readOnly/>
                                             </div>
                                             </Form.Group>
                                         </div>
@@ -2861,8 +2942,8 @@ const InventoryFrom = (props) => {
                                             <label className="col-sm-4 col-form-label labelTopEmail down" style={{ fontSize: "13px" }}>
                                                 YTD Stockouts:
                                             </label>
-                                            <div className="col-sm-6">
-                                            <Form.Control className='formControl' type="number" placeholder="0.0000" value={YTDStockouts} onChange={(e) => setYTDStockouts(e.target.value)} readOnly/>
+                                            <div className="col-sm-8">
+                                            <Form.Control className='formControl' type="number" placeholder="0.0000" value={YTDStockouts} onChange={(e) => {setYTDStockouts(e.target.value); handleInputChange();}} readOnly/>
                                             </div>
                                             </Form.Group>
                                         </div>
@@ -2872,8 +2953,8 @@ const InventoryFrom = (props) => {
                                             <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                                 Last Year Stockouts:
                                             </label>
-                                            <div className="col-sm-6">
-                                            <Form.Control className='formControl' type="number" placeholder="0.0000" value={LastYearStockouts} onChange={(e) => setLastYearStockouts(e.target.value)} readOnly/>
+                                            <div className="col-sm-8">
+                                            <Form.Control className='formControl' type="number" placeholder="0.0000" value={LastYearStockouts} onChange={(e) => {setLastYearStockouts(e.target.value); handleInputChange();}} readOnly/>
                                             </div>
                                             </Form.Group>
                                         </div>
@@ -2926,7 +3007,10 @@ const InventoryFrom = (props) => {
                                                                                 name='Average'
                                                                                 value='Average'
                                                                                 checked={radio === 'Average'}
-                                                                                onChange={handleRadioChange}
+                                                                                onChange={value => {
+                                                                                    handleRadioChange(value);
+                                                                                    handleInputChange();
+                                                                                  }}
                                                                             />
                                                                             <i className="input-helper"></i>
                                                                         </label>
@@ -2940,7 +3024,12 @@ const InventoryFrom = (props) => {
                                                                 <Form.Group className="row" controlId="validation_Average1">
                                                                     {radio === 'Average' && (
                                                                     <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={Average} onChange={handleAverageChange} />
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} 
+                                                                        type="number" placeholder="0.0000"
+                                                                         value={Average} onChange={value => {
+                                                                                    handleAverageChange(value);
+                                                                                    handleInputChange();
+                                                                                  }} />
                                                                     </div>
                                                                     )}
 
@@ -2998,7 +3087,10 @@ const InventoryFrom = (props) => {
                                                                                 name='Standard'
                                                                                 value='Standard'
                                                                                 checked={radio === 'Standard'}
-                                                                                onChange={handleRadioChange}
+                                                                                onChange={value => {
+                                                                                    handleRadioChange(value);
+                                                                                    handleInputChange();
+                                                                                  }}
                                                                             />
                                                                             <i className="input-helper"></i>
                                                                         </label>
@@ -3012,7 +3104,11 @@ const InventoryFrom = (props) => {
                                                                 <Form.Group className="row" controlId="validation_Standard1">
                                                                     {radio === 'Standard' && (
                                                                     <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={Standard} onChange={handleStandardChange} />
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" 
+                                                                        value={Standard} onChange={value => {
+                                                                            handleStandardChange(value);
+                                                                            handleInputChange();
+                                                                          }} />
                                                                     </div>
                                                                     )}
 
@@ -3070,7 +3166,10 @@ const InventoryFrom = (props) => {
                                                                                 name='Last'
                                                                                 value='Last'
                                                                                 checked={radio === 'Last'}
-                                                                                onChange={handleRadioChange}
+                                                                                onChange={value => {
+                                                                                    handleRadioChange(value);
+                                                                                    handleInputChange();
+                                                                                  }}
                                                                             />
                                                                             <i className="input-helper"></i>
                                                                         </label>
@@ -3084,7 +3183,11 @@ const InventoryFrom = (props) => {
                                                                 <Form.Group className="row" controlId="validation_Last1">
                                                                     {radio === 'Last' && (
                                                                     <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" value={Last} onChange={handleLastChange} />
+                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" 
+                                                                        value={Last} onChange={value => {
+                                                                            handleLastChange(value);
+                                                                            handleInputChange();
+                                                                          }} />
                                                                     </div>
                                                                     )}
 
@@ -3143,7 +3246,10 @@ const InventoryFrom = (props) => {
                                                                                 name='FIFO'
                                                                                 value='FIFO'
                                                                                 checked={radio === 'FIFO'}
-                                                                                onChange={handleRadioChange}
+                                                                                onChange={value => {
+                                                                                    handleRadioChange(value);
+                                                                                    handleInputChange();
+                                                                                  }}
                                                                             />
                                                                             <i className="input-helper"></i>
                                                                         </label>
@@ -3215,7 +3321,7 @@ const InventoryFrom = (props) => {
 
                                 <Tab eventKey="Location" title={<><i className="mdi mdi-map-marker-radius"></i><span className="d-none d-md-inline"> Location</span></>} class="nav-link active">
                                     
-                                    {/* <InventoryLocation name={'InventoryFrom'}  data={{RowID: location.state.RowID }}/> */}
+                                    <InventoryLocation name={'InventoryFrom'}  data={{RowID: location.state.RowID }}/>
 
                                 </Tab>
 
@@ -3224,7 +3330,7 @@ const InventoryFrom = (props) => {
 
                                 <Tab eventKey="Supplier" title={<><i className="mdi mdi-truck-fast"></i><span className="d-none d-md-inline"> Supplier</span></>} class="nav-link active">
 
-                                    {/* <InventorySupplier name={'InventoryFrom'}  data={{RowID: location.state.RowID }}/> */}
+                                    <InventorySupplier name={'InventoryFrom'}  data={{RowID: location.state.RowID }}/>
 
                                 </Tab>
 
@@ -3268,6 +3374,7 @@ const InventoryFrom = (props) => {
                                 <button
                                 type="button"
                                 className="btn btn-danger btn-icon-text"
+                                onClick={onClickCancel}
                                 >
                                 <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i>{" "}
                                 Cancel

@@ -174,16 +174,16 @@ function Inventory(props) {
           </td>
           <td>{result.itm_mst_mstr_locn}</td>
           <td>{result.itm_mst_costcenter}</td>
-          <td>{result.itm_mst_itm_grp}</td>
-          <td>{result.itm_mst_itm_use}</td>
-          <td>{result.itm_mst_com_code}</td>
           <td>{result.itm_mst_account}</td>
-          <td>{result.itm_mst_ttl_oh}</td>
           <td>{result.itm_mst_desc}</td>
-          <td>{result.itm_mst_ext_desc}</td>
           <td>{result.itm_mst_issue_price}</td>
+          <td>{result.itm_mst_ttl_oh}</td>
           <td>{result.itm_mst_order_rule}</td>
           <td>{result.itm_mst_partno}</td>
+
+          <td>{result.itm_mst_com_code}</td>
+          <td>{result.itm_mst_itm_grp}</td>
+          <td>{result.itm_mst_serialize_counter}</td>
 
           <td>{result.itm_det_issue_uom}</td>
           <td>{result.itm_det_rcv_uom}</td>
