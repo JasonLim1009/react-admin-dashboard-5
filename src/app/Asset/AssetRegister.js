@@ -1,7 +1,10 @@
 
 
-import React,{useState,useEffect} from "react";
-import Table from "../tables/Table";
+    import React,{useState,useEffect} from "react";
+    
+    //import Table from "../tables/Table";
+
+    import Table from "../tables/Table_Old";
 
 
 
@@ -14,10 +17,11 @@ const AssetRegister = (props) => {
    
     return (
         <div>
-            <div className="page-header">
+            <div className="page-header" style={{ marginTop: "10px", marginBottom:"10px" }}>
                 <h3 className="page-title">
                     Asset Register
                 </h3>       
+       
                 {/* <nav aria-label="breadcrumb">
                     <ol className="breadcrumb">
                         <div className="template-demo">

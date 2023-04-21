@@ -14,7 +14,48 @@ import Moment from 'moment';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 import {useTable,useSortBy,usePagination,useRowSelect,useResizeColumns  }  from 'react-table';
+import { Card, Collapse } from 'react-bootstrap';
+
+
 import '../style.css';
+import AssetPmSetup from "../tables/AssetPmSetup";
+import AssetWOHistory from "../tables/AssetWOHistory";
+import AssetRelocationHistory from "../tables/AssetRelocationHistory";
+import AssetCheckList from "../tables/AssetCheckList";
+
+import AssetSpares from "../tables/AssetSpares";
+import AssetUsage from "../tables/AssetUsage";
+import AssetSpecification from "../tables/AssetSpecification";
+import styled from 'styled-components';
+
+
+const StepContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 70px;
+  position: relative;
+  :before {
+    content: '';
+    position: absolute;
+    background: #4694d1;
+    height: 90%;
+    width: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 15px;
+  }
+  :after {
+    content: '';
+    position: absolute;
+    background: #f3e7f3;
+    height: ${({ width }) => width};
+    width: 2px;
+    top: 45%;
+    transition: 0.4s ease;
+    transform: translateY(-50%);
+    left: 14px;
+  }
+`
 
 
 const AssetFrom = (props) => {
@@ -45,6 +86,28 @@ const AssetFrom = (props) => {
     const [Button_save, setButton_save] = useState("");
 
     const [RowID, setRowID] = useState("");
+    const [edited, setEdited] = useState(false);
+
+    const [steps, setsteps] = useState([]);
+    const [StatusShow, setStatusShow] = useState(false);
+    const StatushandleClose = () => setStatusShow(false);
+    const StatushandleShow = () => setStatusShow(true);
+
+    const [PMSetupShow, setPMSetupShow] = useState(false);
+    const PMSetuphandleClose = () => setPMSetupShow(false);
+    const PMSetuphandleShow = () => setPMSetupShow(true);
+
+    const [WOHistoryShow, setWOHistoryShow] = useState(false);
+    const WOHistoryhandleClose = () => setWOHistoryShow(false);
+    const WOHistoryhandleShow = () => setWOHistoryShow(true);
+
+    const [RelocationHistoryShow, setRelocationHistoryShow] = useState(false);
+    const RelocationHistoryhandleClose = () => setRelocationHistoryShow(false);
+    const RelocationHistoryhandleShow = () => setRelocationHistoryShow(true);
+
+    const [CheckListShow, setCheckListShow] = useState(false);
+    const CheckListhandleClose = () => setCheckListShow(false);
+    const CheckListhandleShow = () => setCheckListShow(true);
 
     const [AssetNo, setAssetNo] = useState("");
     const [AssetNo_disabled, setAssetNo_disabled] = useState(false);
@@ -166,38 +229,38 @@ const AssetFrom = (props) => {
     const [UDFText_30, setUDFText_30] = useState("");   
 
 
-    const [UDFNumber_1, setUDFNumber_1] = useState("");
-    const [UDFNumber_2, setUDFNumber_2] = useState("");
-    const [UDFNumber_3, setUDFNumber_3] = useState("");
-    const [UDFNumber_4, setUDFNumber_4] = useState("");
-    const [UDFNumber_5, setUDFNumber_5] = useState("");
-    const [UDFNumber_6, setUDFNumber_6] = useState("");
-    const [UDFNumber_7, setUDFNumber_7] = useState("");
-    const [UDFNumber_8, setUDFNumber_8] = useState("");
-    const [UDFNumber_9, setUDFNumber_9] = useState("");
-    const [UDFNumber_10, setUDFNumber_10] = useState("");
+    const [UDFNumber_1, setUDFNumber_1] = useState("0");
+    const [UDFNumber_2, setUDFNumber_2] = useState("0");
+    const [UDFNumber_3, setUDFNumber_3] = useState("0");
+    const [UDFNumber_4, setUDFNumber_4] = useState("0");
+    const [UDFNumber_5, setUDFNumber_5] = useState("0");
+    const [UDFNumber_6, setUDFNumber_6] = useState("0");
+    const [UDFNumber_7, setUDFNumber_7] = useState("0");
+    const [UDFNumber_8, setUDFNumber_8] = useState("0");
+    const [UDFNumber_9, setUDFNumber_9] = useState("0");
+    const [UDFNumber_10, setUDFNumber_10] = useState("0");
 
-    const [UDFNumber_11, setUDFNumber_11] = useState("");
-    const [UDFNumber_12, setUDFNumber_12] = useState("");
-    const [UDFNumber_13, setUDFNumber_13] = useState("");
-    const [UDFNumber_14, setUDFNumber_14] = useState("");
-    const [UDFNumber_15, setUDFNumber_15] = useState("");
-    const [UDFNumber_16, setUDFNumber_16] = useState("");
-    const [UDFNumber_17, setUDFNumber_17] = useState("");
-    const [UDFNumber_18, setUDFNumber_18] = useState("");
-    const [UDFNumber_19, setUDFNumber_19] = useState("");
-    const [UDFNumber_20, setUDFNumber_20] = useState("");
+    const [UDFNumber_11, setUDFNumber_11] = useState("0");
+    const [UDFNumber_12, setUDFNumber_12] = useState("0");
+    const [UDFNumber_13, setUDFNumber_13] = useState("0");
+    const [UDFNumber_14, setUDFNumber_14] = useState("0");
+    const [UDFNumber_15, setUDFNumber_15] = useState("0");
+    const [UDFNumber_16, setUDFNumber_16] = useState("0");
+    const [UDFNumber_17, setUDFNumber_17] = useState("0");
+    const [UDFNumber_18, setUDFNumber_18] = useState("0");
+    const [UDFNumber_19, setUDFNumber_19] = useState("0");
+    const [UDFNumber_20, setUDFNumber_20] = useState("0");
 
-    const [UDFNumber_21, setUDFNumber_21] = useState("");
-    const [UDFNumber_22, setUDFNumber_22] = useState("");
-    const [UDFNumber_23, setUDFNumber_23] = useState("");
-    const [UDFNumber_24, setUDFNumber_24] = useState("");
-    const [UDFNumber_25, setUDFNumber_25] = useState("");
-    const [UDFNumber_26, setUDFNumber_26] = useState("");
-    const [UDFNumber_27, setUDFNumber_27] = useState("");
-    const [UDFNumber_28, setUDFNumber_28] = useState("");
-    const [UDFNumber_29, setUDFNumber_29] = useState("");
-    const [UDFNumber_30, setUDFNumber_30] = useState("");   
+    const [UDFNumber_21, setUDFNumber_21] = useState("0");
+    const [UDFNumber_22, setUDFNumber_22] = useState("0");
+    const [UDFNumber_23, setUDFNumber_23] = useState("0");
+    const [UDFNumber_24, setUDFNumber_24] = useState("0");
+    const [UDFNumber_25, setUDFNumber_25] = useState("0");
+    const [UDFNumber_26, setUDFNumber_26] = useState("0");
+    const [UDFNumber_27, setUDFNumber_27] = useState("0");
+    const [UDFNumber_28, setUDFNumber_28] = useState("0");
+    const [UDFNumber_29, setUDFNumber_29] = useState("0");
+    const [UDFNumber_30, setUDFNumber_30] = useState("0");   
 
 
     const [UDFDate_1, setUDFDate_1] = useState(new Date());
@@ -234,7 +297,6 @@ const AssetFrom = (props) => {
     const [UDFDate_30, setUDFDate_30] = useState(new Date());
 
 
-
     const [show, setShow] = useState(false);
 
     const [ParentFlag_show, setParentFlag_Show] = useState(false);
@@ -244,7 +306,6 @@ const AssetFrom = (props) => {
 
     const ParentFlag_handleClose = () => setParentFlag_Show(false);
     const  ParentFlag_handleShow = () => setParentFlag_Show(true);
-
 
     const [AutoNumring, setAutoNumring] = useState("");
 
@@ -389,11 +450,10 @@ const AssetFrom = (props) => {
     }
 
 
-
     const get_dropdown_ParentFlag = (site_ID,selected_asset)=>{  
 
 
-        console.log('PARENT FLAG'+ site_ID + selected_asset)
+        console.log('PARENT FLAG: '+ site_ID + " "+ selected_asset)
         
         APIServices.get_dropdown_ParentFlag(site_ID,selected_asset).then((responseJson)=>{
 
@@ -416,7 +476,6 @@ const AssetFrom = (props) => {
                     setButton_save("Update")
                     get_assetmaster_select(site_ID,selected_asset);
                 }
-              
 
 
             }else{
@@ -439,10 +498,8 @@ const AssetFrom = (props) => {
     }
 
 
-
     const get_assetmaster_select = (site_ID,selected_asset)=>{
 
-        
 
         var json ={
 
@@ -466,7 +523,7 @@ const AssetFrom = (props) => {
 
        
 
-        console.log('select Asset',json)
+        console.log('select Asset',JSON.stringify(json))
         
         APIServices.get_assetmaster_select(JSON.stringify(json)).then((responseJson)=>{            
 
@@ -503,19 +560,19 @@ const AssetFrom = (props) => {
                 setAsset_Model( responseJson.data.data[index].ast_det_modelno )
 
                 setAssetCost( responseJson.data.data[index].ast_mst_asset_code )
-                setPurchaseDate( responseJson.data.data[index].ast_det_purchase_date.date )
+                //setPurchaseDate( responseJson.data.data[index].ast_det_purchase_date.date )
                 setResidualValue( responseJson.data.data[index].ast_det_repl_cost )
                 
-                setWarrantyDate(responseJson.data.data[index].ast_det_warranty_date.date)
-                setExpectedLifeDate( responseJson.data.data[index].ast_det_depr_term )
+                //setWarrantyDate(responseJson.data.data[index].ast_det_warranty_date.date)
+                //setExpectedLifeDate( responseJson.data.data[index].ast_det_depr_term )
                 setSelected_CustomerCode( {label:responseJson.data.data[index].ast_det_cus_code +" : "+ responseJson.data.data[index].cus_mst_desc} )
                 setSelected_DepreciationMethod( {label:responseJson.data.data[index].ast_det_depr_method} )
 
-                setDepreciationDate( responseJson.data.data[index].ast_det_depr_date )
+                //setDepreciationDate( responseJson.data.data[index].ast_det_depr_date )
                 setUpdateBy( responseJson.data.data[index].ast_det_depr_by )
                 setAcc_Depreciation( responseJson.data.data[index].ast_det_acc_depr_cost )
                 setNetbookValue( responseJson.data.data[index].ast_det_net_book_value )
-                setDisposalDate( responseJson.data.data[index].ast_det_dispose_date )
+                //setDisposalDate( responseJson.data.data[index].ast_det_dispose_date )
                 setDisposalBy( responseJson.data.data[index].ast_det_dispose_by )
                 setDisposalType( responseJson.data.data[index].ast_det_dispose_type )
                 setDisposalValue( responseJson.data.data[index].ast_det_dispose_value )
@@ -624,8 +681,9 @@ const AssetFrom = (props) => {
     }
 
     
-
     useEffect(() => {
+
+        console.log('EDIT ASSEST NO :' + location.state.ast_mst_asset_no)
 
         let site_ID = localStorage.getItem("site_ID");
     
@@ -662,24 +720,22 @@ const AssetFrom = (props) => {
 
       //console.log(""+":"+name)
 
-      const handleOnChange = () => {
+    const handleOnChange = () => {
         setParentFlag(!ParentFlag);       
-      }; 
+    }; 
 
-
-
-      const handleSelect = ( e) => {
+    const handleSelect = ( e) => {
 
 
         setselected_AssetGroupCode(e)
         handleClose();
         //console.log("lkfklsdj"+":"+e);
         //setSelected({ key, value: event.target.value });
-      };
+    };
 
 
 
-      const onClickChange =()=>{
+    const onClickChange =()=>{
 
 
         console.log(selected_AssetStatus)
@@ -843,11 +899,37 @@ const AssetFrom = (props) => {
           
 
        
-      }
+    }
+
+    const onClickCancel = () => {
+        if (edited) {
+            Swal.fire({
+                title: 'Warning',
+                text: 'You have made some changes. Do you want to update these changes?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+              }).then((result) => {
+                
+                if (result.isConfirmed) {
+                    Update_Asset();
+                }
+
+                window.history.back();
+              });
+
+            } else {
+              window.history.back();
+            }
+    };
+
+    const handleInputChange = () => {
+        setEdited(true);
+    };
 
 
-
-      const New_Asset =()=>{
+    const New_Asset =()=>{
 
         Swal.fire({  title: 'Loading.... !',allowOutsideClick: false})
         Swal.showLoading()
@@ -1167,11 +1249,10 @@ const AssetFrom = (props) => {
           });
 
 
-      }
+    }
 
 
-
-      const Update_Asset =()=>{
+    const Update_Asset =()=>{
 
         Swal.fire({  title: 'Loading.... !',allowOutsideClick: false})
         Swal.showLoading()
@@ -1485,7 +1566,7 @@ const AssetFrom = (props) => {
           });
 
 
-      }
+    }
 
     const {
         getTableProps,
@@ -1517,35 +1598,130 @@ const AssetFrom = (props) => {
 
     
 
+
+
+    // Status Audit PopUp
+    const formatDuration = (duration) => {
+    // const seconds = Math.floor(duration % 60);
+     const minutes = Math.floor((duration % 60));
+     const hours = Math.floor((duration % 1440) / 60);
+     const days = Math.floor(duration / 1440);
+     
+     if (days > 0) {
+       return `${days}d: ${hours}h: ${minutes}m`;
+     } else if (hours > 0) {
+       return `${hours}h: ${minutes}m`;
+     } else if (minutes > 0) {
+       return `${minutes}m`;
+     } else {
+       return "";
+     }
+     // return `${days}d: ${hours}h: ${minutes}m`;
+};
+
+    const getsteps = (site_ID, RowID, ast_aud_asset_no) => {
+
+    Swal.fire({ title: 'Please Wait !', allowOutsideClick: false });
+    Swal.showLoading();
+
+    console.log('--->RowID : ' + location.state.RowID);
+    
+    APIServices.get_assetmaster_statusaudit(site_ID, ast_aud_asset_no, RowID).then((responseJson) => {
+      console.log('get_assetmaster_statusaudit', responseJson.data.data)
+
+      if (responseJson.data.status === 'SUCCESS') {
+
+        console.log('get_assetmaster_statusaudit', responseJson.data.data)
+
+        let Status = responseJson.data.data.map((item, index) => ({
+          label: item.ast_sts_desc,
+          label1: item.ast_aud_status,
+          label2: item.emp_mst_name,
+          label3: item.audit_user,
+          label4: `${new Date(item.ast_aud_start_date.date).toLocaleString("default", {
+            weekday: "short",
+            day: "numeric",
+            month: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+          })}`,
+          label5: formatDuration(item.duration),
+          step: index + 1
+        
+        }));
+        setsteps(Status);
+   
+        Swal.close();
+
+      } else {
+        Swal.close();
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: responseJson.data.message,
+
+        })
+      }
+
+    }).catch((e) => {
+      Swal.close();
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops get_sitecode...',
+        text: e,
+      })
+    });
+};
+
+    useEffect(() => {
+    let site_ID = localStorage.getItem("site_ID");
+  
+    getsteps(site_ID, location.state.RowID, location.state.ast_mst_asset_no);
+    console.log('getsteps here: ', getsteps(site_ID, location.state.RowID, location.state.ast_mst_asset_no));
+}, []);
+
+
+
+const [showList, setShowList] = useState(false);
+
+  const handleToggleList = () => {
+    setShowList(!showList);
+  };
+
+
+
+
   return (   
 
     <div>
-        <div className="page-header">
-
+        <div className="page-header" style={{ marginTop: "-10px", marginBottom:"10px" }}>
             <h3 className="page-title">
                 Asset Master
             </h3>     
 
             <nav aria-label="breadcrumb">
-                <ol className="breadcrumb">
-                    <div className="template-demo">
+                {/* <ol className="breadcrumb"></ol> */}
+                <div className="template-demo">
 
-                        <button type="button" className="btn btn-success btn-icon-text" onClick={onClickChange}>
-                            <i className="mdi mdi-file-check btn-icon-prepend" ></i>  {Button_save}
-                        </button>
+                    <button type="button" className="btn btn-success btn-icon-text" onClick={onClickChange}>
+                        <i className="mdi mdi-file-check btn-icon-prepend" ></i>  {Button_save}
+                    </button>
 
-                        <button type="button" className="btn btn-danger btn-icon-text">
-                            <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i> Cancel 
-                        </button>
-                    
-                    </div>
-                </ol>
+                    <button type="button" className="btn btn-danger btn-icon-text" onClick={onClickCancel}>
+                        <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i> Cancel 
+                    </button>
+                
+                </div>
+            
             </nav>       
             
         </div> 
 
         <div className="col-12 grid-margin">
-            <div className="card">
+            <div className="card" style={{marginLeft: "-15px", marginRight: "-15px"}}>
               <div className="card-body"> 
                 <form className="form-sample" validated={validated}>  
 
@@ -1572,7 +1748,7 @@ const AssetFrom = (props) => {
 
                                             // setParentFlag(user),
 
-                                            <li key={user.label } className="user" onClick={()=>handleSelect(user.label +" : "+ user.value)}  >
+                                            <li key={user.label } className="user" onClick={()=>{handleSelect(user.label +" : "+ user.value); handleInputChange();}}  >
                                             <span className="user-id">{user.label}</span>
                                             <span className="user-name">{user.value}</span> 
 
@@ -1651,7 +1827,7 @@ const AssetFrom = (props) => {
                                             {rows.map(row => {
                                             prepareRow(row)
                                             return (
-                                                <tr {...row.getRowProps()} onClick={() => handleRowClick(row.original)}>
+                                                <tr {...row.getRowProps()} onClick={() => {handleRowClick(row.original); handleInputChange();}}>
                                                 {row.cells.map(cell => {
                                                     return (
                                                     <>
@@ -1688,36 +1864,135 @@ const AssetFrom = (props) => {
 
                         </Modal>
 
-
                     </div> 
 
                     <div className="row">
 
                         <div className="col-md-10">
 
+                            
+                            {/******************** Asset Status ********************/}
+                            <div>
+                                <Modal show={StatusShow} onHide={StatushandleClose} centered size="xl">
+
+                                    <Modal.Header closeButton>
+                                         {/************* * {location.state.ast_mst_asset_no} * ************/}
+                                        <Modal.Title>Status Audit</Modal.Title>
+                                    </Modal.Header>
+
+                                    <Modal.Body>
+                                            <Form.Group className="row StatusAuditPopUp-sm" controlId="validation_StatusAudit">
+                                                
+                                            <div style={{ width: "100%", maxWidth: "600px" , marginLeft: "110px" , marginTop: "-30px" }}>
+                                            <StepContainer>
+                                            {steps.map(({ step, label, label1, label2, label3, label4, label5 }) => (
+                                                <div key={step} style={{ position: "relative", zIndex: 1 }}>
+                                                <div style={{ fontSize: "11px", color: "grey", position: 'absolute', left: '-81px', top: '45px', width: '80px', height: '20px', borderRadius: '5%', textAlign: 'right' }}>{label5}</div>
+                                                  <div step={step} style={{ width: '30px', height: '30px', borderRadius: '50%', backgroundColor: '#4694d1', border: `3px solid ${step === 'completed' ? '#0080FF' : '#F3E7F3'}`, transition: '0.4s ease', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                      <div style={{ fontSize: "15px", color: "#f3e7f3" }}>{step}</div>
+                                                  </div>
+                      
+                                                  <div style={{ position: 'relative', bottom: '30px', textAlign: 'left', left: '50px' }}>
+                                                    <div key={step} style={{ fontSize: "15px", color: "#4a154b" }}>{label} ({label1})</div>
+                                                  </div>
+                      
+                                                  <div style={{ position: 'relative', bottom: '30px', textAlign: 'left', left: '50px' }}>
+                                                    <div key={step} style={{ fontSize: "11px", color: "grey" }}>Status Update By: {label2} ({label3})</div>
+                                                  </div>
+                      
+                                                  <div style={{ position: 'relative', bottom: '30px', textAlign: 'left', left: '50px' }}>
+                                                    <div key={step} style={{ fontSize: "11px", color: "grey" }}>On Start Date: {label4}</div>
+                                                  </div>
+                                                  
+                                              </div>
+                                            ))}
+                                            </StepContainer>
+                                            </div>
+                                                     
+                                            </Form.Group>
+                                    </Modal.Body>
+                                </Modal>
+
+                            </div> 
+
+                            {/******************** PM Setup ********************/}
+                            <div>
+                                <Modal show={PMSetupShow} onHide={PMSetuphandleClose} centered size="xl">
+
+                                    <AssetPmSetup name={'AssetFrom'} data={{RowID: location.state.RowID }}/>
+
+                                </Modal>
+                            </div> 
+
+                            {/******************** WO History ********************/}
+                            <div>
+                                <Modal show={WOHistoryShow} onHide={WOHistoryhandleClose} centered size="xl">
+
+                                    <AssetWOHistory name={'AssetFrom'} data={{RowID: location.state.RowID }}/>
+
+                                </Modal>
+                            </div>
+
+                            {/******************** Relocation History ********************/}
+                            <div>
+                                <Modal show={RelocationHistoryShow} onHide={RelocationHistoryhandleClose} centered size="xl">
+
+                                    <AssetRelocationHistory name={'AssetFrom'} data={{RowID: location.state.RowID }}/>
+
+                                </Modal>
+                            </div>
+
+                                {/******************** Check List ********************/}
+                                <div>
+                                <Modal show={CheckListShow} onHide={CheckListhandleClose} centered size="xl">
+
+                                    <AssetCheckList name={'AssetFrom'} data={{RowID: location.state.RowID }}/>
+
+                                </Modal>
+                            </div>
+
                             <div className="row">
 
                                 <div className="col-md-6">
                                     <Form.Group className="row" controlId="validation_AssetNo">
-                                        <label className="col-sm-3 col-form-label down" style={{ fontSize: "13px" }}>Asset No:<span style={{color: "red"}} class="required-asterisk">* </span></label>
-                                        <div className="col-sm-9">
-                                            <Form.Control className='formControl' type="text" value={AssetNo} onChange={(e) => setAssetNo(e.target.value)}  disabled={AssetNo_disabled}/>
+                                        <label className="col-sm-4 col-form-label down" style={{ fontSize: "13px" }}>Asset No:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                        <div className="col-sm-7 StatusBox-md StatusBox-sm">
+                                            <Form.Control className='formControl' type="text" value={AssetNo} onChange={(e) => {setAssetNo(e.target.value); handleInputChange();}}  disabled={AssetNo_disabled}/>
                                         </div>
+                                        <i type="button" 
+                                        title='Asset History'
+                                        className="mdi mdi-dots-vertical StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm" 
+                                        onClick={handleToggleList}
+                                        ></i>
                                     </Form.Group>
+                                    <Collapse in={showList}>
+                                        <Card className="float-left dotslist dotslist-md dotslist-sm">
+                                        {/* <Card.Header className="p-1" style={{ fontSize: "14px" }}><i className='mdi mdi-settings'></i> Hide Block Settings</Card.Header> */}
+                                        <Card.Body className="p-2">
+                                            <div className='AstIcon'><label type="button" className='DotslistIconDown' onClick={PMSetuphandleShow}><i className='mdi mdi-clock'></i> PM Setup</label></div>
+                                            <div className='AstIcon'><label type="button" className='DotslistIconDown' onClick={WOHistoryhandleShow}><i className='mdi mdi-checkbox-multiple-blank'></i> WO History</label></div>
+                                            <div className='AstIcon'><label type="button" className='DotslistIconDown' onClick={RelocationHistoryhandleShow}><i className='mdi mdi-table'></i> Relocation History</label></div>
+                                            <div className='AstIcon'><label type="button" className='DotslistIconDown' onClick={CheckListhandleShow}><i className='mdi mdi-format-list-bulleted'></i> Check list</label></div>
+                                        </Card.Body>
+                                        </Card>
+                                    </Collapse>
                                 </div>
 
 
-                                <div className="col-md-6">
+                                <div className="col-md-6 moveUp-md moveUp-sm">
                                     <Form.Group className="row" controlId="validation_AssetStatus">
-                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Asset Status:<span style={{color: "red"}} class="required-asterisk">* </span></label>
-                                        <div className="col-sm-9">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Asset Status:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                        <div className="col-sm-7 StatusBox-md StatusBox-sm">
                                             <Select  
                                                 isClearable={true}  
                                                 options={AssetStatus}
                                                 //getOptionLabel={(option) => option.label}
                                                 //getOptionValue={(option) => option.value}
                                                 value={selected_AssetStatus}
-                                                onChange={setSelected_AssetStatus} // using id as it is unique
+                                                onChange={value => {
+                                                    setSelected_AssetStatus(value);
+                                                    handleInputChange();
+                                                  }} // using id as it is unique
                                                 required
                                                 styles={{
                                                     control: (styles, { isDisabled }) => ({
@@ -1737,81 +2012,90 @@ const AssetFrom = (props) => {
                                                 }}
                                             />
                                         </div>
+                                        <i type="button" 
+                                        title='Status Audit'
+                                        className="mdi mdi-information-outline StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm" 
+                                        onClick={StatushandleShow}
+                                        ></i>
                                     </Form.Group>                        
                                 </div>
 
                                 
                             </div>
 
-                            <div className="row moveUp">
+                            <div className="row moveUp moveUp-md">
 
                                 <div className="col-md-6">
                                     <Form.Group className="row" controlId="validation_ShortDesc">                                  
-                                        <Form.Label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Short Description:<span style={{color: "red"}} class="required-asterisk">* </span></Form.Label>
-                                        <div className="col-sm-9">
-                                        <Form.Control as="textarea" rows={6} value={ShortDesc} onChange={(e) => setShortDesc(e.target.value)}/>
+                                        <Form.Label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Short Description:<span style={{color: "red"}} class="required-asterisk">* </span></Form.Label>
+                                        <div className="col-sm-8">
+                                        <Form.Control as="textarea" rows={5} value={ShortDesc} onChange={(e) => {setShortDesc(e.target.value); handleInputChange();}}/>
                                         <Form.Control.Feedback type="invalid">Please provide Short Description </Form.Control.Feedback>
                                         </div>
                                         
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-6">
-                                    <Form.Group className="row" controlId="validation_AssetNo">
-                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Critical Factor:<span style={{color: "red"}} class="required-asterisk">* </span></label>
-                                        <div className="col-sm-9">
-                                            <Select
-                                                isClearable={true}       
-                                                //isMulti                        
-                                                value={selected_CriticalFactor}
-                                                onChange={setSelected_CriticalFactor}
-                                                options={CriticalFactor}
-                                                required
-                                                styles={{
-                                                    control: (styles, { isDisabled }) => ({
-                                                    ...styles,
-                                                    backgroundColor: isDisabled ? '#E9ECEF' : 'white',
-                                                    color: isDisabled ? 'black' : 'inherit',
-                                                    fontSize: '12px', minHeight:'30px',height: "34px"
-                                                    }),
-                                                    singleValue: (styles, { isDisabled }) => ({
-                                                    ...styles,
-                                                    color: isDisabled ? '#495057' : 'inherit',
-                                                    fontSize: '12px', paddingLeft:'2px'
-                                                    }),
-                                                    menuList: (styles) => ({ ...styles, fontSize: '12px' }),
-                                                    dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
-                                                    noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
-                                                }}
-                                            />
-                                        </div>
-                                    </Form.Group>
+                                <div className='col'>
+                                    <div className="col-md-13 moveUpNote-md moveUp-sm">
+                                        <Form.Group className="row" controlId="validation_AssetNo">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Critical Factor:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                            <div className="col-sm-8">
+                                                <Select
+                                                    isClearable={true}       
+                                                    //isMulti                        
+                                                    value={selected_CriticalFactor}
+                                                    onChange={value => {
+                                                        setSelected_CriticalFactor(value);
+                                                        handleInputChange();
+                                                      }}
+                                                    options={CriticalFactor}
+                                                    required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-13 moveUp moveUp-sm">
+                                        <Form.Group className="row" controlId="validation_PermanentID">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Permanent ID:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control type="text" className='formControl' value={PermanentID} onChange={(e) => {setPermanentID(e.target.value); handleInputChange();}} />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
                                 </div>
-                                
                             </div>
 
-                            <div className="row emailMoveUp">
+                            <div className="row moveUpLongDesc moveUp-md">
 
-                                <div className="col-md-6">                                
+                                <div className="col-md-12">                                
                                     <Form.Group className="row" controlId="validation_LongDesc">
-                                        <Form.Label className="col-sm-3 col-form-label labelTopEmail down" style={{ fontSize: "13px" }}>Long Description:</Form.Label>
-                                        <div className="col-sm-9">
-                                        <Form.Control as="textarea" rows={6} value={LongDesc} onChange={(e) => setLongDesc(e.target.value)}/>
+                                        <Form.Label className="col-sm-2 col-form-label labelTop down" style={{ fontSize: "13px" }}>Long Description:</Form.Label>
+                                        <div className="col-sm-10 EmpleftRemark-md Empleft-ms">
+                                        <Form.Control className='formControlBox' as="textarea" rows={6} value={LongDesc} onChange={(e) => {setLongDesc(e.target.value); handleInputChange();}}/>
                                         </div>
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-6">
-                                    <Form.Group className="row" controlId="validation_PermanentID">
-                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Permanent ID</label>
-                                        <div className="col-sm-9">
-                                            <Form.Control type="text" className='formControl' value={PermanentID} onChange={(e) => setPermanentID(e.target.value)} />
-                                        </div>
-                                    </Form.Group>
-                                </div>
-                                
                             </div>
-
+                            
                         </div>
 
                     {/* ************************************* img ******************************************* */}
@@ -1828,22 +2112,21 @@ const AssetFrom = (props) => {
                                     infinite
                                     touchTracking={false}
                                     disableDotsControls
-                                    
                                    >
                                     <img src={require("../../assets/images/product_images_2/thumb_image1.jpg")} className="sliderimg" alt=""/>
                                     <img src={require("../../assets/images/product_images_2/thumb_image2.jpg")} className="sliderimg" alt=""/>
                                     <img src={require("../../assets/images/product_images_2/thumb_image3.jpg")} className="sliderimg" alt=""/>
                                     <img src={require("../../assets/images/product_images_2/thumb_image4.jpg")} className="sliderimg" alt=""/>
-                                    <img src={require("../../assets/images/product_images_2/thumb_image5.jpg")} className="sliderimg" alt=""/>
+                                    {/* <img src={require("../../assets/images/product_images_2/thumb_image5.jpg")} className="sliderimg" alt=""/>
                                     <img src={require("../../assets/images/product_images_2/thumb_image6.jpg")} className="sliderimg" alt=""/>
                                     <img src={require("../../assets/images/product_images_2/thumb_image7.jpg")} className="sliderimg" alt=""/>
                                     <img src={require("../../assets/images/product_images_2/thumb_image8.jpg")} className="sliderimg" alt=""/>                                    
                                     <img src={require("../../assets/images/product_images_2/thumb_image9.jpg")} className="sliderimg" alt=""/>
                                     <img src={require("../../assets/images/product_images_2/thumb_image10.jpg")} className="sliderimg" alt=""/>
                                     <img src={require("../../assets/images/product_images_2/thumb_image11.jpg")} className="sliderimg" alt=""/>
-                                    <img src={require("../../assets/images/product_images_2/thumb_image12.jpg")} className="sliderimg" alt=""/>
+                                    <img src={require("../../assets/images/product_images_2/thumb_image12.jpg")} className="sliderimg" alt=""/> */}
                                     
-                                    </AliceCarousel>
+                                </AliceCarousel>
                                     
                             </div>
 
@@ -1864,13 +2147,16 @@ const AssetFrom = (props) => {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label down" style={{ fontSize: "13px" }}>Asset Type:<span style={{color: "red"}} class="required-asterisk">* </span></label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label down" style={{ fontSize: "13px" }}>Asset Type:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                            <div className="col-sm-8">
                                             <Select
                                                 isClearable={true}       
                                                 // isMulti                        
                                                 value={selected_AssetType}
-                                                onChange={setSelected_AssetType}
+                                                onChange={value => {
+                                                    setSelected_AssetType(value);
+                                                    handleInputChange();
+                                                  }}
                                                 options={AssetType}
                                                 required
                                                 styles={{
@@ -1894,15 +2180,18 @@ const AssetFrom = (props) => {
                                             </div>
                                         </Form.Group>
                                     </div>
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Work Area:<span style={{color: "red"}} class="required-asterisk">* </span></label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Work Area:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                            <div className="col-sm-8">
                                                 <Select                                                
                                                     isClearable={true}       
                                                     //isMulti                        
                                                     value={selected_WorkArea}
-                                                    onChange={setSelected_WorkArea}
+                                                    onChange={value => {
+                                                        setSelected_WorkArea(value);
+                                                        handleInputChange();
+                                                      }}
                                                     options={WorkArea}
                                                     required
                                                     styles={{
@@ -1931,13 +2220,16 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-6">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Asset Code:<span style={{color: "red"}} class="required-asterisk">* </span></label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Asset Code:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                            <div className="col-sm-8">
                                             <Select
                                                 isClearable={true}       
                                                 //isMulti                        
                                                 value={selected_Assetcode}
-                                                onChange={setSelected_Assetcode}
+                                                onChange={value => {
+                                                    setSelected_Assetcode(value);
+                                                    handleInputChange();
+                                                  }}
                                                 options={Assetcode}
                                                 required
                                                 styles={{
@@ -1961,15 +2253,18 @@ const AssetFrom = (props) => {
                                         </Form.Group>
                                     </div>  
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                                <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Asset Location:<span style={{color: "red"}} class="required-asterisk">* </span></label>
-                                                <div className="col-sm-9">
+                                                <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Asset Location:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                                <div className="col-sm-8">
                                                 <Select
                                                     isClearable={true}       
                                                     //isMulti                        
                                                     value={selected_AssetLocation}
-                                                    onChange={setSelected_AssetLocation}
+                                                    onChange={value => {
+                                                        setSelected_AssetLocation(value);
+                                                        handleInputChange();
+                                                      }}
                                                     options={AssetLocation}
                                                     required
                                                     styles={{
@@ -1998,22 +2293,25 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-6">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}><span style={{color: "red"}} class="required-asterisk">* </span>Asset Group Code:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Asset Group Code:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                            <div className="col-sm-8">
                                             <Form.Control className='formControl' type="select" placeholder="Search Here"  value={selected_AssetGroupCode} onClick={handleShow} />
                                             </div>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}><span style={{color: "red"}} class="required-asterisk">* </span>Level:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Level:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                            <div className="col-sm-8">
                                                 <Select
                                                     isClearable={true}       
                                                     //isMulti                        
                                                     value={selected_AssetLevel}
-                                                    onChange={setSelected_AssetLevel}
+                                                    onChange={value => {
+                                                        setSelected_AssetLevel(value);
+                                                        handleInputChange();
+                                                      }}
                                                     options={AssetLevel}
                                                     required
                                                     styles={{
@@ -2042,14 +2340,17 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-6">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}><span style={{color: "red"}} class="required-asterisk">* </span>Cost Center:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Cost Center:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                            <div className="col-sm-8">
                                                 <Select
                                                     
                                                     isClearable={true}       
                                                     //isMulti                        
                                                     value={selected_CostCenter}
-                                                    onChange={setSelected_CostCenter}
+                                                    onChange={value => {
+                                                        setSelected_CostCenter(value);
+                                                        handleInputChange();
+                                                      }}
                                                     options={CostCenter}
                                                     required
                                                     styles={{
@@ -2073,15 +2374,18 @@ const AssetFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}><span style={{color: "red"}} class="required-asterisk">* </span>Work Group:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Work Group:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                            <div className="col-sm-8">
                                             <Select
                                             isClearable={true}       
                                             //isMulti                        
                                             value={selected_WorkGroup}
-                                            onChange={setSelected_WorkGroup}
+                                            onChange={value => {
+                                                setSelected_WorkGroup(value);
+                                                handleInputChange();
+                                              }}
                                             options={WorkGroup}
                                             required
                                                     styles={{
@@ -2114,7 +2418,10 @@ const AssetFrom = (props) => {
                                                 <input type="checkbox" 
                                                 className="form-check-input"
                                                 checked={ParentFlag}
-                                                onChange={handleOnChange}
+                                                onChange={value => {
+                                                    handleOnChange(value);
+                                                    handleInputChange();
+                                                  }}
                                                 />
                                                 <i className="input-helper"></i>
                                             </label>
@@ -2123,18 +2430,18 @@ const AssetFrom = (props) => {
 
                                     <div className="col-md-5">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label down" style={{ fontSize: "13px" }}>Parent Flage:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label down" style={{ fontSize: "13px" }}>Parent Flage:</label>
+                                            <div className="col-sm-8">
                                                 <Form.Control className='formControl' type="text"  value={selected_ParentFlag} disabled ={ParentFlag} onClick={ParentFlag_handleShow}/>
                                             </div>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Parent ID:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={PerentID} onChange={(e) => setPerentID(e.target.value)} />
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Parent ID:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={PerentID} onChange={(e) => {setPerentID(e.target.value); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>
@@ -2143,18 +2450,18 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-6">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Safety Requirement:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={SafetyRequirement} onChange={(e) => setSafetyRequirement(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Safety Requirement:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={SafetyRequirement} onChange={(e) => {setSafetyRequirement(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Barcode Print Count:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" placeholder="0" value={BarCode_Print_count} onChange={(e) => setBarCode_Print_count(e.target.value)} readOnly/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Barcode Print Count:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" placeholder="0" value={BarCode_Print_count} onChange={(e) => {setBarCode_Print_count(e.target.value); handleInputChange();}} readOnly/>
                                             </div>
                                         </Form.Group>
                                     </div>
@@ -2163,18 +2470,18 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-6">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Manufacturer:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={Manufacturer} onChange={(e) => setManufacturer(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Manufacturer:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={Manufacturer} onChange={(e) => {setManufacturer(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Model:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={Asset_Model} onChange={(e) => setAsset_Model(e.target.value)} />
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Model:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={Asset_Model} onChange={(e) => {setAsset_Model(e.target.value); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>
@@ -2190,22 +2497,22 @@ const AssetFrom = (props) => {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label down" style={{ fontSize: "13px" }}>Asset Cost:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number" placeholder=".000"  value={AssetCost} onChange={(e) => setAssetCost(e.target.value)} />
+                                            <label className="col-sm-4 col-form-label down" style={{ fontSize: "13px" }}>Asset Cost:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number" placeholder=".000"  value={AssetCost} onChange={(e) =>{ setAssetCost(e.target.value); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Purchase Date:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Purchase Date:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control       
                                                 className='formControl'                                     
                                                 type="datetime-local"
                                                 value={PurchaseDate}                                          
-                                                onChange={(e) => setPurchaseDate(e.target.value)}  />
+                                                onChange={(e) => {setPurchaseDate(e.target.value); handleInputChange();}}  />
                                             </div>
                                         </Form.Group>
                                     </div>
@@ -2214,22 +2521,22 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-6">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Residual Value:</label>
-                                            <div className="col-sm-9">
-                                            <Form.Control className='formControl' type="number" placeholder="1.0" step="0.01" min="0" max="10" value={ResidualValue} onChange={(e) => setResidualValue(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Residual Value:</label>
+                                            <div className="col-sm-8">
+                                            <Form.Control className='formControl' type="number" placeholder="1.0" step="0.01" min="0" max="10" value={ResidualValue} onChange={(e) => {setResidualValue(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Warranty End Date:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Warranty End Date:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control           
                                                 className='formControl'                                 
                                                 type="datetime-local"  
                                                 value={WarrantyDate} 
-                                                onChange={(e) => setWarrantyDate(e.target.value)}                                          
+                                                onChange={(e) => {setWarrantyDate(e.target.value); handleInputChange();}}                                          
                                                 />
                                             </div>
                                         </Form.Group>
@@ -2240,12 +2547,12 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-6">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Expected Life (Year):</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Expected Life (Year):</label>
+                                            <div className="col-sm-8">
                                             <DatePicker 
                                                 className='formControlExpectedLifeDate'  
                                                 selected={ExpectedLifeDate}
-                                                onChange={date => setExpectedLifeDate(date)} 
+                                                onChange={date => {setExpectedLifeDate(date); handleInputChange();}} 
                                                 showYearPicker
                                                 dateFormat="yyyy"
                                                 />
@@ -2253,16 +2560,19 @@ const AssetFrom = (props) => {
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Customer Code:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Customer Code:</label>
+                                            <div className="col-sm-8">
                                                 <Select
                                             
                                                     isClearable={true}       
                                                     //isMulti                        
                                                     value={selected_CustomerCode}
-                                                    onChange={setSelected_CustomerCode}
+                                                    onChange={value => {
+                                                        setSelected_CustomerCode(value);
+                                                        handleInputChange();
+                                                      }}
                                                     options={CustomerCode}
                                                     required
                                                     styles={{
@@ -2291,12 +2601,15 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-6">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Depreciation Method:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Depreciation Method:</label>
+                                            <div className="col-sm-8">
                                             <Select
                                             isClearable={true}  
                                             value={selected_DepreciationMethod}
-                                            onChange={setSelected_DepreciationMethod}
+                                            onChange={value => {
+                                                setSelected_DepreciationMethod(value);
+                                                handleInputChange();
+                                              }}
                                             options={DepreciationMethod}
                                             required
                                             styles={{
@@ -2331,38 +2644,18 @@ const AssetFrom = (props) => {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label down" style={{ fontSize: "13px" }}>Depreciation Date:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={DepreciationDate} onChange={(e) => setDepreciationDate(e.target.value)} readOnly/>
+                                            <label className="col-sm-4 col-form-label down" style={{ fontSize: "13px" }}>Depreciation Date:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={DepreciationDate} onChange={(e) => {setDepreciationDate(e.target.value); handleInputChange();}} readOnly/>
                                             </div>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Updated By:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UpdateBy} onChange={(e) => setUpdateBy(e.target.value)}  readOnly/>
-                                            </div>
-                                        </Form.Group>
-                                    </div>
-                                </div>
-
-                                <div className="row moveUp">
-                                    <div className="col-md-6">
-                                        <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Acc.Depreciation:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={Acc_Depreciation} onChange={(e) => setAcc_Depreciation(e.target.value)} readOnly/>
-                                            </div>
-                                        </Form.Group>
-                                    </div>
-
-                                    <div className="col-md-6">
-                                        <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Netbook Value:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text"value={NetbookValue} onChange={(e) => setNetbookValue(e.target.value)} readOnly/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Updated By:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UpdateBy} onChange={(e) => {setUpdateBy(e.target.value); handleInputChange();}}  readOnly/>
                                             </div>
                                         </Form.Group>
                                     </div>
@@ -2371,18 +2664,38 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-6">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Disposal Date:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={DisposalDate} onChange={(e) => setDisposalDate(e.target.value)} readOnly/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Acc.Depreciation:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={Acc_Depreciation} onChange={(e) => {setAcc_Depreciation(e.target.value); handleInputChange();}} readOnly/>
                                             </div>
                                         </Form.Group>
                                     </div>
 
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
+                                        <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Netbook Value:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text"value={NetbookValue} onChange={(e) => {setNetbookValue(e.target.value); handleInputChange();}} readOnly/>
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                                <div className="row moveUp moveUp-md moveUp-sm">
                                     <div className="col-md-6">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Disposal By:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={DisposalBy} onChange={(e) => setDisposalBy(e.target.value)} readOnly/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Disposal Date:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={DisposalDate} onChange={(e) => {setDisposalDate(e.target.value); handleInputChange();}} readOnly/>
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
+                                        <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Disposal By:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={DisposalBy} onChange={(e) => {setDisposalBy(e.target.value); handleInputChange();}} readOnly/>
                                             </div>
                                         </Form.Group>
                                     </div>
@@ -2391,18 +2704,18 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-6">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Disposal type:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={DisposalType} onChange={(e) => setDisposalType(e.target.value)} readOnly/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Disposal type:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={DisposalType} onChange={(e) => {setDisposalType(e.target.value); handleInputChange();}} readOnly/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Disposal Value:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={DisposalValue} onChange={(e) => setDisposalValue(e.target.value)} readOnly />
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Disposal Value:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={DisposalValue} onChange={(e) => {setDisposalValue(e.target.value); handleInputChange();}} readOnly />
                                             </div>
                                         </Form.Group>
                                     </div>                             
@@ -2418,17 +2731,17 @@ const AssetFrom = (props) => {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label down" style={{ fontSize: "13px" }}>Labour Cost:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label down" style={{ fontSize: "13px" }}>Labour Cost:</label>
+                                            <div className="col-sm-8">
                                                 <Form.Control className='formControl' type="text" readOnly/>
                                             </div>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Material Cost:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Material Cost:</label>
+                                            <div className="col-sm-8">
                                                 <Form.Control className='formControl' type="text" readOnly/>
                                             </div>
                                         </Form.Group>
@@ -2438,17 +2751,17 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-6">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Contract Cost:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Contract Cost:</label>
+                                            <div className="col-sm-8">
                                                 <Form.Control className='formControl' type="text"  readOnly/>
                                             </div>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Total:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Total:</label>
+                                            <div className="col-sm-8">
                                                 <Form.Control className='formControl' type="text" readOnly/>
                                             </div>
                                         </Form.Group>
@@ -2462,32 +2775,32 @@ const AssetFrom = (props) => {
                                 <div className="row">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text1:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text"  value={UDFText_1} onChange={(e) => setUDFText_1(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label down" style={{ fontSize: "12px" }}>UDF Text1:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text"  value={UDFText_1} onChange={(e) => {setUDFText_1(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric1:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number" value={UDFNumber_1} onChange={(e) => setUDFNumber_1(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric1:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number" value={UDFNumber_1} onChange={(e) => {setUDFNumber_1(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date1:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date1:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control 
                                                 className='formControl'   
                                                 type="datetime-local"   
                                                 selected={UDFDate_1} 
-                                                onChange={date => setUDFDate_1(date)} 
+                                                onChange={date => {setUDFDate_1(date); handleInputChange();}} 
                                             />
                                             </div>
                                         </Form.Group>
@@ -2498,32 +2811,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text2:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_2} onChange={(e) => setUDFText_2(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text2:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_2} onChange={(e) => {setUDFText_2(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric2:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number" value={UDFNumber_2} onChange={(e) => setUDFNumber_2(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric2:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number" value={UDFNumber_2} onChange={(e) => {setUDFNumber_2(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date2:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date2:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control     
                                                 className='formControl'                                        
                                                 type="datetime-local"  
                                                 selected={UDFDate_2} 
-                                                onChange={date => setUDFDate_2(date)} />
+                                                onChange={date => {setUDFDate_2(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -2533,32 +2846,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text3:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl'  type="text" value={UDFText_3} onChange={(e) => setUDFText_3(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text3:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl'  type="text" value={UDFText_3} onChange={(e) => {setUDFText_3(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric3:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl'  type="number" value={UDFNumber_3} onChange={(e) => setUDFNumber_3(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric3:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl'  type="number" value={UDFNumber_3} onChange={(e) => {setUDFNumber_3(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date3:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date3:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control     
                                                 className='formControl'                                        
                                                 type="datetime-local"  
                                                 selected={UDFDate_3} 
-                                                onChange={date => setUDFDate_3(date)} />
+                                                onChange={date => {setUDFDate_3(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -2568,32 +2881,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text4:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl'  type="text" value={UDFText_4} onChange={(e) => setUDFText_4(e.target.value)} />
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text4:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl'  type="text" value={UDFText_4} onChange={(e) => {setUDFText_4(e.target.value); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric4:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl'  type="number" value={UDFNumber_4} onChange={(e) => setUDFNumber_4(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric4:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl'  type="number" value={UDFNumber_4} onChange={(e) => {setUDFNumber_4(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date4:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date4:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control     
                                                 className='formControl'                                        
                                                 type="datetime-local"   
                                                 selected={UDFDate_4} 
-                                                onChange={date => setUDFDate_4(date)} />
+                                                onChange={date => {setUDFDate_4(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -2603,32 +2916,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text5:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl'  type="text" value={UDFText_5} onChange={(e) => setUDFText_5(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text5:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl'  type="text" value={UDFText_5} onChange={(e) => {setUDFText_5(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric5:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl'  type="number" value={UDFNumber_5} onChange={(e) => setUDFNumber_5(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric5:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl'  type="number" value={UDFNumber_5} onChange={(e) => {setUDFNumber_5(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date5:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date5:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control  
                                                 className='formControl'                                           
                                                 type="datetime-local"  
                                                 selected={UDFDate_5} 
-                                                onChange={date => setUDFDate_5(date)} />
+                                                onChange={date => {setUDFDate_5(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -2638,32 +2951,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text6:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl'  type="text" value={UDFText_6} onChange={(e) => setUDFText_6(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text6:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl'  type="text" value={UDFText_6} onChange={(e) => {setUDFText_6(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric6:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl'  type="number" value={UDFNumber_6} onChange={(e) => setUDFNumber_6(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric6:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl'  type="number" value={UDFNumber_6} onChange={(e) => {setUDFNumber_6(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date6:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date6:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control 
                                                 className='formControl'                                            
                                                 type="datetime-local"  
                                                 selected={UDFDate_6} 
-                                                onChange={date => setUDFDate_6(date)} />
+                                                onChange={date => {setUDFDate_6(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -2673,32 +2986,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text7:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl'  type="text" value={UDFText_7} onChange={(e) => setUDFText_7(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text7:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl'  type="text" value={UDFText_7} onChange={(e) => {setUDFText_7(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric7:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl'  type="number" value={UDFNumber_7} onChange={(e) => setUDFNumber_7(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric7:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl'  type="number" value={UDFNumber_7} onChange={(e) => {setUDFNumber_7(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date7:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date7:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control  
                                                 className='formControl'                                           
                                                 type="datetime-local"   
                                                 selected={UDFDate_7} 
-                                                onChange={date => setUDFDate_7(date)} />
+                                                onChange={date => {setUDFDate_7(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -2708,32 +3021,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text8:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl'  type="text" value={UDFText_8} onChange={(e) => setUDFText_8(e.target.value)} />
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text8:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl'  type="text" value={UDFText_8} onChange={(e) => {setUDFText_8(e.target.value); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric8:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl'  type="number" value={UDFNumber_8} onChange={(e) => setUDFNumber_8(e.target.value)} />
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric8:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl'  type="number" value={UDFNumber_8} onChange={(e) => {setUDFNumber_8(e.target.value); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date8:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date8:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control    
                                                 className='formControl'                                         
                                                 type="datetime-local"  
                                                 selected={UDFDate_8} 
-                                                onChange={date => setUDFDate_8(date)} />
+                                                onChange={date => {setUDFDate_8(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -2743,32 +3056,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text9:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl'  type="text" value={UDFText_9} onChange={(e) => setUDFText_9(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text9:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl'  type="text" value={UDFText_9} onChange={(e) => {setUDFText_9(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric9:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl'  type="number"  value={UDFNumber_9} onChange={(e) => setUDFNumber_9(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric9:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl'  type="number"  value={UDFNumber_9} onChange={(e) => {setUDFNumber_9(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date9:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date9:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control    
                                                 className='formControl'                                         
                                                 type="datetime-local"   
                                                 selected={UDFDate_9} 
-                                                onChange={date => setUDFDate_9(date)} />
+                                                onChange={date => {setUDFDate_9(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -2778,32 +3091,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text10:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl'  type="text" value={UDFText_10} onChange={(e) => setUDFText_10(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text10:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl'  type="text" value={UDFText_10} onChange={(e) => {setUDFText_10(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric10:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_10} onChange={(e) => setUDFNumber_10(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric10:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_10} onChange={(e) => {setUDFNumber_10(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date10:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date10:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control  
                                                 className='formControl'                                          
                                                 type="datetime-local"   
                                                 selected={UDFDate_10} 
-                                                onChange={date => setUDFDate_10(date)} />
+                                                onChange={date => {setUDFDate_10(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -2815,32 +3128,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text11:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_11} onChange={(e) => setUDFText_11(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text11:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_11} onChange={(e) => {setUDFText_11(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric11:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_11} onChange={(e) => setUDFNumber_11(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric11:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_11} onChange={(e) => {setUDFNumber_11(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date11:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date11:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control   
                                                 className='formControl'                                      
                                                 type="datetime-local"   
                                                 selected={UDFDate_11} 
-                                                onChange={date => setUDFDate_11(date)} />
+                                                onChange={date => {setUDFDate_11(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -2850,32 +3163,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text12:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_12} onChange={(e) => setUDFText_12(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text12:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_12} onChange={(e) => {setUDFText_12(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric12:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_12} onChange={(e) => setUDFNumber_12(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric12:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_12} onChange={(e) => {setUDFNumber_12(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date12:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date12:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control   
                                                 className='formControl'                                         
                                                 type="datetime-local"  
                                                 selected={UDFDate_12} 
-                                                onChange={date => setUDFDate_12(date)} />
+                                                onChange={date => {setUDFDate_12(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -2885,32 +3198,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text13:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_13} onChange={(e) => setUDFText_13(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text13:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_13} onChange={(e) => {setUDFText_13(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric13:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_13} onChange={(e) => setUDFNumber_13(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric13:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_13} onChange={(e) => {setUDFNumber_13(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date13:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date13:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control 
                                                 className='formControl'                                           
                                                 type="datetime-local"  
                                                 selected={UDFDate_13} 
-                                                onChange={date => setUDFDate_13(date)} />
+                                                onChange={date => {setUDFDate_13(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -2920,32 +3233,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text14:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_14} onChange={(e) => setUDFText_14(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text14:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_14} onChange={(e) => {setUDFText_14(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric14:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_14} onChange={(e) => setUDFNumber_14(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric14:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_14} onChange={(e) => {setUDFNumber_14(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date14:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date14:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control  
                                                 className='formControl'                                          
                                                 type="datetime-local"   
                                                 selected={UDFDate_14} 
-                                                onChange={date => setUDFDate_14(date)} />
+                                                onChange={date => {setUDFDate_14(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -2955,32 +3268,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text15:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_15} onChange={(e) => setUDFText_15(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text15:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_15} onChange={(e) => {setUDFText_15(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric15:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_15} onChange={(e) => setUDFNumber_15(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric15:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_15} onChange={(e) => {setUDFNumber_15(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date15:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date15:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control 
                                                 className='formControl'                                           
                                                 type="datetime-local"   
                                                 selected={UDFDate_15} 
-                                                onChange={date => setUDFDate_15(date)} />
+                                                onChange={date => {setUDFDate_15(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -2990,32 +3303,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text16:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_16} onChange={(e) => setUDFText_16(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text16:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_16} onChange={(e) => {setUDFText_16(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric16:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_16} onChange={(e) => setUDFNumber_16(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric16:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_16} onChange={(e) => {setUDFNumber_16(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date16:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date16:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control    
                                                 className='formControl'                                        
                                                 type="datetime-local"  
                                                 selected={UDFDate_16} 
-                                                onChange={date => setUDFDate_16(date)} />
+                                                onChange={date => {setUDFDate_16(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -3025,32 +3338,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text17:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_17} onChange={(e) => setUDFText_17(e.target.value)} />
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text17:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_17} onChange={(e) => {setUDFText_17(e.target.value); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric17:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_17} onChange={(e) => setUDFNumber_17(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric17:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_17} onChange={(e) => {setUDFNumber_17(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date17:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date17:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control    
                                                 className='formControl'                                        
                                                 type="datetime-local"    
                                                 selected={UDFDate_17} 
-                                                onChange={date => setUDFDate_17(date)} />
+                                                onChange={date => {setUDFDate_17(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -3060,32 +3373,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text18:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_18} onChange={(e) => setUDFText_18(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text18:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_18} onChange={(e) => {setUDFText_18(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric18:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_18} onChange={(e) => setUDFNumber_18(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric18:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_18} onChange={(e) => {setUDFNumber_18(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date18:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date18:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control     
                                                 className='formControl'                                       
                                                 type="datetime-local"    
                                                 selected={UDFDate_18} 
-                                                onChange={date => setUDFDate_18(date)} />
+                                                onChange={date => {setUDFDate_18(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -3095,32 +3408,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text19:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_19} onChange={(e) => setUDFText_19(e.target.value)} />
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text19:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_19} onChange={(e) => {setUDFText_19(e.target.value); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric19:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_19} onChange={(e) => setUDFNumber_19(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric19:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_19} onChange={(e) => {setUDFNumber_19(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date19:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date19:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control     
                                                 className='formControl'                                       
                                                 type="datetime-local"  
                                                 selected={UDFDate_19} 
-                                                onChange={date => setUDFDate_19(date)} />
+                                                onChange={date => {setUDFDate_19(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -3130,32 +3443,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text20:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_20} onChange={(e) => setUDFText_20(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text20:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_20} onChange={(e) => {setUDFText_20(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric20:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_20} onChange={(e) => setUDFNumber_20(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric20:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_20} onChange={(e) => {setUDFNumber_20(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date20:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date20:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control   
                                                 className='formControl'                                         
                                                 type="datetime-local"  
                                                 selected={UDFDate_20} 
-                                                onChange={date => setUDFDate_20(date)} />
+                                                onChange={date => {setUDFDate_20(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -3168,32 +3481,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text21:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_21} onChange={(e) => setUDFText_21(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text21:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_21} onChange={(e) => {setUDFText_21(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric21:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_21} onChange={(e) => setUDFNumber_21(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric21:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_21} onChange={(e) => {setUDFNumber_21(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date21:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date21:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control    
                                                 className='formControl'                                        
                                                 type="datetime-local"   
                                                 selected={UDFDate_21} 
-                                                onChange={date => setUDFDate_21(date)} />
+                                                onChange={date => {setUDFDate_21(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -3203,32 +3516,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text22:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_22} onChange={(e) => setUDFText_22(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text22:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_22} onChange={(e) => {setUDFText_22(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric22:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_22} onChange={(e) => setUDFNumber_22(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric22:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_22} onChange={(e) => {setUDFNumber_22(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date22:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date22:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control   
                                                 className='formControl'                                         
                                                 type="datetime-local"   
                                                 selected={UDFDate_22} 
-                                                onChange={date => setUDFDate_22(date)} />
+                                                onChange={date => {setUDFDate_22(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -3238,32 +3551,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text23:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_23} onChange={(e) => setUDFText_23(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text23:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_23} onChange={(e) => {setUDFText_23(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric23:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_23} onChange={(e) => setUDFNumber_23(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric23:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_23} onChange={(e) => {setUDFNumber_23(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date23:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date23:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control   
                                                 className='formControl'                                         
                                                 type="datetime-local"   
                                                 selected={UDFDate_23} 
-                                                onChange={date => setUDFDate_23(date)} />
+                                                onChange={date => {setUDFDate_23(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -3273,32 +3586,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text24:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number" value={UDFText_24} onChange={(e) => setUDFText_24(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text24:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number" value={UDFText_24} onChange={(e) => {setUDFText_24(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric24:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_24} onChange={(e) => setUDFNumber_24(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric24:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_24} onChange={(e) => {setUDFNumber_24(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date24:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date24:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control    
                                                 className='formControl'                                        
                                                 type="datetime-local"   
                                                 selected={UDFDate_24} 
-                                                onChange={date => setUDFDate_24(date)} />
+                                                onChange={date => {setUDFDate_24(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -3308,32 +3621,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text25:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_25} onChange={(e) => setUDFText_25(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text25:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_25} onChange={(e) => {setUDFText_25(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric25:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_25} onChange={(e) => setUDFNumber_25(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric25:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_25} onChange={(e) => {setUDFNumber_25(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date25:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date25:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control     
                                                 className='formControl'                                       
                                                 type="datetime-local"    
                                                 selected={UDFDate_25} 
-                                                onChange={date => setUDFDate_25(date)} />
+                                                onChange={date => {setUDFDate_25(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -3343,32 +3656,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text26:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_26} onChange={(e) => setUDFText_26(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text26:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_26} onChange={(e) => {setUDFText_26(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric26:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_26} onChange={(e) => setUDFNumber_26(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric26:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_26} onChange={(e) => {setUDFNumber_26(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date26:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date26:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control     
                                                 className='formControl'                                       
                                                 type="datetime-local"   
                                                 selected={UDFDate_26} 
-                                                onChange={date => setUDFDate_26(date)} />
+                                                onChange={date => {setUDFDate_26(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -3378,32 +3691,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text27:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_27} onChange={(e) => setUDFText_27(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text27:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_27} onChange={(e) => {setUDFText_27(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric27:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_27} onChange={(e) => setUDFNumber_27(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric27:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_27} onChange={(e) => {setUDFNumber_27(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date27:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date27:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control     
                                                 className='formControl'                                       
                                                 type="datetime-local"    
                                                 selected={UDFDate_27} 
-                                                onChange={date => setUDFDate_27(date)} />
+                                                onChange={date => {setUDFDate_27(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -3413,32 +3726,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text28:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="Text"  value={UDFText_28} onChange={(e) => setUDFText_28(e.target.value)} />
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text28:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="Text"  value={UDFText_28} onChange={(e) => {setUDFText_28(e.target.value); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric28:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number"  value={UDFNumber_28} onChange={(e) => setUDFNumber_28(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric28:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number"  value={UDFNumber_28} onChange={(e) => {setUDFNumber_28(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date28:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date28:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control   
                                                 className='formControl'                                         
                                                 type="datetime-local"   
                                                 selected={UDFDate_28} 
-                                                onChange={date => setUDFDate_28(date)} />
+                                                onChange={date => {setUDFDate_28(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -3448,32 +3761,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text29:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_29} onChange={(e) => setUDFText_29(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text29:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_29} onChange={(e) => {setUDFText_29(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric29:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number" value={UDFNumber_29} onChange={(e) => setUDFNumber_29(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric29:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number" value={UDFNumber_29} onChange={(e) => {setUDFNumber_29(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date29:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date29:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control     
                                                 className='formControl'                                       
                                                 type="datetime-local"    
                                                 selected={UDFDate_29} 
-                                                onChange={date => setUDFDate_29(date)} />
+                                                onChange={date => {setUDFDate_29(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -3483,32 +3796,32 @@ const AssetFrom = (props) => {
                                 <div className="row moveUp">
                                     <div className="col-md-4">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Text30:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="text" value={UDFText_30} onChange={(e) => setUDFText_30(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "12px" }}>UDF Text30:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={UDFText_30} onChange={(e) => {setUDFText_30(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>   
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Numeric30:</label>
-                                            <div className="col-sm-9">
-                                                <Form.Control className='formControl' type="number" value={UDFNumber_30} onChange={(e) => setUDFNumber_30(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Numeric30:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="number" value={UDFNumber_30} onChange={(e) => {setUDFNumber_30(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>    
 
 
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 moveUp-md moveUp-sm">
                                         <Form.Group className="row">
-                                            <label className="col-sm-3 col-form-label" style={{ fontSize: "12px" }}>UDF Date30:</label>
-                                            <div className="col-sm-9">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "12px" }}>UDF Date30:</label>
+                                            <div className="col-sm-8">
                                             <Form.Control    
                                                 className='formControl'                                        
                                                 type="datetime-local"  
                                                 selected={UDFDate_30} 
-                                                onChange={date => setUDFDate_30(date)} />
+                                                onChange={date => {setUDFDate_30(date); handleInputChange();}} />
                                             </div>
                                         </Form.Group>
                                     </div>    
@@ -3532,19 +3845,28 @@ const AssetFrom = (props) => {
 
                             {/* ************************************* Spares ******************************************* */}
                             <Tab eventKey="Spares" title={<><i className="mdi mdi-view-carousel"></i><span className="d-none d-md-inline"> Spares</span></>} class="nav-link active" >                            
+                            
+                                <AssetSpares name={'AssetFrom'} data={{RowID: location.state.RowID }}/>
+
                             </Tab>
                             
                             {/* ************************************* Usage ******************************************* */}
                             <Tab eventKey="Usage" title={<><i className="mdi mdi-source-pull"></i><span className="d-none d-md-inline"> Usage</span></>} class="nav-link active">                            
+                            
+                                <AssetUsage name={'AssetFrom'} data={{RowID: location.state.RowID }}/>
+
                             </Tab>
 
                             {/* ************************************* Specification ******************************************* */}
                             <Tab eventKey="Specification" title={<><i className="mdi mdi-clipboard-text"></i><span className="d-none d-md-inline"> Specification</span></>} class="nav-link active" >                            
+                            
+                                <AssetSpecification name={'AssetFrom'} data={{RowID: location.state.RowID }}/>
+
                             </Tab>
 
                             {/* ************************************* Info ******************************************* */}
-                            <Tab eventKey="Info" title={<><i className="mdi mdi-chart-pie"></i><span className="d-none d-md-inline"> Info</span></>} class="nav-link active">                            
-                            </Tab>
+                            {/* <Tab eventKey="Info" title={<><i className="mdi mdi-chart-pie"></i><span className="d-none d-md-inline"> Info</span></>} class="nav-link active">                            
+                            </Tab> */}
 
                         </Tabs>
                         
@@ -3565,7 +3887,7 @@ const AssetFrom = (props) => {
                                     <i className="mdi mdi-file-check btn-icon-prepend"></i> {Button_save} 
                                 </button>
 
-                                <button type="button" className="btn btn-danger btn-icon-text">
+                                <button type="button" className="btn btn-danger btn-icon-text" onClick={onClickCancel}>
                                     <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i> Cancel 
                                 </button>
                             
