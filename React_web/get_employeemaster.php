@@ -63,59 +63,63 @@ $key[36] = "emp_det_supervisor";
 $key[37] = "emp_det_foreman";
 $key[38] = "emp_det_asset_tag_flag";
 $key[39] = "emp_det_msetup_mobile_user";
-$key[40] = "emp_det_email_id";
+$key[40] = "emp_det_checklist";
+$key[41] = "emp_det_mobile";
+$key[42] = "emp_det_core";
+$key[43] = "emp_det_webwork";
+$key[44] = "emp_det_email_id";
 
-$key[41] = "emp_det_craft";
-$key[42] = "emp_det_work_area";
-$key[43] = "emp_det_work_grp";
-$key[44] = "emp_det_shift";
-$key[45] = "emp_det_varchar1";
-$key[46] = "emp_det_varchar2";
-$key[47] = "emp_det_varchar3";
-$key[48] = "emp_det_varchar4";
-$key[49] = "emp_det_varchar5";
-$key[50] = "emp_det_varchar6";
+$key[45] = "emp_det_craft";
+$key[46] = "emp_det_work_area";
+$key[47] = "emp_det_work_grp";
+$key[48] = "emp_det_shift";
+$key[49] = "emp_det_varchar1";
+$key[50] = "emp_det_varchar2";
+$key[51] = "emp_det_varchar3";
+$key[52] = "emp_det_varchar4";
+$key[53] = "emp_det_varchar5";
+$key[54] = "emp_det_varchar6";
 
-$key[51] = "emp_det_varchar7";
-$key[52] = "emp_det_varchar8";
-$key[53] = "emp_det_varchar9";
-$key[54] = "emp_det_varchar10";
-$key[55] = "emp_det_varchar11";
-$key[56] = "emp_det_varchar12";
-$key[57] = "emp_det_varchar13";
-$key[58] = "emp_det_varchar14";
-$key[59] = "emp_det_varchar15";
-$key[60] = "emp_det_varchar16";
+$key[55] = "emp_det_varchar7";
+$key[56] = "emp_det_varchar8";
+$key[57] = "emp_det_varchar9";
+$key[58] = "emp_det_varchar10";
+$key[59] = "emp_det_varchar11";
+$key[60] = "emp_det_varchar12";
+$key[61] = "emp_det_varchar13";
+$key[62] = "emp_det_varchar14";
+$key[63] = "emp_det_varchar15";
+$key[64] = "emp_det_varchar16";
 
-$key[61] = "emp_det_varchar17";
-$key[62] = "emp_det_varchar18";
-$key[63] = "emp_det_varchar19";
-$key[64] = "emp_det_varchar20";
-$key[65] = "emp_det_numeric1";
-$key[66] = "emp_det_numeric2";
-$key[67] = "emp_det_numeric3";
-$key[68] = "emp_det_numeric4";
-$key[69] = "emp_det_numeric5";
-$key[70] = "emp_det_numeric6";
+$key[65] = "emp_det_varchar17";
+$key[66] = "emp_det_varchar18";
+$key[67] = "emp_det_varchar19";
+$key[68] = "emp_det_varchar20";
+$key[69] = "emp_det_numeric1";
+$key[70] = "emp_det_numeric2";
+$key[71] = "emp_det_numeric3";
+$key[72] = "emp_det_numeric4";
+$key[73] = "emp_det_numeric5";
+$key[74] = "emp_det_numeric6";
 
-$key[71] = "emp_det_numeric7";
-$key[72] = "emp_det_numeric8";
-$key[73] = "emp_det_numeric9";
-$key[74] = "emp_det_numeric10";
-$key[75] = "emp_det_datetime1";
-$key[76] = "emp_det_datetime2";
-$key[77] = "emp_det_datetime3";
-$key[78] = "emp_det_datetime4";
-$key[79] = "emp_det_datetime5";
-$key[80] = "emp_det_datetime6";
+$key[75] = "emp_det_numeric7";
+$key[76] = "emp_det_numeric8";
+$key[77] = "emp_det_numeric9";
+$key[78] = "emp_det_numeric10";
+$key[79] = "emp_det_datetime1";
+$key[80] = "emp_det_datetime2";
+$key[81] = "emp_det_datetime3";
+$key[82] = "emp_det_datetime4";
+$key[83] = "emp_det_datetime5";
+$key[84] = "emp_det_datetime6";
 
-$key[81] = "emp_det_datetime7";
-$key[82] = "emp_det_datetime8";
-$key[83] = "emp_det_datetime9";
-$key[84] = "emp_det_datetime10";
-$key[85] = "emp_det_note1";
-$key[86] = "emp_det_note2";
-$key[87] = "RowID";
+$key[85] = "emp_det_datetime7";
+$key[86] = "emp_det_datetime8";
+$key[87] = "emp_det_datetime9";
+$key[88] = "emp_det_datetime10";
+$key[89] = "emp_det_note1";
+$key[90] = "emp_det_note2";
+$key[91] = "RowID";
 
 
 $page 		= $_REQUEST['page'];
@@ -160,7 +164,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 						emp_det_wo_approval_limit,		emp_det_pr_approver,  			emp_det_pr_approval_limit,		emp_det_wr_approver,  			
 						emp_det_planner,  				emp_det_wo_gen_mr_pr,  			emp_det_pm_generator,  			emp_det_time_card_enter,  			
 						emp_det_time_card_void,  		emp_det_wo_sched,  				emp_det_po_buyer,  				emp_det_supervisor,  			
-						emp_det_foreman,  				emp_det_asset_tag_flag,  		emp_det_msetup_mobile_user,		emp_det_email_id,  			
+						emp_det_foreman,  				emp_det_asset_tag_flag,  		emp_det_msetup_mobile_user,		emp_det_checklist, 
+						emp_det_mobile, 				emp_det_core, 					emp_det_webwork, 				emp_det_email_id, 
+						emp_det_email_id,  			
 						emp_det_craft,  				emp_det_work_area,  			emp_det_work_grp,  				emp_det_shift,  			
 						emp_det_supervisor_id,  		emp_det_mobile,  				emp_det_core,  					emp_det_webwork,  			
 						emp_det_varchar1,  				emp_det_varchar2,  				emp_det_varchar3,  				emp_det_varchar4,  			

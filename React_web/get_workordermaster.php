@@ -33,18 +33,16 @@ $key[9] = "wko_mst_due_date";
 $key[10] = "wko_det_cmpl_date";
 
 $key[11] = "wko_det_clo_date";
-$key[12] = "wko_mst_originator";
-
-$key[13] = "wko_det_assign_to";
-
-$key[14] = "wko_det_planner";
-$key[15] = "wko_mst_flt_code";
-$key[16] = "wko_det_cause_code";
-$key[17] = "wko_det_act_code";
-$key[18] = "wko_det_corr_action";
-
+$key[12] = "wko_det_assign_to";
+$key[13] = "wko_det_planner";
+$key[14] = "wko_mst_flt_code";
+$key[15] = "wko_det_cause_code";
+$key[16] = "wko_det_act_code";
+$key[17] = "wko_det_corr_action";
+$key[18] = "wko_mst_originator";
 $key[19] = "wko_mst_phone";
 $key[20] = "wko_mst_project_id";
+
 $key[21] = "wko_mst_work_area";
 $key[22] = "wko_mst_asset_location";
 $key[23] = "wko_mst_asset_level";
@@ -55,47 +53,53 @@ $key[27] = "wko_det_temp_asset";
 $key[28] = "wko_det_wr_no";
 
 $key[29] = "wko_det_perm_id";
-$key[30] = "wko_det_work_type";
-$key[31] = "wko_det_work_class";
-$key[32] = "wko_det_work_grp";
-$key[33] = "wko_det_sched_date";
-$key[34] = "wko_det_exc_date";
-$key[35] = "wko_det_contract_no";
-$key[36] = "wko_det_delay_cd";
-$key[37] = "wko_det_customer_cd";
-$key[38] = "wko_det_supv_id";
+$key[30] = "wko_det_wr_org_date";
+$key[31] = "wko_det_wr_due_date";
+$key[32] = "wko_det_work_type";
 
-$key[39] = "wko_det_est_con_cost";
-$key[40] = "wko_det_con_cost";
-$key[41] = "wko_det_est_mtl_cost";
-$key[42] = "wko_det_mtl_cost";
-$key[43] = "wko_det_est_lab_cost";
-$key[44] = "wko_det_varchar1";
-$key[45] = "wko_det_varchar2";
-$key[46] = "wko_det_varchar3";
-$key[47] = "wko_det_varchar4";
-$key[48] = "wko_det_varchar5";
+$key[33] = "wko_det_work_class";
+$key[34] = "wko_det_work_grp";
+$key[35] = "wko_det_sc_date";
+$key[36] = "wko_det_sched_date";
+$key[37] = "wko_det_exc_date";
+$key[38] = "wko_det_contract_no";
 
-$key[49] = "wko_det_varchar6";
-$key[50] = "wko_det_varchar7";
-$key[51] = "wko_det_varchar8";
-$key[52] = "wko_det_varchar9";
-$key[53] = "wko_det_varchar10";
-$key[54] = "wko_det_numeric1";
-$key[55] = "wko_det_numeric2";
-$key[56] = "wko_det_numeric3";
-$key[57] = "wko_det_numeric4";
-$key[58] = "wko_det_numeric5";
+$key[39] = "wko_det_delay_cd";
+$key[40] = "wko_det_customer_cd";
+$key[41] = "wko_det_supv_id";
+$key[42] = "wko_det_est_con_cost";
+$key[43] = "wko_det_con_cost";
 
-$key[59] = "wko_det_datetime1";
-$key[60] = "wko_det_datetime2";
-$key[61] = "wko_det_datetime3";
-$key[62] = "wko_det_datetime4";
-$key[63] = "wko_det_datetime5";
+$key[44] = "wko_det_est_mtl_cost";
+$key[45] = "wko_det_mtl_cost";
+$key[46] = "wko_det_est_lab_cost";
+$key[47] = "wko_det_lab_cost";
+$key[48] = "wko_det_varchar1";
 
-$key[64] = "wko_mst_create_by";
-$key[65] = "wko_mst_create_date";
-$key[66] = "RowID";
+$key[49] = "wko_det_varchar2";
+$key[50] = "wko_det_varchar3";
+$key[51] = "wko_det_varchar4";
+$key[52] = "wko_det_varchar5";
+$key[53] = "wko_det_varchar6";
+$key[54] = "wko_det_varchar7";
+$key[55] = "wko_det_varchar8";
+$key[56] = "wko_det_varchar9";
+$key[57] = "wko_det_varchar10";
+$key[58] = "wko_det_numeric1";
+
+$key[59] = "wko_det_numeric2";
+$key[60] = "wko_det_numeric3";
+$key[61] = "wko_det_numeric4";
+$key[62] = "wko_det_numeric5";
+$key[63] = "wko_det_datetime1";
+
+$key[64] = "wko_det_datetime2";
+$key[65] = "wko_det_datetime3";
+$key[66] = "wko_det_datetime4";
+$key[67] = "wko_det_datetime5";
+$key[68] = "wko_mst_create_by";
+$key[69] = "wko_mst_create_date";
+$key[70] = "RowID";
 
 
 $page 		= $_REQUEST['page'];
@@ -159,9 +163,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 					wko_det_wr_no,
 
 					wko_det_perm_id,
+					wko_det_wr_org_date,
+					wko_det_wr_due_date,
 					wko_det_work_type,
 					wko_det_work_class,
 					wko_det_work_grp,
+					wko_det_sc_date,
 					wko_det_sched_date,
 					wko_det_exc_date,
 					wko_det_contract_no,
@@ -174,6 +181,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 					wko_det_est_mtl_cost,
 					wko_det_mtl_cost,
 					wko_det_est_lab_cost,
+					wko_det_lab_cost,
 					wko_det_varchar1,
 					wko_det_varchar2,
 					wko_det_varchar3,

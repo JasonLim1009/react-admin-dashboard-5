@@ -20,35 +20,38 @@ $site_cd = $_REQUEST['site_cd'];
 $RowID = $_REQUEST['RowID'];
 
 
-$key[0] = "loc_mst_stk_loc";
-$key[1] = "loc_mst_desc";
-$key[2] = "usg_itm_list";
-$key[3] = "usg_itm_change";
+$key[0] = "ast_ls1_stock_no";
+$key[1] = "ast_ls1_varchar1";
+$key[2] = "ast_ls1_desc";
+$key[3] = "ast_ls1_qty_needed";
+$key[4] = "itm_mst_ttl_oh";
 
 
 
-$sql= "		SELECT 	emp_mst.emp_mst_empl_id,   
-					emp_mst.emp_mst_name,
-					emp_mst.RowID,
-					loc_mst.loc_mst_stk_loc,
-					loc_mst.loc_mst_desc,
-					usg_itm_list, 
-					usg_itm_change,
-					usg_itm.RowID
-			FROM 	emp_mst,   
-					loc_mst  ,
-					usg_itm
-			WHERE 	( emp_mst.site_cd = loc_mst.site_cd ) 
-			AND		( emp_mst.site_cd = usg_itm.site_cd ) 
-			AND		( emp_mst.emp_mst_empl_id = usg_itm.usg_itm_empl_id ) 
-			AND		( loc_mst.loc_mst_stk_loc = usg_itm.usg_itm_location ) 
-			AND		( usg_itm.site_cd = '".$site_cd."' )
-			AND		( emp_mst.RowID = '".$RowID."' )";
+$sql= "	SELECT 
+				ast_ls1.ast_ls1_stock_no,
+				ast_ls1.ast_ls1_varchar1,
+				ast_ls1.ast_ls1_desc,
+				ast_ls1.ast_ls1_qty_needed,
+				itm_mst.itm_mst_ttl_oh
+		
+				
+		FROM 	ast_ls1 (NOLOCK)
+		
+		LEFT 
+		OUTER 
+		JOIN 		itm_mst
+		ON 			ast_ls1.site_cd = itm_mst.site_cd 
+		AND 		ast_ls1.RowID = itm_mst.RowID
+		
+		
+		WHERE 	ast_ls1.site_cd = '".$site_cd."'
+		AND 	ast_ls1.mst_RowID = '".$RowID."'";
 
-	$stmt_emp_mst = sqlsrv_query( $conn, $sql);
+	$stmt_ast_ls1 = sqlsrv_query( $conn, $sql);
 
-	if( !$stmt_emp_mst ) {
-		 $error_message = "Error selecting table (emp_mst)";
+	if( !$stmt_ast_ls1 ) {
+		 $error_message = "Error selecting table (ast_ls1)";
 		 returnError($error_message);
 		 die( print_r( sqlsrv_errors(), true));		 
 	}
@@ -58,7 +61,7 @@ $sql= "		SELECT 	emp_mst.emp_mst_empl_id,
 	$header_result=[];
 
 	do {
-        while ($row = sqlsrv_fetch_array($stmt_emp_mst, SQLSRV_FETCH_ASSOC)) {
+        while ($row = sqlsrv_fetch_array($stmt_ast_ls1, SQLSRV_FETCH_ASSOC)) {
 			
 		
 		$JSON =json_encode($row);
@@ -68,7 +71,7 @@ $sql= "		SELECT 	emp_mst.emp_mst_empl_id,
 			  $row_end[] = $row;
 			
         }
-    } while (sqlsrv_next_result($stmt_emp_mst));
+    } while (sqlsrv_next_result($stmt_ast_ls1));
 
     $final_result["result"] = $row_end;
 	 
@@ -76,16 +79,16 @@ $sql= "		SELECT 	emp_mst.emp_mst_empl_id,
         $sql =
             "select customize_label  from cf_label (NOLOCK) where column_name ='" .$key[$x] . "' and language_cd ='DEFAULT'";
 
-        $stmt_emp_mst = sqlsrv_query($conn, $sql);
+        $stmt_ast_ls1 = sqlsrv_query($conn, $sql);
 
-        if (!$stmt_emp_mst) {
+        if (!$stmt_ast_ls1) {
             $error_message = "Error selecting table (dft_mst)";
             returnError($error_message);
             die(print_r(sqlsrv_errors(), true));
         }
 
         do {
-            while ($row = sqlsrv_fetch_array($stmt_emp_mst, SQLSRV_FETCH_ASSOC)) {
+            while ($row = sqlsrv_fetch_array($stmt_ast_ls1, SQLSRV_FETCH_ASSOC)) {
                 $header_result[ $row["customize_label"]] = $row["customize_label"];
 			   //$header_result[  $key[$x]] = $row["customize_header"];
                // $header_result["accessor"] = "col" . ($x + 1);
@@ -93,7 +96,7 @@ $sql= "		SELECT 	emp_mst.emp_mst_empl_id,
 
                 //array_push($header_end, $header_result);
             }
-        } while (sqlsrv_next_result($stmt_emp_mst));
+        } while (sqlsrv_next_result($stmt_ast_ls1));
 
         $final_headername["header"] = $header_result;
     }
@@ -101,7 +104,7 @@ $sql= "		SELECT 	emp_mst.emp_mst_empl_id,
 	
 returnData($final_headername, $final_result,$key);
 
-sqlsrv_free_stmt($stmt_emp_mst);
+sqlsrv_free_stmt($stmt_ast_ls1);
 sqlsrv_close($conn);
 
 function returnData($final_headername, $final_result,$key)

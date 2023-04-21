@@ -1859,6 +1859,81 @@ switch ($type) {
 				 }
 			} while ( sqlsrv_next_result($stmt_itm_loc) );
 			
+			//Asset Specification----JASON
+			$sql= "SELECT	uom_mst.uom_mst_uom,              
+							uom_mst.uom_mst_desc        
+					FROM	uom_mst      
+					WHERE	uom_mst.site_cd = '".$site_cd."'
+					AND		uom_mst_type = 'RATINGS ON ASSET'"; 
+					
+			$stmt_uom_mst = sqlsrv_query( $conn, $sql);
+
+			if( !$stmt_uom_mst ) {
+				 $error_message = "Error selecting table (ast_uom_mst)";
+				 returnError($error_message);
+				 die( print_r( sqlsrv_errors(), true));
+				 
+			}
+
+			$ast_uom_mst = array();
+
+			do {
+				 while ($row = sqlsrv_fetch_array($stmt_uom_mst, SQLSRV_FETCH_ASSOC)) {		
+					$ast_uom_mst[] = $row;	
+				
+				 }
+			} while ( sqlsrv_next_result($stmt_uom_mst) );
+			
+			//Asset Usage----JASON
+			$sql= "SELECT	uom_mst.uom_mst_uom,              
+							uom_mst.uom_mst_desc        
+					FROM	uom_mst      
+					WHERE	uom_mst.site_cd = '".$site_cd."'
+					AND		uom_mst_type = 'USAGE ON ASSET'"; 
+					
+			$stmt_ast_usage_uom_mst = sqlsrv_query( $conn, $sql);
+
+			if( !$stmt_ast_usage_uom_mst ) {
+				 $error_message = "Error selecting table (ast_usage_uom_mst)";
+				 returnError($error_message);
+				 die( print_r( sqlsrv_errors(), true));
+				 
+			}
+
+			$ast_usage_uom_mst = array();
+
+			do {
+				 while ($row = sqlsrv_fetch_array($stmt_ast_usage_uom_mst, SQLSRV_FETCH_ASSOC)) {		
+					$ast_usage_uom_mst[] = $row;	
+				
+				 }
+			} while ( sqlsrv_next_result($stmt_ast_usage_uom_mst) );
+			
+			//Asset Model Number----JASON
+			$sql= "SELECT	mfg_mdl.mfg_mdl_modelno,              
+							mfg_mdl.mfg_mdl_desc     
+					FROM	mfg_mdl      
+					WHERE	mfg_mdl.site_cd = '".$site_cd."' 
+					AND		mfg_mdl.mfg_mdl_mfg_cd = ''"; 
+					
+			$stmt_mfg_mdl = sqlsrv_query( $conn, $sql);
+
+			if( !$stmt_mfg_mdl ) {
+				 $error_message = "Error selecting table (mfg_mdl)";
+				 returnError($error_message);
+				 die( print_r( sqlsrv_errors(), true));
+				 
+			}
+
+			$mfg_mdl = array();
+
+			do {
+				 while ($row = sqlsrv_fetch_array($stmt_mfg_mdl, SQLSRV_FETCH_ASSOC)) {		
+					$mfg_mdl[] = $row;	
+				
+				 }
+			} while ( sqlsrv_next_result($stmt_ast_usage_uom_mst) );
+			
 			
 			
 
@@ -1947,6 +2022,9 @@ switch ($type) {
 				 $json_All['Default_PO_Currency_Code'] = $cur_mst;
 				 $json_All['ITM_Manufacturer'] = $mfg_mst;
 				 $json_All['ITM_StockLocation'] = $itm_loc;
+				 $json_All['Ast_Specification'] = $ast_uom_mst;
+				 $json_All['Ast_Usage'] = $ast_usage_uom_mst;
+				 $json_All['Ast_ModelNumber'] = $mfg_mdl;
 				 
 			
 			 
@@ -4634,6 +4712,129 @@ switch ($type) {
 			 sqlsrv_close( $conn);	
 			 
 			 $json_All['ITM_StockLocation'] = $itm_loc;
+			 returnData($json_All);	
+			 
+		} else {
+			
+			 sqlsrv_rollback( $conn );
+			 $error_message = "Transaction rolled back.<br />";
+			 returnError($error_message);
+		}
+				
+	break;
+	
+	//Asset Specification----JASON
+			$sql= "SELECT	uom_mst.uom_mst_uom,              
+							uom_mst.uom_mst_desc        
+					FROM	uom_mst      
+					WHERE	uom_mst.site_cd = '".$site_cd."' 
+					AND		uom_mst_type = 'RATINGS ON ASSET'"; 
+				
+		$stmt_uom_mst = sqlsrv_query( $conn, $sql);
+
+		if( !$stmt_uom_mst ) {
+			 $error_message = "Error selecting table (ast_uom_mst)";
+			 returnError($error_message);
+			 die( print_r( sqlsrv_errors(), true));
+			 
+		}
+
+		$ast_uom_mst = array();
+
+		do {
+			 while ($row = sqlsrv_fetch_array($stmt_uom_mst, SQLSRV_FETCH_ASSOC)) {		
+				$ast_uom_mst[] = $row;	
+			
+			 }
+		} while ( sqlsrv_next_result($stmt_uom_mst) );
+			
+		if($stmt_uom_mst) {
+			 sqlsrv_commit( $conn );
+			 sqlsrv_close( $conn);	
+			 
+			 $json_All['Ast_Specification'] = $ast_uom_mst;
+			 returnData($json_All);	
+			 
+		} else {
+			
+			 sqlsrv_rollback( $conn );
+			 $error_message = "Transaction rolled back.<br />";
+			 returnError($error_message);
+		}
+				
+	break;
+	
+	//Asset Usage----JASON
+			$sql= "SELECT	uom_mst.uom_mst_uom,              
+							uom_mst.uom_mst_desc        
+					FROM	uom_mst      
+					WHERE	uom_mst.site_cd = '".$site_cd."' 
+					AND		uom_mst_type = 'USAGE ON ASSET'"; 
+				
+		$stmt_ast_usage_uom_mst = sqlsrv_query( $conn, $sql);
+
+		if( !$stmt_ast_usage_uom_mst ) {
+			 $error_message = "Error selecting table (ast_usage_uom_mst)";
+			 returnError($error_message);
+			 die( print_r( sqlsrv_errors(), true));
+			 
+		}
+
+		$ast_usage_uom_mst = array();
+
+		do {
+			 while ($row = sqlsrv_fetch_array($stmt_ast_usage_uom_mst, SQLSRV_FETCH_ASSOC)) {		
+				$ast_usage_uom_mst[] = $row;	
+			
+			 }
+		} while ( sqlsrv_next_result($stmt_ast_usage_uom_mst) );
+			
+		if($stmt_ast_usage_uom_mst) {
+			 sqlsrv_commit( $conn );
+			 sqlsrv_close( $conn);	
+			 
+			 $json_All['Ast_Usage'] = $ast_usage_uom_mst;
+			 returnData($json_All);	
+			 
+		} else {
+			
+			 sqlsrv_rollback( $conn );
+			 $error_message = "Transaction rolled back.<br />";
+			 returnError($error_message);
+		}
+				
+	break;
+	
+	//Asset MOdel Number----JASON
+			$sql= "SELECT	mfg_mdl.mfg_mdl_modelno,              
+							mfg_mdl.mfg_mdl_desc     
+					FROM	mfg_mdl      
+					WHERE	mfg_mdl.site_cd = '".$site_cd."' 
+					AND		mfg_mdl.mfg_mdl_mfg_cd = ''"; 
+				
+		$stmt_mfg_mdl = sqlsrv_query( $conn, $sql);
+
+		if( !$stmt_mfg_mdl ) {
+			 $error_message = "Error selecting table (mfg_mdl)";
+			 returnError($error_message);
+			 die( print_r( sqlsrv_errors(), true));
+			 
+		}
+
+		$mfg_mdl = array();
+
+		do {
+			 while ($row = sqlsrv_fetch_array($stmt_mfg_mdl, SQLSRV_FETCH_ASSOC)) {		
+				$mfg_mdl[] = $row;	
+			
+			 }
+		} while ( sqlsrv_next_result($stmt_mfg_mdl) );
+			
+		if($stmt_mfg_mdl) {
+			 sqlsrv_commit( $conn );
+			 sqlsrv_close( $conn);	
+			 
+			 $json_All['Ast_ModelNumber'] = $ast_usage_uom_mst;
 			 returnData($json_All);	
 			 
 		} else {

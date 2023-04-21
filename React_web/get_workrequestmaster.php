@@ -39,20 +39,21 @@ $key[14] = "wkr_mst_wo_status";
 $key[15] = "wkr_mst_projectid";
 $key[16] = "wkr_mst_originator";
 $key[17] = "wkr_mst_phone";
-$key[18] = "wkr_det_approver";
-$key[19] = "wkr_det_appr_date";
-$key[20] = "wkr_det_reject_desc";
 
-$key[21] = "wkr_det_reject_by";
-$key[22] = "wkr_det_reject_date";
-$key[23] = "wkr_mst_orig_priority";
-$key[24] = "wkr_mst_due_date";
-$key[25] = "wkr_mst_fault_code";
+$key[18] = "wkr_det_wo";
+$key[19] = "wkr_det_approver";
+$key[20] = "wkr_det_appr_date";
 
-$key[26] = "wkr_mst_create_by";
-$key[27] = "wkr_mst_create_date";
-$key[28] = "RowID";
+$key[21] = "wkr_det_reject_desc";
+$key[22] = "wkr_det_reject_by";
+$key[23] = "wkr_det_reject_date";
+$key[24] = "wkr_mst_orig_priority";
+$key[25] = "wkr_mst_due_date";
 
+$key[26] = "wkr_mst_fault_code";
+$key[27] = "wkr_mst_create_by";
+$key[28] = "wkr_mst_create_date";
+$key[29] = "RowID";
 
 $page 		= $_REQUEST['page'];
 $pageSize 	= $_REQUEST['pageSize'];
@@ -98,6 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 					wkr_mst_projectid,
 					wkr_mst_originator,
 					wkr_mst_phone,
+					wkr_det_wo,
 					wkr_det_approver,
 					wkr_det_appr_date,
 					wkr_det_reject_desc,

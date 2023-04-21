@@ -20,35 +20,37 @@ $site_cd = $_REQUEST['site_cd'];
 $RowID = $_REQUEST['RowID'];
 
 
-$key[0] = "loc_mst_stk_loc";
-$key[1] = "loc_mst_desc";
-$key[2] = "usg_itm_list";
-$key[3] = "usg_itm_change";
+$key[0] = "ast_loc_s_asset_olocn";
+
+$key[1] = "ast_loc_s_asset_nlocn";
+
+$key[2] = "ast_loc_s_asset_reason";
+$key[3] = "audit_user";
+$key[4] = "audit_date";
 
 
 
-$sql= "		SELECT 	emp_mst.emp_mst_empl_id,   
-					emp_mst.emp_mst_name,
-					emp_mst.RowID,
-					loc_mst.loc_mst_stk_loc,
-					loc_mst.loc_mst_desc,
-					usg_itm_list, 
-					usg_itm_change,
-					usg_itm.RowID
-			FROM 	emp_mst,   
-					loc_mst  ,
-					usg_itm
-			WHERE 	( emp_mst.site_cd = loc_mst.site_cd ) 
-			AND		( emp_mst.site_cd = usg_itm.site_cd ) 
-			AND		( emp_mst.emp_mst_empl_id = usg_itm.usg_itm_empl_id ) 
-			AND		( loc_mst.loc_mst_stk_loc = usg_itm.usg_itm_location ) 
-			AND		( usg_itm.site_cd = '".$site_cd."' )
-			AND		( emp_mst.RowID = '".$RowID."' )";
+$sql= "	SELECT 
 
-	$stmt_emp_mst = sqlsrv_query( $conn, $sql);
+				ast_loc_s_asset_olocn,
+				
+				ast_loc_s_asset_nlocn,
+				
+				ast_loc_s_asset_reason,
+				audit_user,
+				audit_date
+		
+				
+		FROM 	ast_loc_s (NOLOCK)
+		
+		
+		WHERE 	ast_loc_s.site_cd = '".$site_cd."'
+		AND 	ast_loc_s.RowID = '".$RowID."'";
 
-	if( !$stmt_emp_mst ) {
-		 $error_message = "Error selecting table (emp_mst)";
+	$stmt_ast_loc_s = sqlsrv_query( $conn, $sql);
+
+	if( !$stmt_ast_loc_s ) {
+		 $error_message = "Error selecting table (ast_loc_s)";
 		 returnError($error_message);
 		 die( print_r( sqlsrv_errors(), true));		 
 	}
@@ -58,7 +60,7 @@ $sql= "		SELECT 	emp_mst.emp_mst_empl_id,
 	$header_result=[];
 
 	do {
-        while ($row = sqlsrv_fetch_array($stmt_emp_mst, SQLSRV_FETCH_ASSOC)) {
+        while ($row = sqlsrv_fetch_array($stmt_ast_loc_s, SQLSRV_FETCH_ASSOC)) {
 			
 		
 		$JSON =json_encode($row);
@@ -68,7 +70,7 @@ $sql= "		SELECT 	emp_mst.emp_mst_empl_id,
 			  $row_end[] = $row;
 			
         }
-    } while (sqlsrv_next_result($stmt_emp_mst));
+    } while (sqlsrv_next_result($stmt_ast_loc_s));
 
     $final_result["result"] = $row_end;
 	 
@@ -76,16 +78,16 @@ $sql= "		SELECT 	emp_mst.emp_mst_empl_id,
         $sql =
             "select customize_label  from cf_label (NOLOCK) where column_name ='" .$key[$x] . "' and language_cd ='DEFAULT'";
 
-        $stmt_emp_mst = sqlsrv_query($conn, $sql);
+        $stmt_ast_loc_s = sqlsrv_query($conn, $sql);
 
-        if (!$stmt_emp_mst) {
+        if (!$stmt_ast_loc_s) {
             $error_message = "Error selecting table (dft_mst)";
             returnError($error_message);
             die(print_r(sqlsrv_errors(), true));
         }
 
         do {
-            while ($row = sqlsrv_fetch_array($stmt_emp_mst, SQLSRV_FETCH_ASSOC)) {
+            while ($row = sqlsrv_fetch_array($stmt_ast_loc_s, SQLSRV_FETCH_ASSOC)) {
                 $header_result[ $row["customize_label"]] = $row["customize_label"];
 			   //$header_result[  $key[$x]] = $row["customize_header"];
                // $header_result["accessor"] = "col" . ($x + 1);
@@ -93,7 +95,7 @@ $sql= "		SELECT 	emp_mst.emp_mst_empl_id,
 
                 //array_push($header_end, $header_result);
             }
-        } while (sqlsrv_next_result($stmt_emp_mst));
+        } while (sqlsrv_next_result($stmt_ast_loc_s));
 
         $final_headername["header"] = $header_result;
     }
@@ -101,7 +103,7 @@ $sql= "		SELECT 	emp_mst.emp_mst_empl_id,
 	
 returnData($final_headername, $final_result,$key);
 
-sqlsrv_free_stmt($stmt_emp_mst);
+sqlsrv_free_stmt($stmt_ast_loc_s);
 sqlsrv_close($conn);
 
 function returnData($final_headername, $final_result,$key)
