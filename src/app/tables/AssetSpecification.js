@@ -16,10 +16,10 @@ import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Moment from 'moment';
 import  {useLocation}  from 'react-router-dom';
-import logo from '../../assets/images/optimize.png';
+import logo from '../../assets/images/specification.png';
 
 
-const PersonnelMaintenance = (props) => {
+const AssetSpecification = (props) => {
  
 
   const [Header, setHeader] = React.useState([]);
@@ -33,15 +33,12 @@ const PersonnelMaintenance = (props) => {
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
 
-  const [Craft, setCraft] = useState([]);
-  const [selected_Craft, setSelected_Craft] = useState([]);
+  const [Description, setDescription] = useState("");
+  
+  const [Rating, setRating] = useState("");
 
-  const [SupervisorID, setSupervisorID] = useState([]);
-  const [selected_SupervisorID, setSelected_SupervisorID] = useState([]);
-
-  const [PayRate, setPayRate] = useState("0");
-
-  const [ChargeRate, setChargeRate] = useState("0");
+  const [UOM, setUOM] = useState([]);
+  const [selected_UOM, setSelected_UOM] = useState([]);
 
   const location = useLocation();
   
@@ -51,8 +48,8 @@ const PersonnelMaintenance = (props) => {
 
 
 
-  const get_employeemaster_maintenance = (site_ID, RowID) => {
-    APIServices.get_employeemaster_maintenance(site_ID, RowID)
+  const get_assetspecification = (site_ID, RowID) => {
+    APIServices.get_assetspecification(site_ID, RowID)
         .then((responseJson) => {
         console.log("Login JSON DATA : ", responseJson);
 
@@ -82,12 +79,12 @@ const PersonnelMaintenance = (props) => {
 
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
-    get_employeemaster_maintenance(site_ID, props.data.RowID);
+    get_assetspecification(site_ID, props.data.RowID);
   }, []);
 
 
 
-    const get_employee_Status = (site_ID, type, selected_asset) => {
+    const get_asset_Status = (site_ID, type, selected_asset) => {
 
 
         Swal.fire({  title: 'Please Wait !', allowOutsideClick: false})
@@ -102,21 +99,15 @@ const PersonnelMaintenance = (props) => {
                console.log('get_dropdown', responseJson.data)
 
 
-                let Craft = responseJson.data.data.Employee_Primary_Craft.map(item => ({
-                    label: item.crf_mst_crf_cd +" : "+ item.crf_mst_desc,
-                    value: item.crf_mst_crf_cd            
-                    }));
-                    setCraft(Craft);
-
-                let SupervisorID = responseJson.data.data.Employee_Supervisor_Id.map(item => ({
-                    label: item.emp_mst_empl_id +" : "+ item.emp_mst_name,
-                    value: item.emp_mst_empl_id            
-                    }));
-                    setSupervisorID(SupervisorID);
+               let UOM = responseJson.data.data.Ast_Specification.map(item => ({
+                label: item.uom_mst_uom +" : "+ item.uom_mst_desc,
+                value: item.uom_mst_uom            
+                }));
+                setUOM(UOM);
 
 
                     //get_dropdown_ParentFlag(site_ID,selected_asset);  
-                    get_employeemaster_select(site_ID, selected_asset);                
+                    get_assetmaster_select(site_ID, selected_asset);                
                     Swal.close();
                 
             }else{
@@ -141,12 +132,33 @@ const PersonnelMaintenance = (props) => {
     }
 
 
-    const get_employeemaster_select = () => {
-
+    const get_assetmaster_select = (site_ID,selected_asset)=>{
       
-        console.log('SELECT ROWID: '+ location.state.RowID)
+        var json ={
 
-        APIServices.get_employeemaster_select(location.state.RowID).then((responseJson)=>{  
+            "site_cd": site_ID,
+            "ast_mst_asset_no": selected_asset,
+            "asset_shortdesc":"",
+            "cost_center":"",
+            "asset_status":"",
+            "asset_type":"",
+            "asset_grpcode":"",
+            "work_area":"",
+            "asset_locn":"",
+            "asset_code":"",
+            "ast_lvl":"",
+            "ast_sts_typ_cd":"",
+            "createby":"",
+            "service_type":"",
+            "block":"",
+            "floor":""
+        }
+
+       
+
+        console.log('select Asset',JSON.stringify(json))
+        
+        APIServices.get_assetmaster_select(JSON.stringify(json)).then((responseJson)=>{  
             
             console.log('SELECT response: '+ JSON.stringify(responseJson));
 
@@ -154,18 +166,18 @@ const PersonnelMaintenance = (props) => {
                 
 
 // **************************************** check read data ******************************************
-                console.log('SELECT EMP: '+ JSON.stringify(responseJson.data.data))
+                console.log('SELECT AST: '+ JSON.stringify(responseJson.data.data))
                
                for (var index in responseJson.data.data) {
                
                 
                 setRowID( responseJson.data.data[index].RowID )
 
-
-                setSelected_Craft( {label:responseJson.data.data[index].emp_ls1_craft} )
-                setSelected_SupervisorID( {label:responseJson.data.data[index].emp_ls1_supervisor_id} )
-                setPayRate( responseJson.data.data[index].emp_ls1_pay_rate )
-                setChargeRate( responseJson.data.data[index].emp_ls1_charge_rate )
+                
+                setDescription( responseJson.data.data[index].ast_rat_desc )
+                setRating( responseJson.data.data[index].ast_rat_rating )
+                setSelected_UOM( {label:responseJson.data.data[index].ast_rat_uom} )
+                
                
               }
 
@@ -184,7 +196,7 @@ const PersonnelMaintenance = (props) => {
         }).catch((e) => {
             Swal.fire({
               icon: 'error',
-              title: 'Oops get_employeemaster_select...',
+              title: 'Oops get_assetmaster_select...',
               text: e,          
             })
           });
@@ -199,7 +211,7 @@ const PersonnelMaintenance = (props) => {
         // console.log('select select',location.state.select);
         // console.log('select EMPID',location.state.RowID);
     
-        get_employee_Status(site_ID, "All", location.state.select);       
+        get_asset_Status(site_ID, "All", location.state.select);       
        
 
     },[location]);
@@ -228,10 +240,9 @@ const PersonnelMaintenance = (props) => {
         <tr key={index} onClick={(event) =>handleRowClick(result, event)}>
           
             <td>{index + 1}</td>
-            <td>{result.emp_ls1_craft}</td>
-            <td>{result.emp_ls1_supervisor_id}</td>
-            <td>{result.emp_ls1_pay_rate}</td>
-            <td>{result.emp_ls1_charge_rate}</td>
+            <td>{result.ast_rat_desc}</td>
+            <td>{result.ast_rat_rating}</td>
+            <td>{result.ast_rat_uom}</td>
             
         </tr>
         );
@@ -242,20 +253,18 @@ const PersonnelMaintenance = (props) => {
     const handleRowClick = (data) => {
         console.log(data);
     
-        setCraft( data.emp_ls1_craft )
-        setSupervisorID( data.emp_ls1_supervisor_id )
-        setPayRate( data.emp_ls1_pay_rate )
-        setChargeRate( data.emp_ls1_charge_rate )
+        setDescription( data.ast_rat_desc )
+        setRating( data.ast_rat_rating )
+        setUOM( data.ast_rat_uom )
      
         setShowModal(true);
     };
     
     const resetData = () => {
     
-        setSelected_Craft(0);
-        setSelected_SupervisorID(0);
-        setPayRate('');
-        setChargeRate('');
+        setDescription('');
+        setRating('');
+        setSelected_UOM(0);
       
     };
     
@@ -263,45 +272,36 @@ const PersonnelMaintenance = (props) => {
     const handleAddButtonClick  = () => {
     
         let site_ID = localStorage.getItem("site_ID");
+
+        //Select Description
+        console.log("Description: ", Description)
+
+        //Select Rating
+        console.log("Rating: ", Rating)
+        
+        //Select UOM
+        let UOM, setUOM;
+        if(selected_UOM == '' || selected_UOM == null){
+
+            setUOM=''
+        }else{
+
+            UOM = selected_UOM.label.split(":")
+            setUOM = UOM[0];
+            console.log("UOM ", UOM[0])
+        }
        
-        //Select Craft
-        let Craft, setCraft;
-        if(selected_Craft == '' || selected_Craft == null){
-
-            setCraft=''
-        }else{
-
-            Craft = selected_Craft.label.split(":")
-            setCraft = Craft[0];
-            console.log("Craft ", Craft[0])
-        }
-
-        //Select Supervisor ID
-        let SupervisorID, setSupervisorID;
-        if(selected_SupervisorID == '' || selected_SupervisorID == null){
-
-            setSupervisorID=''
-        }else{
-
-            SupervisorID = selected_SupervisorID.label.split(":")
-            setSupervisorID = SupervisorID[0];
-            console.log("SupervisorID ", SupervisorID[0])
-        }
-
-        //Select Pay Rate
-        console.log("PayRate: ", PayRate)
-
-        //Select Charge Rate
-        console.log("ChargeRate: ", ChargeRate)
+   
+   
 
         const newPart = {
             
             mst_RowID: location.state.RowID,
             site_cd: site_ID,
-            emp_ls1_craft: setCraft.trim(),
-            emp_ls1_supervisor_id: setSupervisorID.trim(),
-            emp_ls1_pay_rate: PayRate,
-            emp_ls1_charge_rate: ChargeRate,
+            ast_rat_desc: Description,
+            ast_rat_rating: Rating,
+            ast_rat_uom: setUOM.trim(),
+
     
           };
           // Add new part to partsList
@@ -312,13 +312,11 @@ const PersonnelMaintenance = (props) => {
     };
 
 
-
   //Sum calculation
-  //const totalQty = Result.reduce((acc, item) => acc + (parseFloat(item.wko_ls3_qty_needed) || 0), 0);
+  //const totalQty = Result.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0), 0);
   
   //Multiply calculation
-  //const totalCost = Result.reduce((acc, item) => acc + (parseFloat(item.wko_ls3_qty_needed) || 0) * (parseFloat(item.wko_ls3_item_cost) || 0), 0);
-
+  //const totalCost = Result.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0) * (parseFloat(item.ast_ls2_warranty_usage) || 0), 0);
 
 
 
@@ -332,97 +330,74 @@ const PersonnelMaintenance = (props) => {
                     <div style={{ paddingBottom: '20px', backgroundColor: 'white' }}>
                         <div className="template-demo" style={{ display: 'flex', alignItems: 'center' }}>
 
-                        <div style={{ marginRight: '10px' }}>
-                            <img src={logo} style={{ width: '60px', height: '60px' }}/>
-                        </div>
-                        <div className="template-demo" style={{ display: 'flex', flexDirection: 'column' }}>
-                            <div style={{ marginRight: '10px', fontWeight: 'bold' }}>Maintenance</div>
-                            {/* <div><span style={{color: "blue"}}>{(totalQty * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCost.toFixed(2)}</span></div> */}
-                        </div> 
+                            <div style={{ marginRight: '10px' }}>
+                                <img src={logo} style={{ width: '60px', height: '60px' }}/>
+                            </div>
+                            <div className="template-demo" style={{ display: 'flex', flexDirection: 'column' }}>
+                                <div style={{ marginRight: '10px', fontWeight: 'bold'}}>Specification</div>
+                                {/* <div><span style={{color: "blue"}}>{(totalQty * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCost.toFixed(2)}</span></div> */}
+                            </div> 
                         </div>
                     </div>
 
-                    {/******************** Personnel Maintenance ********************/}
+                    {/******************** Specification ********************/}
                     <div>
                         <Modal show={show} onHide={handleClose} centered >
 
                             <Modal.Header closeButton>
-                                <Modal.Title>Maintenance</Modal.Title>
+                                <Modal.Title>Specification</Modal.Title>
                             </Modal.Header>
 
 
                             <Modal.Body>
                                 <div className="col-md-12">
-                                    <Form.Group className="row" controlId="validation_Craft">
-                                        <label className="col-sm-4 col-form-label down left">Craft:</label>
-                                        <div className="col-sm-8">
-                                        <label className="col-sm-10 form-label">
-                                            <Select  
-                                            isClearable={true}  
-                                            options={Craft}
-                                            value={selected_Craft}
-                                            onChange={setSelected_Craft} // using id as it is unique
-                                            required
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                            }}
-                                            />
-                                        </label>
-                                        </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-12 moveUoPopUp">
-                                    <Form.Group className="row" controlId="validation_SupervisorID">
-                                        <label className="col-sm-4 col-form-label top down left">Supervisor ID:</label>
-                                        <div className="col-sm-8">
-                                        <label className="col-sm-10 form-label">
-                                            <Select  
-                                            isClearable={true}  
-                                            options={SupervisorID}
-                                            value={selected_SupervisorID}
-                                            onChange={setSelected_SupervisorID} // using id as it is unique
-                                            required
-                                            styles={{ 
-                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                            }}
-                                            />
-                                        </label>
-                                        </div>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-12 moveUoPopUp">
-                                    <Form.Group className="row" controlId="validation_PayRate">
-                                        <label className="col-sm-4 col-form-label top down left">Pay Rate:</label>
+                                    <Form.Group className="row" controlId="validation_Description">
+                                        <label className="col-sm-4 col-form-label top down left">Description:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control  
                                                 style={{ fontSize: "13px", height: "38px" }}
-                                                type="number"  
-                                                placeholder=".00" 
-                                                value={PayRate} 
-                                                onChange={(e) => setPayRate(e.target.value)}
+                                                type="text"  
+                                                value={Description} 
+                                                onChange={(e) => setDescription(e.target.value)}
                                                 />
                                         </label>
                                         </div>
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12 moveUoPopUp">
-                                    <Form.Group className="row" controlId="validation_ChargeRate">
-                                        <label className="col-sm-4 col-form-label top down left">Charge Rate:</label>
+                                <div className="col-md-12 moveUpPopUp">
+                                    <Form.Group className="row" controlId="validation_Rating">
+                                        <label className="col-sm-4 col-form-label top down left">Rating:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control  
                                                 style={{ fontSize: "13px", height: "38px" }}
-                                                type="number"  
-                                                placeholder=".00" 
-                                                value={ChargeRate} 
-                                                onChange={(e) => setChargeRate(e.target.value)}
+                                                type="text"  
+                                                value={Rating} 
+                                                onChange={(e) => setRating(e.target.value)}
                                                 />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12 moveUpPopUp">
+                                    <Form.Group className="row" controlId="validation_UOM">
+                                        <label className="col-sm-4 col-form-label down left">UOM:</label>
+                                        <div className="col-sm-8">
+                                        <label className="col-sm-10 form-label">
+                                            <Select  
+                                            isClearable={true}  
+                                            options={UOM}
+                                            value={selected_UOM}
+                                            onChange={setSelected_UOM} // using id as it is unique
+                                            required
+                                            styles={{ 
+                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                            }}
+                                            />
                                         </label>
                                         </div>
                                     </Form.Group>
@@ -438,6 +413,7 @@ const PersonnelMaintenance = (props) => {
                                 Submit
                                 </Button>
                             </Modal.Footer>
+
                         </Modal>
 
 
@@ -445,52 +421,20 @@ const PersonnelMaintenance = (props) => {
                         <Modal show={showModal} onHide={handleCloseModal} centered >
 
                         <Modal.Header closeButton>
-                            <Modal.Title>Maintenance</Modal.Title>
+                            <Modal.Title>Specification</Modal.Title>
                         </Modal.Header>
 
 
                         <Modal.Body>
-                            <div className="col-md-12">
-                                <Form.Group className="row" controlId="validation_Craft">
-                                    <label className="col-sm-4 col-form-label down left">Craft:</label>
-                                    <div className="col-sm-8">
-                                    <label className="col-sm-10 form-label">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="text"
-                                        value ={Craft} 
-                                        readOnly
-                                        />
-                                    </label>
-                                    </div>
-                                </Form.Group>
-                            </div>
-
-                            <div className="col-md-12 moveUoPopUp">
-                                <Form.Group className="row" controlId="validation_SupervisorID">
-                                    <label className="col-sm-4 col-form-label top down left">Supervisor ID:</label>
-                                    <div className="col-sm-8">
-                                    <label className="col-sm-10 form-label">
-                                        <Form.Control
-                                        style={{ fontSize: "13px", height: "38px" }}
-                                        type="text"
-                                        value ={SupervisorID} 
-                                        readOnly
-                                        />
-                                    </label>
-                                    </div>
-                                </Form.Group>
-                            </div>
-
-                            <div className="col-md-12 moveUoPopUp">
-                                <Form.Group className="row" controlId="validation_PayRate">
-                                    <label className="col-sm-4 col-form-label top down left">Pay Rate:</label>
+                        <div className="col-md-12">
+                                <Form.Group className="row" controlId="validation_Description">
+                                    <label className="col-sm-4 col-form-label  top down left">Description:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
                                         style={{ fontSize: "13px", height: "38px" }}
                                         type="text"
-                                        value ={PayRate} 
+                                        value ={Description} 
                                         readOnly
                                         />
                                     </label>
@@ -498,15 +442,31 @@ const PersonnelMaintenance = (props) => {
                                 </Form.Group>
                             </div>
 
-                            <div className="col-md-12 moveUoPopUp">
-                                <Form.Group className="row" controlId="validation_ChargeRate">
-                                    <label className="col-sm-4 col-form-label top down left">Charge Rate:</label>
+                            <div className="col-md-12 moveUpPopUp">
+                                <Form.Group className="row" controlId="validation_Rating">
+                                    <label className="col-sm-4 col-form-label  top down left">Rating:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
                                         style={{ fontSize: "13px", height: "38px" }}
                                         type="text"
-                                        value ={ChargeRate} 
+                                        value ={Rating} 
+                                        readOnly
+                                        />
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
+
+                            <div className="col-md-12 moveUpPopUp">
+                                <Form.Group className="row" controlId="validation_UOM">
+                                    <label className="col-sm-4 col-form-label down left">UOM:</label>
+                                    <div className="col-sm-8">
+                                    <label className="col-sm-10 form-label">
+                                        <Form.Control
+                                        style={{ fontSize: "13px", height: "38px" }}
+                                        type="text"
+                                        value ={UOM} 
                                         readOnly
                                         />
                                     </label>
@@ -541,7 +501,7 @@ const PersonnelMaintenance = (props) => {
                     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
                         <button type="button" style={{ padding: '5px 10px', background: 'none', color: 'blue', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                         onClick={handleShow}>
-                            + Add Maintenance
+                            + Add Specification
                         </button>
                     </div>
                 </div>
@@ -551,4 +511,4 @@ const PersonnelMaintenance = (props) => {
   );
 };
 
-export default PersonnelMaintenance;
+export default AssetSpecification;

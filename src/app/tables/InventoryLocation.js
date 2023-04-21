@@ -16,6 +16,7 @@ import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Moment from 'moment';
 import  {useLocation}  from 'react-router-dom';
+import logo from '../../assets/images/location.png';
 
 
 const InventoryLocation = (props) => {
@@ -417,389 +418,412 @@ const InventoryLocation = (props) => {
 
 
 
+  //Sum calculation
+  //const totalQty = Result.reduce((acc, item) => acc + (parseFloat(item.wko_ls3_qty_needed) || 0), 0);
+  
+  //Multiply calculation
+  //const totalCost = Result.reduce((acc, item) => acc + (parseFloat(item.wko_ls3_qty_needed) || 0) * (parseFloat(item.wko_ls3_item_cost) || 0), 0);
+
+
+
 
   return (
     <div>
-        <div className="page-header">
-            <div className="template-demo" >
-                <button type="button" className="btn btn-outline-primary btn-icon-text"  onClick={handleShow}>
-                    <i className="mdi mdi-file-check btn-icon-prepend"></i> New  
-                </button>
-            
-                <button type="button" className="btn btn-outline-danger btn-icon-text"  >
-                    <i className="mdi mdi-delete-forever btn-icon-prepend"></i> Delete 
-                </button>
-            </div>                     
-        </div> 
+        <div className="card">
+            <div className="card-body" style={{ borderRadius: '4px', boxShadow: '2px 2px 15px 2px #f0f0f0'}}>
+                <div>
+                    <div style={{ paddingBottom: '20px', backgroundColor: 'white' }}>
+                        <div className="template-demo" style={{ display: 'flex', alignItems: 'center' }}>
 
-            {/******************** Inventory Location ********************/}
-            <div>
-                <Modal show={show} onHide={handleClose} centered >
-
-                    <Modal.Header closeButton>
-                        <Modal.Title>Location</Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
-                        <div className="col-md-12">
-                            <Form.Group className="row" controlId="validation_PrimaryLocation">
-                                <label className="col-sm-5 col-form-label down">Primary Location:</label>
-                                <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
-                                <label className="form-check-label">
-                                    <input type="checkbox" 
-                                    className="form-check-input"
-                                    checked={PrimaryLocation}
-                                    onChange={handleOnChangePrimaryLocation}
-                                    />
-                                    <i className="input-helper"></i>
-                                </label>
-                                </div>
-                            </Form.Group>
+                        <div style={{ marginRight: '10px' }}>
+                            <img src={logo} style={{ width: '60px', height: '60px' }}/>
                         </div>
-
-                        <div className="col-md-12 moveUoPopUp">
-                            <Form.Group className="row" controlId="validation_StockLocation">
-                                <label className="col-sm-5 col-form-label top down">Stock Location:</label>
-                                <div className="col-sm-7 form-check">
-                                <label className="col-sm-10 form-label">
-                                <Select  
-                                        isClearable={true}  
-                                        options={Master_Location}
-                                        value={selected_Master_Location}
-                                        onChange={setSelected_Master_Location} // using id as it is unique
-                                        required
-                                        styles={{ 
-                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                        }}
-                                    />
-                                </label>
-                                </div>
-                            </Form.Group>
+                        <div className="template-demo" style={{ display: 'flex', flexDirection: 'column' }}>
+                            <div style={{ marginRight: '10px', fontWeight: 'bold' }}>Location</div>
+                            {/* <div><span style={{color: "blue"}}>{(totalQty * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCost.toFixed(2)}</span></div> */}
+                        </div> 
                         </div>
+                    </div>
 
-                        <div className="col-md-12 moveUoPopUp">
-                            <Form.Group className="row" controlId="validation_IncreaseTotalOH">
-                                <label className="col-sm-5 col-form-label top down">Increase Total OH:</label>
-                                <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
-                                <label className="form-check-label">
-                                    <input type="checkbox" 
-                                    className="form-check-input"
-                                    checked={IncreaseTotalOH}
-                                    onChange={handleOnChangeIncreaseTotalOH}
-                                    />
-                                    <i className="input-helper"></i>
-                                </label>
-                                </div>
-                            </Form.Group>
-                        </div>
 
-                        <div className="col-md-12 moveUoPopUp">
-                            <Form.Group className="row" controlId="validation_UpdateStockCosting">
-                                <label className="col-sm-5 col-form-label top down">Update Stock Costing:</label>
-                                <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
-                                <label className="form-check-label">
-                                    <input type="checkbox" 
-                                    className="form-check-input"
-                                    checked={UpdateStockCosting}
-                                    onChange={handleOnChangeUpdateStockCosting}
-                                    />
-                                    <i className="input-helper"></i>
-                                </label>
+                    {/******************** Inventory Location ********************/}
+                    <div>
+                        <Modal show={show} onHide={handleClose} centered >
+
+                            <Modal.Header closeButton>
+                                <Modal.Title>Location</Modal.Title>
+                            </Modal.Header>
+
+                            <Modal.Body>
+                                <div className="col-md-12">
+                                    <Form.Group className="row" controlId="validation_PrimaryLocation">
+                                        <label className="col-sm-5 col-form-label down">Primary Location:</label>
+                                        <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                                        <label className="form-check-label">
+                                            <input type="checkbox" 
+                                            className="form-check-input"
+                                            checked={PrimaryLocation}
+                                            onChange={handleOnChangePrimaryLocation}
+                                            />
+                                            <i className="input-helper"></i>
+                                        </label>
+                                        </div>
+                                    </Form.Group>
                                 </div>
-                            </Form.Group>
-                        </div>
+
+                                <div className="col-md-12 moveUpPopUp">
+                                    <Form.Group className="row" controlId="validation_StockLocation">
+                                        <label className="col-sm-4 col-form-label top down">Stock Location:</label>
+                                        <div className="col-sm-8 form-check">
+                                        <label className="col-sm-10 form-label">
+                                        <Select  
+                                                isClearable={true}  
+                                                options={Master_Location}
+                                                value={selected_Master_Location}
+                                                onChange={setSelected_Master_Location} // using id as it is unique
+                                                required
+                                                styles={{ 
+                                                    control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                    singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                                }}
+                                            />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12 moveUpPopUp">
+                                    <Form.Group className="row" controlId="validation_IncreaseTotalOH">
+                                        <label className="col-sm-5 col-form-label top down">Increase Total OH:</label>
+                                        <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                                        <label className="form-check-label">
+                                            <input type="checkbox" 
+                                            className="form-check-input"
+                                            checked={IncreaseTotalOH}
+                                            onChange={handleOnChangeIncreaseTotalOH}
+                                            />
+                                            <i className="input-helper"></i>
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12 moveUpPopUp">
+                                    <Form.Group className="row" controlId="validation_UpdateStockCosting">
+                                        <label className="col-sm-5 col-form-label top down">Update Stock Costing:</label>
+                                        <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                                        <label className="form-check-label">
+                                            <input type="checkbox" 
+                                            className="form-check-input"
+                                            checked={UpdateStockCosting}
+                                            onChange={handleOnChangeUpdateStockCosting}
+                                            />
+                                            <i className="input-helper"></i>
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+                                    
+                            </Modal.Body>
+                            <Modal.Footer>
+
+                                <Button variant="secondary" onClick={handleClose}>Close</Button>
+                                <Button variant="primary" onClick={handleAddButtonClick}>
+                                {/* {Button_save} */}
+                                Submit
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+
+
+                        {showModal && (
+                        <Modal show={showModal} onHide={handleCloseModal} centered >
+
+                        <Modal.Header closeButton>
+                            <Modal.Title>Location</Modal.Title>
+                        </Modal.Header>
+
+
+                        <Modal.Body>
+                            <div className="col-md-12">
+                                <Form.Group className="row" controlId="validation_LockoutForCount">
+                                    <label className="col-sm-5 col-form-label down">Lockout For Count:</label>
+                                    <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                                    <label className="form-check-label">
+                                        <input
+                                            style={{ fontSize: "13px", height: "38px" }}
+                                            type="checkbox" 
+                                            className="form-check-input"
+                                            checked={LockoutForCount} 
+                                            readOnly
+                                        />
+                                        <i className="input-helper"></i>
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
+
+                            <div className="col-md-12 moveUp">
+                                <Form.Group className="row" controlId="validation_PrimaryLocation">
+                                    <label className="col-sm-5 col-form-label labelTopEmail down">Primary Location:</label>
+                                    <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                                    <label className="form-check-label">
+                                        <input
+                                            style={{ fontSize: "13px", height: "38px" }}
+                                            type="checkbox" 
+                                            checked={PrimaryLocation} 
+                                            readOnly
+                                        />
+                                        <i className="input-helper"></i>
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
+
+                            <div className="col-md-12 moveUp">
+                                <Form.Group className="row" controlId="validation_StockLocation">
+                                    <label className="col-sm-4 col-form-label labelTopEmail down">Stock Location:</label>
+                                    <div className="col-sm-8 form-check">
+                                    <label className="col-sm-10 form-label">
+                                        <Form.Control
+                                        style={{ fontSize: "13px", height: "38px" }}
+                                        type="text"
+                                        value ={Master_Location} 
+                                        readOnly
+                                        />
+                                        <i className="input-helper"></i>
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
+
+                            <div className="col-md-12 moveUp">
+                                <Form.Group className="row" controlId="validation_IncreaseTotalOH">
+                                    <label className="col-sm-5 col-form-label labelTopEmail down">Increase Total OH:</label>
+                                    <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                                    <label className="form-check-label">
+                                        <input
+                                            style={{ fontSize: "13px", height: "38px" }}
+                                            type="checkbox" 
+                                            checked={IncreaseTotalOH} 
+                                            readOnly
+                                        />
+                                        <i className="input-helper"></i>
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
+
+                            <div className="col-md-12 moveUp">
+                                <Form.Group className="row" controlId="validation_UpdateStockCosting">
+                                    <label className="col-sm-5 col-form-label labelTopEmail down">Update Stock Costing:</label>
+                                    <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                                    <label className="form-check-label">
+                                        <input
+                                            style={{ fontSize: "13px", height: "38px" }}
+                                            type="checkbox" 
+                                            checked={UpdateStockCosting} 
+                                            readOnly
+                                        />
+                                        <i className="input-helper"></i>
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
+
+                            <div className="col-md-12 moveUp">
+                                <Form.Group className="row" controlId="validation_OhQuantity">
+                                    <label className="col-sm-4 col-form-label labelTopEmail down">Oh Quantity:</label>
+                                    <div className="col-sm-8 form-check">
+                                    <label className="col-sm-10 form-label">
+                                        <Form.Control
+                                        style={{ fontSize: "13px", height: "38px" }}
+                                        type="text"
+                                        value ={OhQuantity} 
+                                        readOnly
+                                        />
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
+
+                            <div className="col-md-12 moveUp">
+                                <Form.Group className="row" controlId="validation_OrderPoint">
+                                    <label className="col-sm-4 col-form-label labelTopEmail down">Order Point:</label>
+                                    <div className="col-sm-8 form-check">
+                                    <label className="col-sm-10 form-label">
+                                        <Form.Control
+                                        style={{ fontSize: "13px", height: "38px" }}
+                                        type="text"
+                                        value ={OrderPoint} 
+                                        readOnly
+                                        />
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
+
+                            <div className="col-md-12 moveUp">
+                                <Form.Group className="row" controlId="validation_Maximum">
+                                    <label className="col-sm-4 col-form-label labelTopEmail down">Maximum:</label>
+                                    <div className="col-sm-8 form-check">
+                                    <label className="col-sm-10 form-label">
+                                        <Form.Control
+                                        style={{ fontSize: "13px", height: "38px" }}
+                                        type="text"
+                                        value ={Maximum} 
+                                        readOnly
+                                        />
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
+
+                            <div className="col-md-12 moveUp">
+                                <Form.Group className="row" controlId="validation_PrOutstanding">
+                                    <label className="col-sm-4 col-form-label labelTopEmail down">Pr Outstanding:</label>
+                                    <div className="col-sm-8 form-check">
+                                    <label className="col-sm-10 form-label">
+                                        <Form.Control
+                                        style={{ fontSize: "13px", height: "38px" }}
+                                        type="text"
+                                        value ={PrOutstanding} 
+                                        readOnly
+                                        />
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
+
+                            <div className="col-md-12 moveUp">
+                                <Form.Group className="row" controlId="validation_PoOutstanding">
+                                    <label className="col-sm-4 col-form-label labelTopEmail down">Po Outstanding:</label>
+                                    <div className="col-sm-8 form-check">
+                                    <label className="col-sm-10 form-label">
+                                        <Form.Control
+                                        style={{ fontSize: "13px", height: "38px" }}
+                                        type="text"
+                                        value ={PoOutstanding} 
+                                        readOnly
+                                        />
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
+
+                            <div className="col-md-12 moveUp">
+                                <Form.Group className="row" controlId="validation_HardReserve">
+                                    <label className="col-sm-4 col-form-label labelTopEmail down">Hard Reserve:</label>
+                                    <div className="col-sm-8 form-check">
+                                    <label className="col-sm-10 form-label">
+                                        <Form.Control
+                                        style={{ fontSize: "13px", height: "38px" }}
+                                        type="text"
+                                        value ={HardReserve} 
+                                        readOnly
+                                        />
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
                             
-                    </Modal.Body>
-                    <Modal.Footer>
-
-                        <Button variant="secondary" onClick={handleClose}>Close</Button>
-                        <Button variant="primary" onClick={handleAddButtonClick}>
-                        {/* {Button_save} */}
-                        Submit
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-
-
-                {showModal && (
-                <Modal show={showModal} onHide={handleCloseModal} centered >
-
-                <Modal.Header closeButton>
-                    <Modal.Title>Location</Modal.Title>
-                </Modal.Header>
-
-
-                <Modal.Body>
-                    <div className="col-md-12">
-                        <Form.Group className="row" controlId="validation_LockoutForCount">
-                            <label className="col-sm-5 col-form-label down">Lockout For Count:</label>
-                            <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
-                            <label className="form-check-label">
-                                <input
-                                    style={{ fontSize: "13px", height: "38px" }}
-                                    type="checkbox" 
-                                    className="form-check-input"
-                                    checked={LockoutForCount} 
-                                    readOnly
-                                />
-                                <i className="input-helper"></i>
-                            </label>
+                            <div className="col-md-12 moveUp">
+                                <Form.Group className="row" controlId="validation_ShortQty">
+                                    <label className="col-sm-4 col-form-label labelTopEmail down">Short Qty:</label>
+                                    <div className="col-sm-8 form-check">
+                                    <label className="col-sm-10 form-label">
+                                        <Form.Control
+                                        style={{ fontSize: "13px", height: "38px" }}
+                                        type="text"
+                                        value ={ShortQty} 
+                                        readOnly
+                                        />
+                                    </label>
+                                    </div>
+                                </Form.Group>
                             </div>
-                        </Form.Group>
-                    </div>
 
-                    <div className="col-md-12 moveUoPopUp">
-                        <Form.Group className="row" controlId="validation_PrimaryLocation">
-                            <label className="col-sm-5 col-form-label top down">Primary Location:</label>
-                            <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
-                            <label className="form-check-label">
-                                <input
-                                    style={{ fontSize: "13px", height: "38px" }}
-                                    type="checkbox" 
-                                    checked={PrimaryLocation} 
-                                    readOnly
-                                />
-                                <i className="input-helper"></i>
-                            </label>
+                            <div className="col-md-12 moveUp">
+                                <Form.Group className="row" controlId="validation_LastActivityDate">
+                                    <label className="col-sm-4 col-form-label labelTopEmail down">Last Activity Date:</label>
+                                    <div className="col-sm-8 form-check">
+                                    <label className="col-sm-10 form-label">
+                                        <Form.Control
+                                        style={{ fontSize: "13px", height: "38px" }}
+                                        type="datetime-local"  
+                                        value ={LastActivityDate} 
+                                        readOnly
+                                        />
+                                    </label>
+                                    </div>
+                                </Form.Group>
                             </div>
-                        </Form.Group>
-                    </div>
 
-                    <div className="col-md-12 moveUoPopUp">
-                        <Form.Group className="row" controlId="validation_StockLocation">
-                            <label className="col-sm-5 col-form-label top down">Stock Location:</label>
-                            <div className="col-sm-7 form-check">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                  style={{ fontSize: "13px", height: "38px" }}
-                                  type="text"
-                                  value ={Master_Location} 
-                                  readOnly
-                                />
-                                <i className="input-helper"></i>
-                            </label>
+                            <div className="col-md-12 moveUp">
+                                <Form.Group className="row" controlId="validation_LastCountDate">
+                                    <label className="col-sm-4 col-form-label labelTopEmail down">Last Count Date:</label>
+                                    <div className="col-sm-8 form-check">
+                                    <label className="col-sm-10 form-label">
+                                        <Form.Control
+                                        style={{ fontSize: "13px", height: "38px" }}
+                                        type="datetime-local"  
+                                        value ={LastCountDate} 
+                                        readOnly
+                                        />
+                                    </label>
+                                    </div>
+                                </Form.Group>
                             </div>
-                        </Form.Group>
-                    </div>
 
-                    <div className="col-md-12 moveUoPopUp">
-                        <Form.Group className="row" controlId="validation_IncreaseTotalOH">
-                            <label className="col-sm-5 col-form-label top down">Increase Total OH:</label>
-                            <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
-                            <label className="form-check-label">
-                                <input
-                                    style={{ fontSize: "13px", height: "38px" }}
-                                    type="checkbox" 
-                                    checked={IncreaseTotalOH} 
-                                    readOnly
-                                />
-                                <i className="input-helper"></i>
-                            </label>
+                            <div className="col-md-12 moveUp">
+                                <Form.Group className="row" controlId="validation_NextCountDate">
+                                    <label className="col-sm-4 col-form-label labelTopEmail down">Next Count Date:</label>
+                                    <div className="col-sm-8 form-check">
+                                    <label className="col-sm-10 form-label">
+                                        <Form.Control
+                                        style={{ fontSize: "13px", height: "38px" }}
+                                        type="datetime-local"  
+                                        value ={NextCountDate} 
+                                        readOnly
+                                        />
+                                    </label>
+                                    </div>
+                                </Form.Group>
                             </div>
-                        </Form.Group>
-                    </div>
-
-                    <div className="col-md-12 moveUoPopUp">
-                        <Form.Group className="row" controlId="validation_UpdateStockCosting">
-                            <label className="col-sm-5 col-form-label top down">Update Stock Costing:</label>
-                            <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
-                            <label className="form-check-label">
-                                <input
-                                    style={{ fontSize: "13px", height: "38px" }}
-                                    type="checkbox" 
-                                    checked={UpdateStockCosting} 
-                                    readOnly
-                                />
-                                <i className="input-helper"></i>
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-
-                    <div className="col-md-12 moveUoPopUp">
-                        <Form.Group className="row" controlId="validation_OhQuantity">
-                            <label className="col-sm-5 col-form-label top down">Oh Quantity:</label>
-                            <div className="col-sm-7 form-check">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                  style={{ fontSize: "13px", height: "38px" }}
-                                  type="text"
-                                  value ={OhQuantity} 
-                                  readOnly
-                                />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-
-                    <div className="col-md-12 moveUoPopUp">
-                        <Form.Group className="row" controlId="validation_OrderPoint">
-                            <label className="col-sm-5 col-form-label top down">Order Point:</label>
-                            <div className="col-sm-7 form-check">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                  style={{ fontSize: "13px", height: "38px" }}
-                                  type="text"
-                                  value ={OrderPoint} 
-                                  readOnly
-                                />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-
-                    <div className="col-md-12 moveUoPopUp">
-                        <Form.Group className="row" controlId="validation_Maximum">
-                            <label className="col-sm-5 col-form-label top down">Maximum:</label>
-                            <div className="col-sm-7 form-check">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                  style={{ fontSize: "13px", height: "38px" }}
-                                  type="text"
-                                  value ={Maximum} 
-                                  readOnly
-                                />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-
-                    <div className="col-md-12 moveUoPopUp">
-                        <Form.Group className="row" controlId="validation_PrOutstanding">
-                            <label className="col-sm-5 col-form-label top down">Pr Outstanding:</label>
-                            <div className="col-sm-7 form-check">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                  style={{ fontSize: "13px", height: "38px" }}
-                                  type="text"
-                                  value ={PrOutstanding} 
-                                  readOnly
-                                />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-
-                    <div className="col-md-12 moveUoPopUp">
-                        <Form.Group className="row" controlId="validation_PoOutstanding">
-                            <label className="col-sm-5 col-form-label top down">Po Outstanding:</label>
-                            <div className="col-sm-7 form-check">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                  style={{ fontSize: "13px", height: "38px" }}
-                                  type="text"
-                                  value ={PoOutstanding} 
-                                  readOnly
-                                />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-
-                    <div className="col-md-12 moveUoPopUp">
-                        <Form.Group className="row" controlId="validation_HardReserve">
-                            <label className="col-sm-5 col-form-label top down">Hard Reserve:</label>
-                            <div className="col-sm-7 form-check">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                  style={{ fontSize: "13px", height: "38px" }}
-                                  type="text"
-                                  value ={HardReserve} 
-                                  readOnly
-                                />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-                    
-                    <div className="col-md-12 moveUoPopUp">
-                        <Form.Group className="row" controlId="validation_ShortQty">
-                            <label className="col-sm-5 col-form-label top down">Short Qty:</label>
-                            <div className="col-sm-7 form-check">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                  style={{ fontSize: "13px", height: "38px" }}
-                                  type="text"
-                                  value ={ShortQty} 
-                                  readOnly
-                                />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-
-                    <div className="col-md-12 moveUoPopUp">
-                        <Form.Group className="row" controlId="validation_LastActivityDate">
-                            <label className="col-sm-5 col-form-label top down">Last Activity Date:</label>
-                            <div className="col-sm-7 form-check">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                  style={{ fontSize: "13px", height: "38px" }}
-                                  type="datetime-local"  
-                                  value ={LastActivityDate} 
-                                  readOnly
-                                />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-
-                    <div className="col-md-12 moveUoPopUp">
-                        <Form.Group className="row" controlId="validation_LastCountDate">
-                            <label className="col-sm-5 col-form-label top down">Last Count Date:</label>
-                            <div className="col-sm-7 form-check">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                  style={{ fontSize: "13px", height: "38px" }}
-                                  type="datetime-local"  
-                                  value ={LastCountDate} 
-                                  readOnly
-                                />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-
-                    <div className="col-md-12 moveUoPopUp">
-                        <Form.Group className="row" controlId="validation_NextCountDate">
-                            <label className="col-sm-5 col-form-label top down">Next Count Date:</label>
-                            <div className="col-sm-7 form-check">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                  style={{ fontSize: "13px", height: "38px" }}
-                                  type="datetime-local"  
-                                  value ={NextCountDate} 
-                                  readOnly
-                                />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
+                                
+                        </Modal.Body>
                         
-                </Modal.Body>
-                
-                </Modal>
-                )}
-            </div> 
+                        </Modal>
+                        )}
+                    </div> 
 
-        <div className="table-responsive">
-            <table
-              className="table table-hover table-bordered"
-              style={{ color: "#000", border: 1 }}
-              >
-              <thead
-                  style={{
-                  color: "#000",
-                  fontWeight: "bold",
-                  fontFamily: "montserrat",
-                  margin: "5px",
-                  }}
-              >
-                  <tr>{renderTableHeader()}</tr>
-              </thead>
-              <tbody>{renderTableRows()}</tbody>
-            </table>
+                <div className="table-responsive">
+                    <table
+                    className="table table-hover table-bordered"
+                    style={{ color: "#000", border: 1 }}
+                    >
+                    <thead
+                        style={{
+                        color: "#000",
+                        fontWeight: "bold",
+                        fontFamily: "montserrat",
+                        margin: "5px",
+                        }}
+                    >
+                        <tr>{renderTableHeader()}</tr>
+                    </thead>
+                    <tbody>{renderTableRows()}</tbody>
+                    </table>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                        <button type="button" style={{ padding: '5px 10px', background: 'none', color: 'blue', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                        onClick={handleShow}>
+                            + Add Location
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
   );

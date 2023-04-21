@@ -15,6 +15,7 @@ import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Moment from 'moment';
 import  {useLocation}  from 'react-router-dom';
+import logo from '../../assets/images/work-list.png';
 
 
 const WorkRequestList1 = (props) => {
@@ -377,336 +378,360 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
 
 
 
+    
+  //Sum calculation
+  //const totalQty = Result.reduce((acc, item) => acc + (parseFloat(item.wko_ls3_qty_needed) || 0), 0);
+  
+  //Multiply calculation
+  //const totalCost = Result.reduce((acc, item) => acc + (parseFloat(item.wko_ls3_qty_needed) || 0) * (parseFloat(item.wko_ls3_item_cost) || 0), 0);
+
+
+
+
 
 
   return (
     <div>
-      <div className="page-header">
-          <div className="template-demo" >
-              <button type="button" className="btn btn-outline-primary btn-icon-text"  onClick={handleShow}>
-                  <i className="mdi mdi-file-check btn-icon-prepend"></i> New  
-              </button>
-          
-              <button type="button" className="btn btn-outline-danger btn-icon-text"  >
-                  <i className="mdi mdi-delete-forever btn-icon-prepend"></i> Delete 
-              </button>
-          </div>                     
-      </div> 
+        <div className="card">
+            <div className="card-body" style={{ borderRadius: '4px', boxShadow: '2px 2px 15px 2px #f0f0f0'}}>
+                <div>
+                    <div style={{ paddingBottom: '20px', backgroundColor: 'white' }}>
+                        <div className="template-demo" style={{ display: 'flex', alignItems: 'center' }}>
 
-      {/******************** Work Request List 1 ********************/}
-        <div>
-            <Modal show={show} onHide={handleClose} centered >
-
-                <Modal.Header closeButton>
-                    <Modal.Title>Work Request List 1</Modal.Title>
-                </Modal.Header>
-
-                <Modal.Body>
-                    <div className="col-md-12">
-                        <Form.Group className="row" controlId="validation_Varchar1">
-                            <label className="col-sm-4 col-form-label">Varchar1:</label>
-                            <div className="col-sm-8 form-label">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                    style={{ fontSize: "13px", height: "38px" }}
-                                    type="text"
-                                    value={UDFText_1}
-                                    onChange={(e) => setUDFText_1(e.target.value)}
-                                />
-                            </label>
-                            </div>
-                        </Form.Group>
+                        <div style={{ marginRight: '10px' }}>
+                            <img src={logo} style={{ width: '60px', height: '60px' }}/>
+                        </div>
+                        <div className="template-demo" style={{ display: 'flex', flexDirection: 'column' }}>
+                            <div style={{ marginRight: '10px', fontWeight: 'bold' }}>Work Request List 1</div>
+                            {/* <div><span style={{color: "blue"}}>{(totalQty * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCost.toFixed(2)}</span></div> */}
+                        </div> 
+                        </div>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                        <Form.Group className="row" controlId="validation_Varchar2">
-                            <label className="col-sm-4 col-form-label">Varchar2:</label>
-                            <div className="col-sm-8 form-label">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                    style={{ fontSize: "13px", height: "38px" }}
-                                    type="text"
-                                    value={UDFText_2}
-                                    onChange={(e) => setUDFText_2(e.target.value)}
-                                />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
+                {/******************** Work Request List 1 ********************/}
+                    <div>
+                        <Modal show={show} onHide={handleClose} centered >
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                        <Form.Group className="row" controlId="validation_Varchar3">
-                            <label className="col-sm-4 col-form-label">Varchar3:</label>
-                            <div className="col-sm-8 form-label">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                    style={{ fontSize: "13px", height: "38px" }}
-                                    type="text"
-                                    value={UDFText_3}
-                                    onChange={(e) => setUDFText_3(e.target.value)}
-                                />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-                    
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                        <Form.Group className="row" controlId="validation_Datetime1">
-                            <label className="col-sm-4 col-form-label">Datetime1:</label>
-                            <div className="col-sm-8 form-label">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control     
-                                    style={{ fontSize: "13px", height: "38px" }}                                       
-                                    type="datetime-local"  
-                                    value={UDFDate_1} 
-                                    onChange={(e) => setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                    />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-                    
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                        <Form.Group className="row" controlId="validation_Datetime2">
-                            <label className="col-sm-4 col-form-label">Datetime2:</label>
-                            <div className="col-sm-8 form-label">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control         
-                                    style={{ fontSize: "13px", height: "38px" }}                                   
-                                    type="datetime-local"  
-                                    value={UDFDate_2} 
-                                    onChange={(e) => setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                    />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-                    
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                        <Form.Group className="row" controlId="validation_Datetime3">
-                            <label className="col-sm-4 col-form-label">Datetime3:</label>
-                            <div className="col-sm-8 form-label">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control    
-                                    style={{ fontSize: "13px", height: "38px" }}                                        
-                                    type="datetime-local"  
-                                    value={UDFDate_3} 
-                                    onChange={(e) => setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
-                                    />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-                    
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                        <Form.Group className="row" controlId="validation_Numeric1">
-                            <label className="col-sm-4 col-form-label">Numeric1:</label>
-                            <div className="col-sm-8 form-label">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control  
-                                    style={{ fontSize: "13px", height: "38px" }}
-                                    type="number"  
-                                    placeholder=".0000" 
-                                    value={UDFNumber_1} 
-                                    onChange={(e) => setUDFNumber_1(e.target.value)}
-                                    />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-                    
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                        <Form.Group className="row" controlId="validation_Numeric2">
-                            <label className="col-sm-4 col-form-label">Numeric2:</label>
-                            <div className="col-sm-8 form-label">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control  
-                                    style={{ fontSize: "13px", height: "38px" }}
-                                    type="number"  
-                                    placeholder=".0000" 
-                                    value={UDFNumber_2} 
-                                    onChange={(e) => setUDFNumber_2(e.target.value)}
-                                    />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Work Request List 1</Modal.Title>
+                            </Modal.Header>
+
+                            <Modal.Body>
+                                <div className="col-md-12">
+                                    <Form.Group className="row" controlId="validation_Varchar1">
+                                        <label className="col-sm-4 col-form-label">Varchar1:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_1}
+                                                onChange={(e) => setUDFText_1(e.target.value)}
+                                            />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_Varchar2">
+                                        <label className="col-sm-4 col-form-label">Varchar2:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_2}
+                                                onChange={(e) => setUDFText_2(e.target.value)}
+                                            />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_Varchar3">
+                                        <label className="col-sm-4 col-form-label">Varchar3:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_3}
+                                                onChange={(e) => setUDFText_3(e.target.value)}
+                                            />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+                                
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_Datetime1">
+                                        <label className="col-sm-4 col-form-label">Datetime1:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control     
+                                                style={{ fontSize: "13px", height: "38px" }}                                       
+                                                type="datetime-local"  
+                                                value={UDFDate_1} 
+                                                onChange={(e) => setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+                                
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_Datetime2">
+                                        <label className="col-sm-4 col-form-label">Datetime2:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control         
+                                                style={{ fontSize: "13px", height: "38px" }}                                   
+                                                type="datetime-local"  
+                                                value={UDFDate_2} 
+                                                onChange={(e) => setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+                                
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_Datetime3">
+                                        <label className="col-sm-4 col-form-label">Datetime3:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control    
+                                                style={{ fontSize: "13px", height: "38px" }}                                        
+                                                type="datetime-local"  
+                                                value={UDFDate_3} 
+                                                onChange={(e) => setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+                                
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_Numeric1">
+                                        <label className="col-sm-4 col-form-label">Numeric1:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control  
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="number"  
+                                                placeholder=".0000" 
+                                                value={UDFNumber_1} 
+                                                onChange={(e) => setUDFNumber_1(e.target.value)}
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+                                
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_Numeric2">
+                                        <label className="col-sm-4 col-form-label">Numeric2:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control  
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="number"  
+                                                placeholder=".0000" 
+                                                value={UDFNumber_2} 
+                                                onChange={(e) => setUDFNumber_2(e.target.value)}
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+                                    
+                            </Modal.Body>
+                            
+                            <Modal.Footer>
+
+                                <Button variant="secondary" onClick={handleClose}>Close</Button>
+                                <Button variant="primary" onClick={handleAddButtonClick}>
+                                {/* {Button_save} */}
+                                Submit
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+
+
+                        {showModal && (
+                        <Modal show={showModal} onHide={handleCloseModal} centered >
+
+                        <Modal.Header closeButton>
+                            <Modal.Title>Work Request List 1</Modal.Title>
+                        </Modal.Header>
+
+
+                        <Modal.Body>
+                                <div className="col-md-12">
+                                    <Form.Group className="row" controlId="validation_Varchar1">
+                                        <label className="col-sm-4 col-form-label">Varchar1:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_1}
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_Varchar2">
+                                        <label className="col-sm-4 col-form-label">Varchar2:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_2}
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_Varchar3">
+                                        <label className="col-sm-4 col-form-label">Varchar3:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="text"
+                                                value={UDFText_3}
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+                                
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_Datetime1">
+                                        <label className="col-sm-4 col-form-label">Datetime1:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control     
+                                                style={{ fontSize: "13px", height: "38px" }}                                       
+                                                type="datetime-local"  
+                                                value={UDFDate_1} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+                                
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_Datetime2">
+                                        <label className="col-sm-4 col-form-label">Datetime2:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control         
+                                                style={{ fontSize: "13px", height: "38px" }}                                   
+                                                type="datetime-local"  
+                                                value={UDFDate_2} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+                                
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_Datetime3">
+                                        <label className="col-sm-4 col-form-label">Datetime3:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control    
+                                                style={{ fontSize: "13px", height: "38px" }}                                        
+                                                type="datetime-local"  
+                                                value={UDFDate_3} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+                                
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_Numeric1">
+                                        <label className="col-sm-4 col-form-label">Numeric1:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control  
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="number"  
+                                                placeholder=".0000" 
+                                                value={UDFNumber_1} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+                                
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_Numeric2">
+                                        <label className="col-sm-4 col-form-label">Numeric2:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control  
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="number"  
+                                                placeholder=".0000" 
+                                                value={UDFNumber_2} 
+                                                readOnly
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                        </Modal.Body>
                         
-                </Modal.Body>
-                
-                <Modal.Footer>
+                        </Modal>
+                        )}
+                    </div> 
 
-                    <Button variant="secondary" onClick={handleClose}>Close</Button>
-                    <Button variant="primary" onClick={handleAddButtonClick}>
-                    {/* {Button_save} */}
-                    Submit
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-
-
-            {showModal && (
-              <Modal show={showModal} onHide={handleCloseModal} centered >
-
-              <Modal.Header closeButton>
-                  <Modal.Title>Work Request List 1</Modal.Title>
-              </Modal.Header>
-
-
-              <Modal.Body>
-                    <div className="col-md-12">
-                        <Form.Group className="row" controlId="validation_Varchar1">
-                            <label className="col-sm-4 col-form-label">Varchar1:</label>
-                            <div className="col-sm-8 form-label">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                    style={{ fontSize: "13px", height: "38px" }}
-                                    type="text"
-                                    value={UDFText_1}
-                                    readOnly
-                                    />
-                            </label>
-                            </div>
-                        </Form.Group>
+                    <div className="table-responsive">
+                        <table
+                        className="table table-hover table-bordered"
+                        style={{ color: "#000", border: 1 }}
+                        >
+                        <thead
+                            style={{
+                            color: "#000",
+                            fontWeight: "bold",
+                            fontFamily: "montserrat",
+                            margin: "5px",
+                            }}
+                        >
+                            <tr>{renderTableHeader()}</tr>
+                        </thead>
+                        <tbody>{renderTableRows()}</tbody>
+                        </table>
                     </div>
 
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                        <Form.Group className="row" controlId="validation_Varchar2">
-                            <label className="col-sm-4 col-form-label">Varchar2:</label>
-                            <div className="col-sm-8 form-label">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                    style={{ fontSize: "13px", height: "38px" }}
-                                    type="text"
-                                    value={UDFText_2}
-                                    readOnly
-                                    />
-                            </label>
-                            </div>
-                        </Form.Group>
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                        <button type="button" style={{ padding: '5px 10px', background: 'none', color: 'blue', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                        onClick={handleShow}>
+                            + Add List
+                        </button>
                     </div>
-
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                        <Form.Group className="row" controlId="validation_Varchar3">
-                            <label className="col-sm-4 col-form-label">Varchar3:</label>
-                            <div className="col-sm-8 form-label">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                    style={{ fontSize: "13px", height: "38px" }}
-                                    type="text"
-                                    value={UDFText_3}
-                                    readOnly
-                                    />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-                    
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                        <Form.Group className="row" controlId="validation_Datetime1">
-                            <label className="col-sm-4 col-form-label">Datetime1:</label>
-                            <div className="col-sm-8 form-label">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control     
-                                    style={{ fontSize: "13px", height: "38px" }}                                       
-                                    type="datetime-local"  
-                                    value={UDFDate_1} 
-                                    readOnly
-                                    />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-                    
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                        <Form.Group className="row" controlId="validation_Datetime2">
-                            <label className="col-sm-4 col-form-label">Datetime2:</label>
-                            <div className="col-sm-8 form-label">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control         
-                                    style={{ fontSize: "13px", height: "38px" }}                                   
-                                    type="datetime-local"  
-                                    value={UDFDate_2} 
-                                    readOnly
-                                    />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-                    
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                        <Form.Group className="row" controlId="validation_Datetime3">
-                            <label className="col-sm-4 col-form-label">Datetime3:</label>
-                            <div className="col-sm-8 form-label">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control    
-                                    style={{ fontSize: "13px", height: "38px" }}                                        
-                                    type="datetime-local"  
-                                    value={UDFDate_3} 
-                                    readOnly
-                                    />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-                    
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                        <Form.Group className="row" controlId="validation_Numeric1">
-                            <label className="col-sm-4 col-form-label">Numeric1:</label>
-                            <div className="col-sm-8 form-label">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control  
-                                    style={{ fontSize: "13px", height: "38px" }}
-                                    type="number"  
-                                    placeholder=".0000" 
-                                    value={UDFNumber_1} 
-                                    readOnly
-                                    />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-                    
-                    <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                        <Form.Group className="row" controlId="validation_Numeric2">
-                            <label className="col-sm-4 col-form-label">Numeric2:</label>
-                            <div className="col-sm-8 form-label">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control  
-                                    style={{ fontSize: "13px", height: "38px" }}
-                                    type="number"  
-                                    placeholder=".0000" 
-                                    value={UDFNumber_2} 
-                                    readOnly
-                                    />
-                            </label>
-                            </div>
-                        </Form.Group>
-                    </div>
-
-              </Modal.Body>
-              
-              </Modal>
-            )}
-        </div> 
-
-        <div className="table-responsive">
-            <table
-              className="table table-hover table-bordered"
-              style={{ color: "#000", border: 1 }}
-              >
-              <thead
-                  style={{
-                  color: "#000",
-                  fontWeight: "bold",
-                  fontFamily: "montserrat",
-                  margin: "5px",
-                  }}
-              >
-                  <tr>{renderTableHeader()}</tr>
-              </thead>
-              <tbody>{renderTableRows()}</tbody>
-            </table>
+                </div>
+            </div>
         </div>
     </div>
   );

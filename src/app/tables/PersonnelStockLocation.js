@@ -15,6 +15,7 @@ import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Moment from 'moment';
 import  {useLocation}  from 'react-router-dom';
+import logo from '../../assets/images/stock.png';
 
 
 const PersonnelStockLocation = (props) => {
@@ -205,7 +206,8 @@ const PersonnelStockLocation = (props) => {
         <tr key={result.site_cd}>
             <td>{ <IndeterminateCheckbox {...result} checked={isCheckedList[index]} onChange={() => handleCheckboxChange(index)} />}</td>
             
-            <td>{result.usg_itm_location}</td>
+            <td>{result.loc_mst_stk_loc}</td>
+            <td>{result.loc_mst_desc}</td>
             <td>{result.usg_itm_list}</td>
             <td>{result.usg_itm_change}</td>
             
@@ -276,98 +278,122 @@ const PersonnelStockLocation = (props) => {
 
 
 
+  //Sum calculation
+  //const totalQty = Result.reduce((acc, item) => acc + (parseFloat(item.wko_ls3_qty_needed) || 0), 0);
+  
+  //Multiply calculation
+  //const totalCost = Result.reduce((acc, item) => acc + (parseFloat(item.wko_ls3_qty_needed) || 0) * (parseFloat(item.wko_ls3_item_cost) || 0), 0);
+
+
+
+
+
 
   return (
     <div>
-        <div className="page-header">
-            <div className="template-demo" >
-                <button type="button" className="btn btn-outline-primary btn-icon-text"  onClick={handleShow}>
-                    <i className="mdi mdi-file-check btn-icon-prepend"></i> New  
-                </button>
-            
-                <button type="button" className="btn btn-outline-danger btn-icon-text"  >
-                    <i className="mdi mdi-delete-forever btn-icon-prepend"></i> Delete 
-                </button>
-            </div>                     
-        </div> 
+        <div className="card">
+            <div className="card-body" style={{ borderRadius: '4px', boxShadow: '2px 2px 15px 2px #f0f0f0'}}>
+                <div>
+                    <div style={{ paddingBottom: '20px', backgroundColor: 'white' }}>
+                        <div className="template-demo" style={{ display: 'flex', alignItems: 'center' }}>
 
-            {/******************** Personnel Stock Location ********************/}
-            <div>
-                <Modal show={show} onHide={handleClose} centered >
-
-                    <Modal.Header closeButton>
-                        <Modal.Title>Stock Location</Modal.Title>
-                    </Modal.Header>
-
-
-                    <Modal.Body>
-                        <div className="col-md-12">
-                            <Form.Group className="row" controlId="validation_List">
-                                <label className="col-sm-4 col-form-label">List:</label>
-                                <div className="col-sm-4 form-check">
-                                <label className="form-check-label">
-                                    <input type="checkbox" 
-                                    className="form-check-input"
-                                    checked={List}
-                                    onChange={handleOnChangeList}
-                                    />
-                                    <i className="input-helper"></i>
-                                </label>
-                                </div>
-                            </Form.Group>
+                        <div style={{ marginRight: '10px' }}>
+                            <img src={logo} style={{ width: '60px', height: '60px' }}/>
                         </div>
-
-                        <div className="col-md-12" style={{ marginTop: "-20px" }}>
-                            <Form.Group className="row" controlId="validation_Change">
-                                <label className="col-sm-4 col-form-label">Change:</label>
-                                <div className="col-sm-4 form-check">
-                                <label className="form-check-label">
-                                    <input type="checkbox" 
-                                    className="form-check-input"
-                                    checked={Change}
-                                    onChange={handleOnChangeChange}
-                                    />
-                                    <i className="input-helper"></i>
-                                </label>
-                                </div>
-                            </Form.Group>
+                        <div className="template-demo" style={{ display: 'flex', flexDirection: 'column' }}>
+                            <div style={{ marginRight: '10px', fontWeight: 'bold' }}>Stock Location</div>
+                            {/* <div><span style={{color: "blue"}}>{(totalQty * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCost.toFixed(2)}</span></div> */}
+                        </div> 
                         </div>
-                    </Modal.Body>
-                    
+                    </div>
 
-                    <Modal.Footer>
+                    {/******************** Personnel Stock Location ********************/}
+                    <div>
+                        <Modal show={show} onHide={handleClose} centered >
 
-                        <Button variant="secondary" onClick={handleClose}>Close</Button>
-                        <Button variant="primary" onClick={() => {
-                            // Close modal
-                            handleClose();
-                        }}>
-                        {/* {Button_save} */}
-                        Submit
-                        </Button>
-                    </Modal.Footer>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Stock Location</Modal.Title>
+                            </Modal.Header>
 
-                </Modal>
 
-            </div> 
+                            <Modal.Body>
+                                <div className="col-md-12">
+                                    <Form.Group className="row" controlId="validation_List">
+                                        <label className="col-sm-4 col-form-label">List:</label>
+                                        <div className="col-sm-4 form-check">
+                                        <label className="form-check-label">
+                                            <input type="checkbox" 
+                                            className="form-check-input"
+                                            checked={List}
+                                            onChange={handleOnChangeList}
+                                            />
+                                            <i className="input-helper"></i>
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
 
-        <div className="table-responsive">
-            <table
-              className="table table-hover table-bordered"
-              style={{ color: "#000", border: 1 }}
-              >
-              <thead
-                  style={{
-                  color: "#000",
-                  fontWeight: "bold",
-                  fontFamily: "montserrat",
-                  margin: "5px",
-                  }}
-              >
-                  <tr>{renderTableHeader()}</tr>
-              </thead>
-              <tbody>{renderTableRows()}</tbody>
-            </table>
+                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                    <Form.Group className="row" controlId="validation_Change">
+                                        <label className="col-sm-4 col-form-label">Change:</label>
+                                        <div className="col-sm-4 form-check">
+                                        <label className="form-check-label">
+                                            <input type="checkbox" 
+                                            className="form-check-input"
+                                            checked={Change}
+                                            onChange={handleOnChangeChange}
+                                            />
+                                            <i className="input-helper"></i>
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+                            </Modal.Body>
+                            
+
+                            <Modal.Footer>
+
+                                <Button variant="secondary" onClick={handleClose}>Close</Button>
+                                <Button variant="primary" onClick={() => {
+                                    // Close modal
+                                    handleClose();
+                                }}>
+                                {/* {Button_save} */}
+                                Submit
+                                </Button>
+                            </Modal.Footer>
+
+                        </Modal>
+
+                    </div> 
+
+                    <div className="table-responsive">
+                        <table
+                        className="table table-hover table-bordered"
+                        style={{ color: "#000", border: 1 }}
+                        >
+                        <thead
+                            style={{
+                            color: "#000",
+                            fontWeight: "bold",
+                            fontFamily: "montserrat",
+                            margin: "5px",
+                            }}
+                        >
+                            <tr>{renderTableHeader()}</tr>
+                        </thead>
+                        <tbody>{renderTableRows()}</tbody>
+                        </table>
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                        <button type="button" style={{ padding: '5px 10px', background: 'none', color: 'blue', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                        onClick={handleShow}>
+                            + Add Stock Location
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
   );
