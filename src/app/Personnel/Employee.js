@@ -235,7 +235,7 @@ function Employee(props) {
           <td>{result.emp_mst_title}</td>
           <td>{result.emp_mst_status}</td>
           <td>{result.emp_det_supervisor_id}</td>
-          {/* <td>{result.emp_supervisor_name}</td> */}
+          <td>{result.emp_supervisor_name}</td>
           <td>{result.emp_mst_homephone}</td>
 
           <td>{result.emp_mst_emg_name}</td>
@@ -269,6 +269,10 @@ function Employee(props) {
           <td>{result.emp_det_foreman}</td>
           <td>{result.emp_det_asset_tag_flag}</td>
           {/* <td>{result.emp_det_msetup_mobile_user}</td> */}
+          <td>{result.emp_det_checklist}</td>
+          <td>{result.emp_det_mobile}</td>
+          <td>{result.emp_det_core}</td>
+          <td>{result.emp_det_webwork}</td>
           <td>{result.emp_det_email_id}</td>
 
           <td>{result.emp_det_craft}</td>

@@ -52,6 +52,7 @@ const PersonnalFrom = (props) => {
     const [Button_save, setButton_save] = useState("");
 
     const [RowID, setRowID] = useState("");
+    const [edited, setEdited] = useState(false);
 
 
     const [Emp_EmployeeID, setEmp_EmployeeID] = useState("");
@@ -701,7 +702,34 @@ const PersonnalFrom = (props) => {
         }
         
    
-  }
+    }
+
+    const onClickCancel = () => {
+    if (edited) {
+        Swal.fire({
+            title: 'Warning',
+            text: 'You have made some changes. Do you want to update these changes?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+          }).then((result) => {
+            
+            if (result.isConfirmed) {
+                Update_Employee();
+            }
+
+            window.history.back();
+          });
+
+        } else {
+          window.history.back();
+        }
+    };
+
+    const handleInputChange = () => {
+    setEdited(true);
+    };
 
 
     const New_Employee =()=>{
@@ -1928,7 +1956,7 @@ const PersonnalFrom = (props) => {
                             <i className="mdi mdi-file-check btn-icon-prepend" ></i>  {Button_save}
                         </button>
 
-                        <button type="button" className="btn btn-danger btn-icon-text">
+                        <button type="button" className="btn btn-danger btn-icon-text" onClick={onClickCancel}>
                             <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i> Cancel 
                         </button>
                     
@@ -1949,18 +1977,18 @@ const PersonnalFrom = (props) => {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Emp_EmployeeID">
-                                            <label className="col-sm-5 col-form-label down" style={{ fontSize: "13px" }}>Employee ID:<span style={{color: "red"}} class="required-asterisk">* </span></label>
-                                            <div className="col-sm-7">
-                                                <Form.Control className='formControl' type="text" value={Emp_EmployeeID} onChange={(e) => setEmp_EmployeeID(e.target.value)}/>
+                                            <label className="col-sm-4 col-form-label down" style={{ fontSize: "13px" }}>Employee ID:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                            <div className="col-sm-8">
+                                                <Form.Control className='formControl' type="text" value={Emp_EmployeeID} onChange={(e) => {setEmp_EmployeeID(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>
 
                                     <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_Emp_Name">
-                                            <label className="col-sm-2 col-form-label top down" style={{ fontSize: "13px" }}>Name:<span style={{color: "red"}} class="required-asterisk">* </span></label>
-                                            <div className="col-sm-10 Empleft-md Empleft-ms">
-                                                <Form.Control className='formControl' type="text" value={Emp_Name} onChange={(e) => setEmp_Name(e.target.value)}/>
+                                            <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Name:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                            <div className="col-sm-9 EmpleftBox-md Empleft-ms">
+                                                <Form.Control className='formControl' type="text" value={Emp_Name} onChange={(e) => {setEmp_Name(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>                        
                                     </div> 
@@ -1969,13 +1997,16 @@ const PersonnalFrom = (props) => {
                                 <div className="row moveUp moveUp-md moveUp-sm">
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Employee_Status">                                  
-                                            <Form.Label className="col-sm-5 col-form-label top down" style={{ fontSize: "13px" }}>Status:<span style={{color: "red"}} class="required-asterisk">* </span></Form.Label>
-                                            <div className="col-sm-7">
+                                            <Form.Label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Status:<span style={{color: "red"}} class="required-asterisk">* </span></Form.Label>
+                                            <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={Employee_Status}
                                                     value={selected_Employee_Status}
-                                                    onChange={setSelected_Employee_Status} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Employee_Status(value);
+                                                        handleInputChange();
+                                                      }}  // using id as it is unique
                                                     required
                                                     styles={{
                                                         control: (styles, { isDisabled }) => ({
@@ -2001,9 +2032,9 @@ const PersonnalFrom = (props) => {
 
                                     <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_Emp_Title">
-                                            <label className="col-sm-2 col-form-label top down" style={{ fontSize: "13px" }}>Title:<span style={{color: "red"}} class="required-asterisk">* </span></label>
-                                            <div className="col-sm-10 Empleft-md Empleft-ms">
-                                                <Form.Control className='formControl' type="text" value={Emp_Title} onChange={(e) => setEmp_Title(e.target.value)}/>
+                                            <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Title:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                            <div className="col-sm-9 EmpleftBox-md Empleft-ms">
+                                                <Form.Control className='formControl' type="text" value={Emp_Title} onChange={(e) => {setEmp_Title(e.target.value); handleInputChange();}}/>
                                             </div>
                                         </Form.Group>
                                     </div>                         
@@ -2012,13 +2043,16 @@ const PersonnalFrom = (props) => {
                                 <div className="row moveUp moveUp-md moveUp-sm">
                                     <div className="col-md-6">                                
                                         <Form.Group className="row" controlId="validation_Employee_User_Group">
-                                            <Form.Label className="col-sm-5 col-form-label top down" style={{ fontSize: "13px" }}>User Group:<span style={{color: "red"}} class="required-asterisk">* </span></Form.Label>
-                                            <div className="col-sm-7">
+                                            <Form.Label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>User Group:<span style={{color: "red"}} class="required-asterisk">* </span></Form.Label>
+                                            <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={Employee_User_Group}
                                                     value={selected_Employee_User_Group}
-                                                    onChange={setSelected_Employee_User_Group} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_Employee_User_Group(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
                                                     styles={{
                                                         control: (styles, { isDisabled }) => ({
@@ -2043,13 +2077,16 @@ const PersonnalFrom = (props) => {
 
                                     <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_Employee_Login_Id">
-                                            <label className="col-sm-2 col-form-label top down" style={{ fontSize: "13px" }}>Login ID:<span style={{color: "red"}} class="required-asterisk">* </span></label>
-                                            <div className="col-sm-5">
+                                            <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Login ID:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                            <div className="col-sm-4 EmpleftBox-md Empleft-ms">
                                             <Select  
                                                 isClearable={true}  
                                                 options={Employee_Login_Id}
                                                 value={selected_Employee_Login_Id}
-                                                onChange={setSelected_Employee_Login_Id} // using id as it is unique
+                                                onChange={value => {
+                                                    setSelected_Employee_Login_Id(value);
+                                                    handleInputChange();
+                                                  }} // using id as it is unique
                                                 required
                                                 styles={{
                                                     control: (styles, { isDisabled }) => ({
@@ -2070,7 +2107,7 @@ const PersonnalFrom = (props) => {
                                             />
                                         </div>
 
-                                        <div className="col-sm-5">
+                                        <div className="col-sm-5 EmpleftBox-md Empleft-ms">
                                             <label className="col-form-label labelTop down"><a href="" style={{ fontSize: "13px" }}>Create New User Login</a></label>
                                         </div>
                                         </Form.Group>
@@ -2080,12 +2117,15 @@ const PersonnalFrom = (props) => {
                                 <div className="row moveUp moveUp-md moveUp-sm">              
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_Dashboard_Access">
-                                            <label className="col-sm-5 col-form-label top down" style={{ fontSize: "13px" }}>Dashboard Access:</label>
-                                            <div className="col-sm-7">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Dashboard Access:</label>
+                                            <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     value={selected_dashboard_access}
-                                                    onChange={setSelected_dashboard_access}
+                                                    onChange={value => {
+                                                        setSelected_dashboard_access(value);
+                                                        handleInputChange();
+                                                      }}
                                                     options={dashboard_access}
                                                     styles={{
                                                         control: (styles, { isDisabled }) => ({
@@ -2165,22 +2205,22 @@ const PersonnalFrom = (props) => {
                                             <div className="row">
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_Emp_HomePhone">
-                                                        <label className="col-sm-3 col-form-label down" style={{ fontSize: "13px" }}>Home Phone:</label>
-                                                        <div className="col-sm-9">
-                                                            <Form.Control className='formControl' type="number" value={Emp_HomePhone} onChange={(e) => setEmp_HomePhone(e.target.value)}/>
+                                                        <label className="col-sm-4 col-form-label down" style={{ fontSize: "13px" }}>Home Phone:</label>
+                                                        <div className="col-sm-8">
+                                                            <Form.Control className='formControl' type="number" value={Emp_HomePhone} onChange={(e) => {setEmp_HomePhone(e.target.value); handleInputChange();}}/>
                                                         </div>
                                                     </Form.Group>
                                                 </div>  
 
                                                 <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row" controlId="validation_BirthDate">
-                                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Date of Birth:</label>
-                                                        <div className="col-sm-9">
+                                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Date of Birth:</label>
+                                                        <div className="col-sm-8">
                                                             <Form.Control
                                                                 className='formControl'
                                                                 type="datetime-local"
                                                                 value ={BirthDate} 
-                                                                onChange={(e) => setBirthDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                                onChange={(e) => {setBirthDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                                 />
                                                         </div>
                                                     </Form.Group>
@@ -2190,22 +2230,22 @@ const PersonnalFrom = (props) => {
                                             <div className="row moveUp">
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_Emp_EmergencyName">
-                                                        <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Emergency Name:</label>
-                                                        <div className="col-sm-9">
-                                                            <Form.Control className='formControl' type="text" value={Emp_EmergencyName} onChange={(e) => setEmp_EmergencyName(e.target.value)}/>
+                                                        <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Emergency Name:</label>
+                                                        <div className="col-sm-8">
+                                                            <Form.Control className='formControl' type="text" value={Emp_EmergencyName} onChange={(e) => {setEmp_EmergencyName(e.target.value); handleInputChange();}}/>
                                                         </div>
                                                     </Form.Group>
                                                 </div>  
 
                                                 <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row" controlId="validation_HireDate">
-                                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Date of Hire:</label>
-                                                        <div className="col-sm-9">
+                                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Date of Hire:</label>
+                                                        <div className="col-sm-8">
                                                         <Form.Control    
                                                             className='formControl'                                        
                                                             type="datetime-local"  
                                                             value={HireDate} 
-                                                            onChange={(e) => setHireDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                            onChange={(e) =>{ setHireDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                             /> 
                                                             </div>
                                                     </Form.Group>
@@ -2215,18 +2255,18 @@ const PersonnalFrom = (props) => {
                                             <div className="row moveUp">
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_Emp_EmergencyPhone">
-                                                        <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Emergency Phone:</label>
-                                                        <div className="col-sm-9">
-                                                            <Form.Control className='formControl' type="number" value={Emp_EmergencyPhone} onChange={(e) => setEmp_EmergencyPhone(e.target.value)}/>
+                                                        <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Emergency Phone:</label>
+                                                        <div className="col-sm-8">
+                                                            <Form.Control className='formControl' type="number" value={Emp_EmergencyPhone} onChange={(e) => {setEmp_EmergencyPhone(e.target.value); handleInputChange();}}/>
                                                         </div>
                                                     </Form.Group>
                                                 </div>  
 
                                                 <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row" controlId="validation_Emp_PayRate">
-                                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Pay Rate:</label>
-                                                        <div className="col-sm-9">
-                                                            <Form.Control className='formControl' type="number" value={Emp_PayRate} onChange={(e) => setEmp_PayRate(e.target.value)}/>
+                                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Pay Rate:</label>
+                                                        <div className="col-sm-8">
+                                                            <Form.Control className='formControl' type="number" value={Emp_PayRate} onChange={(e) => {setEmp_PayRate(e.target.value); handleInputChange();}}/>
                                                         </div>
                                                     </Form.Group>
                                                 </div> 
@@ -2235,12 +2275,15 @@ const PersonnalFrom = (props) => {
                                             <div className='row moveUp'>
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_sex">
-                                                        <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Sex:</label>
-                                                        <div className="col-sm-9">
+                                                        <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Sex:</label>
+                                                        <div className="col-sm-8">
                                                         <Select  
                                                             isClearable={true}  
                                                             value={selected_sex}
-                                                            onChange={setSelected_sex}
+                                                            onChange={value => {
+                                                                setSelected_sex(value);
+                                                                handleInputChange();
+                                                              }}
                                                             options={sex}
                                                             styles={{
                                                                 control: (styles, { isDisabled }) => ({
@@ -2265,9 +2308,9 @@ const PersonnalFrom = (props) => {
 
                                                 <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row" controlId="validation_Emp_PayPeriod">
-                                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Pay Period:</label>
-                                                        <div className="col-sm-9">
-                                                            <Form.Control className='formControl' type="text" value={Emp_PayPeriod} onChange={(e) => setEmp_PayPeriod(e.target.value)}/>
+                                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Pay Period:</label>
+                                                        <div className="col-sm-8">
+                                                            <Form.Control className='formControl' type="text" value={Emp_PayPeriod} onChange={(e) => {setEmp_PayPeriod(e.target.value); handleInputChange();}}/>
                                                         </div>
                                                     </Form.Group>
                                                 </div>  
@@ -2276,12 +2319,15 @@ const PersonnalFrom = (props) => {
                                             <div className='row moveUp'>                                  
                                                 <div className="col-md-6">
                                                     <Form.Group className="row" controlId="validation_marital_statuse">
-                                                        <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Marital Status:</label>
-                                                        <div className="col-sm-9">
+                                                        <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Marital Status:</label>
+                                                        <div className="col-sm-8">
                                                         <Select  
                                                             isClearable={true}  
                                                             value={selected_marital_status}
-                                                            onChange={setSelected_marital_status}
+                                                            onChange={value => {
+                                                                setSelected_marital_status(value);
+                                                                handleInputChange();
+                                                              }}
                                                             options={marital_status}
                                                             styles={{
                                                                 control: (styles, { isDisabled }) => ({
@@ -2306,12 +2352,15 @@ const PersonnalFrom = (props) => {
 
                                                 <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row" controlId="validation_marital_statuse">
-                                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Shift:</label>
-                                                        <div className="col-sm-9">
+                                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Shift:</label>
+                                                        <div className="col-sm-8">
                                                             <Select  
                                                                 isClearable={true}  
                                                                 value={selected_shift}
-                                                                onChange={setSelected_shift}
+                                                                onChange={value => {
+                                                                    setSelected_shift(value);
+                                                                    handleInputChange();
+                                                                  }}
                                                                 options={shift}
                                                                 styles={{
                                                                     control: (styles, { isDisabled }) => ({
@@ -2338,22 +2387,25 @@ const PersonnalFrom = (props) => {
                                             <div className='row moveUp'>
                                                 <div className="col-md-6">
                                                     <Form.Group className="row">
-                                                        <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Email ID:</label>
-                                                        <div className="col-sm-9">
-                                                            <Form.Control className='formControl' type="text" value={Emp_EmailID} onChange={(e) => setEmp_EmailID(e.target.value)}/>
+                                                        <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Email ID:</label>
+                                                        <div className="col-sm-8">
+                                                            <Form.Control className='formControl' type="text" value={Emp_EmailID} onChange={(e) => {setEmp_EmailID(e.target.value); handleInputChange();}}/>
                                                         </div>
                                                     </Form.Group>
                                                 </div>    
 
                                                 <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row">
-                                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Supervisor ID:<span style={{color: "red"}} class="required-asterisk">* </span></label>
-                                                        <div className="col-sm-9">
+                                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Supervisor ID:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                                        <div className="col-sm-8">
                                                             <Select  
                                                                 isClearable={true}  
                                                                 options={Employee_Supervisor_Id}
                                                                 value={selected_Employee_Supervisor_Id}
-                                                                onChange={setSelected_Employee_Supervisor_Id} // using id as it is unique
+                                                                onChange={value => {
+                                                                    setSelected_Employee_Supervisor_Id(value);
+                                                                    handleInputChange();
+                                                                  }} // using id as it is unique
                                                                 required
                                                                 styles={{
                                                                     control: (styles, { isDisabled }) => ({
@@ -2380,13 +2432,16 @@ const PersonnalFrom = (props) => {
                                             <div className='row moveUp'>
                                                 <div className="col-md-6">
                                                     <Form.Group className="row">
-                                                        <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Primary Craft:<span style={{color: "red"}} class="required-asterisk">* </span></label>
-                                                        <div className="col-sm-9">
+                                                        <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Primary Craft:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                                        <div className="col-sm-8">
                                                             <Select  
                                                                 isClearable={true}  
                                                                 options={Employee_Primary_Craft}
                                                                 value={selected_Employee_Primary_Craft}
-                                                                onChange={setSelected_Employee_Primary_Craft} // using id as it is unique
+                                                                onChange={value => {
+                                                                    setSelected_Employee_Primary_Craft(value);
+                                                                    handleInputChange();
+                                                                  }} // using id as it is unique
                                                                 required
                                                                 styles={{
                                                                     control: (styles, { isDisabled }) => ({
@@ -2411,8 +2466,8 @@ const PersonnalFrom = (props) => {
 
                                                 <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row">
-                                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Supervisor Name:</label>
-                                                        <div className="col-sm-9"></div>
+                                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Supervisor Name:</label>
+                                                        <div className="col-sm-8"></div>
                                                     </Form.Group>
                                                 </div>                                      
                                             </div>
@@ -2420,13 +2475,16 @@ const PersonnalFrom = (props) => {
                                             <div className='row moveUp'>
                                                 <div className="col-md-6">
                                                     <Form.Group className="row">
-                                                        <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Work Area:<span style={{color: "red"}} class="required-asterisk">* </span></label>
-                                                        <div className="col-sm-9">
+                                                        <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>Work Area:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                                        <div className="col-sm-8">
                                                             <Select  
                                                                 isClearable={true}  
                                                                 options={Employee_Work_Id}
                                                                 value={selected_Employee_Work_Id}
-                                                                onChange={setSelected_Employee_Work_Id} // using id as it is unique
+                                                                onChange={value => {
+                                                                    setSelected_Employee_Work_Id(value);
+                                                                    handleInputChange();
+                                                                  }} // using id as it is unique
                                                                 required
                                                                 styles={{
                                                                     control: (styles, { isDisabled }) => ({
@@ -2451,13 +2509,16 @@ const PersonnalFrom = (props) => {
 
                                                 <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row">
-                                                        <label className="col-sm-3 col-form-label top down" style={{ fontSize: "13px" }}>Work Group:<span style={{color: "red"}} class="required-asterisk">* </span></label>
-                                                        <div className="col-sm-9">
+                                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Work Group:<span style={{color: "red"}} class="required-asterisk">* </span></label>
+                                                        <div className="col-sm-8">
                                                             <Select  
                                                                 isClearable={true}  
                                                                 options={Employee_Work_Group}
                                                                 value={selected_Employee_Work_Group}
-                                                                onChange={setSelected_Employee_Work_Group} // using id as it is unique
+                                                                onChange={value => {
+                                                                    setSelected_Employee_Work_Group(value);
+                                                                    handleInputChange();
+                                                                  }} // using id as it is unique
                                                                 required
                                                                 styles={{
                                                                     control: (styles, { isDisabled }) => ({
@@ -2482,16 +2543,16 @@ const PersonnalFrom = (props) => {
                                             </div>
 
                                             <div className="row moveUp">
-                                                <div className="col-md-6">
+                                                <div className="col-md-12">
                                                     <Form.Group className="row">
-                                                        <label className="col-sm-3 col-form-label labelTop down" style={{ fontSize: "13px" }}>Remarks:</label>
-                                                        <div className="col-sm-9">
+                                                        <label className="col-sm-2 col-form-label labelTop down" style={{ fontSize: "13px" }}>Remarks:</label>
+                                                        <div className="col-sm-10 EmpleftRemark-md Empleft-ms">
                                                         <Form.Control 
                                                             className='formControlBox'
                                                             as="textarea" 
                                                             rows={6} 
                                                             value={Remarks}
-                                                            onChange={(e) => setRemarks(e.target.value)}
+                                                            onChange={(e) => {setRemarks(e.target.value); handleInputChange();}}
                                                         />
                                                         </div>
                                                     </Form.Group>
@@ -2514,7 +2575,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={MrApprover}
-                                                        onChange={handleOnChangeMrApprover}
+                                                        onChange={value => {
+                                                            handleOnChangeMrApprover(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2524,7 +2588,7 @@ const PersonnalFrom = (props) => {
 
                                         <div className="col-md-3 moveUpBox-md moveUpBox-sm moveUpBoxRight-md moveUpBoxRight-sm">
                                             <Form.Group className="mb-3">
-                                                    <Form.Control className='formControl' type="number" placeholder=".00" value={selected_MrApprover} disabled ={MrApprover} onChange={(e) => setselected_MrApprover(e.target.value)} />
+                                                    <Form.Control className='formControl' type="number" placeholder=".00" value={selected_MrApprover} disabled ={MrApprover} onChange={(e) => {setselected_MrApprover(e.target.value); handleInputChange();}} />
                                             </Form.Group>
                                         </div>
 
@@ -2536,7 +2600,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={WoSched}
-                                                        onChange={handleOnChangeWoSched}
+                                                        onChange={value => {
+                                                            handleOnChangeWoSched(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2554,7 +2621,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={WoBudgetApprover}
-                                                        onChange={handleOnChangeWoBudgetApprover}
+                                                        onChange={value => {
+                                                            handleOnChangeWoBudgetApprover(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2564,7 +2634,7 @@ const PersonnalFrom = (props) => {
 
                                         <div className="col-md-3 moveUpBox-md moveUpBox-sm moveUpBoxRight-md moveUpBoxRight-sm">
                                             <Form.Group className="mb-3">
-                                                    <Form.Control className='formControl' type="text" placeholder=".00" value={selected_WoBudgetApprover} disabled ={WoBudgetApprover} onChange={(e) => setselected_WoBudgetApprover(e.target.value)} />
+                                                    <Form.Control className='formControl' type="text" placeholder=".00" value={selected_WoBudgetApprover} disabled ={WoBudgetApprover} onChange={(e) => {setselected_WoBudgetApprover(e.target.value); handleInputChange();}} />
                                             </Form.Group>
                                         </div> 
                                         
@@ -2576,7 +2646,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={PoBuyer}
-                                                        onChange={handleOnChangePoBuyer}
+                                                        onChange={value => {
+                                                            handleOnChangePoBuyer(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2594,7 +2667,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={PrApprover}
-                                                        onChange={handleOnChangePrApprover}
+                                                        onChange={value => {
+                                                            handleOnChangePrApprover(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2604,7 +2680,7 @@ const PersonnalFrom = (props) => {
 
                                         <div className="col-md-3 moveUpBox-md moveUpBox-sm moveUpBoxRight-md moveUpBoxRight-sm">
                                             <Form.Group className="mb-3">
-                                                    <Form.Control className='formControl' type="text" placeholder=".00" value={selected_PrApprover} disabled ={PrApprover} onChange={(e) => setselected_PrApprover(e.target.value)} />
+                                                    <Form.Control className='formControl' type="text" placeholder=".00" value={selected_PrApprover} disabled ={PrApprover} onChange={(e) => {setselected_PrApprover(e.target.value); handleInputChange();}} />
                                             </Form.Group>
                                         </div>  
 
@@ -2616,7 +2692,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={Supervisor}
-                                                        onChange={handleOnChangeSupervisor}
+                                                        onChange={value => {
+                                                            handleOnChangeSupervisor(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2634,7 +2713,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={WrApprover}
-                                                        onChange={handleOnChangeWrApprover}
+                                                        onChange={value => {
+                                                            handleOnChangeWrApprover(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2652,7 +2734,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={Foreman}
-                                                        onChange={handleOnChangeForeman}
+                                                        onChange={value => {
+                                                            handleOnChangeForeman(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2670,7 +2755,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={Planner}
-                                                        onChange={handleOnChangePlanner}
+                                                        onChange={value => {
+                                                            handleOnChangePlanner(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2688,7 +2776,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={AssetTagFlag}
-                                                        onChange={handleOnChangeAssetTagFlag}
+                                                        onChange={value => {
+                                                            handleOnChangeAssetTagFlag(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2706,7 +2797,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={WoGenMrPr}
-                                                        onChange={handleOnChangeWoGenMrPr}
+                                                        onChange={value => {
+                                                            handleOnChangeWoGenMrPr(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2724,7 +2818,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={MsetupMobileUser}
-                                                        onChange={handleOnChangeMsetupMobileUser}
+                                                        onChange={value => {
+                                                            handleOnChangeMsetupMobileUser(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2742,7 +2839,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={PmGenerator}
-                                                        onChange={handleOnChangePmGenerator}
+                                                        onChange={value => {
+                                                            handleOnChangePmGenerator(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2769,7 +2869,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={TimeCardEnter}
-                                                        onChange={handleOnChangeTimeCardEnter}
+                                                        onChange={value => {
+                                                            handleOnChangeTimeCardEnter(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2787,7 +2890,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={Checklist}
-                                                        onChange={handleOnChangeChecklist}
+                                                        onChange={value => {
+                                                            handleOnChangeChecklist(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2805,7 +2911,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={TimeCardVoid}
-                                                        onChange={handleOnChangeTimeCardVoid}
+                                                        onChange={value => {
+                                                            handleOnChangeTimeCardVoid(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2823,7 +2932,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={Mobile}
-                                                        onChange={handleOnChangeMobile}
+                                                        onChange={value => {
+                                                            handleOnChangeMobile(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2841,7 +2953,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={Core}
-                                                        onChange={handleOnChangeCore}
+                                                        onChange={value => {
+                                                            handleOnChangeCore(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2859,7 +2974,10 @@ const PersonnalFrom = (props) => {
                                                         <input type="checkbox" 
                                                         className="form-check-input"
                                                         checked={Webwork}
-                                                        onChange={handleOnChangeWebwork}
+                                                        onChange={value => {
+                                                            handleOnChangeWebwork(value);
+                                                            handleInputChange();
+                                                          }}
                                                         />
                                                         <i className="input-helper"></i>
                                                     </label>
@@ -2887,7 +3005,7 @@ const PersonnalFrom = (props) => {
                                                         className='formControl'
                                                         type="text"
                                                         value={UDFText_1}
-                                                        onChange={(e) => setUDFText_1(e.target.value)}
+                                                        onChange={(e) => {setUDFText_1(e.target.value); handleInputChange();}}
                                                     />
                                                 </div>
                                                 </Form.Group>
@@ -2903,7 +3021,7 @@ const PersonnalFrom = (props) => {
                                                         className='formControl'
                                                         type="text"
                                                         value={UDFText_2}
-                                                        onChange={(e) => setUDFText_2(e.target.value)}
+                                                        onChange={(e) => {setUDFText_2(e.target.value); handleInputChange();}}
                                                         />
                                                 </div>
                                                 </Form.Group>
@@ -2919,7 +3037,7 @@ const PersonnalFrom = (props) => {
                                                         className='formControl'
                                                         type="text"
                                                         value={UDFText_3}
-                                                        onChange={(e) => setUDFText_3(e.target.value)}
+                                                        onChange={(e) => {setUDFText_3(e.target.value); handleInputChange();}}
                                                         />
                                                 </div>
                                                 </Form.Group>
@@ -2935,7 +3053,7 @@ const PersonnalFrom = (props) => {
                                                         className='formControl'
                                                         type="text"
                                                         value={UDFText_4}
-                                                        onChange={(e) => setUDFText_4(e.target.value)}
+                                                        onChange={(e) => {setUDFText_4(e.target.value); handleInputChange();}}
                                                         />
                                                 </div>
                                                 </Form.Group>
@@ -2951,7 +3069,7 @@ const PersonnalFrom = (props) => {
                                                         className='formControl'
                                                         type="text"
                                                         value={UDFText_5}
-                                                        onChange={(e) => setUDFText_5(e.target.value)}
+                                                        onChange={(e) => {setUDFText_5(e.target.value); handleInputChange();}}
                                                         />
                                                 </div>
                                                 </Form.Group>
@@ -2969,7 +3087,7 @@ const PersonnalFrom = (props) => {
                                                     as="textarea" 
                                                     rows={15} 
                                                     value={UDFNote1} 
-                                                    onChange={(e) => setUDFNote1(e.target.value)}
+                                                    onChange={(e) => {setUDFNote1(e.target.value); handleInputChange();}}
                                                 />
                                                 </div>
                                             </Form.Group>
@@ -2987,7 +3105,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="text"
                                                 value={UDFText_6}
-                                                onChange={(e) => setUDFText_6(e.target.value)}
+                                                onChange={(e) => {setUDFText_6(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -3004,7 +3122,7 @@ const PersonnalFrom = (props) => {
                                                     type="number"  
                                                     placeholder=".0000" 
                                                     value={UDFNumber_1} 
-                                                    onChange={(e) => setUDFNumber_1(e.target.value)}
+                                                    onChange={(e) =>{ setUDFNumber_1(e.target.value); handleInputChange();}}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3020,7 +3138,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'                                         
                                                 type="datetime-local"  
                                                 value={UDFDate_1} 
-                                                onChange={(e) => setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                onChange={(e) => {setUDFDate_1(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3038,7 +3156,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="text"
                                                 value={UDFText_7}
-                                                onChange={(e) => setUDFText_7(e.target.value)}
+                                                onChange={(e) => {setUDFText_7(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -3055,7 +3173,7 @@ const PersonnalFrom = (props) => {
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_2} 
-                                                onChange={(e) => setUDFNumber_2(e.target.value)}
+                                                onChange={(e) =>{ setUDFNumber_2(e.target.value); handleInputChange();}}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3071,7 +3189,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_2} 
-                                                onChange={(e) => setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                onChange={(e) => {setUDFDate_2(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3089,7 +3207,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="text"
                                                 value={UDFText_8}
-                                                onChange={(e) => setUDFText_8(e.target.value)}
+                                                onChange={(e) => {setUDFText_8(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -3106,7 +3224,7 @@ const PersonnalFrom = (props) => {
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_3} 
-                                                onChange={(e) => setUDFNumber_3(e.target.value)}
+                                                onChange={(e) => {setUDFNumber_3(e.target.value); handleInputChange();}}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3122,7 +3240,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_3} 
-                                                onChange={(e) => setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                onChange={(e) => {setUDFDate_3(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3140,7 +3258,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="text"
                                                 value={UDFText_9}
-                                                onChange={(e) => setUDFText_9(e.target.value)}
+                                                onChange={(e) => {setUDFText_9(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -3157,7 +3275,7 @@ const PersonnalFrom = (props) => {
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_4} 
-                                                onChange={(e) => setUDFNumber_4(e.target.value)}
+                                                onChange={(e) => {setUDFNumber_4(e.target.value); handleInputChange();}}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3173,7 +3291,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_4} 
-                                                onChange={(e) => setUDFDate_4(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                onChange={(e) => {setUDFDate_4(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3191,7 +3309,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="text"
                                                 value={UDFText_10}
-                                                onChange={(e) => setUDFText_10(e.target.value)}
+                                                onChange={(e) => {setUDFText_10(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -3208,7 +3326,7 @@ const PersonnalFrom = (props) => {
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_5} 
-                                                onChange={(e) => setUDFNumber_5(e.target.value)}
+                                                onChange={(e) => {setUDFNumber_5(e.target.value); handleInputChange();}}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3224,7 +3342,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_5} 
-                                                onChange={(e) => setUDFDate_5(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                onChange={(e) => {setUDFDate_5(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3250,7 +3368,7 @@ const PersonnalFrom = (props) => {
                                                         className='formControl'
                                                         type="text"
                                                         value={UDFText_11}
-                                                        onChange={(e) => setUDFText_11(e.target.value)}
+                                                        onChange={(e) => {setUDFText_11(e.target.value); handleInputChange();}}
                                                     />
                                                 </div>
                                                 </Form.Group>
@@ -3266,7 +3384,7 @@ const PersonnalFrom = (props) => {
                                                         className='formControl'
                                                         type="text"
                                                         value={UDFText_12}
-                                                        onChange={(e) => setUDFText_12(e.target.value)}
+                                                        onChange={(e) => {setUDFText_12(e.target.value); handleInputChange();}}
                                                         />
                                                 </div>
                                                 </Form.Group>
@@ -3282,7 +3400,7 @@ const PersonnalFrom = (props) => {
                                                         className='formControl'
                                                         type="text"
                                                         value={UDFText_13}
-                                                        onChange={(e) => setUDFText_13(e.target.value)}
+                                                        onChange={(e) =>{ setUDFText_13(e.target.value); handleInputChange();}}
                                                         />
                                                 </div>
                                                 </Form.Group>
@@ -3298,7 +3416,7 @@ const PersonnalFrom = (props) => {
                                                         className='formControl'
                                                         type="text"
                                                         value={UDFText_14}
-                                                        onChange={(e) => setUDFText_14(e.target.value)}
+                                                        onChange={(e) =>{ setUDFText_14(e.target.value); handleInputChange();}}
                                                         />
                                                 </div>
                                                 </Form.Group>
@@ -3314,7 +3432,7 @@ const PersonnalFrom = (props) => {
                                                         className='formControl'
                                                         type="text"
                                                         value={UDFText_15}
-                                                        onChange={(e) => setUDFText_15(e.target.value)}
+                                                        onChange={(e) => {setUDFText_15(e.target.value); handleInputChange();}}
                                                         />
                                                 </div>
                                                 </Form.Group>
@@ -3332,7 +3450,7 @@ const PersonnalFrom = (props) => {
                                                     as="textarea" 
                                                     rows={15} 
                                                     value={UDFNote2}
-                                                    onChange={(e) => setUDFNote2(e.target.value)}
+                                                    onChange={(e) => {setUDFNote2(e.target.value); handleInputChange();}}
                                                 />
                                                 </div>
                                             </Form.Group>
@@ -3350,7 +3468,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="text"
                                                 value={UDFText_16}
-                                                onChange={(e) => setUDFText_16(e.target.value)}
+                                                onChange={(e) => {setUDFText_16(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -3367,7 +3485,7 @@ const PersonnalFrom = (props) => {
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_6} 
-                                                onChange={(e) => setUDFNumber_6(e.target.value)}
+                                                onChange={(e) => {setUDFNumber_6(e.target.value); handleInputChange();}}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3383,7 +3501,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_6} 
-                                                onChange={(e) => setUDFDate_6(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date 
+                                                onChange={(e) => {setUDFDate_6(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date 
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3401,7 +3519,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="text"
                                                 value={UDFText_17}
-                                                onChange={(e) => setUDFText_17(e.target.value)}
+                                                onChange={(e) => {setUDFText_17(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -3418,7 +3536,7 @@ const PersonnalFrom = (props) => {
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_7} 
-                                                onChange={(e) => setUDFNumber_7(e.target.value)}
+                                                onChange={(e) => {setUDFNumber_7(e.target.value); handleInputChange();}}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3434,7 +3552,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_7} 
-                                                onChange={(e) => setUDFDate_7(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                onChange={(e) => {setUDFDate_7(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3452,7 +3570,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="text"
                                                 value={UDFText_18}
-                                                onChange={(e) => setUDFText_18(e.target.value)}
+                                                onChange={(e) => {setUDFText_18(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -3469,7 +3587,7 @@ const PersonnalFrom = (props) => {
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_8} 
-                                                onChange={(e) => setUDFNumber_8(e.target.value)}
+                                                onChange={(e) => {setUDFNumber_8(e.target.value); handleInputChange();}}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3485,7 +3603,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_8} 
-                                                onChange={(e) => setUDFDate_8(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                onChange={(e) => {setUDFDate_8(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3503,7 +3621,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="text"
                                                 value={UDFText_19}
-                                                onChange={(e) => setUDFText_19(e.target.value)}
+                                                onChange={(e) => {setUDFText_19(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -3520,7 +3638,7 @@ const PersonnalFrom = (props) => {
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_9} 
-                                                onChange={(e) => setUDFNumber_9(e.target.value)}
+                                                onChange={(e) => {setUDFNumber_9(e.target.value); handleInputChange();}}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3536,7 +3654,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_9} 
-                                                onChange={(e) => setUDFDate_9(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                onChange={(e) => {setUDFDate_9(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3554,7 +3672,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="text"
                                                 value={UDFText_20}
-                                                onChange={(e) => setUDFText_20(e.target.value)}
+                                                onChange={(e) => {setUDFText_20(e.target.value); handleInputChange();}}
                                                     />
                                             </div>
                                             </Form.Group>
@@ -3571,7 +3689,7 @@ const PersonnalFrom = (props) => {
                                                 type="number"  
                                                 placeholder=".0000" 
                                                 value={UDFNumber_10} 
-                                                onChange={(e) => setUDFNumber_10(e.target.value)}
+                                                onChange={(e) => {setUDFNumber_10(e.target.value); handleInputChange();}}
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3587,7 +3705,7 @@ const PersonnalFrom = (props) => {
                                                 className='formControl'
                                                 type="datetime-local"
                                                 value={UDFDate_10} 
-                                                onChange={(e) => setUDFDate_10(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                onChange={(e) => {setUDFDate_10(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss')); handleInputChange();}} //insert and show date
                                                 />
                                             </div>
                                             </Form.Group>
@@ -3600,7 +3718,7 @@ const PersonnalFrom = (props) => {
 
                                 <Tab eventKey="Maintenance" title={<><i className="mdi mdi-medical-bag"></i><span className="d-none d-md-inline"> Maintenance</span></>} class="nav-link active">
 
-                                    {/* <PersonnelMaintenance name={'PersonnelFrom'} data={{RowID: location.state.RowID }}/> */}
+                                    <PersonnelMaintenance name={'PersonnelFrom'} data={{RowID: location.state.RowID }}/>
 
                                 </Tab>
 
@@ -3609,7 +3727,7 @@ const PersonnalFrom = (props) => {
 
                                 <Tab eventKey="PR Approval" title={<><i className="mdi mdi-rotate-left-variant"></i><span className="d-none d-md-inline"> PR Approval</span></>} class="nav-link active" >
 
-                                    {/* <PersonnelPRApproval name={'PersonnelFrom'} data={{RowID: location.state.RowID }}/> */}
+                                    <PersonnelPRApproval name={'PersonnelFrom'} data={{RowID: location.state.RowID }}/>
 
                                 </Tab>
 
@@ -3618,7 +3736,7 @@ const PersonnalFrom = (props) => {
 
                                 <Tab eventKey="MR Approval" title={<><i className="mdi mdi-rotate-right-variant"></i><span className="d-none d-md-inline"> MR Approval</span></>} class="nav-link active">
 
-                                    {/* <PersonnelMRApproval name={'PersonnelFrom'} data={{RowID: location.state.RowID }}/> */}
+                                    <PersonnelMRApproval name={'PersonnelFrom'} data={{RowID: location.state.RowID }}/>
 
                                 </Tab>
 
@@ -3627,7 +3745,7 @@ const PersonnalFrom = (props) => {
 
                                 <Tab eventKey="Stock Location" title={<><i className="mdi mdi-map"></i><span className="d-none d-md-inline"> Stock Location</span></>} class="nav-link active">
 
-                                    {/* <PersonnelStockLocation name={'PersonnelFrom'} data={{RowID: location.state.RowID }}/> */}
+                                    <PersonnelStockLocation name={'PersonnelFrom'} data={{RowID: location.state.RowID }}/>
 
                                 </Tab>
 
@@ -3670,6 +3788,7 @@ const PersonnalFrom = (props) => {
                             <button
                             type="button"
                             className="btn btn-danger btn-icon-text"
+                            onClick={onClickCancel}
                             >
                             <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i>{" "}
                             Cancel
