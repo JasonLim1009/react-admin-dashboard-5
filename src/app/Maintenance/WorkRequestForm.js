@@ -3448,7 +3448,7 @@ const WorkRequestForm = (props) => {
 
                             <Tab eventKey="List 1" title={<><i className="mdi mdi-format-float-left"></i><span className="d-none d-md-inline"> List 1</span></>} class="nav-link active">
 
-                                {/* <WorkRequestList1 name={'WorkRequestFrom'} data={{RowID: location.state.RowID }}/> */}
+                                <WorkRequestList1 name={'WorkRequestFrom'} data={{RowID: location.state.RowID }}/>
 
                             </Tab>
 
@@ -3457,7 +3457,7 @@ const WorkRequestForm = (props) => {
 
                             <Tab eventKey="List 2" title={<><i className="mdi mdi-format-float-right"></i><span className="d-none d-md-inline"> List 2</span></>} class="nav-link active" >
 
-                                {/* <WorkRequestList2 name={'WorkRequestFrom'} data={{RowID: location.state.RowID }}/> */}
+                                <WorkRequestList2 name={'WorkRequestFrom'} data={{RowID: location.state.RowID }}/>
 
                             </Tab>
 

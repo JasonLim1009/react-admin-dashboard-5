@@ -295,6 +295,7 @@ function WorkRequest(props) {
           <td>{result.wkr_mst_originator}</td>
           <td>{result.wkr_mst_phone}</td>
 
+          <td>{result.wkr_det_wo}</td>
           <td>{result.wkr_det_approver}</td>
           <td>{wkr_appr_date}</td>
           <td>{result.wkr_det_reject_desc}</td>
@@ -306,7 +307,7 @@ function WorkRequest(props) {
           <td>{result.wkr_mst_fault_code}</td>
           
           <td>{result.wkr_mst_create_by}</td>
-          {/* <td>{wkr_create_date}</td> */}
+          <td>{wkr_create_date}</td>
 
         </tr>
       );

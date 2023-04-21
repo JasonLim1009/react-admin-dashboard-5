@@ -2555,7 +2555,7 @@ const WorkOrderFrom = (props) => {
                                                     }}
                                                 />
                                             </div>
-                                            <i type="button" className="mdi mdi-information-outline StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm" onClick={StatushandleShow}></i>
+                                            <i type="button" title='Status Audit' className="mdi mdi-information-outline StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm" onClick={StatushandleShow}></i>
                                         </Form.Group>
                                     </div>
 

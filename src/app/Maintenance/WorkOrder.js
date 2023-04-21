@@ -126,6 +126,30 @@ function WorkOrder(props) {
 
       }
 
+      if (result.wko_det_wr_org_date == null) {
+        var wkod_od_date = ''
+      } else {
+
+        var wkod_od_date = format(new Date(result.wko_det_wr_org_date.date), "dd/MM/yyyy HH:MM")
+
+      }
+
+      if (result.wko_det_wr_due_date == null) {
+        var wkod_wrd_date = ''
+      } else {
+
+        var wkod_wrd_date = format(new Date(result.wko_det_wr_due_date.date), "dd/MM/yyyy HH:MM")
+
+      }
+
+      if (result.wko_det_sc_date == null) {
+        var wkod_sc_date = ''
+      } else {
+
+        var wkod_sc_date = format(new Date(result.wko_det_sc_date.date), "dd/MM/yyyy HH:MM")
+
+      }
+
       if (result.wko_det_sched_date == null) {
         var wkod_sched_date = ''
       } else {
@@ -277,7 +301,6 @@ function WorkOrder(props) {
           <td>{wkod_cmpl_date}</td>
 
           <td>{wkod_clo_date}</td>
-          <td>{result.wko_mst_originator}</td>
           {/* <td>{result.originator_name}</td> */}
           <td>{result.wko_det_assign_to}</td>
           {/* <td>{result.assign_to_name}</td> */}
@@ -286,7 +309,8 @@ function WorkOrder(props) {
           <td>{result.wko_det_cause_code}</td>
           <td>{result.wko_det_act_code}</td>
           <td>{result.wko_det_corr_action}</td>
-
+          
+          <td>{result.wko_mst_originator}</td>
           <td>{result.wko_mst_phone}</td>
           <td>{result.wko_mst_project_id}</td>
           <td>{result.wko_mst_work_area}</td>
@@ -299,9 +323,12 @@ function WorkOrder(props) {
           <td>{result.wko_det_wr_no}</td>
 
           <td>{result.wko_det_perm_id}</td>
+          <td>{wkod_od_date}</td>
+          <td>{wkod_wrd_date}</td>
           <td>{result.wko_det_work_type}</td>
           <td>{result.wko_det_work_class}</td>
           <td>{result.wko_det_work_grp}</td>
+          <td>{wkod_sc_date}</td>
           <td>{wkod_sched_date}</td>
           <td>{wkod_exc_date}</td>
           <td>{result.wko_det_contract_no}</td>
@@ -314,6 +341,7 @@ function WorkOrder(props) {
           <td>{result.wko_det_est_mtl_cost}</td>
           <td>{result.wko_det_mtl_cost}</td>
           <td>{result.wko_det_est_lab_cost}</td>
+          <td>{result.wko_det_lab_cost}</td>
           <td>{result.wko_det_varchar1}</td>
           <td>{result.wko_det_varchar2}</td>
           <td>{result.wko_det_varchar3}</td>
