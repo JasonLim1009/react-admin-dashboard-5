@@ -17,6 +17,7 @@ const System_Default_Setting = (props) => {
     const [Button_save, setButton_save] = useState("");
 
     const [RowID, setRowID] = useState("");
+    const [edited, setEdited] = useState(false);
 
     const [columns, setcolumns] = useState([]);
     const [data, setdata] = useState([]);
@@ -317,7 +318,6 @@ const System_Default_Setting = (props) => {
                 setRowID( responseJson.data.data[index].RowID )
 
 
-                
                 setSelected_DefaultLaborAccount( {label:responseJson.data.data[index].dft_mst_lab_act} )
                 setSelected_DefaultMRStatus( {label:responseJson.data.data[index].dft_mst_mtr_sts} )
                 setSelected_DefaultMaterialAccount( {label:responseJson.data.data[index].dft_mst_mat_act} )
@@ -423,6 +423,33 @@ const System_Default_Setting = (props) => {
             Update_SystemDefaultSetting();
         }
     }
+
+    const onClickCancel = () => {
+        if (edited) {
+            Swal.fire({
+                title: 'Warning',
+                text: 'You have made some changes. Do you want to update these changes?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+              }).then((result) => {
+                
+                if (result.isConfirmed) {
+                    Update_SystemDefaultSetting();
+                }
+
+                window.history.back();
+              });
+
+            } else {
+              window.history.back();
+            }
+    };
+
+    const handleInputChange = () => {
+        setEdited(true);
+    };
 
     
 
@@ -789,7 +816,8 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeShowDashboard = () => {
         setShowDashboard(!ShowDashboard);
-        
+        handleInputChange();
+
         if(!ShowDashboard){
             console.log('1')
             setCheckBox_ShowDashboard('1')
@@ -801,7 +829,8 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeAssetSelectionByLocation = () => {
         setAssetSelectionByLocation(!AssetSelectionByLocation);
-        
+        handleInputChange();
+
         if(!AssetSelectionByLocation){
             console.log('1')
             setCheckBox_AssetSelectionByLocation('1')
@@ -813,6 +842,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeMaterialReserved = () => {
         setMaterialReserved(!MaterialReserved);
+         handleInputChange();
         
         if(!MaterialReserved){
             console.log('1')
@@ -825,6 +855,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangePrintTransactionDocument = () => {
         setPrintTransactionDocument(!PrintTransactionDocument);
+        handleInputChange();
         
         if(!PrintTransactionDocument){
             console.log('1')
@@ -837,6 +868,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeMREmailNotification = () => {
         setMREmailNotification(!MREmailNotification);
+        handleInputChange();
         
         if(!MREmailNotification){
             console.log('1')
@@ -849,6 +881,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeMRApprovalRequired = () => {
         setMRApprovalRequired(!MRApprovalRequired);
+        handleInputChange();
         
         if(!MRApprovalRequired){
             console.log('1')
@@ -861,6 +894,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeDefaultMRReleaseForApproval = () => {
         setDefaultMRReleaseForApproval(!DefaultMRReleaseForApproval);
+        handleInputChange();
         
         if(!DefaultMRReleaseForApproval){
             console.log('1')
@@ -873,6 +907,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeMRApprovalClosedLoop = () => {
         setMRApprovalClosedLoop(!MRApprovalClosedLoop);
+        handleInputChange();
         
         if(!MRApprovalClosedLoop){
             console.log('1')
@@ -885,6 +920,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeEmailMRApprover = () => {
         setEmailMRApprover(!EmailMRApprover);
+        handleInputChange();
         
         if(!EmailMRApprover){
             console.log('1')
@@ -897,6 +933,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeAutoMRApprovalEmail = () => {
         setAutoMRApprovalEmail(!AutoMRApprovalEmail);
+        handleInputChange();
         
         if(!AutoMRApprovalEmail){
             console.log('1')
@@ -909,6 +946,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeEmailRequestedByMRApproved = () => {
         setEmailRequestedByMRApproved(!EmailRequestedByMRApproved);
+        handleInputChange();
         
         if(!EmailRequestedByMRApproved){
             console.log('1')
@@ -921,6 +959,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeWREmailNotification = () => {
         setWREmailNotification(!WREmailNotification);
+        handleInputChange();
         
         if(!WREmailNotification){
             console.log('1')
@@ -933,6 +972,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeDefaultWOCCtoPlanning = () => {
         setDefaultWOCCtoPlanning(!DefaultWOCCtoPlanning);
+        handleInputChange();
         
         if(!DefaultWOCCtoPlanning){
             console.log('1')
@@ -945,6 +985,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeAutoWOPlanfromWR = () => {
         setAutoWOPlanfromWR(!AutoWOPlanfromWR);
+        handleInputChange();
         
         if(!AutoWOPlanfromWR){
             console.log('1')
@@ -957,6 +998,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeGenerateWOInvoice = () => {
         setGenerateWOInvoice(!GenerateWOInvoice);
+        handleInputChange();
         
         if(!GenerateWOInvoice){
             console.log('1')
@@ -969,6 +1011,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeTemporaryAssetFlag = () => {
         setTemporaryAssetFlag(!TemporaryAssetFlag);
+        handleInputChange();
         
         if(!TemporaryAssetFlag){
             console.log('1')
@@ -981,6 +1024,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangePMClosedLoop = () => {
         setPMClosedLoop(!PMClosedLoop);
+        handleInputChange();
         
         if(!PMClosedLoop){
             console.log('1')
@@ -993,6 +1037,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangePMScheduleDate = () => {
         setPMScheduleDate(!PMScheduleDate);
+        handleInputChange();
         
         if(!PMScheduleDate){
             console.log('1')
@@ -1005,6 +1050,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeDefaultPRReleaseforApproval = () => {
         setDefaultPRReleaseforApproval(!DefaultPRReleaseforApproval);
+        handleInputChange();
         
         if(!DefaultPRReleaseforApproval){
             console.log('1')
@@ -1017,7 +1063,8 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangePRApprovalClosedLoop = () => {
         setPRApprovalClosedLoop(!PRApprovalClosedLoop);
-        
+        handleInputChange();
+         
         if(!PRApprovalClosedLoop){
             console.log('1')
             setCheckBox_PRApprovalClosedLoop('1')
@@ -1029,6 +1076,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeEmailPRApprover = () => {
         setEmailPRApprover(!EmailPRApprover);
+        handleInputChange();
         
         if(!EmailPRApprover){
             console.log('1')
@@ -1041,6 +1089,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeAutoPRApprovalEmail = () => {
         setAutoPRApprovalEmail(!AutoPRApprovalEmail);
+        handleInputChange();
         
         if(!AutoPRApprovalEmail){
             console.log('1')
@@ -1053,6 +1102,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeEmailRequestedByPRApproved = () => {
         setEmailRequestedByPRApproved(!EmailRequestedByPRApproved);
+        handleInputChange();
         
         if(!EmailRequestedByPRApproved){
             console.log('1')
@@ -1065,6 +1115,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeOrderPointAutoGeneratePR = () => {
         setOrderPointAutoGeneratePR(!OrderPointAutoGeneratePR);
+        handleInputChange();
         
         if(!OrderPointAutoGeneratePR){
             console.log('1')
@@ -1077,6 +1128,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeAutoGeneratePO = () => {
         setAutoGeneratePO(!AutoGeneratePO);
+        handleInputChange();
         
         if(!AutoGeneratePO){
             console.log('1')
@@ -1089,6 +1141,7 @@ const System_Default_Setting = (props) => {
 
     const handleOnChangeAutoClosePO = () => {
         setAutoClosePO(!AutoClosePO);
+        handleInputChange();
         
         if(!AutoClosePO){
             console.log('1')
@@ -1105,29 +1158,28 @@ const System_Default_Setting = (props) => {
 
       return (
         <div>
-            <div className="page-header">
+            <div className="page-header" style={{ marginTop: "-10px", marginBottom:"10px" }}>
                 <h3 className="page-title">
                    System Default Setting
                 </h3>          
 
                 <nav aria-label="breadcrumb">
-                    <ol className="breadcrumb">
-                        <div className="template-demo">
+                    {/* <ol className="breadcrumb"></ol> */}
+                    <div className="template-demo">
 
-                            <button type="button" className="btn btn-success btn-icon-text" onClick={onClickChange}>
-                                <i className="mdi mdi-file-check btn-icon-prepend" ></i>  Save
-                            </button>
+                        <button type="button" className="btn btn-success btn-icon-text" onClick={onClickChange}>
+                            <i className="mdi mdi-file-check btn-icon-prepend" ></i>  Save
+                        </button>
 
-                            <button type="button" className="btn btn-danger btn-icon-text">
-                                <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i> Cancel 
-                            </button>
-                        
-                        </div>
-                    </ol>
+                        <button type="button" className="btn btn-danger btn-icon-text" onClick={onClickCancel}>
+                            <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i> Cancel 
+                        </button>
+                    
+                    </div>
                 </nav> 
 
             </div> 
-            <div className="card">           
+            <div className="card" style={{marginLeft: "-15px", marginRight: "-15px"}}>          
                 <div className="card-body">
 
                     <section id="tab-menus">
@@ -1137,21 +1189,40 @@ const System_Default_Setting = (props) => {
 
                             {/* ************************************* Default **************************************** */}
                             
-                            <Tab eventKey="Default" title="Default" class="nav-link active">
+                            <Tab eventKey="Default" title={<><i className="mdi mdi-rename-box"></i><span className="d-none d-md-inline"> Default</span></>} class="nav-link active">
                             
                                 <div className="row">
                                     <div className="col-md-6">
                                         <Form.Group className="row" controlId="validation_DefaultLaborAccount">
-                                        <label className="col-sm-4 col-form-label down">
+                                        <label className="col-sm-4 col-form-label down" style={{ fontSize: "13px" }}>
                                             Default Labor Account:
                                         </label>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={DefaultLaborAccount}
                                                     value={selected_DefaultLaborAccount}
-                                                    onChange={setSelected_DefaultLaborAccount} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_DefaultLaborAccount(value);
+                                                        handleInputChange();
+                                                      }}  // using id as it is unique
                                                     required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -1159,16 +1230,35 @@ const System_Default_Setting = (props) => {
 
                                     <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultMRStatus">
-                                        <label className="col-sm-4 col-form-label top down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Default MR Status:
                                         </label>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={DefaultMRStatus}
                                                     value={selected_DefaultMRStatus}
-                                                    onChange={setSelected_DefaultMRStatus} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_DefaultMRStatus(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -1176,19 +1266,38 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row moveUpPopUp">
+                                <div className="row moveUp moveUpDesc-md moveUp-sm">
                                     <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultMaterialAccount">
-                                        <label className="col-sm-4 col-form-label labelTopEmail down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Default Material Account:
                                         </label>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={DefaultMaterialAccount}
                                                     value={selected_DefaultMaterialAccount}
-                                                    onChange={setSelected_DefaultMaterialAccount} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_DefaultMaterialAccount(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -1196,16 +1305,35 @@ const System_Default_Setting = (props) => {
 
                                     <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultPRStatus">
-                                        <label className="col-sm-4 col-form-label top down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Default PR Status:
                                         </label>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={DefaultPRStatus}
                                                     value={selected_DefaultPRStatus}
-                                                    onChange={setSelected_DefaultPRStatus} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_DefaultPRStatus(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -1213,19 +1341,38 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row moveUpPopUp">
+                                <div className="row moveUp moveUpDesc-md moveUp-sm">
                                     <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultContractAccount">
-                                        <label className="col-sm-4 col-form-label labelTopEmail down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Default Contract Account:
                                         </label>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={DefaultContractAccount}
                                                     value={selected_DefaultContractAccount}
-                                                    onChange={setSelected_DefaultContractAccount} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_DefaultContractAccount(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -1233,16 +1380,35 @@ const System_Default_Setting = (props) => {
 
                                     <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultPOStatus">
-                                        <label className="col-sm-4 col-form-label top down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Default PO Status:
                                         </label>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={DefaultPOStatus}
                                                     value={selected_DefaultPOStatus}
-                                                    onChange={setSelected_DefaultPOStatus} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_DefaultPOStatus(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -1250,19 +1416,38 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row moveUpPopUp">
+                                <div className="row moveUp moveUpDesc-md moveUp-sm">
                                     <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultWRWorkPriority">
-                                        <label className="col-sm-4 col-form-label labelTopEmail down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Default WR Work Priority:
                                         </label>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={DefaultWRWorkPriority}
                                                     value={selected_DefaultWRWorkPriority}
-                                                    onChange={setSelected_DefaultWRWorkPriority} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_DefaultWRWorkPriority(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -1270,16 +1455,35 @@ const System_Default_Setting = (props) => {
 
                                     <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultWRAssetNo">
-                                        <label className="col-sm-4 col-form-label top down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Default WR Asset No:
                                         </label>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={DefaultWRAssetNo}
                                                     value={selected_DefaultWRAssetNo}
-                                                    onChange={setSelected_DefaultWRAssetNo} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_DefaultWRAssetNo(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -1287,19 +1491,38 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row moveUpPopUp">
+                                <div className="row moveUp moveUpDesc-md moveUp-sm">
                                     <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultWOWorkPriority">
-                                        <label className="col-sm-4 col-form-label labelTopEmail down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Default WO Work Priority:
                                         </label>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={DefaultWOWorkPriority}
                                                     value={selected_DefaultWOWorkPriority}
-                                                    onChange={setSelected_DefaultWOWorkPriority} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_DefaultWOWorkPriority(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -1307,16 +1530,35 @@ const System_Default_Setting = (props) => {
 
                                     <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultWROriginator">
-                                        <label className="col-sm-4 col-form-label top down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Default WR Originator:
                                         </label>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={DefaultWROriginator}
                                                     value={selected_DefaultWROriginator}
-                                                    onChange={setSelected_DefaultWROriginator} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_DefaultWROriginator(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -1324,19 +1566,38 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row moveUpPopUp">
+                                <div className="row moveUp moveUpDesc-md moveUp-sm">
                                     <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultPMWorkPriority">
-                                        <label className="col-sm-4 col-form-label labelTopEmail down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Default PM Work Priority:
                                         </label>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={DefaultPMWorkPriority}
                                                     value={selected_DefaultPMWorkPriority}
-                                                    onChange={setSelected_DefaultPMWorkPriority} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_DefaultPMWorkPriority(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -1344,16 +1605,35 @@ const System_Default_Setting = (props) => {
 
                                     <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultWOAssetNo">
-                                        <label className="col-sm-4 col-form-label top down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Default WO Asset No:
                                         </label>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={DefaultWOAssetNo}
                                                     value={selected_DefaultWOAssetNo}
-                                                    onChange={setSelected_DefaultWOAssetNo} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_DefaultWOAssetNo(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -1361,19 +1641,38 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row moveUpPopUp">
+                                <div className="row moveUp moveUpDesc-md moveUp-sm">
                                     <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultAssetStatus">
-                                        <label className="col-sm-4 col-form-label labelTopEmail down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Default Asset Status:
                                         </label>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={DefaultAssetStatus}
                                                     value={selected_DefaultAssetStatus}
-                                                    onChange={setSelected_DefaultAssetStatus} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_DefaultAssetStatus(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -1381,15 +1680,35 @@ const System_Default_Setting = (props) => {
 
                                     <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultPRApprovalType">
-                                        <label className="col-sm-4 col-form-label top down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Default PR Approval Type:
                                         </label>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     value={selected_DefaultPRApprovalType}
-                                                    onChange={setSelected_DefaultPRApprovalType}
+                                                    onChange={value => {
+                                                        setSelected_DefaultPRApprovalType(value);
+                                                        handleInputChange();
+                                                      }}
                                                     options={DefaultPRApprovalType}
+                                                    required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -1397,19 +1716,38 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row moveUpPopUp">
+                                <div className="row moveUp moveUpDesc-md moveUp-sm">
                                     <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultWOWorkStatus">
-                                        <label className="col-sm-4 col-form-label labelTopEmail down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Default WO Work Status:
                                         </label>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={DefaultWOWorkStatus}
                                                     value={selected_DefaultWOWorkStatus}
-                                                    onChange={setSelected_DefaultWOWorkStatus} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_DefaultWOWorkStatus(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -1417,15 +1755,35 @@ const System_Default_Setting = (props) => {
 
                                     <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultMRApprovalType">
-                                        <label className="col-sm-4 col-form-label top down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Default MR Approval Type:
                                         </label>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     value={selected_DefaultMRApprovalType}
-                                                    onChange={setSelected_DefaultMRApprovalType}
+                                                    onChange={value => {
+                                                        setSelected_DefaultMRApprovalType(value);
+                                                        handleInputChange();
+                                                      }} 
                                                     options={DefaultMRApprovalType}
+                                                    required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -1433,18 +1791,38 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row moveUpPopUp">
+                                <div className="row moveUp moveUpDesc-md moveUp-sm">
                                     <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_TimeCardEntryBy">
-                                        <label className="col-sm-4 col-form-label labelTopEmail down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Time Card Entry By:
                                         </label>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     value={selected_TimeCardEntryBy}
-                                                    onChange={setSelected_TimeCardEntryBy}
+                                                    onChange={value => {
+                                                        setSelected_TimeCardEntryBy(value);
+                                                        handleInputChange();
+                                                      }} 
                                                     options={TimeCardEntryBy}
+                                                    required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -1452,19 +1830,38 @@ const System_Default_Setting = (props) => {
 
                                 </div>
 
-                                <div className="row moveUpPopUp">
+                                <div className="row moveUp moveUpDesc-md moveUp-sm">
                                     <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_DefaultPOCurrencyCode">
-                                        <label className="col-sm-4 col-form-label labelTopEmail down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Default PO Currency Code:
                                         </label>
-                                        <div className="col-sm-6">
+                                        <div className="col-sm-8">
                                                 <Select  
                                                     isClearable={true}  
                                                     options={DefaultPOCurrencyCode}
                                                     value={selected_DefaultPOCurrencyCode}
-                                                    onChange={setSelected_DefaultPOCurrencyCode} // using id as it is unique
+                                                    onChange={value => {
+                                                        setSelected_DefaultPOCurrencyCode(value);
+                                                        handleInputChange();
+                                                      }} // using id as it is unique
                                                     required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
                                                 />
                                         </div>
                                         </Form.Group>
@@ -1472,61 +1869,61 @@ const System_Default_Setting = (props) => {
 
                                     <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_WOGracePeriod">
-                                        <label className="col-sm-4 col-form-label top down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             WO Grace Period:
                                         </label>
-                                        <div className="col-sm-6">
-                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0" value={WOGracePeriod} onChange={(e) => setWOGracePeriod(e.target.value)}/>
+                                        <div className="col-sm-8">
+                                        <Form.Control className='formControl' type="number" placeholder="0" value={WOGracePeriod} onChange={(e) => {setWOGracePeriod(e.target.value); handleInputChange();}}/>
                                         </div>
                                         </Form.Group>
                                     </div>
 
                                 </div>
 
-                                <div className="row moveUpPopUp">
+                                <div className="row moveUp moveUpDesc-md moveUp-sm">
                                     <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_DashboardRefreshInterval">
-                                        <label className="col-sm-4 col-form-label labelTopEmail down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             Dashboard Refresh Interval (Minutes):
                                         </label>
-                                        <div className="col-sm-6">
-                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0" value={DashboardRefreshInterval} onChange={(e) => setDashboardRefreshInterval(e.target.value)}/>
+                                        <div className="col-sm-8">
+                                        <Form.Control className='formControl' type="number" placeholder="0" value={DashboardRefreshInterval} onChange={(e) => {setDashboardRefreshInterval(e.target.value); handleInputChange();}}/>
                                         </div>
                                         </Form.Group>
                                     </div>
 
                                     <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_EOQCarryCostRate">
-                                        <label className="col-sm-4 col-form-label top down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             EOQ Carry Cost Rate(%):
                                         </label>
-                                        <div className="col-sm-6">
-                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.00" value={EOQCarryCostRate} onChange={(e) => setEOQCarryCostRate(e.target.value)}/>
+                                        <div className="col-sm-8">
+                                        <Form.Control className='formControl' type="number" placeholder="0.00" value={EOQCarryCostRate} onChange={(e) => {setEOQCarryCostRate(e.target.value); handleInputChange();}}/>
                                         </div>
                                         </Form.Group>
                                     </div>
 
                                 </div>
                                 
-                                <div className="row moveUpPopUp">
+                                <div className="row moveUp moveUpDesc-md moveUp-sm">
                                     <div className="col-md-6 EmpMoveUp-md EmpMoveUp-sm">
                                         <Form.Group className="row" controlId="validation_PMLeadDay">
-                                        <label className="col-sm-4 col-form-label labelTopEmail down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             PM Lead Day:
                                         </label>
-                                        <div className="col-sm-6">
-                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0" value={PMLeadDay} onChange={(e) => setPMLeadDay(e.target.value)}/>
+                                        <div className="col-sm-8">
+                                        <Form.Control className='formControl' type="number" placeholder="0" value={PMLeadDay} onChange={(e) => {setPMLeadDay(e.target.value); handleInputChange();}}/>
                                         </div>
                                         </Form.Group>
                                     </div>
 
                                     <div className="col-md-6 moveUp-md moveUp-sm">
                                         <Form.Group className="row" controlId="validation_EOQPOProcessCost">
-                                        <label className="col-sm-4 col-form-label top down">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
                                             EOQ PO Process Cost:
                                         </label>
-                                        <div className="col-sm-6">
-                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.00" value={EOQPOProcessCost} onChange={(e) => setEOQPOProcessCost(e.target.value)}/>
+                                        <div className="col-sm-8">
+                                        <Form.Control className='formControl' type="number" placeholder="0.00" value={EOQPOProcessCost} onChange={(e) => {setEOQPOProcessCost(e.target.value); handleInputChange();}}/>
                                         </div>
                                         </Form.Group>
                                     </div>
@@ -1537,463 +1934,463 @@ const System_Default_Setting = (props) => {
 
                             {/* ************************************* Settings ******************************************* */}
 
-                            <Tab eventKey="Settings" title="Settings" class="nav-link active">
+                            <Tab eventKey="Settings" title={<><i className="mdi mdi-settings"></i><span className="d-none d-md-inline"> Settings</span></>} class="nav-link active">
 
-                            <div className="row">
-                                <div className="col-md-4 p-4 mb-3">
-                                    <Form.Group className="row">
-                                    <fieldset className="border p-3 w-100">
-                                        <legend className="w-auto">Dashboard</legend>
+                                <div className="row">
+                                    <div className="col-md-4 p-4 mb-3">
+                                        <Form.Group className="row">
+                                        <fieldset className="border p-3 w-100">
+                                            <legend className="w-auto" style={{ fontSize: "20px" }}>Dashboard</legend>
 
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label down">Show Dashboard:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={ShowDashboard}
-                                                    onChange={handleOnChangeShowDashboard}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label down" style={{ fontSize: "13px" }}>Show Dashboard:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={ShowDashboard}
+                                                        onChange={handleOnChangeShowDashboard}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label"></label>
-                                                <div className="col-sm-3 form-check">
-                                                    <label className="form-check-label"></label>
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label"></label>
+                                                    <div className="col-sm-3 form-check">
+                                                        <label className="form-check-label"></label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                    </fieldset>
-                                    </Form.Group>
+                                        </fieldset>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-4 p-4 mb-3 moveUpSetting-md moveUpSetting-sm">
+                                        <Form.Group className="row">
+                                        <fieldset className="border p-3 w-100">
+                                            <legend className="w-auto" style={{ fontSize: "20px" }}>Asset</legend>
+
+                                                <div className="row" controlId="validation_AssetSelectionByLocation">
+                                                    <label className="col-sm-9 col-form-label down" style={{ fontSize: "13px" }}>Asset Selection by Location:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={AssetSelectionByLocation}
+                                                        onChange={handleOnChangeAssetSelectionByLocation}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row" controlId="validation_AssetSelectionByLocation">
+                                                    <label className="col-sm-9 col-form-label"></label>
+                                                    <div className="col-sm-3 form-check">
+                                                        <label className="form-check-label"></label>
+                                                    </div>
+                                                </div>
+                                        </fieldset>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-4 p-4 mb-3 moveUpSetting-md moveUpSetting-sm">
+                                        <Form.Group className="row">
+                                        <fieldset className="border p-3 w-100">
+                                            <legend className="w-auto" style={{ fontSize: "20px" }}>Inventory</legend>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label down" style={{ fontSize: "13px" }}>Material Reserved:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={MaterialReserved}
+                                                        onChange={handleOnChangeMaterialReserved}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>Print Transaction Document:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={PrintTransactionDocument}
+                                                        onChange={handleOnChangePrintTransactionDocument}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+                                        </fieldset>
+                                        </Form.Group>
+                                    </div>
                                 </div>
 
-                                <div className="col-md-4 p-4 mb-3 moveUpSetting-md moveUpSetting-sm">
-                                    <Form.Group className="row">
-                                    <fieldset className="border p-3 w-100">
-                                        <legend className="w-auto">Asset</legend>
+                                <div className="row">
+                                    <div className="col-md-4 p-4 mb-3 moveUpSetting-md moveUpSetting-sm">
+                                        <Form.Group className="row">
+                                        <fieldset className="border p-3 w-100">
+                                            <legend className="w-auto" style={{ fontSize: "20px" }}>Material Request</legend>
 
-                                            <div className="row" controlId="validation_AssetSelectionByLocation">
-                                                <label className="col-sm-9 col-form-label down">Asset Selection by Location:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={AssetSelectionByLocation}
-                                                    onChange={handleOnChangeAssetSelectionByLocation}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label down" style={{ fontSize: "13px" }}>MR Email Notification:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={MREmailNotification}
+                                                        onChange={handleOnChangeMREmailNotification}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <div className="row" controlId="validation_AssetSelectionByLocation">
-                                                <label className="col-sm-9 col-form-label"></label>
-                                                <div className="col-sm-3 form-check">
-                                                    <label className="form-check-label"></label>
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>MR Approval Required:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={MRApprovalRequired}
+                                                        onChange={handleOnChangeMRApprovalRequired}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                    </fieldset>
-                                    </Form.Group>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>Default MR Release For Approval:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={DefaultMRReleaseForApproval}
+                                                        onChange={handleOnChangeDefaultMRReleaseForApproval}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>MR Approval Closed Loop:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={MRApprovalClosedLoop}
+                                                        onChange={handleOnChangeMRApprovalClosedLoop}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>Email MR Approver:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={EmailMRApprover}
+                                                        onChange={handleOnChangeEmailMRApprover}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>Auto MR Approval Email:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={AutoMRApprovalEmail}
+                                                        onChange={handleOnChangeAutoMRApprovalEmail}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>Email Requested By (MR Approved):</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={EmailRequestedByMRApproved}
+                                                        onChange={handleOnChangeEmailRequestedByMRApproved}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label"></label>
+                                                    <div className="col-sm-3 form-check">
+                                                        <label className="form-check-label"></label>
+                                                    </div>
+                                                </div>
+                                        </fieldset>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-4 p-4 mb-3 moveUpSetting-md moveUpSetting-sm">
+                                        <Form.Group className="row">
+                                        <fieldset className="border p-3 w-100">
+                                            <legend className="w-auto" style={{ fontSize: "20px" }}>Maintenance</legend>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label down" style={{ fontSize: "13px" }}>WR Email Notification:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={WREmailNotification}
+                                                        onChange={handleOnChangeWREmailNotification}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>Default WO CC to Planning:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={DefaultWOCCtoPlanning}
+                                                        onChange={handleOnChangeDefaultWOCCtoPlanning}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>Auto WO Plan from WR:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={AutoWOPlanfromWR}
+                                                        onChange={handleOnChangeAutoWOPlanfromWR}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>Generate WO Invoice:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={GenerateWOInvoice}
+                                                        onChange={handleOnChangeGenerateWOInvoice}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>Temporary Asset Flag:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={TemporaryAssetFlag}
+                                                        onChange={handleOnChangeTemporaryAssetFlag}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>PM Closed Loop:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={PMClosedLoop}
+                                                        onChange={handleOnChangePMClosedLoop}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>PM Schedule Date:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={PMScheduleDate}
+                                                        onChange={handleOnChangePMScheduleDate}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label"></label>
+                                                    <div className="col-sm-3 form-check">
+                                                        <label className="form-check-label"></label>
+                                                    </div>
+                                                </div>
+                                        </fieldset>
+                                        </Form.Group>
+                                    </div>
+
+                                    <div className="col-md-4 p-4 mb-3 moveUpSetting-md moveUpSetting-sm">
+                                        <Form.Group className="row">
+                                        <fieldset className="border p-3 w-100">
+                                            <legend className="w-auto" style={{ fontSize: "20px" }}>Purchasing</legend>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label down" style={{ fontSize: "13px" }}>Default PR Release for Approval:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={DefaultPRReleaseforApproval}
+                                                        onChange={handleOnChangeDefaultPRReleaseforApproval}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>PR Approval Closed Loop:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={PRApprovalClosedLoop}
+                                                        onChange={handleOnChangePRApprovalClosedLoop}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>Email PR Approver:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={EmailPRApprover}
+                                                        onChange={handleOnChangeEmailPRApprover}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>Auto PR Approval Email:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={AutoPRApprovalEmail}
+                                                        onChange={handleOnChangeAutoPRApprovalEmail}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>Email Requested By (PR Approved):</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={EmailRequestedByPRApproved}
+                                                        onChange={handleOnChangeEmailRequestedByPRApproved}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>Order Point Auto Generate PR:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={OrderPointAutoGeneratePR}
+                                                        onChange={handleOnChangeOrderPointAutoGeneratePR}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>Auto Generate PO:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={AutoGeneratePO}
+                                                        onChange={handleOnChangeAutoGeneratePO}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row" controlId="validation_ShowDashboard">
+                                                    <label className="col-sm-9 col-form-label settingTop-sm down" style={{ fontSize: "13px" }}>Auto Close PO:</label>
+                                                    <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
+                                                    <label className="form-check-label">
+                                                        <input type="checkbox" 
+                                                        className="form-check-input"
+                                                        checked={AutoClosePO}
+                                                        onChange={handleOnChangeAutoClosePO}
+                                                        />
+                                                        <i className="input-helper"></i>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                        </fieldset>
+                                        </Form.Group>
+                                    </div>
                                 </div>
-
-                                <div className="col-md-4 p-4 mb-3 moveUpSetting-md moveUpSetting-sm">
-                                    <Form.Group className="row">
-                                    <fieldset className="border p-3 w-100">
-                                        <legend className="w-auto">Inventory</legend>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label down">Material Reserved:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={MaterialReserved}
-                                                    onChange={handleOnChangeMaterialReserved}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">Print Transaction Document:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={PrintTransactionDocument}
-                                                    onChange={handleOnChangePrintTransactionDocument}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-                                    </fieldset>
-                                    </Form.Group>
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-4 p-4 mb-3 moveUpSetting-md moveUpSetting-sm">
-                                    <Form.Group className="row">
-                                    <fieldset className="border p-3 w-100">
-                                        <legend className="w-auto">Material Request</legend>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label down">MR Email Notification:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={MREmailNotification}
-                                                    onChange={handleOnChangeMREmailNotification}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">MR Approval Required:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={MRApprovalRequired}
-                                                    onChange={handleOnChangeMRApprovalRequired}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">Default MR Release For Approval:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={DefaultMRReleaseForApproval}
-                                                    onChange={handleOnChangeDefaultMRReleaseForApproval}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">MR Approval Closed Loop:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={MRApprovalClosedLoop}
-                                                    onChange={handleOnChangeMRApprovalClosedLoop}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">Email MR Approver:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={EmailMRApprover}
-                                                    onChange={handleOnChangeEmailMRApprover}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">Auto MR Approval Email:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={AutoMRApprovalEmail}
-                                                    onChange={handleOnChangeAutoMRApprovalEmail}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">Email Requested By (MR Approved):</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={EmailRequestedByMRApproved}
-                                                    onChange={handleOnChangeEmailRequestedByMRApproved}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label"></label>
-                                                <div className="col-sm-3 form-check">
-                                                    <label className="form-check-label"></label>
-                                                </div>
-                                            </div>
-                                    </fieldset>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4 p-4 mb-3 moveUpSetting-md moveUpSetting-sm">
-                                    <Form.Group className="row">
-                                    <fieldset className="border p-3 w-100">
-                                        <legend className="w-auto">Maintenance</legend>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label down">WR Email Notification:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={WREmailNotification}
-                                                    onChange={handleOnChangeWREmailNotification}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">Default WO CC to Planning:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={DefaultWOCCtoPlanning}
-                                                    onChange={handleOnChangeDefaultWOCCtoPlanning}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">Auto WO Plan from WR:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={AutoWOPlanfromWR}
-                                                    onChange={handleOnChangeAutoWOPlanfromWR}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">Generate WO Invoice:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={GenerateWOInvoice}
-                                                    onChange={handleOnChangeGenerateWOInvoice}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">Temporary Asset Flag:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={TemporaryAssetFlag}
-                                                    onChange={handleOnChangeTemporaryAssetFlag}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">PM Closed Loop:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={PMClosedLoop}
-                                                    onChange={handleOnChangePMClosedLoop}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">PM Schedule Date:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={PMScheduleDate}
-                                                    onChange={handleOnChangePMScheduleDate}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label"></label>
-                                                <div className="col-sm-3 form-check">
-                                                    <label className="form-check-label"></label>
-                                                </div>
-                                            </div>
-                                    </fieldset>
-                                    </Form.Group>
-                                </div>
-
-                                <div className="col-md-4 p-4 mb-3 moveUpSetting-md moveUpSetting-sm">
-                                    <Form.Group className="row">
-                                    <fieldset className="border p-3 w-100">
-                                        <legend className="w-auto">Purchasing</legend>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label down">Default PR Release for Approval:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={DefaultPRReleaseforApproval}
-                                                    onChange={handleOnChangeDefaultPRReleaseforApproval}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">PR Approval Closed Loop:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={PRApprovalClosedLoop}
-                                                    onChange={handleOnChangePRApprovalClosedLoop}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">Email PR Approver:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={EmailPRApprover}
-                                                    onChange={handleOnChangeEmailPRApprover}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">Auto PR Approval Email:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={AutoPRApprovalEmail}
-                                                    onChange={handleOnChangeAutoPRApprovalEmail}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">Email Requested By (PR Approved):</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={EmailRequestedByPRApproved}
-                                                    onChange={handleOnChangeEmailRequestedByPRApproved}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">Order Point Auto Generate PR:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={OrderPointAutoGeneratePR}
-                                                    onChange={handleOnChangeOrderPointAutoGeneratePR}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">Auto Generate PO:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={AutoGeneratePO}
-                                                    onChange={handleOnChangeAutoGeneratePO}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                            <div className="row" controlId="validation_ShowDashboard">
-                                                <label className="col-sm-9 col-form-label settingTop-sm down">Auto Close PO:</label>
-                                                <div className="col-sm-3 form-check settingCheckBoxLeft-sm">
-                                                <label className="form-check-label">
-                                                    <input type="checkbox" 
-                                                    className="form-check-input"
-                                                    checked={AutoClosePO}
-                                                    onChange={handleOnChangeAutoClosePO}
-                                                    />
-                                                    <i className="input-helper"></i>
-                                                </label>
-                                                </div>
-                                            </div>
-
-                                    </fieldset>
-                                    </Form.Group>
-                                </div>
-                            </div>
 
                             </Tab>
 
 
-                            {/* ************************************* Financial *************************************** */}
+                            {/* ************************************* Email *************************************** */}
 
-                            <Tab eventKey="Email" title="Email" class="nav nav-tabs nav-item nav-link active">
+                            <Tab eventKey="Email" title={<><i className="mdi mdi-email"></i><span className="d-none d-md-inline"> Email</span></>} class="nav nav-tabs nav-item nav-link active">
                                 
                             </Tab>
 
@@ -2020,6 +2417,7 @@ const System_Default_Setting = (props) => {
                         <button
                         type="button"
                         className="btn btn-danger btn-icon-text"
+                        onClick={onClickCancel}
                         >
                         <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i>{" "}
                         Cancel
