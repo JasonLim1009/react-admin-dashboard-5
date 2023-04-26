@@ -105,7 +105,10 @@ const InventorySupplier = (props) => {
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
     get_inventorymaster_supplier(site_ID, props.data.RowID);
-  }, []);
+
+    get_inventory_status(site_ID, "All", location.state.select);       
+       
+},[location]);
 
 
 
@@ -233,19 +236,6 @@ const InventorySupplier = (props) => {
           });
 
     }
-
-
-    useEffect(() => {
-
-        let site_ID = localStorage.getItem("site_ID");
-
-        // console.log('select select',location.state.select);
-        // console.log('select ITMID',location.state.RowID);
-    
-        get_inventory_status(site_ID, "All", location.state.select);       
-       
-
-    },[location]);
 
 
     //Header
@@ -510,7 +500,7 @@ const InventorySupplier = (props) => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_TaxCode">
-                                    <label className="col-sm-4 col-form-label top down left">Tax Code:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Tax Code:</label>
                                     <div className="col-sm-8">
                                     <label className="col-sm-10 form-label">
                                         <Select  
@@ -531,7 +521,7 @@ const InventorySupplier = (props) => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_SupplierPartNo">
-                                    <label className="col-sm-4 col-form-label top down left">Supplier Part No:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Supplier Part No:</label>
                                     <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -547,7 +537,7 @@ const InventorySupplier = (props) => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_Manufacturer">
-                                    <label className="col-sm-4 col-form-label top down left">Manufacturer:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Manufacturer:</label>
                                     <div className="col-sm-8">
                                     <label className="col-sm-10 form-label">
                                         <Select  
@@ -568,7 +558,7 @@ const InventorySupplier = (props) => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_LastItemCost">
-                                    <label className="col-sm-4 col-form-label top down left">Last Item Cost:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Last Item Cost:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control  
@@ -585,7 +575,7 @@ const InventorySupplier = (props) => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_RetailPrice">
-                                    <label className="col-sm-4 col-form-label top down left">Retail Price:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Retail Price:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control  
@@ -602,7 +592,7 @@ const InventorySupplier = (props) => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_LastReceiveDate">
-                                    <label className="col-sm-4 col-form-label top down left">Last Receive Date:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Last Receive Date:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control        
@@ -618,7 +608,7 @@ const InventorySupplier = (props) => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_MinimumOrderQty">
-                                    <label className="col-sm-4 col-form-label top down left">Minimum Order Qty:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Minimum Order Qty:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control  
@@ -635,7 +625,7 @@ const InventorySupplier = (props) => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_MultiplierQuantity">
-                                    <label className="col-sm-4 col-form-label top down left">Multiplier Quantity:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Multiplier Quantity:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control  
@@ -652,7 +642,7 @@ const InventorySupplier = (props) => {
                             
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_Discount">
-                                    <label className="col-sm-4 col-form-label top down left">Discount %:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Discount %:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control  
@@ -708,7 +698,7 @@ const InventorySupplier = (props) => {
 
                         <div className="col-md-12 moveUpPopUp">
                             <Form.Group className="row" controlId="validation_Supplier">
-                                <label className="col-sm-5 col-form-label labelTopEmail down left" style={{ fontSize: "13px" }}>Supplier:</label>
+                                <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Supplier:</label>
                                 <div className="col-sm-7">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control
@@ -724,7 +714,7 @@ const InventorySupplier = (props) => {
 
                         <div className="col-md-12 moveUpPopUp">
                             <Form.Group className="row" controlId="validation_TaxCode">
-                                <label className="col-sm-5 col-form-label labelTopEmail down left" style={{ fontSize: "13px" }}>Tax Code:</label>
+                                <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Tax Code:</label>
                                 <div className="col-sm-7">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control
@@ -740,7 +730,7 @@ const InventorySupplier = (props) => {
 
                         <div className="col-md-12 moveUpPopUp">
                             <Form.Group className="row" controlId="validation_SupplierPartNo">
-                                <label className="col-sm-5 col-form-label labelTopEmail down left" style={{ fontSize: "13px" }}>Supplier Part No:</label>
+                                <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Supplier Part No:</label>
                                 <div className="col-sm-7 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -756,7 +746,7 @@ const InventorySupplier = (props) => {
 
                         <div className="col-md-12 moveUpPopUp">
                             <Form.Group className="row" controlId="validation_Manufacturer">
-                                <label className="col-sm-5 col-form-label labelTopEmail down left" style={{ fontSize: "13px" }}>Manufacturer:</label>
+                                <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Manufacturer:</label>
                                 <div className="col-sm-7">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control
@@ -772,7 +762,7 @@ const InventorySupplier = (props) => {
 
                         <div className="col-md-12 moveUpPopUp">
                             <Form.Group className="row" controlId="validation_LastQuotation">
-                                <label className="col-sm-5 col-form-label labelTopEmail down left" style={{ fontSize: "13px" }}>Last Quotation:</label>
+                                <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Last Quotation:</label>
                                 <div className="col-sm-7">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control
@@ -788,7 +778,7 @@ const InventorySupplier = (props) => {
 
                         <div className="col-md-12 moveUpPopUp">
                             <Form.Group className="row" controlId="validation_LastItemCost">
-                                <label className="col-sm-5 col-form-label labelTopEmail down left" style={{ fontSize: "13px" }}>Last Item Cost:</label>
+                                <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Last Item Cost:</label>
                                 <div className="col-sm-7 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control
@@ -804,7 +794,7 @@ const InventorySupplier = (props) => {
 
                         <div className="col-md-12 moveUpPopUp">
                             <Form.Group className="row" controlId="validation_RetailPrice">
-                                <label className="col-sm-5 col-form-label labelTopEmail down left" style={{ fontSize: "13px" }}>Retail Price:</label>
+                                <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Retail Price:</label>
                                 <div className="col-sm-7 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control
@@ -820,7 +810,7 @@ const InventorySupplier = (props) => {
 
                         <div className="col-md-12 moveUpPopUp">
                             <Form.Group className="row" controlId="validation_LastReceiveDate">
-                                <label className="col-sm-5 col-form-label labelTopEmail down left" style={{ fontSize: "13px" }}>Last Receive Date:</label>
+                                <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Last Receive Date:</label>
                                 <div className="col-sm-7 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control
@@ -836,7 +826,7 @@ const InventorySupplier = (props) => {
 
                         <div className="col-md-12 moveUpPopUp">
                             <Form.Group className="row" controlId="validation_OrderUOM">
-                                <label className="col-sm-5 col-form-label labelTopEmail down left" style={{ fontSize: "13px" }}>Order UOM:</label>
+                                <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Order UOM:</label>
                                 <div className="col-sm-7 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control
@@ -852,7 +842,7 @@ const InventorySupplier = (props) => {
 
                         <div className="col-md-12 moveUpPopUp">
                             <Form.Group className="row" controlId="validation_MinimumOrderQty">
-                                <label className="col-sm-5 col-form-label labelTopEmail down left" style={{ fontSize: "13px" }}>Minimum Order Qty:</label>
+                                <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Minimum Order Qty:</label>
                                 <div className="col-sm-7 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control
@@ -868,7 +858,7 @@ const InventorySupplier = (props) => {
 
                         <div className="col-md-12 moveUpPopUp">
                             <Form.Group className="row" controlId="validation_MultiplierQuantity">
-                                <label className="col-sm-5 col-form-label labelTopEmail down left" style={{ fontSize: "13px" }}>Multiplier Quantity:</label>
+                                <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Multiplier Quantity:</label>
                                 <div className="col-sm-7 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control
@@ -884,7 +874,7 @@ const InventorySupplier = (props) => {
                         
                         <div className="col-md-12 moveUpPopUp">
                             <Form.Group className="row" controlId="validation_Discount">
-                                <label className="col-sm-5 col-form-label labelTopEmail down left" style={{ fontSize: "13px" }}>Discount %:</label>
+                                <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Discount %:</label>
                                 <div className="col-sm-7 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control
@@ -900,7 +890,7 @@ const InventorySupplier = (props) => {
 
                         <div className="col-md-12 moveUpPopUp">
                             <Form.Group className="row" controlId="validation_TotalOrderedQuantity">
-                                <label className="col-sm-5 col-form-label labelTopEmail down left" style={{ fontSize: "13px" }}>Total Ordered Quantity:</label>
+                                <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Total Ordered Quantity:</label>
                                 <div className="col-sm-7 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control
@@ -916,7 +906,7 @@ const InventorySupplier = (props) => {
 
                         <div className="col-md-12 moveUpPopUp">
                             <Form.Group className="row" controlId="validation_TotalReceivedQuantity">
-                                <label className="col-sm-5 col-form-label labelTopEmail down left" style={{ fontSize: "13px" }}>Total Received Quantity:</label>
+                                <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Total Received Quantity:</label>
                                 <div className="col-sm-7 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control
@@ -932,7 +922,7 @@ const InventorySupplier = (props) => {
 
                         <div className="col-md-12 moveUpPopUp">
                             <Form.Group className="row" controlId="validation_TotalLateQuantityt">
-                                <label className="col-sm-5 col-form-label labelTopEmail down left" style={{ fontSize: "13px" }}>Total Late Quantity:</label>
+                                <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Total Late Quantity:</label>
                                 <div className="col-sm-7 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control
@@ -948,7 +938,7 @@ const InventorySupplier = (props) => {
 
                         <div className="col-md-12 moveUpPopUp">
                             <Form.Group className="row" controlId="validation_TotalHighQuantity">
-                                <label className="col-sm-5 col-form-label labelTopEmail down left" style={{ fontSize: "13px" }}>Total High Quantity:</label>
+                                <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Total High Quantity:</label>
                                 <div className="col-sm-7 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control
@@ -964,7 +954,7 @@ const InventorySupplier = (props) => {
 
                         <div className="col-md-12 moveUpPopUp">
                             <Form.Group className="row" controlId="validation_DeliveryIndex">
-                                <label className="col-sm-5 col-form-label labelTopEmail down left" style={{ fontSize: "13px" }}>Delivery Index:</label>
+                                <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Delivery Index:</label>
                                 <div className="col-sm-7 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control
@@ -980,7 +970,7 @@ const InventorySupplier = (props) => {
 
                         <div className="col-md-12 moveUpPopUp">
                             <Form.Group className="row" controlId="validation_CostIndex">
-                                <label className="col-sm-5 col-form-label labelTopEmail down left" style={{ fontSize: "13px" }}>Cost Index:</label>
+                                <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Cost Index:</label>
                                 <div className="col-sm-7 form-label">
                                 <label className="col-sm-10 form-label">
                                     <Form.Control

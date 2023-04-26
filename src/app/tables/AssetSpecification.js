@@ -80,8 +80,10 @@ const AssetSpecification = (props) => {
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
     get_assetspecification(site_ID, props.data.RowID);
-  }, []);
 
+    get_asset_Status(site_ID, "All", location.state.select);       
+       
+},[location]);
 
 
     const get_asset_Status = (site_ID, type, selected_asset) => {
@@ -153,8 +155,7 @@ const AssetSpecification = (props) => {
             "block":"",
             "floor":""
         }
-
-       
+     
 
         console.log('select Asset',JSON.stringify(json))
         
@@ -202,19 +203,6 @@ const AssetSpecification = (props) => {
           });
 
     }
-
-
-    useEffect(() => {
-
-        let site_ID = localStorage.getItem("site_ID");
-
-        // console.log('select select',location.state.select);
-        // console.log('select EMPID',location.state.RowID);
-    
-        get_asset_Status(site_ID, "All", location.state.select);       
-       
-
-    },[location]);
 
 
     //Header
@@ -292,8 +280,6 @@ const AssetSpecification = (props) => {
         }
        
    
-   
-
         const newPart = {
             
             mst_RowID: location.state.RowID,
@@ -368,7 +354,7 @@ const AssetSpecification = (props) => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_Rating">
-                                        <label className="col-sm-4 col-form-label top down left">Rating:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Rating:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control  
@@ -444,7 +430,7 @@ const AssetSpecification = (props) => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_Rating">
-                                    <label className="col-sm-4 col-form-label  top down left">Rating:</label>
+                                    <label className="col-sm-4 col-form-label  labelTopAsset down left">Rating:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control

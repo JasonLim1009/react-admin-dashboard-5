@@ -16,22 +16,22 @@ import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Moment from 'moment';
 import  {useLocation}  from 'react-router-dom';
-import logo from '../../assets/images/work-time.png';
+import logoPmSetup from '../../assets/images/work-time.png';
 
 
 const AssetPmSetup = (props) => {
  
 
-  const [Header, setHeader] = React.useState([]);
-  const [Result, setResult] = React.useState([]);
+  const [HeaderPmSetup, setHeaderPmSetup] = React.useState([]);
+  const [ResultPmSetup, setResultPmSetup] = React.useState([]);
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => {setShow(false); resetData(); };
-  const handleShow = () => setShow(true);
+  const [showPmSetup, setShowPmSetup] = useState(false);
+  const handleClosePmSetup = () => {setShowPmSetup(false); resetData(); };
+  const handleShowPmSetup = () => setShowPmSetup(true);
 
-  const [showModal, setShowModal] = useState(false);
-  const handleCloseModal = () => setShowModal(false);
-  const handleShowModal = () => setShowModal(true);
+  const [showModalPmSetup, setShowModalPmSetup] = useState(false);
+  const handleCloseModalPmSetup = () => setShowModalPmSetup(false);
+  const handleShowModalPmSetup = () => setShowModalPmSetup(true);
 
   const [PMNo, setPMNo] = useState("");
 
@@ -39,7 +39,7 @@ const AssetPmSetup = (props) => {
 
   const [FrequencyCode, setFrequencyCode] = useState("");
 
-  const [Description, setDescription] = useState("");
+  const [DescriptionPmSetup, setDescriptionPmSetup] = useState("");
 
   const [MeterID, setMeterID] = useState("");
 
@@ -64,8 +64,8 @@ const AssetPmSetup = (props) => {
 
         if (responseJson.data.status === "SUCCESS") {
 
-            setHeader(responseJson.data.data.header);
-            setResult(responseJson.data.data.result);
+            setHeaderPmSetup(responseJson.data.data.header);
+            setResultPmSetup(responseJson.data.data.result);
         
         } else {
             Swal.fire({
@@ -89,8 +89,10 @@ const AssetPmSetup = (props) => {
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
     get_assetpmsetup(site_ID, props.data.RowID);
-  }, []);
 
+    get_asset_Status(site_ID, "All", location.state.select);       
+
+},[location]);
 
 
     const get_asset_Status = (site_ID, type, selected_asset) => {
@@ -156,8 +158,7 @@ const AssetPmSetup = (props) => {
             "block":"",
             "floor":""
         }
-
-       
+      
 
         console.log('select Asset',JSON.stringify(json))
         
@@ -180,7 +181,7 @@ const AssetPmSetup = (props) => {
                 setPMNo( responseJson.data.data[index].prm_mst_pm_no )
                 setCurrentWorkOrder( responseJson.data.data[index].prm_mst_curr_wo )
                 setFrequencyCode( responseJson.data.data[index].prm_mst_freq_code )
-                setDescription( responseJson.data.data[index].prm_mst_desc )
+                setDescriptionPmSetup( responseJson.data.data[index].prm_mst_desc )
                 setMeterID( responseJson.data.data[index].prm_mst_meter_id )
                 setLPMUsage( responseJson.data.data[index].prm_mst_lpm_usg )
                 setLPMUOM( responseJson.data.data[index].prm_mst_lpm_uom )
@@ -218,27 +219,14 @@ const AssetPmSetup = (props) => {
     }
 
 
-    useEffect(() => {
-
-        let site_ID = localStorage.getItem("site_ID");
-
-        // console.log('select select',location.state.select);
-        // console.log('select EMPID',location.state.RowID);
-    
-        get_asset_Status(site_ID, "All", location.state.select);       
-       
-
-    },[location]);
-
-
     //Header
-    const renderTableHeader = () => {
+    const renderTableHeaderPmSetup = () => {
         return (
             <>
             <th key="select">
                 {/* <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} /> */}
             </th>
-            {Object.keys(Header).map((attr) => (
+            {Object.keys(HeaderPmSetup).map((attr) => (
                 <th key={attr}> {attr.toUpperCase()}</th>
             ))}
             </>
@@ -246,8 +234,8 @@ const AssetPmSetup = (props) => {
     };
           
     //Body    
-    const renderTableRows = () => {
-    return Result.map((result, index) => {
+    const renderTableRowsPmSetup = () => {
+    return ResultPmSetup.map((result, index) => {
 
 
         if (result.prm_mst_next_create == null) {
@@ -260,7 +248,7 @@ const AssetPmSetup = (props) => {
 
         
         return (
-        <tr key={index} onClick={(event) =>handleRowClick(result, event)}>
+        <tr key={index} onClick={(event) =>handleRowClickPmSetup(result, event)}>
           
             <td>{index + 1}</td>
             <td>{result.prm_mst_pm_no}</td>
@@ -278,19 +266,19 @@ const AssetPmSetup = (props) => {
     };
 
 
-    const handleRowClick = (data) => {
+    const handleRowClickPmSetup = (data) => {
         console.log(data);
     
         setPMNo( data.prm_mst_pm_no )
         setCurrentWorkOrder( data.prm_mst_curr_wo )
         setFrequencyCode( data.prm_mst_freq_code )
-        setDescription( data.prm_mst_desc )
+        setDescriptionPmSetup( data.prm_mst_desc )
         setMeterID( data.prm_mst_meter_id )
         setLPMUsage( data.prm_mst_lpm_usg )
         setLPMUOM( data.prm_mst_lpm_uom )
         setNextCreateDate( data.prm_mst_next_create )
         
-        setShowModal(true);
+        setShowModalPmSetup(true);
     };
     
     const resetData = () => {
@@ -298,7 +286,7 @@ const AssetPmSetup = (props) => {
         setPMNo('');
         setCurrentWorkOrder('');
         setFrequencyCode('');
-        setDescription('');
+        setDescriptionPmSetup('');
         setMeterID('');
         setLPMUsage('');
         setLPMUOM('');
@@ -307,7 +295,7 @@ const AssetPmSetup = (props) => {
     };
     
     
-    const handleAddButtonClick  = () => {
+    const handleAddButtonClickPmSetup  = () => {
     
         let site_ID = localStorage.getItem("site_ID");
        
@@ -321,7 +309,7 @@ const AssetPmSetup = (props) => {
         console.log("FrequencyCode: ", FrequencyCode)
 
         //Select Description
-        console.log("Description: ", Description)
+        console.log("Description: ", DescriptionPmSetup)
 
         //Select Meter ID
         console.log("MeterID: ", MeterID)
@@ -352,7 +340,7 @@ const AssetPmSetup = (props) => {
             prm_mst_pm_no: PMNo,
             prm_mst_curr_wo: CurrentWorkOrder,
             prm_mst_freq_code: FrequencyCode,
-            prm_mst_desc: Description,
+            prm_mst_desc: DescriptionPmSetup,
             prm_mst_meter_id: MeterID,
             prm_mst_lpm_usg: LPMUsage,
             prm_mst_lpm_uom: LPMUOM,
@@ -361,19 +349,18 @@ const AssetPmSetup = (props) => {
     
           };
           // Add new part to partsList
-          setResult([...Result, newPart]);
-          console.log(Result);
+          setResultPmSetup([...ResultPmSetup, newPart]);
+          console.log(ResultPmSetup);
           // Close modal
-          handleClose();
+          handleClosePmSetup();
     };
 
 
-
   //Sum calculation
-  const totalQty = Result.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0), 0);
+  const totalQtyPmSetup = ResultPmSetup.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0), 0);
   
   //Multiply calculation
-  const totalCost = Result.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0) * (parseFloat(item.ast_ls2_warranty_usage) || 0), 0);
+  const totalCostPmSetup = ResultPmSetup.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0) * (parseFloat(item.ast_ls2_warranty_usage) || 0), 0);
 
 
 
@@ -389,11 +376,11 @@ const AssetPmSetup = (props) => {
                 <div className="template-demo" style={{ display: 'flex', alignItems: 'center' }}>
 
                     <div style={{ marginRight: '10px' }}>
-                        <img src={logo} style={{ width: '60px', height: '60px' }}/>
+                        <img src={logoPmSetup} style={{ width: '60px', height: '60px' }}/>
                     </div>
                     <div className="template-demo" style={{ display: 'flex', flexDirection: 'column' }}>
                         <div style={{ marginRight: '10px', fontWeight: 'bold'}}>PM Setup</div>
-                        <div><span style={{color: "blue"}}>{(totalQty * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCost.toFixed(2)}</span></div>
+                        <div><span style={{color: "blue"}}>{(totalQtyPmSetup * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCostPmSetup.toFixed(2)}</span></div>
                     </div> 
                 </div>
             </div>
@@ -402,7 +389,7 @@ const AssetPmSetup = (props) => {
         <Modal.Body>
              {/******************** PM Setup ********************/}
              <div>
-                <Modal show={show} onHide={handleClose} centered >
+                <Modal show={showPmSetup} onHide={handleClosePmSetup} centered >
 
                     <Modal.Header closeButton>
                         <Modal.Title>PM Setup</Modal.Title>
@@ -466,8 +453,8 @@ const AssetPmSetup = (props) => {
                                     <Form.Control  
                                         style={{ fontSize: "13px", height: "38px" }}
                                         type="text"  
-                                        value={Description} 
-                                        onChange={(e) => setDescription(e.target.value)}
+                                        value={DescriptionPmSetup} 
+                                        onChange={(e) => setDescriptionPmSetup(e.target.value)}
                                         />
                                 </label>
                                 </div>
@@ -542,8 +529,8 @@ const AssetPmSetup = (props) => {
 
                     <Modal.Footer>
 
-                        <Button variant="secondary" onClick={handleClose}>Close</Button>
-                        <Button variant="primary" onClick={handleAddButtonClick}>
+                        <Button variant="secondary" onClick={handleClosePmSetup}>Close</Button>
+                        <Button variant="primary" onClick={handleAddButtonClickPmSetup}>
                         {/* {Button_save} */}
                         Submit
                         </Button>
@@ -552,8 +539,8 @@ const AssetPmSetup = (props) => {
                 </Modal>
 
 
-                {showModal && (
-                <Modal show={showModal} onHide={handleCloseModal} centered >
+                {showModalPmSetup && (
+                <Modal show={showModalPmSetup} onHide={handleCloseModalPmSetup} centered >
 
                 <Modal.Header closeButton>
                     <Modal.Title>PM Setup</Modal.Title>
@@ -618,7 +605,7 @@ const AssetPmSetup = (props) => {
                                 <Form.Control
                                 style={{ fontSize: "13px", height: "38px" }}
                                 type="text"
-                                value ={Description} 
+                                value ={DescriptionPmSetup} 
                                 readOnly
                                 />
                                 <i className="input-helper"></i>
@@ -713,9 +700,9 @@ const AssetPmSetup = (props) => {
                     margin: "5px",
                     }}
                 >
-                    <tr>{renderTableHeader()}</tr>
+                    <tr>{renderTableHeaderPmSetup()}</tr>
                 </thead>
-                <tbody>{renderTableRows()}</tbody>
+                <tbody>{renderTableRowsPmSetup()}</tbody>
                 </table>
             </div>
 

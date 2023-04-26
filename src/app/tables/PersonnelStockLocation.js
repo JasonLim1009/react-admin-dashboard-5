@@ -16,6 +16,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import Moment from 'moment';
 import  {useLocation}  from 'react-router-dom';
 import logo from '../../assets/images/stock.png';
+import { Card, Collapse } from 'react-bootstrap';
 
 
 const PersonnelStockLocation = (props) => {
@@ -31,11 +32,19 @@ const PersonnelStockLocation = (props) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [showModal, setShowModal] = useState(false);
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
+
   const [List, setList] = useState(false);
   const [CheckBox_List, setCheckBox_List] = useState('0');
 
   const [Change, setChange] = useState(false);
   const [CheckBox_Change, setCheckBox_Change] = useState('0');
+
+  const [StockLocation, setStockLocation] = useState("");
+
+  const [Description, setDescription] = useState("");
 
   const location = useLocation();
   
@@ -77,8 +86,10 @@ const PersonnelStockLocation = (props) => {
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
     get_employeemaster_stock_location(site_ID, props.data.RowID);
-  }, []);
 
+    get_employee_Status(site_ID, "All", location.state.select);       
+       
+},[location]);
 
 
     const get_employee_Status = (site_ID, type, selected_asset) => {
@@ -144,6 +155,8 @@ const PersonnelStockLocation = (props) => {
 
                 setList( responseJson.data.data[index].usg_itm_list )
                 setChange( responseJson.data.data[index].usg_itm_change )
+                setStockLocation( responseJson.data.data[index].loc_mst_stk_loc )
+                setDescription( responseJson.data.data[index].loc_mst_desc )
                
               }
 
@@ -170,25 +183,12 @@ const PersonnelStockLocation = (props) => {
     }
 
 
-    useEffect(() => {
-
-        let site_ID = localStorage.getItem("site_ID");
-
-        // console.log('select select',location.state.select);
-        // console.log('select EMPID',location.state.RowID);
-    
-        get_employee_Status(site_ID, "All", location.state.select);       
-       
-
-    },[location]);
-
-
     //Header
     const renderTableHeader = () => {
         return (
             <>
             <th key="select">
-                <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} />
+                {/* <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} /> */}
             </th>
             {Object.keys(Header).map((attr) => (
                 <th key={attr}> {attr.toUpperCase()}</th>
@@ -203,19 +203,103 @@ const PersonnelStockLocation = (props) => {
 
 
         return (
-        <tr key={result.site_cd}>
-            <td>{ <IndeterminateCheckbox {...result} checked={isCheckedList[index]} onChange={() => handleCheckboxChange(index)} />}</td>
-            
-            <td>{result.loc_mst_stk_loc}</td>
-            <td>{result.loc_mst_desc}</td>
-            <td>{result.usg_itm_list}</td>
-            <td>{result.usg_itm_change}</td>
-            
+            <tr key={index}>
+            {showList || showChange ? (
+                <i
+                    type="button"
+                    title="Closed"
+                    className="icon mdi mdi-minus-box-outline StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm"
+                    onClick={handleToggleList}
+                ></i>
+            ) : (
+                <i
+                    type="button"
+                    title="Open"
+                    className="icon mdi mdi-plus-box-outline StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm"
+                    onClick={handleToggleList}
+                ></i>
+            )}
+            {showList ? (
+                <>
+                    <i className="mdi mdi-format-list-checks StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm"></i>
+                    &nbsp;&nbsp;&nbsp;
+                    <label style={{ fontSize: "13px", color: "#a61414" }}>List Only</label>
+                    <Collapse in={showList}>
+                        <div style={{ paddingTop: "44px" }}>
+                            <Card className="float-left StockLocationList dotslist-md dotslist-sm">
+                                <Card.Body className="p-2">
+                                    <td>
+                                        <i className="mdi mdi-dropbox"></i>&nbsp;{result.loc_mst_stk_loc}
+                                    </td>
+                                    <td>{result.loc_mst_desc}</td>
+                                    <td>
+                                        <Form.Check
+                                            type="checkbox"
+                                            checked={List}
+                                            onChange={handleOnChangeList}
+                                        />
+                                    </td>
+                                    <td>
+                                        <Form.Check
+                                            type="checkbox"
+                                            checked={Change}
+                                            onChange={handleOnChangeChange}
+                                        />
+                                    </td>
+                                </Card.Body>
+                            </Card>
+                        </div>
+                    </Collapse>
+                </>
+            ) : null}
+            {showChange ? (
+                <>
+                    <i className="mdi mdi-format-list-checks StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm"></i>
+                    &nbsp;&nbsp;&nbsp;
+                    <label style={{ fontSize: "13px", color: "#a61414" }}>Change Only</label>
+                    <Collapse in={showChange}>
+                        <div style={{ paddingTop: "44px" }}>
+                            <Card className="float-left StockLocationList dotslist-md dotslist-sm">
+                                <Card.Body className="p-2">
+                                    <td>
+                                        <i className="mdi mdi-dropbox"></i>&nbsp;{result.loc_mst_stk_loc}
+                                    </td>
+                                    <td>{result.loc_mst_desc}</td>
+                                    <td>
+                                        <Form.Check
+                                            type="checkbox"
+                                            checked={List}
+                                            onChange={handleOnChangeList}
+                                        />
+                                    </td>
+                                    <td>
+                                        <Form.Check
+                                            type="checkbox"
+                                            checked={Change}
+                                            onChange={handleOnChangeChange}
+                                        />
+                                    </td>
+                                </Card.Body>
+                            </Card>
+                        </div>
+                    </Collapse>
+                </>
+            ) : null}
         </tr>
         );
     });
     };
 
+    
+    const handleRowClick = (data) => {
+        console.log(data);
+    
+        setStockLocation( data.emp_ls3_costcenter );
+        setDescription( data.emp_ls3_approval_limit );
+     
+        setShowModal(true);
+    };
+    
     //Checkbox
     const IndeterminateCheckbox = React.forwardRef(
     ({ indeterminate, onChange, ...rest }, ref) => {
@@ -251,38 +335,53 @@ const PersonnelStockLocation = (props) => {
         setIsCheckedList(newCheckedList);
     };
 
+    const [showChange, setShowChange] = useState(false);
 
-    const handleOnChangeList = () => {
-        setList(!List);
+    const handleToggleList = () => {
+        setShowList(!showList);
+    };
+    
+    //Checkbox List
+    const handleOnChangeList = (List) => {
+        setShowList(true);
+        setShowChange(false);
         
-        if(!List){
+        if(List){
             console.log('1')
             setCheckBox_List('1')
         }else{
             console.log('0')
             setCheckBox_List('0')
         }
-    }
-
-    const handleOnChangeChange = () => {
-        setChange(!Change);
+    };
+    
+    //Checkbox Change
+    const handleOnChangeChange = (Change) => {
+        setShowChange(true);
+        setShowList(false);
         
-        if(!Change){
+        if(Change){
             console.log('1')
             setCheckBox_Change('1')
         }else{
             console.log('0')
             setCheckBox_Change('0')
         }
-    }
+    };
 
-
+      
+      
 
   //Sum calculation
   //const totalQty = Result.reduce((acc, item) => acc + (parseFloat(item.wko_ls3_qty_needed) || 0), 0);
   
   //Multiply calculation
   //const totalCost = Result.reduce((acc, item) => acc + (parseFloat(item.wko_ls3_qty_needed) || 0) * (parseFloat(item.wko_ls3_item_cost) || 0), 0);
+
+
+  const [showList, setShowList] = useState(false);
+
+
 
 
 
@@ -317,10 +416,10 @@ const PersonnelStockLocation = (props) => {
 
 
                             <Modal.Body>
-                                <div className="col-md-12">
+                                <div className="col-md-12 checkBoxUsage-md">
                                     <Form.Group className="row" controlId="validation_List">
-                                        <label className="col-sm-4 col-form-label">List:</label>
-                                        <div className="col-sm-4 form-check">
+                                        <label className="col-sm-5 col-form-label labelTopAsset down">List:</label>
+                                        <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft">
                                         <label className="form-check-label">
                                             <input type="checkbox" 
                                             className="form-check-input"
@@ -333,10 +432,10 @@ const PersonnelStockLocation = (props) => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12" style={{ marginTop: "-20px" }}>
+                                <div className="col-md-12 moveUpPopUp checkBoxUsage-md">
                                     <Form.Group className="row" controlId="validation_Change">
-                                        <label className="col-sm-4 col-form-label">Change:</label>
-                                        <div className="col-sm-4 form-check">
+                                        <label className="col-sm-5 col-form-label labelTopAsset down">Change:</label>
+                                        <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft">
                                         <label className="form-check-label">
                                             <input type="checkbox" 
                                             className="form-check-input"
@@ -365,6 +464,84 @@ const PersonnelStockLocation = (props) => {
 
                         </Modal>
 
+                        {showModal && (
+                        <Modal show={showModal} onHide={handleCloseModal} centered >
+
+                        <Modal.Header closeButton>
+                            <Modal.Title>Stock Location</Modal.Title>
+                        </Modal.Header>
+
+
+                        <Modal.Body>
+                            <div className="col-md-12">
+                                <Form.Group className="row" controlId="validation_StockLocation">
+                                    <label className="col-sm-4 col-form-label down left">Stock Location:</label>
+                                    <div className="col-sm-8">
+                                    <label className="col-sm-10 form-label">
+                                        <Form.Control
+                                        style={{ fontSize: "13px", height: "38px" }}
+                                        type="text"
+                                        value ={StockLocation} 
+                                        readOnly
+                                        />
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
+
+                            <div className="col-md-12 moveUpPopUp">
+                                <Form.Group className="row" controlId="validation_Description">
+                                    <label className="col-sm-4 col-form-label  top down left">Description:</label>
+                                    <div className="col-sm-8 form-label">
+                                    <label className="col-sm-10 form-label">
+                                        <Form.Control
+                                        style={{ fontSize: "13px", height: "38px" }}
+                                        type="text"
+                                        value ={Description} 
+                                        readOnly
+                                        />
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
+
+                            <div className="col-md-12 moveUpPopUp">
+                                <Form.Group className="row" controlId="validation_List">
+                                    <label className="col-sm-5 col-form-label labelTopAsset down">List:</label>
+                                    <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft">
+                                    <label className="form-check-label">
+                                        <input
+                                            style={{ fontSize: "13px", height: "38px" }}
+                                            type="checkbox" 
+                                            checked={List} 
+                                            readOnly
+                                        />
+                                        <i className="input-helper"></i>
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
+
+                            <div className="col-md-12 moveUpPopUp">
+                                <Form.Group className="row" controlId="validation_Change">
+                                    <label className="col-sm-5 col-form-label labelTopAsset down">Change:</label>
+                                    <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft">
+                                    <label className="form-check-label">
+                                        <input
+                                            style={{ fontSize: "13px", height: "38px" }}
+                                            type="checkbox" 
+                                            checked={Change} 
+                                            readOnly
+                                        />
+                                        <i className="input-helper"></i>
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
+                        </Modal.Body>
+                        
+                        </Modal>
+                        )}
                     </div> 
 
                     <div className="table-responsive">
@@ -386,12 +563,6 @@ const PersonnelStockLocation = (props) => {
                         </table>
                     </div>
 
-                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-                        <button type="button" style={{ padding: '5px 10px', background: 'none', color: 'blue', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-                        onClick={handleShow}>
-                            + Add Stock Location
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>

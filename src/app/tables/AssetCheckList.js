@@ -22,16 +22,16 @@ import logo from '../../assets/images/moving.png';
 const AssetCheckList = (props) => {
  
 
-  const [Header, setHeader] = React.useState([]);
-  const [Result, setResult] = React.useState([]);
+  const [HeaderCheckList, setHeaderCheckList] = React.useState([]);
+  const [ResultCheckList, setResultCheckList] = React.useState([]);
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => {setShow(false); resetData(); };
-  const handleShow = () => setShow(true);
+  const [showCheckList, setShowCheckList] = useState(false);
+  const handleCloseCheckList = () => {setShowCheckList(false); resetData(); };
+  const handleShowCheckList = () => setShowCheckList(true);
 
-  const [showModal, setShowModal] = useState(false);
-  const handleCloseModal = () => setShowModal(false);
-  const handleShowModal = () => setShowModal(true);
+  const [showModalCheckList, setShowModalCheckList] = useState(false);
+  const handleCloseModalCheckList = () => setShowModalCheckList(false);
+  const handleShowModalCheckList = () => setShowModalCheckList(true);
 
   const [CheckListCode, setCheckListCode] = useState("");
 
@@ -57,8 +57,8 @@ const AssetCheckList = (props) => {
 
         if (responseJson.data.status === "SUCCESS") {
 
-            setHeader(responseJson.data.data.header);
-            setResult(responseJson.data.data.result);
+            setHeaderCheckList(responseJson.data.data.header);
+            setResultCheckList(responseJson.data.data.result);
         
         } else {
             Swal.fire({
@@ -82,8 +82,10 @@ const AssetCheckList = (props) => {
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
     get_assetchecklist(site_ID, props.data.RowID);
-  }, []);
 
+    get_asset_Status(site_ID, "All", location.state.select);       
+
+},[location]);
 
 
     const get_asset_Status = (site_ID, type, selected_asset) => {
@@ -200,19 +202,6 @@ const AssetCheckList = (props) => {
     }
 
 
-    useEffect(() => {
-
-        let site_ID = localStorage.getItem("site_ID");
-
-        // console.log('select select',location.state.select);
-        // console.log('select EMPID',location.state.RowID);
-    
-        get_asset_Status(site_ID, "All", location.state.select);       
-       
-
-    },[location]);
-
-
     //Header
     const renderTableHeader = () => {
         return (
@@ -220,7 +209,7 @@ const AssetCheckList = (props) => {
             <th key="select">
                 {/* <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} /> */}
             </th>
-            {Object.keys(Header).map((attr) => (
+            {Object.keys(HeaderCheckList).map((attr) => (
                 <th key={attr}> {attr.toUpperCase()}</th>
             ))}
             </>
@@ -229,7 +218,7 @@ const AssetCheckList = (props) => {
           
     //Body    
     const renderTableRows = () => {
-    return Result.map((result, index) => {
+    return ResultCheckList.map((result, index) => {
 
 
         if (result.audit_date == null) {
@@ -242,7 +231,7 @@ const AssetCheckList = (props) => {
 
         
         return (
-        <tr key={index} onClick={(event) =>handleRowClick(result, event)}>
+        <tr key={index} onClick={(event) =>handleRowClickCheckList(result, event)}>
           
             <td>{index + 1}</td>
             <td>{result.ast_job_job_cd}</td>
@@ -255,14 +244,14 @@ const AssetCheckList = (props) => {
     };
 
 
-    const handleRowClick = (data) => {
+    const handleRowClickCheckList = (data) => {
         console.log(data);
     
         setCheckListCode( data.ast_job_job_cd )
         setCheckListDescription( data.job_mst_desc )
         setCarryToWorkOrder( data.ast_job_carry )
 
-        setShowModal(true);
+        setShowModalCheckList(true);
     };
     
     const resetData = () => {
@@ -274,7 +263,7 @@ const AssetCheckList = (props) => {
     };
     
     
-    const handleAddButtonClick  = () => {
+    const handleAddButtonClickCheckList  = () => {
     
         let site_ID = localStorage.getItem("site_ID");
        
@@ -299,14 +288,13 @@ const AssetCheckList = (props) => {
     
           };
           // Add new part to partsList
-          setResult([...Result, newPart]);
-          console.log(Result);
+          setResultCheckList([...ResultCheckList, newPart]);
+          console.log(ResultCheckList);
           // Close modal
-          handleClose();
+          handleCloseCheckList();
     };
 
 
-    
     const handleOnChangeCarryToWorkOrder = () => {
         setCarryToWorkOrder(!CarryToWorkOrder);
         
@@ -322,10 +310,10 @@ const AssetCheckList = (props) => {
 
 
   //Sum calculation
-  const totalQty = Result.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0), 0);
+  const totalQtyCheckList = ResultCheckList.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0), 0);
   
   //Multiply calculation
-  const totalCost = Result.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0) * (parseFloat(item.ast_ls2_warranty_usage) || 0), 0);
+  const totalCostCheckList = ResultCheckList.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0) * (parseFloat(item.ast_ls2_warranty_usage) || 0), 0);
 
 
 
@@ -345,7 +333,7 @@ const AssetCheckList = (props) => {
                     </div>
                     <div className="template-demo" style={{ display: 'flex', flexDirection: 'column' }}>
                         <div style={{ marginRight: '10px', fontWeight: 'bold'}}>Check List</div>
-                        <div><span style={{color: "blue"}}>{(totalQty * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCost.toFixed(2)}</span></div>
+                        <div><span style={{color: "blue"}}>{(totalQtyCheckList * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCostCheckList.toFixed(2)}</span></div>
                     </div> 
                 </div>
             </div>
@@ -354,7 +342,7 @@ const AssetCheckList = (props) => {
         <Modal.Body>
              {/******************** Check List ********************/}
              <div>
-                <Modal show={show} onHide={handleClose} centered >
+                <Modal show={showCheckList} onHide={handleCloseCheckList} centered >
 
                     <Modal.Header closeButton>
                         <Modal.Title>Check List</Modal.Title>
@@ -414,8 +402,8 @@ const AssetCheckList = (props) => {
 
                     <Modal.Footer>
 
-                        <Button variant="secondary" onClick={handleClose}>Close</Button>
-                        <Button variant="primary" onClick={handleAddButtonClick}>
+                        <Button variant="secondary" onClick={handleCloseCheckList}>Close</Button>
+                        <Button variant="primary" onClick={handleAddButtonClickCheckList}>
                         {/* {Button_save} */}
                         Submit
                         </Button>
@@ -424,8 +412,8 @@ const AssetCheckList = (props) => {
                 </Modal>
 
 
-                {showModal && (
-                <Modal show={showModal} onHide={handleCloseModal} centered >
+                {showModalCheckList && (
+                <Modal show={showModalCheckList} onHide={handleCloseModalCheckList} centered >
 
                 <Modal.Header closeButton>
                     <Modal.Title>Check List</Modal.Title>
@@ -508,7 +496,7 @@ const AssetCheckList = (props) => {
 
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
                 <button type="button" style={{ padding: '5px 10px', background: 'none', color: 'blue', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-                onClick={handleShow}>
+                onClick={handleShowCheckList}>
                     + Add Check List
                 </button>
             </div>

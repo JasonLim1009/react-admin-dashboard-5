@@ -106,7 +106,10 @@ const AssetUsage = (props) => {
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
     get_assetusage(site_ID, props.data.RowID);
-  }, []);
+
+    get_asset_Status(site_ID, "All", location.state.select);       
+
+},[location]);
 
 
 
@@ -245,19 +248,6 @@ const AssetUsage = (props) => {
           });
 
     }
-
-
-    useEffect(() => {
-
-        let site_ID = localStorage.getItem("site_ID");
-
-        // console.log('select select',location.state.select);
-        // console.log('select EMPID',location.state.RowID);
-    
-        get_asset_Status(site_ID, "All", location.state.select);       
-       
-
-    },[location]);
 
 
     //Header
@@ -566,7 +556,7 @@ const AssetUsage = (props) => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_UsageUOM">
-                                        <label className="col-sm-4 col-form-label labelTopEmail down left">Usage UOM:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Usage UOM:</label>
                                         <div className="col-sm-8">
                                         <label className="col-sm-10 form-label">
                                             <Select  
@@ -585,9 +575,9 @@ const AssetUsage = (props) => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12 moveUpPopUp checkBoxLeft-md">
+                                <div className="col-md-12 moveUpPopUp checkBoxUsage-md">
                                     <Form.Group className="row" controlId="validation_TotalRunningMeter">
-                                        <label className="col-sm-5 col-form-label labelTopEmail down">Total Running Meter:</label>
+                                        <label className="col-sm-5 col-form-label labelTopAsset down">Total Running Meter:</label>
                                         <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft">
                                         <label className="form-check-label">
                                             <input type="checkbox" 
@@ -603,7 +593,7 @@ const AssetUsage = (props) => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_MeterPoint">
-                                        <label className="col-sm-4 col-form-label labelTopEmail down left">Meter Point:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Meter Point:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control  
@@ -619,7 +609,7 @@ const AssetUsage = (props) => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_Description">
-                                        <label className="col-sm-4 col-form-label labelTopEmail down left">Description:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Description:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control  
@@ -635,7 +625,7 @@ const AssetUsage = (props) => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_MeterInstallDate">
-                                        <label className="col-sm-4 col-form-label labelTopEmail down left">Meter Install Date:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Meter Install Date:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control        
@@ -651,7 +641,7 @@ const AssetUsage = (props) => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_MaxAverageUsage">
-                                        <label className="col-sm-4 col-form-label labelTopEmail down left">Max Average Usage:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Max Average Usage:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control  
@@ -668,7 +658,7 @@ const AssetUsage = (props) => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_WarrantyUsage">
-                                        <label className="col-sm-4 col-form-label labelTopEmail down left">Warranty Usage:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Warranty Usage:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control  
@@ -685,7 +675,7 @@ const AssetUsage = (props) => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_MeterMaximum">
-                                        <label className="col-sm-4 col-form-label tolabelTopEmailp down left">Meter Maximum:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Meter Maximum:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control  
@@ -700,9 +690,9 @@ const AssetUsage = (props) => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12 moveUpPopUp checkBoxLeft-md">
+                                <div className="col-md-12 moveUpPopUp checkBoxUsage-md">
                                     <Form.Group className="row" controlId="validation_AlertMAFlag">
-                                        <label className="col-sm-5 col-form-label labelTopEmail down">Alert MA Flag:</label>
+                                        <label className="col-sm-5 col-form-label labelTopAsset down">Alert MA Flag:</label>
                                         <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft">
                                         <label className="form-check-label">
                                             <input type="checkbox" 
@@ -716,9 +706,9 @@ const AssetUsage = (props) => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12 moveUpPopUp checkBoxLeft-md">
+                                <div className="col-md-12 moveUpPopUp checkBoxUsage-md">
                                     <Form.Group className="row" controlId="validation_AlertROFlag">
-                                        <label className="col-sm-5 col-form-label labelTopEmail down">Alert RO Flag:</label>
+                                        <label className="col-sm-5 col-form-label labelTopAsset down">Alert RO Flag:</label>
                                         <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft">
                                         <label className="form-check-label">
                                             <input type="checkbox" 
@@ -789,7 +779,7 @@ const AssetUsage = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_UsageUOM">
-                                    <label className="col-sm-4 col-form-label  labelTopEmail down">Usage UOM:</label>
+                                    <label className="col-sm-4 col-form-label  labelTopAsset down">Usage UOM:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -805,7 +795,7 @@ const AssetUsage = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_TotalRunningMeter">
-                                    <label className="col-sm-5 col-form-label labelTopEmail down">Total Running Meter:</label>
+                                    <label className="col-sm-5 col-form-label labelTopAsset down">Total Running Meter:</label>
                                     <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft">
                                     <label className="form-check-label">
                                         <input
@@ -822,7 +812,7 @@ const AssetUsage = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_MeterPoint">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Meter Point:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Meter Point:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -839,7 +829,7 @@ const AssetUsage = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_Description">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Description:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Description:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -856,7 +846,7 @@ const AssetUsage = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_MeterInstallDate">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Meter Install Date:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Meter Install Date:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -872,7 +862,7 @@ const AssetUsage = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_UsageDate">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Usage Date:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Usage Date:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -888,7 +878,7 @@ const AssetUsage = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_UsageReading">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Usage Reading:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Usage Reading:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -905,7 +895,7 @@ const AssetUsage = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_AverageUsage">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Average Usage:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Average Usage:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -922,7 +912,7 @@ const AssetUsage = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_OldLTDUsage">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Old LTD Usage:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Old LTD Usage:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -939,7 +929,7 @@ const AssetUsage = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_LTDUsage">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">LTD Usage:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">LTD Usage:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -956,7 +946,7 @@ const AssetUsage = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_MaxAverageUsage">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Max Average Usage:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Max Average Usage:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -973,7 +963,7 @@ const AssetUsage = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_WarrantyUsage">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Warranty Usage:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Warranty Usage:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -990,7 +980,7 @@ const AssetUsage = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_MeterMaximum">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Meter Maximum:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Meter Maximum:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -1007,7 +997,7 @@ const AssetUsage = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_AlertMAFlag">
-                                    <label className="col-sm-5 col-form-label labelTopEmail down">Alert MA Flag:</label>
+                                    <label className="col-sm-5 col-form-label labelTopAsset down">Alert MA Flag:</label>
                                     <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft">
                                     <label className="form-check-label">
                                         <input
@@ -1024,7 +1014,7 @@ const AssetUsage = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_AlertROFlag">
-                                    <label className="col-sm-5 col-form-label labelTopEmail down">Alert RO Flag:</label>
+                                    <label className="col-sm-5 col-form-label labelTopAsset down">Alert RO Flag:</label>
                                     <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft">
                                     <label className="form-check-label">
                                         <input
@@ -1041,7 +1031,7 @@ const AssetUsage = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_MeterInstallWO">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Meter Install WO:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Meter Install WO:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control

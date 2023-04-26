@@ -16,22 +16,22 @@ import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Moment from 'moment';
 import  {useLocation}  from 'react-router-dom';
-import logo from '../../assets/images/relocation.png';
+import logoRelocationHistory from '../../assets/images/relocation.png';
 
 
 const AssetRelocationHistory = (props) => {
  
 
-  const [Header, setHeader] = React.useState([]);
-  const [Result, setResult] = React.useState([]);
+  const [HeaderRelocationHistory, setHeaderRelocationHistory] = React.useState([]);
+  const [ResultRelocationHistory, setResultRelocationHistory] = React.useState([]);
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => {setShow(false); resetData(); };
-  const handleShow = () => setShow(true);
+  const [showRelocationHistory, setShowRelocationHistory] = useState(false);
+  const handleCloseRelocationHistory = () => {setShowRelocationHistory(false); resetData(); };
+  const handleShowRelocationHistory = () => setShowRelocationHistory(true);
 
-  const [showModal, setShowModal] = useState(false);
-  const handleCloseModal = () => setShowModal(false);
-  const handleShowModal = () => setShowModal(true);
+  const [showModalRelocationHistory, setShowModalRelocationHistory] = useState(false);
+  const handleCloseModalRelocationHistory = () => setShowModalRelocationHistory(false);
+  const handleShowModalRelocationHistory = () => setShowModalRelocationHistory(true);
 
   const [OldLocation, setOldLocation] = useState("");
 
@@ -64,8 +64,8 @@ const AssetRelocationHistory = (props) => {
 
         if (responseJson.data.status === "SUCCESS") {
 
-            setHeader(responseJson.data.data.header);
-            setResult(responseJson.data.data.result);
+            setHeaderRelocationHistory(responseJson.data.data.header);
+            setResultRelocationHistory(responseJson.data.data.result);
         
         } else {
             Swal.fire({
@@ -89,8 +89,10 @@ const AssetRelocationHistory = (props) => {
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
     get_assetrelocationhistory(site_ID, props.data.RowID);
-  }, []);
 
+    get_asset_Status(site_ID, "All", location.state.select);       
+
+},[location]);
 
 
     const get_asset_Status = (site_ID, type, selected_asset) => {
@@ -157,7 +159,6 @@ const AssetRelocationHistory = (props) => {
             "floor":""
         }
 
-       
 
         console.log('select Asset',JSON.stringify(json))
         
@@ -216,27 +217,14 @@ const AssetRelocationHistory = (props) => {
     }
 
 
-    useEffect(() => {
-
-        let site_ID = localStorage.getItem("site_ID");
-
-        // console.log('select select',location.state.select);
-        // console.log('select EMPID',location.state.RowID);
-    
-        get_asset_Status(site_ID, "All", location.state.select);       
-       
-
-    },[location]);
-
-
     //Header
-    const renderTableHeader = () => {
+    const renderTableHeaderRelocationHistory = () => {
         return (
             <>
             <th key="select">
                 {/* <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} /> */}
             </th>
-            {Object.keys(Header).map((attr) => (
+            {Object.keys(HeaderRelocationHistory).map((attr) => (
                 <th key={attr}> {attr.toUpperCase()}</th>
             ))}
             </>
@@ -244,8 +232,8 @@ const AssetRelocationHistory = (props) => {
     };
           
     //Body    
-    const renderTableRows = () => {
-    return Result.map((result, index) => {
+    const renderTableRowsRelocationHistory = () => {
+    return ResultRelocationHistory.map((result, index) => {
 
 
         if (result.audit_date == null) {
@@ -258,7 +246,7 @@ const AssetRelocationHistory = (props) => {
 
         
         return (
-        <tr key={index} onClick={(event) =>handleRowClick(result, event)}>
+        <tr key={index} onClick={(event) =>handleRowClickRelocationHistory(result, event)}>
           
             <td>{index + 1}</td>
             <td>{result.ast_loc_s_asset_olocn}</td>
@@ -273,7 +261,7 @@ const AssetRelocationHistory = (props) => {
     };
 
 
-    const handleRowClick = (data) => {
+    const handleRowClickRelocationHistory = (data) => {
         console.log(data);
     
         setNewLocation( data.ast_loc_s_asset_olocn )
@@ -282,7 +270,7 @@ const AssetRelocationHistory = (props) => {
         setAuditUser( data.audit_user )
         setAuditDate( data.audit_date )
 
-        setShowModal(true);
+        setShowModalRelocationHistory(true);
     };
     
     const resetData = () => {
@@ -296,7 +284,7 @@ const AssetRelocationHistory = (props) => {
     };
     
     
-    const handleAddButtonClick  = () => {
+    const handleAddButtonClickRelocationHistory  = () => {
     
         let site_ID = localStorage.getItem("site_ID");
        
@@ -338,19 +326,18 @@ const AssetRelocationHistory = (props) => {
     
           };
           // Add new part to partsList
-          setResult([...Result, newPart]);
-          console.log(Result);
+          setResultRelocationHistory([...ResultRelocationHistory, newPart]);
+          console.log(ResultRelocationHistory);
           // Close modal
-          handleClose();
+          handleCloseRelocationHistory();
     };
 
 
-
   //Sum calculation
-  const totalQty = Result.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0), 0);
+  const totalQtyRelocationHistory = ResultRelocationHistory.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0), 0);
   
   //Multiply calculation
-  const totalCost = Result.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0) * (parseFloat(item.ast_ls2_warranty_usage) || 0), 0);
+  const totalCostRelocationHistory = ResultRelocationHistory.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0) * (parseFloat(item.ast_ls2_warranty_usage) || 0), 0);
 
 
 
@@ -366,11 +353,11 @@ const AssetRelocationHistory = (props) => {
                 <div className="template-demo" style={{ display: 'flex', alignItems: 'center' }}>
 
                     <div style={{ marginRight: '10px' }}>
-                        <img src={logo} style={{ width: '60px', height: '60px' }}/>
+                        <img src={logoRelocationHistory} style={{ width: '60px', height: '60px' }}/>
                     </div>
                     <div className="template-demo" style={{ display: 'flex', flexDirection: 'column' }}>
                         <div style={{ marginRight: '10px', fontWeight: 'bold'}}>Relocation History</div>
-                        <div><span style={{color: "blue"}}>{(totalQty * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCost.toFixed(2)}</span></div>
+                        <div><span style={{color: "blue"}}>{(totalQtyRelocationHistory * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCostRelocationHistory.toFixed(2)}</span></div>
                     </div> 
                 </div>
             </div>
@@ -379,7 +366,7 @@ const AssetRelocationHistory = (props) => {
         <Modal.Body>
              {/******************** Relocation History ********************/}
              <div>
-                <Modal show={show} onHide={handleClose} centered >
+                <Modal show={showRelocationHistory} onHide={handleCloseRelocationHistory} centered >
 
                     <Modal.Header closeButton>
                         <Modal.Title>Relocation History</Modal.Title>
@@ -472,8 +459,8 @@ const AssetRelocationHistory = (props) => {
 
                     <Modal.Footer>
 
-                        <Button variant="secondary" onClick={handleClose}>Close</Button>
-                        <Button variant="primary" onClick={handleAddButtonClick}>
+                        <Button variant="secondary" onClick={handleCloseRelocationHistory}>Close</Button>
+                        <Button variant="primary" onClick={handleAddButtonClickRelocationHistory}>
                         {/* {Button_save} */}
                         Submit
                         </Button>
@@ -482,8 +469,8 @@ const AssetRelocationHistory = (props) => {
                 </Modal>
 
 
-                {showModal && (
-                <Modal show={showModal} onHide={handleCloseModal} centered >
+                {showModalRelocationHistory && (
+                <Modal show={showModalRelocationHistory} onHide={handleCloseModalRelocationHistory} centered >
 
                 <Modal.Header closeButton>
                     <Modal.Title>Relocation History</Modal.Title>
@@ -592,9 +579,9 @@ const AssetRelocationHistory = (props) => {
                     margin: "5px",
                     }}
                 >
-                    <tr>{renderTableHeader()}</tr>
+                    <tr>{renderTableHeaderRelocationHistory()}</tr>
                 </thead>
-                <tbody>{renderTableRows()}</tbody>
+                <tbody>{renderTableRowsRelocationHistory()}</tbody>
                 </table>
             </div>
 

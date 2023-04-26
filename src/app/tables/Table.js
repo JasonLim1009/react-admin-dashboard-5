@@ -68,7 +68,11 @@ function Table(props) {
     let site_ID = localStorage.getItem("site_ID");
     console.log(props.name);
     get_assetmaster(site_ID);
-  }, [page, pageSize]);
+
+    const isAtLeastOneChecked = isCheckedList.some((isChecked) => isChecked);
+    setShowButton(isAtLeastOneChecked);
+
+  }, [page, pageSize, isCheckedList]);
 
 
   //Header
@@ -303,10 +307,6 @@ const handleCheckboxChange = (index) => {
   setIsCheckedList(newCheckedList);
 };
 
-useEffect(() => {
-  const isAtLeastOneChecked = isCheckedList.some((isChecked) => isChecked);
-  setShowButton(isAtLeastOneChecked);
-}, [isCheckedList]);
 
 // ******************************** RowID: check and read data ***********************************************
   const handleRowClick = (data) => {

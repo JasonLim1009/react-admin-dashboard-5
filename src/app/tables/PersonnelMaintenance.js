@@ -83,7 +83,10 @@ const PersonnelMaintenance = (props) => {
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
     get_employeemaster_maintenance(site_ID, props.data.RowID);
-  }, []);
+
+    get_employee_Status(site_ID, "All", location.state.select);       
+
+},[location]);
 
 
 
@@ -190,19 +193,6 @@ const PersonnelMaintenance = (props) => {
           });
 
     }
-
-
-    useEffect(() => {
-
-        let site_ID = localStorage.getItem("site_ID");
-
-        // console.log('select select',location.state.select);
-        // console.log('select EMPID',location.state.RowID);
-    
-        get_employee_Status(site_ID, "All", location.state.select);       
-       
-
-    },[location]);
 
 
     //Header
@@ -373,9 +363,9 @@ const PersonnelMaintenance = (props) => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12 moveUoPopUp">
+                                <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_SupervisorID">
-                                        <label className="col-sm-4 col-form-label top down left">Supervisor ID:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Supervisor ID:</label>
                                         <div className="col-sm-8">
                                         <label className="col-sm-10 form-label">
                                             <Select  
@@ -394,9 +384,9 @@ const PersonnelMaintenance = (props) => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12 moveUoPopUp">
+                                <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_PayRate">
-                                        <label className="col-sm-4 col-form-label top down left">Pay Rate:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Pay Rate:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control  
@@ -411,9 +401,9 @@ const PersonnelMaintenance = (props) => {
                                     </Form.Group>
                                 </div>
 
-                                <div className="col-md-12 moveUoPopUp">
+                                <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_ChargeRate">
-                                        <label className="col-sm-4 col-form-label top down left">Charge Rate:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Charge Rate:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control  
@@ -466,9 +456,9 @@ const PersonnelMaintenance = (props) => {
                                 </Form.Group>
                             </div>
 
-                            <div className="col-md-12 moveUoPopUp">
+                            <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_SupervisorID">
-                                    <label className="col-sm-4 col-form-label top down left">Supervisor ID:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Supervisor ID:</label>
                                     <div className="col-sm-8">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -482,9 +472,9 @@ const PersonnelMaintenance = (props) => {
                                 </Form.Group>
                             </div>
 
-                            <div className="col-md-12 moveUoPopUp">
+                            <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_PayRate">
-                                    <label className="col-sm-4 col-form-label top down left">Pay Rate:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Pay Rate:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -498,9 +488,9 @@ const PersonnelMaintenance = (props) => {
                                 </Form.Group>
                             </div>
 
-                            <div className="col-md-12 moveUoPopUp">
+                            <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_ChargeRate">
-                                    <label className="col-sm-4 col-form-label top down left">Charge Rate:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Charge Rate:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control

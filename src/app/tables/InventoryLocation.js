@@ -93,11 +93,13 @@ const InventoryLocation = (props) => {
     };
 
 
-
     useEffect(() => {
         let site_ID = localStorage.getItem("site_ID");
         get_inventorymaster_location(site_ID, props.data.RowID);
-      }, []);
+
+        get_inventory_status(site_ID, "All", location.state.select);       
+       
+    },[location]);
 
 
     const get_inventory_status = (site_ID, type, selected_asset) => {
@@ -196,19 +198,6 @@ const InventoryLocation = (props) => {
           });
 
     }
-
-
-    useEffect(() => {
-
-        let site_ID = localStorage.getItem("site_ID");
-
-        // console.log('select select',location.state.select);
-        // console.log('select ITMID',location.state.RowID);
-    
-        get_inventory_status(site_ID, "All", location.state.select);       
-       
-
-    },[location]);
 
 
     //Header
@@ -379,7 +368,6 @@ const InventoryLocation = (props) => {
     };
 
 
-
     const handleOnChangePrimaryLocation = () => {
         setPrimaryLocation(!PrimaryLocation);
         
@@ -458,7 +446,7 @@ const InventoryLocation = (props) => {
                                 <div className="col-md-12">
                                     <Form.Group className="row" controlId="validation_PrimaryLocation">
                                         <label className="col-sm-5 col-form-label down">Primary Location:</label>
-                                        <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                                        <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft">
                                         <label className="form-check-label">
                                             <input type="checkbox" 
                                             className="form-check-input"
@@ -473,7 +461,7 @@ const InventoryLocation = (props) => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_StockLocation">
-                                        <label className="col-sm-4 col-form-label top down">Stock Location:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down">Stock Location:</label>
                                         <div className="col-sm-8 form-check">
                                         <label className="col-sm-10 form-label">
                                         <Select  
@@ -494,8 +482,8 @@ const InventoryLocation = (props) => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_IncreaseTotalOH">
-                                        <label className="col-sm-5 col-form-label top down">Increase Total OH:</label>
-                                        <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                                        <label className="col-sm-5 col-form-label labelTopAsset down">Increase Total OH:</label>
+                                        <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft">
                                         <label className="form-check-label">
                                             <input type="checkbox" 
                                             className="form-check-input"
@@ -510,8 +498,8 @@ const InventoryLocation = (props) => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_UpdateStockCosting">
-                                        <label className="col-sm-5 col-form-label top down">Update Stock Costing:</label>
-                                        <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                                        <label className="col-sm-5 col-form-label labelTopAsset down">Update Stock Costing:</label>
+                                        <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft">
                                         <label className="form-check-label">
                                             <input type="checkbox" 
                                             className="form-check-input"
@@ -548,7 +536,7 @@ const InventoryLocation = (props) => {
                             <div className="col-md-12">
                                 <Form.Group className="row" controlId="validation_LockoutForCount">
                                     <label className="col-sm-5 col-form-label down">Lockout For Count:</label>
-                                    <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                                    <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft">
                                     <label className="form-check-label">
                                         <input
                                             style={{ fontSize: "13px", height: "38px" }}
@@ -565,8 +553,8 @@ const InventoryLocation = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_PrimaryLocation">
-                                    <label className="col-sm-5 col-form-label labelTopEmail down">Primary Location:</label>
-                                    <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                                    <label className="col-sm-5 col-form-label labelTopAsset down">Primary Location:</label>
+                                    <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft">
                                     <label className="form-check-label">
                                         <input
                                             style={{ fontSize: "13px", height: "38px" }}
@@ -582,7 +570,7 @@ const InventoryLocation = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_StockLocation">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Stock Location:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Stock Location:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -599,8 +587,8 @@ const InventoryLocation = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_IncreaseTotalOH">
-                                    <label className="col-sm-5 col-form-label labelTopEmail down">Increase Total OH:</label>
-                                    <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                                    <label className="col-sm-5 col-form-label labelTopAsset down">Increase Total OH:</label>
+                                    <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft">
                                     <label className="form-check-label">
                                         <input
                                             style={{ fontSize: "13px", height: "38px" }}
@@ -616,8 +604,8 @@ const InventoryLocation = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_UpdateStockCosting">
-                                    <label className="col-sm-5 col-form-label labelTopEmail down">Update Stock Costing:</label>
-                                    <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                                    <label className="col-sm-5 col-form-label labelTopAsset down">Update Stock Costing:</label>
+                                    <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft">
                                     <label className="form-check-label">
                                         <input
                                             style={{ fontSize: "13px", height: "38px" }}
@@ -633,7 +621,7 @@ const InventoryLocation = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_OhQuantity">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Oh Quantity:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Oh Quantity:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -649,7 +637,7 @@ const InventoryLocation = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_OrderPoint">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Order Point:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Order Point:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -665,7 +653,7 @@ const InventoryLocation = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_Maximum">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Maximum:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Maximum:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -681,7 +669,7 @@ const InventoryLocation = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_PrOutstanding">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Pr Outstanding:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Pr Outstanding:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -697,7 +685,7 @@ const InventoryLocation = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_PoOutstanding">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Po Outstanding:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Po Outstanding:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -713,7 +701,7 @@ const InventoryLocation = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_HardReserve">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Hard Reserve:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Hard Reserve:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -729,7 +717,7 @@ const InventoryLocation = (props) => {
                             
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_ShortQty">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Short Qty:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Short Qty:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -745,7 +733,7 @@ const InventoryLocation = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_LastActivityDate">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Last Activity Date:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Last Activity Date:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -761,7 +749,7 @@ const InventoryLocation = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_LastCountDate">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Last Count Date:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Last Count Date:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -777,7 +765,7 @@ const InventoryLocation = (props) => {
 
                             <div className="col-md-12 moveUp">
                                 <Form.Group className="row" controlId="validation_NextCountDate">
-                                    <label className="col-sm-4 col-form-label labelTopEmail down">Next Count Date:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down">Next Count Date:</label>
                                     <div className="col-sm-8 form-check">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control

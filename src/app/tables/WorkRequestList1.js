@@ -83,11 +83,14 @@ APIServices.get_workrequestmaster_list1(site_ID, RowID)
 useEffect(() => {
 let site_ID = localStorage.getItem("site_ID");
 get_workrequestmaster_list1(site_ID, props.data.RowID);
-}, []);
+
+get_workrequest_status(site_ID, "All", location.state.select);       
+   
+},[location]);
 
 
 
-const get_workrequest_status = (site_ID, type, selected_asset) => {
+    const get_workrequest_status = (site_ID, type, selected_asset) => {
 
     Swal.fire({  title: 'Please Wait !', allowOutsideClick: false})
     Swal.showLoading()
@@ -126,7 +129,7 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
   }
   
  
-  const get_workrequest_select = () => {
+    const get_workrequest_select = () => {
   
         
     console.log('SELECT ROWID: '+ location.state.RowID)
@@ -201,18 +204,6 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
       });
   
   }
-  
-  
-  useEffect(() => {
-  
-    let site_ID = localStorage.getItem("site_ID");
-  
-    // console.log('select select',location.state.select);
-    // console.log('select WKRID',location.state.RowID);
-  
-    get_workrequest_status(site_ID, "All", location.state.select);       
-   
-  },[location]);
 
 
     //Header
@@ -419,7 +410,7 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
                             <Modal.Body>
                                 <div className="col-md-12">
                                     <Form.Group className="row" controlId="validation_Varchar1">
-                                        <label className="col-sm-4 col-form-label">Varchar1:</label>
+                                        <label className="col-sm-4 col-form-label down left">Varchar1:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -435,7 +426,7 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
 
                                 <div className="col-md-12" style={{ marginTop: "-20px" }}>
                                     <Form.Group className="row" controlId="validation_Varchar2">
-                                        <label className="col-sm-4 col-form-label">Varchar2:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Varchar2:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -451,7 +442,7 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
 
                                 <div className="col-md-12" style={{ marginTop: "-20px" }}>
                                     <Form.Group className="row" controlId="validation_Varchar3">
-                                        <label className="col-sm-4 col-form-label">Varchar3:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Varchar3:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -467,7 +458,7 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
                                 
                                 <div className="col-md-12" style={{ marginTop: "-20px" }}>
                                     <Form.Group className="row" controlId="validation_Datetime1">
-                                        <label className="col-sm-4 col-form-label">Datetime1:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Datetime1:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control     
@@ -483,7 +474,7 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
                                 
                                 <div className="col-md-12" style={{ marginTop: "-20px" }}>
                                     <Form.Group className="row" controlId="validation_Datetime2">
-                                        <label className="col-sm-4 col-form-label">Datetime2:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Datetime2:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control         
@@ -499,7 +490,7 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
                                 
                                 <div className="col-md-12" style={{ marginTop: "-20px" }}>
                                     <Form.Group className="row" controlId="validation_Datetime3">
-                                        <label className="col-sm-4 col-form-label">Datetime3:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Datetime3:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control    
@@ -515,7 +506,7 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
                                 
                                 <div className="col-md-12" style={{ marginTop: "-20px" }}>
                                     <Form.Group className="row" controlId="validation_Numeric1">
-                                        <label className="col-sm-4 col-form-label">Numeric1:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Numeric1:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control  
@@ -532,7 +523,7 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
                                 
                                 <div className="col-md-12" style={{ marginTop: "-20px" }}>
                                     <Form.Group className="row" controlId="validation_Numeric2">
-                                        <label className="col-sm-4 col-form-label">Numeric2:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Numeric2:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control  
@@ -571,7 +562,7 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
                         <Modal.Body>
                                 <div className="col-md-12">
                                     <Form.Group className="row" controlId="validation_Varchar1">
-                                        <label className="col-sm-4 col-form-label">Varchar1:</label>
+                                        <label className="col-sm-4 col-form-label down left">Varchar1:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -587,7 +578,7 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
 
                                 <div className="col-md-12" style={{ marginTop: "-20px" }}>
                                     <Form.Group className="row" controlId="validation_Varchar2">
-                                        <label className="col-sm-4 col-form-label">Varchar2:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Varchar2:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -603,7 +594,7 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
 
                                 <div className="col-md-12" style={{ marginTop: "-20px" }}>
                                     <Form.Group className="row" controlId="validation_Varchar3">
-                                        <label className="col-sm-4 col-form-label">Varchar3:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Varchar3:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -619,7 +610,7 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
                                 
                                 <div className="col-md-12" style={{ marginTop: "-20px" }}>
                                     <Form.Group className="row" controlId="validation_Datetime1">
-                                        <label className="col-sm-4 col-form-label">Datetime1:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Datetime1:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control     
@@ -635,7 +626,7 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
                                 
                                 <div className="col-md-12" style={{ marginTop: "-20px" }}>
                                     <Form.Group className="row" controlId="validation_Datetime2">
-                                        <label className="col-sm-4 col-form-label">Datetime2:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Datetime2:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control         
@@ -651,7 +642,7 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
                                 
                                 <div className="col-md-12" style={{ marginTop: "-20px" }}>
                                     <Form.Group className="row" controlId="validation_Datetime3">
-                                        <label className="col-sm-4 col-form-label">Datetime3:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Datetime3:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control    
@@ -667,7 +658,7 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
                                 
                                 <div className="col-md-12" style={{ marginTop: "-20px" }}>
                                     <Form.Group className="row" controlId="validation_Numeric1">
-                                        <label className="col-sm-4 col-form-label">Numeric1:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Numeric1:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control  
@@ -684,7 +675,7 @@ const get_workrequest_status = (site_ID, type, selected_asset) => {
                                 
                                 <div className="col-md-12" style={{ marginTop: "-20px" }}>
                                     <Form.Group className="row" controlId="validation_Numeric2">
-                                        <label className="col-sm-4 col-form-label">Numeric2:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Numeric2:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control  

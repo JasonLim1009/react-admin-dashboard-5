@@ -104,8 +104,10 @@ const WorkOrderTimeCard = (props) => {
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
     get_workordermaster_timecard(site_ID, props.data.RowID);
-  }, []);
 
+    get_workorder_status(site_ID, "All", location.state.select);       
+        
+},[location]);
 
 
     const get_workorder_status = (site_ID, type, selected_asset) => {
@@ -257,24 +259,10 @@ const WorkOrderTimeCard = (props) => {
             });
     
     }
-    
-    
-    useEffect(() => {
-    
-        let site_ID = localStorage.getItem("site_ID");
-    
-        // console.log('select select',location.state.select);
-        // console.log('select WKOID',location.state.RowID);
-    
-        get_workorder_status(site_ID, "All", location.state.select);       
-        
-    
-    },[location]);
 
 
-
-  //Header
-  const renderTableHeader = () => {
+    //Header
+    const renderTableHeader = () => {
     return (
       <>
         <th key="select">
@@ -285,10 +273,10 @@ const WorkOrderTimeCard = (props) => {
         ))}
       </>
     );
-  };
+    };
   
-  //Body    
-  const renderTableRows = () => {
+    //Body    
+    const renderTableRows = () => {
     return Result.map((result, index) => {
 
         if (result.wko_ls8_datetime1 == null) {
@@ -323,10 +311,10 @@ const WorkOrderTimeCard = (props) => {
         </tr>
       );
     });
-  };
+    };
 
 
-  const handleRowClick = (data) => {
+    const handleRowClick = (data) => {
     console.log(data);
 
     setAssetNo( data.wko_ls8_assetno )
@@ -346,9 +334,9 @@ const WorkOrderTimeCard = (props) => {
     setTimeCardNo( data.wko_ls8_time_card_no )
  
     setShowModal(true);
-};
+    };
 
-const resetData = () => {
+    const resetData = () => {
 
     setSelected_ChargeAccount(0);
     setSelected_ChargeCostCenter(0);
@@ -359,10 +347,10 @@ const resetData = () => {
     setSelected_HourType(0);
     setActualHour('');
   
-};
+    };
 
 
-const handleAddButtonClick  = () => {
+    const handleAddButtonClick  = () => {
 
     let site_ID = localStorage.getItem("site_ID");
    
@@ -490,7 +478,7 @@ const handleAddButtonClick  = () => {
       console.log(Result);
       // Close modal
       handleClose();
-};
+    };
 
 
 
@@ -533,10 +521,10 @@ const handleAddButtonClick  = () => {
 
 
   //Sum calculation
-  //const totalQty = Result.reduce((acc, item) => acc + (parseFloat(item.wko_ls3_qty_needed) || 0), 0);
+  const totalQty = Result.reduce((acc, item) => acc + (parseFloat(item.wko_ls8_hrs) || 0), 0);
   
   //Multiply calculation
-  //const totalCost = Result.reduce((acc, item) => acc + (parseFloat(item.wko_ls3_qty_needed) || 0) * (parseFloat(item.wko_ls3_item_cost) || 0), 0);
+  const totalCost = Result.reduce((acc, item) => acc + (parseFloat(item.wko_ls8_hrs) || 0) * (parseFloat(item.wko_ls8_act_cost) || 0), 0);
 
 
 
@@ -556,7 +544,7 @@ const handleAddButtonClick  = () => {
                         </div>
                         <div className="template-demo" style={{ display: 'flex', flexDirection: 'column' }}>
                             <div style={{ marginRight: '10px', fontWeight: 'bold' }}>Time Card</div>
-                            {/* <div><span style={{color: "blue"}}>{(totalQty * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCost.toFixed(2)}</span></div> */}
+                            <div><span style={{color: "blue"}}>{(totalQty * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCost.toFixed(2)}</span></div>
                         </div> 
                         </div>
                     </div>
@@ -567,7 +555,6 @@ const handleAddButtonClick  = () => {
                             <Modal.Header closeButton>
                                 <Modal.Title>Time Card</Modal.Title>
                             </Modal.Header>
-
 
                             <Modal.Body>
                                 <div className="col-md-12">
@@ -593,7 +580,7 @@ const handleAddButtonClick  = () => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_Craft">
-                                        <label className="col-sm-4 col-form-label top down left">Craft:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Craft:</label>
                                         <div className="col-sm-8">
                                         <label className="col-sm-10 form-label">
                                             <Select  
@@ -614,7 +601,7 @@ const handleAddButtonClick  = () => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                         <Form.Group className="row" controlId="validation_TimeCardDate">
-                                            <label className="col-sm-4 col-form-label top down left">Time Card Date:</label>
+                                            <label className="col-sm-4 col-form-label labelTopAsset down left">Time Card Date:</label>
                                             <div className="col-sm-8 form-label">
                                             <label className="col-sm-10 form-label">
                                                 <Form.Control    
@@ -630,7 +617,7 @@ const handleAddButtonClick  = () => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_HourType">
-                                        <label className="col-sm-4 col-form-label top down left">Hour Type:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Hour Type:</label>
                                         <div className="col-sm-8">
                                         <label className="col-sm-10 form-label">
                                             <Select  
@@ -651,7 +638,7 @@ const handleAddButtonClick  = () => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_ActualHour">
-                                        <label className="col-sm-4 col-form-label top down left">Actual Hour:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Actual Hour:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control  
@@ -668,7 +655,7 @@ const handleAddButtonClick  = () => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_ChargeCostCenter">
-                                        <label className="col-sm-4 col-form-label top down left">Charge Cost Center:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Charge Cost Center:</label>
                                         <div className="col-sm-8">
                                         <label className="col-sm-10 form-label">
                                             <Select  
@@ -689,7 +676,7 @@ const handleAddButtonClick  = () => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_ChargeAccount">
-                                        <label className="col-sm-4 col-form-label top down left">Charge Account:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Charge Account:</label>
                                         <div className="col-sm-8">
                                         <label className="col-sm-10 form-label">
                                             <Select  
@@ -710,7 +697,7 @@ const handleAddButtonClick  = () => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_CreditCostCenter">
-                                        <label className="col-sm-4 col-form-label top down left">Credit Cost Center:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Credit Cost Center:</label>
                                         <div className="col-sm-8">
                                         <label className="col-sm-10 form-label">
                                             <Select  
@@ -731,7 +718,7 @@ const handleAddButtonClick  = () => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_CreditAccount">
-                                        <label className="col-sm-4 col-form-label top down left">Credit Account:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Credit Account:</label>
                                         <div className="col-sm-8">
                                         <label className="col-sm-10 form-label">
                                             <Select  
@@ -751,7 +738,6 @@ const handleAddButtonClick  = () => {
                                 </div>
                             </Modal.Body>
                             
-
                             <Modal.Footer>
 
                                 <Button variant="secondary" onClick={handleClose}>Close</Button>
@@ -792,7 +778,7 @@ const handleAddButtonClick  = () => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_EmployeeID">
-                                    <label className="col-sm-4 col-form-label top down left">Employee ID:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Employee ID:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -808,7 +794,7 @@ const handleAddButtonClick  = () => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_Craft">
-                                    <label className="col-sm-4 col-form-label top down left">Craft:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Craft:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -824,7 +810,7 @@ const handleAddButtonClick  = () => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_TimeCardDate">
-                                    <label className="col-sm-4 col-form-label top down left">Time Card Date:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Time Card Date:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -840,7 +826,7 @@ const handleAddButtonClick  = () => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_HourType">
-                                    <label className="col-sm-4 col-form-label top down left">Hour Type:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Hour Type:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -856,7 +842,7 @@ const handleAddButtonClick  = () => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_ActualHour">
-                                    <label className="col-sm-4 col-form-label top down left">Actual Hour:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Actual Hour:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -872,7 +858,7 @@ const handleAddButtonClick  = () => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_Rate">
-                                    <label className="col-sm-4 col-form-label top down left">Rate:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Rate:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -888,7 +874,7 @@ const handleAddButtonClick  = () => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_Multiplier">
-                                    <label className="col-sm-4 col-form-label top down left">Multiplier:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Multiplier:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -904,7 +890,7 @@ const handleAddButtonClick  = () => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_Adder">
-                                    <label className="col-sm-4 col-form-label top down left">Adder:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Adder:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -920,7 +906,7 @@ const handleAddButtonClick  = () => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_ActualCost">
-                                    <label className="col-sm-4 col-form-label top down left">Actual Cost:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Actual Cost:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -936,7 +922,7 @@ const handleAddButtonClick  = () => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_ChargeCostCenter">
-                                    <label className="col-sm-4 col-form-label top down left">Charge Cost Center:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Charge Cost Center:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -952,7 +938,7 @@ const handleAddButtonClick  = () => {
 
                             <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_ChargeAccount">
-                                        <label className="col-sm-4 col-form-label top down left">Charge Account:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Charge Account:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control
@@ -968,7 +954,7 @@ const handleAddButtonClick  = () => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_CreditCostCenter">
-                                    <label className="col-sm-4 col-form-label top down left">Credit Cost Center:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Credit Cost Center:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -984,7 +970,7 @@ const handleAddButtonClick  = () => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_CreditAccount">
-                                    <label className="col-sm-4 col-form-label top down left">Credit Account:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Credit Account:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -1000,7 +986,7 @@ const handleAddButtonClick  = () => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_TimeCardNo">
-                                    <label className="col-sm-4 col-form-label top down left">Time Card No:</label>
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left">Time Card No:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control

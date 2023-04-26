@@ -16,6 +16,7 @@ import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Moment from 'moment';
 import  {useLocation}  from 'react-router-dom';
+import logo from '../../assets/images/approve.png';
 
 
 const PersonnelMRApproval = (props) => {
@@ -77,7 +78,10 @@ const PersonnelMRApproval = (props) => {
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
     get_employeemaster_mr_approval(site_ID, props.data.RowID);
-  }, []);
+
+    get_employee_Status(site_ID, "All", location.state.select);       
+
+},[location]);
 
 
 
@@ -178,19 +182,6 @@ const PersonnelMRApproval = (props) => {
     }
 
 
-    useEffect(() => {
-
-        let site_ID = localStorage.getItem("site_ID");
-
-        // console.log('select select',location.state.select);
-        // console.log('select EMPID',location.state.RowID);
-    
-        get_employee_Status(site_ID, "All", location.state.select);       
-       
-
-    },[location]);
-
-
     //Header
     const renderTableHeader = () => {
         return (
@@ -279,143 +270,157 @@ const PersonnelMRApproval = (props) => {
 
   return (
     <div>
-        <div className="page-header">
-            <div className="template-demo" >
-                <button type="button" className="btn btn-outline-primary btn-icon-text"  onClick={handleShow}>
-                    <i className="mdi mdi-file-check btn-icon-prepend"></i> New  
-                </button>
-            
-                <button type="button" className="btn btn-outline-danger btn-icon-text"  >
-                    <i className="mdi mdi-delete-forever btn-icon-prepend"></i> Delete 
-                </button>
-            </div>                     
-        </div> 
+        <div className="card">
+            <div className="card-body" style={{ borderRadius: '4px', boxShadow: '2px 2px 15px 2px #f0f0f0'}}>
+                <div>
+                    <div style={{ paddingBottom: '20px', backgroundColor: 'white' }}>
+                        <div className="template-demo" style={{ display: 'flex', alignItems: 'center' }}>
 
-            {/******************** Personnel MR Approval ********************/}
-            <div>
-                <Modal show={show} onHide={handleClose} centered >
-
-                    <Modal.Header closeButton>
-                        <Modal.Title>MR Approval</Modal.Title>
-                    </Modal.Header>
-
-
-                    <Modal.Body>
-                        <div className="col-md-12">
-                            <Form.Group className="row" controlId="validation_CostCenter">
-                                <label className="col-sm-4 col-form-label down left">Cost Center:</label>
-                                <div className="col-sm-8">
-                                <label className="col-sm-10 form-label">
-                                    <Select  
-                                       isClearable={true}  
-                                       options={CostCenter}
-                                       value={selected_CostCenter}
-                                       onChange={setSelected_CostCenter} // using id as it is unique
-                                       required
-                                       styles={{ 
-                                        control: (styles) => ({ ...styles, fontSize: "13px" }), 
-                                        singleValue: (styles) => ({ ...styles, fontSize: "13px" })
-                                    }}
-                                    />
-                                </label>
-                                </div>
-                            </Form.Group>
+                        <div style={{ marginRight: '10px' }}>
+                            <img src={logo} style={{ width: '60px', height: '60px' }}/>
                         </div>
+                        <div className="template-demo" style={{ display: 'flex', flexDirection: 'column' }}>
+                            <div style={{ marginRight: '10px', fontWeight: 'bold' }}>MR Approval</div>
+                            {/* <div><span style={{color: "blue"}}>{(totalQty * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCost.toFixed(2)}</span></div> */}
+                        </div> 
+                        </div>
+                    </div>
 
-                        <div className="col-md-12 moveUoPopUp">
-                            <Form.Group className="row" controlId="validation_ApprovalLimit">
-                                <label className="col-sm-4 col-form-label top down left">Approval Limit:</label>
-                                <div className="col-sm-8 form-label">
-                                <label className="col-sm-10 form-label">
-                                    <Form.Control  
+                    {/******************** Personnel MR Approval ********************/}
+                    <div>
+                        <Modal show={show} onHide={handleClose} centered >
+
+                            <Modal.Header closeButton>
+                                <Modal.Title>MR Approval</Modal.Title>
+                            </Modal.Header>
+
+
+                            <Modal.Body>
+                                <div className="col-md-12">
+                                    <Form.Group className="row" controlId="validation_CostCenter">
+                                        <label className="col-sm-4 col-form-label down left">Cost Center:</label>
+                                        <div className="col-sm-8">
+                                        <label className="col-sm-10 form-label">
+                                            <Select  
+                                            isClearable={true}  
+                                            options={CostCenter}
+                                            value={selected_CostCenter}
+                                            onChange={setSelected_CostCenter} // using id as it is unique
+                                            required
+                                            styles={{ 
+                                                control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                                singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                            }}
+                                            />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+
+                                <div className="col-md-12 moveUpPopUp">
+                                    <Form.Group className="row" controlId="validation_ApprovalLimit">
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Approval Limit:</label>
+                                        <div className="col-sm-8 form-label">
+                                        <label className="col-sm-10 form-label">
+                                            <Form.Control  
+                                                style={{ fontSize: "13px", height: "38px" }}
+                                                type="number"  
+                                                placeholder=".00" 
+                                                value={ApprovalLimit} 
+                                                onChange={(e) => setApprovalLimit(e.target.value)}
+                                                />
+                                        </label>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+                            </Modal.Body>
+                            
+
+                            <Modal.Footer>
+
+                                <Button variant="secondary" onClick={handleClose}>Close</Button>
+                                <Button variant="primary" onClick={handleAddButtonClick}>
+                                {/* {Button_save} */}
+                                Submit
+                                </Button>
+                            </Modal.Footer>
+
+                        </Modal>
+
+
+                        {showModal && (
+                        <Modal show={showModal} onHide={handleCloseModal} centered >
+
+                        <Modal.Header closeButton>
+                            <Modal.Title>MR Approval</Modal.Title>
+                        </Modal.Header>
+
+
+                        <Modal.Body>
+                            <div className="col-md-12">
+                                <Form.Group className="row" controlId="validation_CostCenter">
+                                    <label className="col-sm-4 col-form-label down left">Cost Center:</label>
+                                    <div className="col-sm-8">
+                                    <label className="col-sm-10 form-label">
+                                        <Form.Control
                                         style={{ fontSize: "13px", height: "38px" }}
-                                        type="number"  
-                                        placeholder=".00" 
-                                        value={ApprovalLimit} 
-                                        onChange={(e) => setApprovalLimit(e.target.value)}
+                                        type="text"
+                                        value ={CostCenter} 
+                                        readOnly
                                         />
-                                </label>
-                                </div>
-                            </Form.Group>
-                        </div>
-                    </Modal.Body>
-                    
-
-                    <Modal.Footer>
-
-                        <Button variant="secondary" onClick={handleClose}>Close</Button>
-                        <Button variant="primary" onClick={handleAddButtonClick}>
-                        {/* {Button_save} */}
-                        Submit
-                        </Button>
-                    </Modal.Footer>
-
-                </Modal>
-
-
-                {showModal && (
-                <Modal show={showModal} onHide={handleCloseModal} centered >
-
-                <Modal.Header closeButton>
-                    <Modal.Title>MR Approval</Modal.Title>
-                </Modal.Header>
-
-
-                <Modal.Body>
-                    <div className="col-md-12">
-                        <Form.Group className="row" controlId="validation_CostCenter">
-                            <label className="col-sm-4 col-form-label down left">Cost Center:</label>
-                            <div className="col-sm-8">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                  style={{ fontSize: "13px", height: "38px" }}
-                                  type="text"
-                                  value ={CostCenter} 
-                                  readOnly
-                                />
-                            </label>
+                                    </label>
+                                    </div>
+                                </Form.Group>
                             </div>
-                        </Form.Group>
+
+                            <div className="col-md-12 moveUpPopUp">
+                                <Form.Group className="row" controlId="validation_ApprovalLimit">
+                                    <label className="col-sm-4 col-form-label  labelTopAsset down left">Approval Limit:</label>
+                                    <div className="col-sm-8 form-label">
+                                    <label className="col-sm-10 form-label">
+                                        <Form.Control
+                                        style={{ fontSize: "13px", height: "38px" }}
+                                        type="text"
+                                        value ={ApprovalLimit} 
+                                        readOnly
+                                        />
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
+                        </Modal.Body>
+                        
+                        </Modal>
+                        )}
+                    </div> 
+
+                    <div className="table-responsive">
+                        <table
+                        className="table table-hover table-bordered"
+                        style={{ color: "#000", border: 1 }}
+                        >
+                        <thead
+                            style={{
+                            color: "#000",
+                            fontWeight: "bold",
+                            fontFamily: "montserrat",
+                            margin: "5px",
+                            }}
+                        >
+                            <tr>{renderTableHeader()}</tr>
+                        </thead>
+                        <tbody>{renderTableRows()}</tbody>
+                        </table>
                     </div>
 
-                    <div className="col-md-12 moveUoPopUp">
-                        <Form.Group className="row" controlId="validation_ApprovalLimit">
-                            <label className="col-sm-4 col-form-label  top down left">Approval Limit:</label>
-                            <div className="col-sm-8 form-label">
-                            <label className="col-sm-10 form-label">
-                                <Form.Control
-                                  style={{ fontSize: "13px", height: "38px" }}
-                                  type="text"
-                                  value ={ApprovalLimit} 
-                                  readOnly
-                                />
-                            </label>
-                            </div>
-                        </Form.Group>
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                        <button type="button" style={{ padding: '5px 10px', background: 'none', color: 'blue', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                        onClick={handleShow}>
+                            + Add MR Approval
+                        </button>
                     </div>
-                </Modal.Body>
-                
-                </Modal>
-                )}
-            </div> 
-
-        <div className="table-responsive">
-            <table
-              className="table table-hover table-bordered"
-              style={{ color: "#000", border: 1 }}
-              >
-              <thead
-                  style={{
-                  color: "#000",
-                  fontWeight: "bold",
-                  fontFamily: "montserrat",
-                  margin: "5px",
-                  }}
-              >
-                  <tr>{renderTableHeader()}</tr>
-              </thead>
-              <tbody>{renderTableRows()}</tbody>
-            </table>
+                </div>
+            </div>
         </div>
     </div>
   );

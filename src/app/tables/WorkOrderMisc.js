@@ -62,7 +62,6 @@ const WorkOrderMisc = (props) => {
 
 
 
-
   const get_workordermaster_misc = (site_ID, RowID) => {
     APIServices.get_workordermaster_misc(site_ID, RowID)
         .then((responseJson) => {
@@ -92,11 +91,13 @@ const WorkOrderMisc = (props) => {
     };
 
 
-
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
     get_workordermaster_misc(site_ID, props.data.RowID);
-  }, []);
+
+    get_workorder_status(site_ID, "All", location.state.select);    
+
+  }, [location]);
 
 
 
@@ -223,19 +224,6 @@ const WorkOrderMisc = (props) => {
     
     }
     
-    
-    useEffect(() => {
-    
-        let site_ID = localStorage.getItem("site_ID");
-    
-        // console.log('select select',location.state.select);
-        // console.log('select WKOID',location.state.RowID);
-    
-        get_workorder_status(site_ID, "All", location.state.select);       
-        
-    
-    },[location]);
-
 
     //Header
     const renderTableHeader = () => {

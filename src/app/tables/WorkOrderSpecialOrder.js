@@ -105,7 +105,10 @@ const WorkOrderSpecialOrder = (props) => {
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
     get_workordermaster_specialorder(site_ID, props.data.RowID);
-  }, []);
+
+    get_workorder_status(site_ID, "All", location.state.select);       
+
+  }, [location]);
 
 
 
@@ -235,19 +238,6 @@ const get_workordermaster_select = () => {
         });
 
 }
-
-
-useEffect(() => {
-
-    let site_ID = localStorage.getItem("site_ID");
-
-    // console.log('select select',location.state.select);
-    // console.log('select WKOID',location.state.RowID);
-
-    get_workorder_status(site_ID, "All", location.state.select);       
-    
-
-},[location]);
 
 
   //Header

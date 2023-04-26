@@ -91,8 +91,10 @@ const AssetSpares = (props) => {
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
     get_assetspares(site_ID, props.data.RowID);
-  }, []);
 
+    get_asset_Status(site_ID, "All", location.state.select);       
+       
+},[location]);
 
 
     const get_asset_Status = (site_ID, type, selected_asset) => {
@@ -231,19 +233,6 @@ const AssetSpares = (props) => {
     }
 
 
-    useEffect(() => {
-
-        let site_ID = localStorage.getItem("site_ID");
-
-        // console.log('select select',location.state.select);
-        // console.log('select EMPID',location.state.RowID);
-    
-        get_asset_Status(site_ID, "All", location.state.select);       
-       
-
-    },[location]);
-
-
     //Header
     const renderTableHeader = () => {
         return (
@@ -340,7 +329,7 @@ const AssetSpares = (props) => {
             ast_ls1_varchar1: PartNumber,
             ast_ls1_desc: Description,
             ast_ls1_qty_needed: QuantityNeeded,
-            itm_mst_ttl_oh: TotalOh,
+            itm_mst_ttl_oh: '.0000',
     
           };
           // Add new part to partsList
@@ -485,7 +474,7 @@ const AssetSpares = (props) => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_PartNumber">
-                                        <label className="col-sm-4 col-form-label top down left">Part Number:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Part Number:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control  
@@ -501,7 +490,7 @@ const AssetSpares = (props) => {
 
                                 <div className="col-md-12 moveUpPopUp">
                                     <Form.Group className="row" controlId="validation_QuantityNeeded">
-                                        <label className="col-sm-4 col-form-label top down left">Quantity Needed:</label>
+                                        <label className="col-sm-4 col-form-label labelTopAsset down left">Quantity Needed:</label>
                                         <div className="col-sm-8 form-label">
                                         <label className="col-sm-10 form-label">
                                             <Form.Control  
@@ -573,7 +562,7 @@ const AssetSpares = (props) => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_Description">
-                                    <label className="col-sm-4 col-form-label  top down left">Description:</label>
+                                    <label className="col-sm-4 col-form-label  labelTopAsset down left">Description:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -589,7 +578,7 @@ const AssetSpares = (props) => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_QuantityNeeded">
-                                    <label className="col-sm-4 col-form-label  top down left">Quantity Needed:</label>
+                                    <label className="col-sm-4 col-form-label  labelTopAsset down left">Quantity Needed:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control
@@ -605,7 +594,7 @@ const AssetSpares = (props) => {
 
                             <div className="col-md-12 moveUpPopUp">
                                 <Form.Group className="row" controlId="validation_TotalOh">
-                                    <label className="col-sm-4 col-form-label  top down left">Total Oh:</label>
+                                    <label className="col-sm-4 col-form-label  labelTopAsset down left">Total Oh:</label>
                                     <div className="col-sm-8 form-label">
                                     <label className="col-sm-10 form-label">
                                         <Form.Control

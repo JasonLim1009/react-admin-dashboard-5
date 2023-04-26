@@ -16,34 +16,34 @@ import Select from 'react-select';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Moment from 'moment';
 import  {useLocation}  from 'react-router-dom';
-import logo from '../../assets/images/browser-tab.png';
+import logoWOHistory from '../../assets/images/browser-tab.png';
 
 
 const AssetWOHistory = (props) => {
  
 
-  const [Header, setHeader] = React.useState([]);
-  const [Result, setResult] = React.useState([]);
+  const [HeaderWOHistory, setHeaderWOHistory] = React.useState([]);
+  const [ResultWOHistory, setResultWOHistory] = React.useState([]);
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => {setShow(false); resetData(); };
-  const handleShow = () => setShow(true);
+  const [showWOHistory, setShowWOHistory] = useState(false);
+  const handleCloseWOHistory = () => {setShowWOHistory(false); resetData(); };
+  const handleShowWOHistory = () => setShowWOHistory(true);
 
-  const [showModal, setShowModal] = useState(false);
-  const handleCloseModal = () => setShowModal(false);
-  const handleShowModal = () => setShowModal(true);
+  const [showModalWOHistory, setShowModalWOHistory] = useState(false);
+  const handleCloseModalWOHistory = () => setShowModalWOHistory(false);
+  const handleShowModalWOHistory = () => setShowModalWOHistory(true);
 
   const [WorkOrderNo, setWorkOrderNo] = useState("");
 
   const [OriginationDate, setOriginationDate] = useState(new Date());
 
-  const [Status, setStatus] = useState("");
+  const [StatusWOHistory, setStatusWOHistory] = useState("");
 
   const [Originator, setOriginator] = useState("");
 
   const [Phone, setPhone] = useState("");
 
-  const [Description, setDescription] = useState("");
+  const [DescriptionWOHistory, setDescriptionWOHistory] = useState("");
 
   const location = useLocation();
   
@@ -60,8 +60,8 @@ const AssetWOHistory = (props) => {
 
         if (responseJson.data.status === "SUCCESS") {
 
-            setHeader(responseJson.data.data.header);
-            setResult(responseJson.data.data.result);
+            setHeaderWOHistory(responseJson.data.data.header);
+            setResultWOHistory(responseJson.data.data.result);
         
         } else {
             Swal.fire({
@@ -85,7 +85,10 @@ const AssetWOHistory = (props) => {
   useEffect(() => {
     let site_ID = localStorage.getItem("site_ID");
     get_assetwohistory(site_ID, props.data.RowID);
-  }, []);
+
+    get_asset_Status(site_ID, "All", location.state.select);       
+
+},[location]);
 
 
 
@@ -154,7 +157,6 @@ const AssetWOHistory = (props) => {
         }
 
        
-
         console.log('select Asset',JSON.stringify(json))
         
         APIServices.get_assetmaster_select(JSON.stringify(json)).then((responseJson)=>{  
@@ -183,10 +185,10 @@ const AssetWOHistory = (props) => {
                     console.log('SELECT O Date : '+ Moment(responseJson.data.data[index].wko_mst_org_date.date).format('YYYY-MM-DDTHH:mm:ss'))
                 }
                 
-                setStatus( responseJson.data.data[index].wko_mst_status )
+                setStatusWOHistory( responseJson.data.data[index].wko_mst_status )
                 setOriginator( responseJson.data.data[index].wko_mst_originator )
                 setPhone( responseJson.data.data[index].wko_mst_phone )
-                setDescription( responseJson.data.data[index].wko_mst_descs )
+                setDescriptionWOHistory( responseJson.data.data[index].wko_mst_descs )
                
                 
 
@@ -215,27 +217,14 @@ const AssetWOHistory = (props) => {
     }
 
 
-    useEffect(() => {
-
-        let site_ID = localStorage.getItem("site_ID");
-
-        // console.log('select select',location.state.select);
-        // console.log('select EMPID',location.state.RowID);
-    
-        get_asset_Status(site_ID, "All", location.state.select);       
-       
-
-    },[location]);
-
-
     //Header
-    const renderTableHeader = () => {
+    const renderTableHeaderWOHistory = () => {
         return (
             <>
             <th key="select">
                 {/* <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} /> */}
             </th>
-            {Object.keys(Header).map((attr) => (
+            {Object.keys(HeaderWOHistory).map((attr) => (
                 <th key={attr}> {attr.toUpperCase()}</th>
             ))}
             </>
@@ -243,8 +232,8 @@ const AssetWOHistory = (props) => {
     };
           
     //Body    
-    const renderTableRows = () => {
-    return Result.map((result, index) => {
+    const renderTableRowsWOHistory = () => {
+    return ResultWOHistory.map((result, index) => {
 
 
         if (result.wko_mst_org_date == null) {
@@ -257,7 +246,7 @@ const AssetWOHistory = (props) => {
 
         
         return (
-        <tr key={index} onClick={(event) =>handleRowClick(result, event)}>
+        <tr key={index} onClick={(event) =>handleRowClickWOHistory(result, event)}>
           
             <td>{index + 1}</td>
             <td>{result.wko_mst_wo_no}</td>
@@ -273,32 +262,32 @@ const AssetWOHistory = (props) => {
     };
 
 
-    const handleRowClick = (data) => {
+    const handleRowClickWOHistory = (data) => {
         console.log(data);
     
         setWorkOrderNo( data.wko_mst_wo_no )
         setOriginationDate( data.wko_mst_org_date )
-        setStatus( data.wko_mst_status )
+        setStatusWOHistory( data.wko_mst_status )
         setOriginator( data.wko_mst_originator )
         setPhone( data.wko_mst_phone )
-        setDescription( data.wko_mst_descs )
+        setDescriptionWOHistory( data.wko_mst_descs )
 
-        setShowModal(true);
+        setShowModalWOHistory(true);
     };
     
     const resetData = () => {
     
         setWorkOrderNo('');
         setOriginationDate('');
-        setStatus('');
+        setStatusWOHistory('');
         setOriginator('');
         setPhone('');
-        setDescription('');
+        setDescriptionWOHistory('');
       
     };
     
     
-    const handleAddButtonClick  = () => {
+    const handleAddButtonClickWOHistory  = () => {
     
         let site_ID = localStorage.getItem("site_ID");
        
@@ -317,7 +306,7 @@ const AssetWOHistory = (props) => {
         }
 
         //Select Status
-        console.log("Status: ", Status)
+        console.log("Status: ", StatusWOHistory)
 
         //Select Originator
         console.log("Originator: ", Originator)
@@ -326,7 +315,7 @@ const AssetWOHistory = (props) => {
         console.log("Phone: ", Phone)
 
         //Select Description
-        console.log("Description: ", Description)
+        console.log("Description: ", DescriptionWOHistory)
        
 
 
@@ -336,27 +325,26 @@ const AssetWOHistory = (props) => {
             site_cd: site_ID,
             wko_mst_wo_no: WorkOrderNo,
             //wko_mst_org_date: Origination_Date,
-            wko_mst_status: Status,
+            wko_mst_status: StatusWOHistory,
             wko_mst_originator: Originator,
             wko_mst_phone: Phone,
-            wko_mst_descs: Description,
+            wko_mst_descs: DescriptionWOHistory,
 
     
           };
           // Add new part to partsList
-          setResult([...Result, newPart]);
-          console.log(Result);
+          setResultWOHistory([...ResultWOHistory, newPart]);
+          console.log(ResultWOHistory);
           // Close modal
-          handleClose();
+          handleCloseWOHistory();
     };
 
 
-
   //Sum calculation
-  const totalQty = Result.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0), 0);
+  const totalQtyWOHistory = ResultWOHistory.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0), 0);
   
   //Multiply calculation
-  const totalCost = Result.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0) * (parseFloat(item.ast_ls2_warranty_usage) || 0), 0);
+  const totalCostWOHistory = ResultWOHistory.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0) * (parseFloat(item.ast_ls2_warranty_usage) || 0), 0);
 
 
 
@@ -372,11 +360,11 @@ const AssetWOHistory = (props) => {
                 <div className="template-demo" style={{ display: 'flex', alignItems: 'center' }}>
 
                     <div style={{ marginRight: '10px' }}>
-                        <img src={logo} style={{ width: '60px', height: '60px' }}/>
+                        <img src={logoWOHistory} style={{ width: '60px', height: '60px' }}/>
                     </div>
                     <div className="template-demo" style={{ display: 'flex', flexDirection: 'column' }}>
                         <div style={{ marginRight: '10px', fontWeight: 'bold'}}>WO History</div>
-                        <div><span style={{color: "blue"}}>{(totalQty * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCost.toFixed(2)}</span></div>
+                        <div><span style={{color: "blue"}}>{(totalQtyWOHistory * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCostWOHistory.toFixed(2)}</span></div>
                     </div> 
                 </div>
             </div>
@@ -385,7 +373,7 @@ const AssetWOHistory = (props) => {
         <Modal.Body>
              {/******************** WO History ********************/}
              <div>
-                <Modal show={show} onHide={handleClose} centered >
+                <Modal show={showWOHistory} onHide={handleCloseWOHistory} centered >
 
                     <Modal.Header closeButton>
                         <Modal.Title>WO History</Modal.Title>
@@ -433,8 +421,8 @@ const AssetWOHistory = (props) => {
                                     <Form.Control  
                                         style={{ fontSize: "13px", height: "38px" }}
                                         type="text"  
-                                        value={Status} 
-                                        onChange={(e) => setStatus(e.target.value)}
+                                        value={StatusWOHistory} 
+                                        onChange={(e) => setStatusWOHistory(e.target.value)}
                                         />
                                 </label>
                                 </div>
@@ -481,8 +469,8 @@ const AssetWOHistory = (props) => {
                                     <Form.Control  
                                         style={{ fontSize: "13px", height: "38px" }}
                                         type="text"  
-                                        value={Description} 
-                                        onChange={(e) => setDescription(e.target.value)}
+                                        value={DescriptionWOHistory} 
+                                        onChange={(e) => setDescriptionWOHistory(e.target.value)}
                                         />
                                 </label>
                                 </div>
@@ -494,8 +482,8 @@ const AssetWOHistory = (props) => {
 
                     <Modal.Footer>
 
-                        <Button variant="secondary" onClick={handleClose}>Close</Button>
-                        <Button variant="primary" onClick={handleAddButtonClick}>
+                        <Button variant="secondary" onClick={handleCloseWOHistory}>Close</Button>
+                        <Button variant="primary" onClick={handleAddButtonClickWOHistory}>
                         {/* {Button_save} */}
                         Submit
                         </Button>
@@ -504,8 +492,8 @@ const AssetWOHistory = (props) => {
                 </Modal>
 
 
-                {showModal && (
-                <Modal show={showModal} onHide={handleCloseModal} centered >
+                {showModalWOHistory && (
+                <Modal show={showModalWOHistory} onHide={handleCloseModalWOHistory} centered >
 
                 <Modal.Header closeButton>
                     <Modal.Title>WO History</Modal.Title>
@@ -553,7 +541,7 @@ const AssetWOHistory = (props) => {
                                 <Form.Control
                                 style={{ fontSize: "13px", height: "38px" }}
                                 type="text"
-                                value ={Status} 
+                                value ={StatusWOHistory} 
                                 readOnly
                                 />
                                 <i className="input-helper"></i>
@@ -604,7 +592,7 @@ const AssetWOHistory = (props) => {
                                 <Form.Control
                                 style={{ fontSize: "13px", height: "38px" }}
                                 type="text"
-                                value ={Description} 
+                                value ={DescriptionWOHistory} 
                                 readOnly
                                 />
                                 <i className="input-helper"></i>
@@ -633,9 +621,9 @@ const AssetWOHistory = (props) => {
                     margin: "5px",
                     }}
                 >
-                    <tr>{renderTableHeader()}</tr>
+                    <tr>{renderTableHeaderWOHistory()}</tr>
                 </thead>
-                <tbody>{renderTableRows()}</tbody>
+                <tbody>{renderTableRowsWOHistory()}</tbody>
                 </table>
             </div>
 
