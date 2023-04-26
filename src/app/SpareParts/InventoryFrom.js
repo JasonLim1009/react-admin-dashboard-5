@@ -183,7 +183,6 @@ const InventoryFrom = (props) => {
 
     const [Last, setLast] = useState("0.0000");
 
-    
 
     const [AutoNumring, setAutoNumring] = useState("");
 
@@ -193,10 +192,6 @@ const InventoryFrom = (props) => {
     const [Data, setData] = useState([]);
 
 
-
-
-
-   
 
     const get_inventory_status = (site_ID, type, selected_asset) => {
 
@@ -669,7 +664,6 @@ const InventoryFrom = (props) => {
         setEdited(true);
     };
 
-    
 
     const New_Inventory = () => {
 
@@ -1567,8 +1561,6 @@ const InventoryFrom = (props) => {
     }
 
 
-
-
     const handleRadioChange = (e) => {
     setRadio(e.target.value);
     console.log('1')
@@ -1595,7 +1587,7 @@ const InventoryFrom = (props) => {
 
     const handleAverageChange = (e) => {
 
-        console.log(e.target.value)
+    console.log(e.target.value)
     setAverage(e.target.value);
     }
 
@@ -1606,7 +1598,6 @@ const InventoryFrom = (props) => {
     const handleLastChange = (e) => {
     setLast(e.target.value);
     }
-
 
 
     const IndeterminateCheckbox = React.forwardRef(
@@ -2972,17 +2963,17 @@ const InventoryFrom = (props) => {
 
                                                 <div className="col-md-5">
                                                     <Form.Group className="row" controlId="validation_Type">
-                                                    <th className="col-sm-4">Item Cost (A)</th>
-                                                    <th className="col-sm-4">Total On-Hand (B)</th>
-                                                    <th className="col-sm-4">Total Repair Location (C)</th>
+                                                    <th className="col-sm-4 moveUpRadioTitle-sm">Item Cost (A)</th>
+                                                    <th className="col-sm-4 moveUpRadioTitle2-sm">Total On-Hand (B)</th>
+                                                    <th className="col-sm-4 moveUpRadioTitle2-sm">Total Repair Location (C)</th>
                                                     </Form.Group>
                                                 </div>
 
                                                 <div className="col-md-5">
                                                     <Form.Group className="row" controlId="validation_Type">
-                                                    <th className="col-sm-4">Value A * (B-C)</th>
-                                                    <th className="col-sm-4">Surcharge</th>
-                                                    <th className="col-sm-4">Surcharge Value</th>
+                                                    <th className="col-sm-4 moveUpRadioTitle-sm">Value A * (B-C)</th>
+                                                    <th className="col-sm-4 moveUpRadioTitle2-sm">Surcharge</th>
+                                                    <th className="col-sm-4 moveUpRadioTitle2-sm">Surcharge Value</th>
                                                     </Form.Group>
                                                 </div>
                                             </div> 
@@ -3015,7 +3006,7 @@ const InventoryFrom = (props) => {
                                                                             <i className="input-helper"></i>
                                                                         </label>
                                                                     </div>
-                                                                    <label className="col-sm-7 col-form-label">Average</label>
+                                                                    <label className="col-sm-7 col-form-label moveLeftRadioLabel-md moveLeftRadioLabel-sm" style={{ fontSize: "13px", height: "33px" }}>Average</label>
                                                                 </Form.Group>
                                                             </div> 
 
@@ -3023,8 +3014,8 @@ const InventoryFrom = (props) => {
                                                             <div className="col-md-5">
                                                                 <Form.Group className="row" controlId="validation_Average1">
                                                                     {radio === 'Average' && (
-                                                                    <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} 
+                                                                    <div className="col-sm-4 moveUpRadio-md moveUpRadio-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} 
                                                                         type="number" placeholder="0.0000"
                                                                          value={Average} onChange={value => {
                                                                                     handleAverageChange(value);
@@ -3034,14 +3025,14 @@ const InventoryFrom = (props) => {
                                                                     )}
 
                                                                     {radio === 'Average' && (
-                                                                    <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio-md moveUpRadio2-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0.0000' readOnly/>
                                                                     </div>
                                                                     )}
 
                                                                     {radio === 'Average' && (
-                                                                    <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio-md moveUpRadio2-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0.0000' readOnly/>
                                                                     </div>
                                                                     )}
                                                                 </Form.Group>
@@ -3051,20 +3042,20 @@ const InventoryFrom = (props) => {
                                                             <div className="col-md-5">
                                                                 <Form.Group className="row" controlId="validation_Average2">
                                                                     {radio === 'Average' && (
-                                                                    <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio2-md moveUpRadio3-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0.00' readOnly/>
                                                                     </div>
                                                                     )}
 
                                                                     {radio === 'Average' && (
-                                                                    <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio2-md moveUpRadio4-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0' readOnly/>
                                                                     </div>
                                                                     )}
 
                                                                     {radio === 'Average' && (
-                                                                    <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio2-md moveUpRadio4-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0.00' readOnly/>
                                                                     </div>
                                                                     )}
                                                                 </Form.Group>
@@ -3095,7 +3086,7 @@ const InventoryFrom = (props) => {
                                                                             <i className="input-helper"></i>
                                                                         </label>
                                                                     </div>
-                                                                    <label className="col-sm-7 col-form-label">Standard</label>
+                                                                    <label className="col-sm-7 col-form-label moveLeftRadioLabel-md moveLeftRadioLabel-sm" style={{ fontSize: "13px", height: "33px" }}>Standard</label>
                                                                 </Form.Group>
                                                             </div> 
 
@@ -3103,8 +3094,8 @@ const InventoryFrom = (props) => {
                                                             <div className="col-md-5">
                                                                 <Form.Group className="row" controlId="validation_Standard1">
                                                                     {radio === 'Standard' && (
-                                                                    <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" 
+                                                                    <div className="col-sm-4 moveUpRadio-md moveUpRadio-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" placeholder="0.0000" 
                                                                         value={Standard} onChange={value => {
                                                                             handleStandardChange(value);
                                                                             handleInputChange();
@@ -3113,14 +3104,14 @@ const InventoryFrom = (props) => {
                                                                     )}
 
                                                                     {radio === 'Standard' && (
-                                                                    <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio-md moveUpRadio2-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0.0000' readOnly/>
                                                                     </div>
                                                                     )}
 
                                                                     {radio === 'Standard' && (
-                                                                    <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio-md moveUpRadio2-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0.0000' readOnly/>
                                                                     </div>
                                                                     )}
                                                                 </Form.Group>
@@ -3130,20 +3121,20 @@ const InventoryFrom = (props) => {
                                                             <div className="col-md-5">
                                                                 <Form.Group className="row" controlId="validation_Standard2">
                                                                     {radio === 'Standard' && (
-                                                                    <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio2-md moveUpRadio3-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0.00' readOnly/>
                                                                     </div>
                                                                     )}
 
                                                                     {radio === 'Standard' && (
-                                                                    <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio2-md moveUpRadio4-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0' readOnly/>
                                                                     </div>
                                                                     )}
 
                                                                     {radio === 'Standard' && (
-                                                                    <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio2-md moveUpRadio4-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0.00' readOnly/>
                                                                     </div>
                                                                     )}
                                                                 </Form.Group>
@@ -3174,7 +3165,7 @@ const InventoryFrom = (props) => {
                                                                             <i className="input-helper"></i>
                                                                         </label>
                                                                     </div>
-                                                                    <label className="col-sm-7 col-form-label">Last</label>
+                                                                    <label className="col-sm-7 col-form-label moveLeftRadioLabel-md moveLeftRadioLabel-sm" style={{ fontSize: "13px", height: "33px" }}>Last</label>
                                                                 </Form.Group>
                                                             </div> 
 
@@ -3182,8 +3173,8 @@ const InventoryFrom = (props) => {
                                                             <div className="col-md-5">
                                                                 <Form.Group className="row" controlId="validation_Last1">
                                                                     {radio === 'Last' && (
-                                                                    <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" placeholder="0.0000" 
+                                                                    <div className="col-sm-4 moveUpRadio-md moveUpRadio-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" placeholder="0.0000" 
                                                                         value={Last} onChange={value => {
                                                                             handleLastChange(value);
                                                                             handleInputChange();
@@ -3192,14 +3183,14 @@ const InventoryFrom = (props) => {
                                                                     )}
 
                                                                     {radio === 'Last' && (
-                                                                    <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio-md moveUpRadio2-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0.0000' readOnly/>
                                                                     </div>
                                                                     )}
 
                                                                     {radio === 'Last' && (
-                                                                    <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio-md moveUpRadio2-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0.0000' readOnly/>
                                                                     </div>
                                                                     )}
                                                                 </Form.Group>
@@ -3209,20 +3200,20 @@ const InventoryFrom = (props) => {
                                                             <div className="col-md-5">
                                                                 <Form.Group className="row" controlId="validation_Last2">
                                                                     {radio === 'Last' && (
-                                                                    <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio2-md moveUpRadio3-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0.00' readOnly/>
                                                                     </div>
                                                                     )}
 
                                                                     {radio === 'Last' && (
-                                                                    <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio2-md moveUpRadio4-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0' readOnly/>
                                                                     </div>
                                                                     )}
 
                                                                     {radio === 'Last' && (
-                                                                    <div className="col-sm-4">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio2-md moveUpRadio4-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0.00' readOnly/>
                                                                     </div>
                                                                     )}
                                                                 </Form.Group>
@@ -3254,7 +3245,7 @@ const InventoryFrom = (props) => {
                                                                             <i className="input-helper"></i>
                                                                         </label>
                                                                     </div>
-                                                                    <label className="col-sm-7 col-form-label">FIFO</label>
+                                                                    <label className="col-sm-7 col-form-label moveLeftRadioLabel-md moveLeftRadioLabel-sm" style={{ fontSize: "13px", height: "33px" }}>FIFO</label>
                                                                 </Form.Group>
                                                             </div> 
 
@@ -3262,20 +3253,20 @@ const InventoryFrom = (props) => {
                                                             <div className="col-md-5">
                                                                 <Form.Group className="row" controlId="validation_FIFO1">
                                                                     {radio === 'FIFO' && (
-                                                                    <div className="col-sm-4 form-checkxxxxx">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio-md moveUpRadio-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0.0000' readOnly/>
                                                                     </div>
                                                                     )}
 
                                                                     {radio === 'FIFO' && (
-                                                                    <div className="col-sm-4 form-checkxxxxx">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio-md moveUpRadio2-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0.0000' readOnly/>
                                                                     </div>
                                                                     )}
 
                                                                     {radio === 'FIFO' && (
-                                                                    <div className="col-sm-4 form-checkxxxxx">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.0000' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio-md moveUpRadio2-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0.0000' readOnly/>
                                                                     </div>
                                                                     )}
                                                                 </Form.Group>
@@ -3285,20 +3276,20 @@ const InventoryFrom = (props) => {
                                                             <div className="col-md-5">
                                                                 <Form.Group className="row" controlId="validation_FIFO2">
                                                                     {radio === 'FIFO' && (
-                                                                    <div className="col-sm-4 form-checkxxxxx">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio2-md moveUpRadio3-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0.00' readOnly/>
                                                                     </div>
                                                                     )}
 
                                                                     {radio === 'FIFO' && (
-                                                                    <div className="col-sm-4 form-checkxxxxx">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio2-md moveUpRadio4-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0' readOnly/>
                                                                     </div>
                                                                     )}
 
                                                                     {radio === 'FIFO' && (
-                                                                    <div className="col-sm-4 form-checkxxxxx">
-                                                                        <Form.Control style={{ fontSize: "13px", height: "38px" }} type="number" value='0.00' readOnly/>
+                                                                    <div className="col-sm-4 moveUpRadio2-md moveUpRadio4-sm">
+                                                                        <Form.Control style={{ fontSize: "13px", height: "33px" }} type="number" value='0.00' readOnly/>
                                                                     </div>
                                                                     )}
                                                                 </Form.Group>

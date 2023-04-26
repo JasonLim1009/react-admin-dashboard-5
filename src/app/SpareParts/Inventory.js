@@ -67,7 +67,11 @@ function Inventory(props) {
     let site_ID = localStorage.getItem("site_ID");
     console.log(props.name);
     get_inventorymaster(site_ID);
-  }, [page, pageSize]);
+
+    const isAtLeastOneChecked = isCheckedList.some((isChecked) => isChecked);
+    setShowButton(isAtLeastOneChecked);
+
+  }, [page, pageSize, isCheckedList]);
 
 
   //Header
@@ -144,7 +148,14 @@ function Inventory(props) {
               style={{ backgroundColor: hoveredRow === result ? '#BCC9F5' : 'white' }}
             >
           <td>{ <IndeterminateCheckbox {...result} checked={isCheckedList[index]} onChange={() => handleCheckboxChange(index)} />}</td>
-          <td>{result.itm_mst_type}</td>
+          <td>
+              <span>
+                { result.itm_mst_type === 'P' ? 'Stock (P)' :
+                  result.itm_mst_type === 'S' ? 'Serialize (S)' :
+                  result.itm_mst_type === 'T' ? 'Tool (T)' :
+                  result.itm_mst_type}
+              </span>
+          </td>
           <td>{result.itm_mst_stockno}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -193,7 +204,23 @@ function Inventory(props) {
           <td>{result.itm_det_storage_type}</td>
           
           <td>{result.itm_det_tax_cd}</td>
-          <td>{result.itm_det_part_deac_status}</td>
+          <td>
+            <span style={{ 
+                  backgroundColor: 
+                    result.itm_det_part_deac_status === 'ACT' ? '#19D895' :
+                    result.itm_det_part_deac_status === 'DEA' ? '#FF6258' :
+                    null, 
+                  color: 'white', 
+                  padding: '5px', 
+                  borderRadius: '5px', 
+                  fontSize:'13px',
+                  fontWeight: 'bold'
+                }}>
+              { result.itm_det_part_deac_status === 'ACT' ? 'Active (ACT)' :
+                result.itm_det_part_deac_status === 'DEA' ? 'Deactivate (DEA)' :
+                result.itm_det_part_deac_status}
+            </span>
+          </td>
           <td>{result.itm_det_order_pt}</td>
           <td>{result.itm_det_maximum}</td>
           <td>{result.itm_det_ytd_stockouts}</td>
@@ -271,10 +298,6 @@ function Inventory(props) {
     setIsCheckedList(newCheckedList);
   };
 
-  useEffect(() => {
-    const isAtLeastOneChecked = isCheckedList.some((isChecked) => isChecked);
-    setShowButton(isAtLeastOneChecked);
-  }, [isCheckedList]);
 
 // ******************************** RowID: check and read data ***********************************************
   const handleRowClick = (data) => {
