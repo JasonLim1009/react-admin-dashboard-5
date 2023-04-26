@@ -1,0 +1,428 @@
+
+.title {
+    font-size: 12px;
+    height: 34px;
+}
+
+.formControl {
+    font-size: 12px;
+    height: 34px;
+    padding-left: 10px;
+}
+
+.formControlExpectedLifeDate {
+  font-size: 12px;
+  height: 34px;
+  text-align: left;
+  padding-left: 10px;
+}
+
+.formControlBox {
+  font-size: 12px;
+}
+
+.moveUp {
+  margin-top: -34px;
+}
+
+.moveUpLongDesc {
+  margin-top: -30px;
+}
+
+.moveUpPopUp {
+  margin-top: -20px;
+}
+
+.emailMoveUp {
+  margin-top: -17px;
+}
+
+.projectIdMoveUp {
+  margin-top: -15px;
+}
+
+.checkBoxLeft-ls {
+  left: 13px;
+}
+
+.buttonDown-ls {
+  padding-top: 10px;
+}
+
+/* Status Audit Button */
+.StatusAuditbuttonDown {
+  padding-top: 5px;
+  color: #7caaf3;
+}
+
+/* Stock Location Icon */
+.StockLocationList {
+  position: absolute;
+  left: 135px;
+  background-color: #fff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  z-index: 1;
+}
+
+
+/* .modal-dialog {
+  max-width: 900px;
+} */
+
+
+@media screen and (max-width: 768px) {
+  .moveUp-md {
+    margin-top: -34px;
+  }
+
+  .moveUpBox-md {
+    margin-top: -34px;
+  }
+
+  .moveUpBoxRight-md {
+    margin-right: 19%;
+  }
+
+  .moveUpBoxLeft-md {
+    margin-left: 19%;
+  }
+
+  .moveUpDesc-md {
+    margin-top: -20px;
+  }
+
+  .moveUpNote-md {
+    margin-top: -18px;
+  }
+
+  .EmpMoveUp-md {
+    margin-top: -14px;
+  }
+
+  .emailMoveUp-md {
+    margin-top: -17px;
+  }
+
+  .moveUpSetting-md {
+    margin-top: -64px;
+  }
+
+  .Empleft-md {
+    padding-left: 27%;
+  }
+
+  .EmpleftBox-md {
+    padding-left: 10%;
+  }
+
+  .EmpleftRemark-md {
+    padding-left: 19%;
+  }
+
+  .checkBoxLeft-md {
+    left: 13px;
+  }
+
+  .checkBoxUsage-md {
+    left: 0px;
+  }
+
+  .descLeft-md {
+    padding-left: 19%;
+  }
+
+  .moveUpCheckBox-md {
+    margin-top: -14px;
+  }
+
+  .moveUpCheckBoxSpace-md {
+    margin-top: -47px;
+  }
+}
+
+
+@media screen and (max-width: 990px) {
+  .searchButton-md {
+    margin-top: 14px;
+    right: 13px;
+  }
+
+  .moveUpFilterButton-md {
+    margin-left: 50%;
+    margin-top: -50px;
+    z-index: 1;
+  }
+
+  .moveUp3Button-md {
+    margin-top: -10px;
+  }
+
+  .moveUpPaginationButton-md {
+    margin-top: -30px;
+    margin-left: 50%;
+  }
+
+  /* Status Audit Button */
+  .StatusAuditbuttonDown-md {
+    margin-left: 93%;
+    margin-top: -9%;
+  }
+
+  .StatusBox-md {
+    padding-right: 1%;
+  }
+
+  .dotslist-md {
+    margin-top: -4px;
+    margin-left: 25px;
+  }
+
+  .moveUpRadio-md {
+    margin-top: -34px;
+    margin-left: -15px;
+  }
+
+  .moveUpRadio2-md {
+    margin-top: -16px;
+    margin-left: -15px;
+  }
+
+  .moveLeftRadioLabel-md {
+    margin-left: -15px;
+  }
+
+}
+
+
+@media screen and (max-width: 580px) {
+  body {
+    font-size: 12px;
+  }
+
+  .moveUp-sm {
+    margin-top: -4px;
+  }
+
+  .moveUpBox-sm {
+    margin-top: -34px;
+  }
+
+  .moveUpBoxRight-sm {
+    margin-right: 1%;
+  }
+
+  .AssetParentFlagBox-sm {
+    margin-top: 24px;
+  }
+
+  .moveUpDesc-sm {
+    margin-top: -4px;
+  }
+
+  .moveUpNote-sm {
+    margin-top: -34px;
+  }
+
+  .EmpMoveUp-sm {
+    margin-top: -4px;
+  }
+
+  .emailMoveUp-sm {
+    margin-top: -20px;
+  }
+
+  .moveUpSetting-sm {
+    margin-top: -74px;
+  }
+  
+  .down {
+    padding-bottom: 1px;
+  }
+
+  .left {
+    padding-left: 27px;
+  }
+
+  .leftApprovalStatus {
+    padding-left: 3px;
+  }
+
+  .top {
+    padding-top: 1px;
+  }
+
+  .top-sm {
+    padding-top: 8px;
+  }
+
+  .buttonDown {
+    padding-bottom: 21px;
+  }
+
+  .labelTop {
+    padding-top: 35px;
+  }
+
+  .labelTopEmail {
+    padding-top: 25px;
+  }
+
+  .labelTopAsset {
+    padding-top: 15px;
+  }
+
+  .labelTopProjectId {
+    margin-top: 1px;
+  }
+
+  .Empleft-ms {
+    padding-left: 13px;
+  }
+
+  .checkBoxLeft {
+    left: 13px;
+  }
+
+  .checkBoxLeft-sm {
+    left: 25px;
+  }
+
+  .descLeft-sm {
+    padding-left: 13px;
+  }
+
+  .moveUpCheckBox-sm {
+    margin-top: -14px;
+  }
+
+  .dotslist-sm {
+    margin-top: 36px;
+    margin-left: 10px;
+  }
+
+  .moveUpFilterButton-sm {
+    margin-left: 25%;
+    margin-top: -52px;
+  }
+
+  .moveUpPaginationButton-sm {
+    margin-top: 15px;
+    margin-left: 0px;
+  }
+
+  /* System_Default_Setting */
+  .settingCheckBoxLeft-sm {
+    left: 90%;
+    bottom: 35px;
+    padding-right: 85%;
+  }
+
+  .settingTop-sm {
+    padding-top: 1px;
+    margin-top: -24px;
+  }
+  
+  /* Status Audit Button */
+  .StatusAuditbuttonDown-sm {
+    margin-left: 90%;
+    margin-top: -9%;
+  }
+
+  i {
+    font-size: 15px;
+  }
+
+  .StatusBox-sm {
+    margin-right: 38px;
+  }
+
+  .StatusAuditPopUp-sm {
+    margin-left: -11px;
+    overflow-x: auto;
+  }
+
+  .moveUpRadioTitle-sm {
+    margin-top: -10px;
+    margin-left: 40px;
+  }
+
+  .moveUpRadioTitle2-sm {
+    margin-top: 10px;
+    margin-left: 40px;
+  }
+
+  .moveUpRadio-sm {
+    margin-top: -30px;
+    margin-left: 20px;
+  }
+
+  .moveUpRadio2-sm {
+    margin-top: 7px;
+    margin-left: 20px;
+  }
+
+  .moveUpRadio3-sm {
+    margin-top: -17px;
+    margin-left: 20px;
+  }
+
+  .moveUpRadio4-sm {
+    margin-top: 7px;
+    margin-left: 20px;
+  }
+
+  .moveLeftRadioLabel-sm {
+    margin-left: 35px;
+    margin-top: -45px;
+  }
+}
+
+/* Dotslist Icon */
+.DotslistIconDown {
+  padding-top: 5px;
+  color: #3071a9;
+  font-size: 13px;
+}
+
+.AstIcon:hover {
+  background-color: #d9e2ec;
+}
+
+
+.dotslist {
+  position: absolute;
+  top: 35px;
+  left: 55%;
+  background-color: #ffffff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  z-index: 1;
+  width: 39%;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+}
+
+.icon:hover {
+  background-color: #e0e0e0;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+}
+
+.CreateNewUserLogin {
+  color: #194fff;
+}
+
+.CreateNewUserLogin:hover {
+  color: #3faef8;
+}
+
+.footerText {
+  color: #bf1313;
+  padding-top: 0px;
+  padding-left: 1px;
+}
