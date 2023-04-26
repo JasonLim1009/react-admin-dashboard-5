@@ -28,6 +28,14 @@ import AssetUsage from "../tables/AssetUsage";
 import AssetSpecification from "../tables/AssetSpecification";
 import styled from 'styled-components';
 
+import { format } from "date-fns";
+
+import logoPmSetup from '../../assets/images/work-time.png';
+import logoWOHistory from '../../assets/images/browser-tab.png';
+import logoRelocationHistory from '../../assets/images/relocation.png';
+import logoCheckList from '../../assets/images/moving.png';
+import { List } from 'rsuite';
+
 
 const StepContainer = styled.div`
   display: flex;
@@ -111,7 +119,6 @@ const AssetFrom = (props) => {
 
     const [AssetNo, setAssetNo] = useState("");
     const [AssetNo_disabled, setAssetNo_disabled] = useState(false);
-
    
     const [AssetStatus, setAssetStatus] = useState([]);
     const [selected_AssetStatus, setSelected_AssetStatus] = useState([]);
@@ -125,7 +132,6 @@ const AssetFrom = (props) => {
 
     const [PermanentID, setPermanentID] = useState("");
 
-
     const [selected_AssetType, setSelected_AssetType] = useState([]);
     const [AssetType, setAssetType] = useState([]);   
 
@@ -134,7 +140,6 @@ const AssetFrom = (props) => {
     
     const [selected_Assetcode, setSelected_Assetcode] = useState([]);
     const [Assetcode, setAssetcode] = useState([]);
-
 
     const [selected_AssetLocation, setSelected_AssetLocation] = useState([]);
     const [AssetLocation, setAssetLocation] = useState([]);
@@ -146,7 +151,6 @@ const AssetFrom = (props) => {
     const [selected_AssetLevel, setSelected_AssetLevel] = useState([]);
     const [AssetLevel, setAssetLevel] = useState([]);
 
-
     const [selected_CostCenter, setSelected_CostCenter] = useState([]);
     const [CostCenter, setCostCenter] = useState([]);
 
@@ -157,7 +161,6 @@ const AssetFrom = (props) => {
     const [selected_ParentFlag, setselected_ParentFlag] = useState('') 
     const [columns,setcolumns]=useState([]);
     const [data,setdata]=useState([]);
-
 
     const [PerentID, setPerentID] = useState("");
     const [SafetyRequirement, setSafetyRequirement] = useState("");
@@ -178,7 +181,6 @@ const AssetFrom = (props) => {
     const [selected_DepreciationMethod, setSelected_DepreciationMethod] = useState([]);
     const [DepreciationMethod, setDepreciationMethod] = useState([{label:"Straight-Line",value:""},{label:"Declining-Balance",value:""},{label:"Double-Declining",value:""}]);
 
-
     const [DepreciationDate, setDepreciationDate] = useState("");
     const [UpdateBy, setUpdateBy] = useState("");
     const [Acc_Depreciation, setAcc_Depreciation] = useState("");
@@ -188,12 +190,10 @@ const AssetFrom = (props) => {
     const [DisposalType, setDisposalType] = useState("");
     const [DisposalValue, setDisposalValue] = useState("");
 
-
     const [LabourCost, setLabourCost] = useState("");
     const [MaterialCost, setMaterialCost] = useState("");
     const [ContractCost, setContractCost] = useState("");
     const [Total, setTotal] = useState("");
-
 
     const [UDFText_1, setUDFText_1] = useState("");
     const [UDFText_2, setUDFText_2] = useState("");
@@ -228,7 +228,6 @@ const AssetFrom = (props) => {
     const [UDFText_29, setUDFText_29] = useState("");
     const [UDFText_30, setUDFText_30] = useState("");   
 
-
     const [UDFNumber_1, setUDFNumber_1] = useState("0");
     const [UDFNumber_2, setUDFNumber_2] = useState("0");
     const [UDFNumber_3, setUDFNumber_3] = useState("0");
@@ -261,7 +260,6 @@ const AssetFrom = (props) => {
     const [UDFNumber_28, setUDFNumber_28] = useState("0");
     const [UDFNumber_29, setUDFNumber_29] = useState("0");
     const [UDFNumber_30, setUDFNumber_30] = useState("0");   
-
 
     const [UDFDate_1, setUDFDate_1] = useState(new Date());
     const [UDFDate_2, setUDFDate_2] = useState(new Date());
@@ -296,7 +294,6 @@ const AssetFrom = (props) => {
     const [UDFDate_29, setUDFDate_29] = useState(new Date());
     const [UDFDate_30, setUDFDate_30] = useState(new Date());
 
-
     const [show, setShow] = useState(false);
 
     const [ParentFlag_show, setParentFlag_Show] = useState(false);
@@ -308,6 +305,111 @@ const AssetFrom = (props) => {
     const  ParentFlag_handleShow = () => setParentFlag_Show(true);
 
     const [AutoNumring, setAutoNumring] = useState("");
+
+
+    // Pm Setup
+    const [HeaderPmSetup, setHeaderPmSetup] = React.useState([]);
+    const [ResultPmSetup, setResultPmSetup] = React.useState([]);
+  
+    const [showPmSetup, setShowPmSetup] = useState(false);
+    const handleClosePmSetup = () => {setShowPmSetup(false); resetData(); };
+    const handleShowPmSetup = () => setShowPmSetup(true);
+  
+    const [showModalPmSetup, setShowModalPmSetup] = useState(false);
+    const handleCloseModalPmSetup = () => setShowModalPmSetup(false);
+    const handleShowModalPmSetup = () => setShowModalPmSetup(true);
+  
+    const [PMNo, setPMNo] = useState("");
+  
+    const [CurrentWorkOrder, setCurrentWorkOrder] = useState("");
+  
+    const [FrequencyCode, setFrequencyCode] = useState("");
+  
+    const [DescriptionPmSetup, setDescriptionPmSetup] = useState("");
+  
+    const [MeterID, setMeterID] = useState("");
+  
+    const [LPMUsage, setLPMUsage] = useState("");
+  
+    const [LPMUOM, setLPMUOM] = useState("");
+  
+    const [NextCreateDate, setNextCreateDate] = useState(new Date());
+
+
+    // WO History
+    const [HeaderWOHistory, setHeaderWOHistory] = React.useState([]);
+    const [ResultWOHistory, setResultWOHistory] = React.useState([]);
+
+    const [showWOHistory, setShowWOHistory] = useState(false);
+    const handleCloseWOHistory = () => {setShowWOHistory(false); resetData(); };
+    const handleShowWOHistory = () => setShowWOHistory(true);
+
+    const [showModalWOHistory, setShowModalWOHistory] = useState(false);
+    const handleCloseModalWOHistory = () => setShowModalWOHistory(false);
+    const handleShowModalWOHistory = () => setShowModalWOHistory(true);
+
+    const [WorkOrderNo, setWorkOrderNo] = useState("");
+
+    const [OriginationDate, setOriginationDate] = useState(new Date());
+
+    const [StatusWOHistory, setStatusWOHistory] = useState("");
+
+    const [Originator, setOriginator] = useState("");
+
+    const [Phone, setPhone] = useState("");
+
+    const [DescriptionWOHistory, setDescriptionWOHistory] = useState("");
+
+
+    // Relocation History
+    const [HeaderRelocationHistory, setHeaderRelocationHistory] = React.useState([]);
+    const [ResultRelocationHistory, setResultRelocationHistory] = React.useState([]);
+  
+    const [showRelocationHistory, setShowRelocationHistory] = useState(false);
+    const handleCloseRelocationHistory = () => {setShowRelocationHistory(false); resetData(); };
+    const handleShowRelocationHistory = () => setShowRelocationHistory(true);
+  
+    const [showModalRelocationHistory, setShowModalRelocationHistory] = useState(false);
+    const handleCloseModalRelocationHistory = () => setShowModalRelocationHistory(false);
+    const handleShowModalRelocationHistory = () => setShowModalRelocationHistory(true);
+  
+    const [OldLocation, setOldLocation] = useState("");
+  
+    const [OldLocDesc, setOldLocDesc] = useState("");
+  
+    const [StatusRelocationHistory, setStatusRelocationHistory] = useState("");
+  
+    const [NewLocation, setNewLocation] = useState("");
+  
+    const [NewLocDesc, setNewLocDesc] = useState("");
+  
+    const [Reason, setReason] = useState("");
+  
+    const [AuditUser, setAuditUser] = useState("");
+  
+    const [AuditDate, setAuditDate] = useState(new Date());
+
+
+    // Check List Here
+    const [HeaderCheckList, setHeaderCheckList] = React.useState([]);
+    const [ResultCheckList, setResultCheckList] = React.useState([]);
+  
+    const [showCheckList, setShowCheckList] = useState(false);
+    const handleCloseCheckList = () => {setShowCheckList(false); resetData(); };
+    const handleShowCheckList = () => setShowCheckList(true);
+  
+    const [showModalCheckList, setShowModalCheckList] = useState(false);
+    const handleCloseModalCheckList = () => setShowModalCheckList(false);
+    const handleShowModalCheckList = () => setShowModalCheckList(true);
+  
+    const [CheckListCode, setCheckListCode] = useState("");
+  
+    const [CheckListDescription, setCheckListDescription] = useState("");
+  
+    const [CarryToWorkOrder, setCarryToWorkOrder] = useState(false)    
+    const [selected_CarryToWorkOrder, setselected_CarryToWorkOrder] = useState('0') 
+    const [CheckBox_CarryToWorkOrder, setCheckBox_CarryToWorkOrder] = useState('')  
+  
 
 
 
@@ -521,7 +623,6 @@ const AssetFrom = (props) => {
             "floor":""
         }
 
-       
 
         console.log('select Asset',JSON.stringify(json))
         
@@ -655,6 +756,58 @@ const AssetFrom = (props) => {
                     console.log('SELECT Date 1 : '+ Moment(responseJson.data.data[index].ast_det_datetime1.date).format('YYYY-MM-DDTHH:mm:ss'))
                 }
 
+
+                setPMNo( responseJson.data.data[index].prm_mst_pm_no )
+                setCurrentWorkOrder( responseJson.data.data[index].prm_mst_curr_wo )
+                setFrequencyCode( responseJson.data.data[index].prm_mst_freq_code )
+                setDescriptionPmSetup( responseJson.data.data[index].prm_mst_desc )
+                setMeterID( responseJson.data.data[index].prm_mst_meter_id )
+                setLPMUsage( responseJson.data.data[index].prm_mst_lpm_usg )
+                setLPMUOM( responseJson.data.data[index].prm_mst_lpm_uom )
+               
+                if(responseJson.data.data[index].prm_mst_next_create == null){
+                    setNextCreateDate('')
+                }else{
+
+                    setNextCreateDate( Moment(responseJson.data.data[index].prm_mst_next_create.date).format('YYYY-MM-DDTHH:mm:ss').trim())
+                    console.log('SELECT NC Date : '+ Moment(responseJson.data.data[index].prm_mst_next_create.date).format('YYYY-MM-DDTHH:mm:ss'))
+                }
+
+
+                setWorkOrderNo( responseJson.data.data[index].wko_mst_wo_no )
+
+                if(responseJson.data.data[index].wko_mst_org_date == null){
+                    setOriginationDate('')
+                }else{
+
+                    setOriginationDate( Moment(responseJson.data.data[index].wko_mst_org_date.date).format('YYYY-MM-DDTHH:mm:ss').trim())
+                    console.log('SELECT O Date : '+ Moment(responseJson.data.data[index].wko_mst_org_date.date).format('YYYY-MM-DDTHH:mm:ss'))
+                }
+                
+                setStatusWOHistory( responseJson.data.data[index].wko_mst_status )
+                setOriginator( responseJson.data.data[index].wko_mst_originator )
+                setPhone( responseJson.data.data[index].wko_mst_phone )
+                setDescriptionWOHistory( responseJson.data.data[index].wko_mst_descs )
+
+
+                setNewLocation( responseJson.data.data[index].ast_loc_s_asset_olocn )
+                setNewLocDesc( responseJson.data.data[index].ast_loc_s_asset_nlocn )
+                setReason( responseJson.data.data[index].ast_loc_s_asset_reason )
+                setAuditUser( responseJson.data.data[index].audit_user )
+
+                if(responseJson.data.data[index].audit_date == null){
+                    setAuditDate('')
+                }else{
+
+                    setAuditDate( Moment(responseJson.data.data[index].audit_date.date).format('YYYY-MM-DDTHH:mm:ss').trim())
+                    console.log('SELECT O Date : '+ Moment(responseJson.data.data[index].audit_date.date).format('YYYY-MM-DDTHH:mm:ss'))
+                }
+
+
+                setCheckListCode( responseJson.data.data[index].ast_job_job_cd )
+                setCheckListDescription( responseJson.data.data[index].job_mst_desc )
+                setCarryToWorkOrder( responseJson.data.data[index].ast_job_carry )
+
               }
 
 
@@ -690,6 +843,17 @@ const AssetFrom = (props) => {
         setParentFlag("Select" +":"+ location.state.select)        
         get_asset_Status(site_ID,"All",location.state.select);       
        
+        getsteps(site_ID, location.state.RowID, location.state.ast_mst_asset_no);
+        console.log('getsteps here: ', getsteps(site_ID, location.state.RowID, location.state.ast_mst_asset_no));
+
+
+        get_assetpmsetup(site_ID, location.state.RowID);
+
+        get_assetwohistory(site_ID, location.state.RowID);
+
+        get_assetrelocationhistory(site_ID, location.state.RowID);
+
+        get_assetchecklist(site_ID, location.state.RowID);
 
       },[location]);
 
@@ -1582,7 +1746,6 @@ const AssetFrom = (props) => {
     } = useTable({ columns, data },useSortBy,useRowSelect,useResizeColumns)
 
 
-
     const handleRowClick = (data) => {
 
 
@@ -1595,8 +1758,6 @@ const AssetFrom = (props) => {
         
 
     };
-
-    
 
 
 
@@ -1676,20 +1837,635 @@ const AssetFrom = (props) => {
     });
 };
 
-    useEffect(() => {
-    let site_ID = localStorage.getItem("site_ID");
-  
-    getsteps(site_ID, location.state.RowID, location.state.ast_mst_asset_no);
-    console.log('getsteps here: ', getsteps(site_ID, location.state.RowID, location.state.ast_mst_asset_no));
-}, []);
-
-
-
-const [showList, setShowList] = useState(false);
+  const [showList, setShowList] = useState(false);
 
   const handleToggleList = () => {
     setShowList(!showList);
   };
+
+
+
+  
+  const get_assetpmsetup = (site_ID, RowID) => {
+    APIServices.get_assetpmsetup(site_ID, RowID)
+        .then((responseJson) => {
+        console.log("Login JSON DATA : ", responseJson);
+
+        if (responseJson.data.status === "SUCCESS") {
+
+            setHeaderPmSetup(responseJson.data.data.header);
+            setResultPmSetup(responseJson.data.data.result);
+        
+        } else {
+            Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: responseJson.data.message,
+            });
+        }
+        })
+        .catch((e) => {
+        console.log(e);
+        Swal.fire({
+            icon: "error",
+            title: "Oops get_sitecode...",
+            text: e,
+        });
+        });
+    };
+
+    //Header
+    const renderTableHeaderPmSetup = () => {
+        return (
+            <>
+            <th key="select">
+                {/* <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} /> */}
+            </th>
+            {Object.keys(HeaderPmSetup).map((attr) => (
+                <th key={attr}> {attr.toUpperCase()}</th>
+            ))}
+            </>
+        );
+    };
+        
+    //Body    
+    const renderTableRowsPmSetup = () => {
+    return ResultPmSetup.map((result, index) => {
+
+
+        if (result.prm_mst_next_create == null) {
+            var next_date = ''
+        } else {
+
+            var next_date = format(new Date(result.prm_mst_next_create.date), "dd/MM/yyyy HH:MM")
+            
+        }
+
+        
+        return (
+        <tr key={index} onClick={(event) =>handleRowClickPmSetup(result, event)}>
+        
+            <td>{index + 1}</td>
+            <td>{result.prm_mst_pm_no}</td>
+            <td>{result.prm_mst_curr_wo}</td>
+            <td>{result.prm_mst_freq_code}</td>
+            <td>{result.prm_mst_desc}</td>
+            <td>{result.prm_mst_meter_id}</td>
+            <td>{result.prm_mst_lpm_usg}</td>
+            <td>{result.prm_mst_lpm_uom}</td>
+            <td>{next_date}</td>
+            
+        </tr>
+        );
+    });
+    };
+
+
+    const handleRowClickPmSetup = (data) => {
+        console.log(data);
+
+        setPMNo( data.prm_mst_pm_no )
+        setCurrentWorkOrder( data.prm_mst_curr_wo )
+        setFrequencyCode( data.prm_mst_freq_code )
+        setDescriptionPmSetup( data.prm_mst_desc )
+        setMeterID( data.prm_mst_meter_id )
+        setLPMUsage( data.prm_mst_lpm_usg )
+        setLPMUOM( data.prm_mst_lpm_uom )
+        setNextCreateDate( data.prm_mst_next_create )
+        
+        setShowModalPmSetup(true);
+    };
+
+
+    const resetData = () => {
+    
+        setPMNo('');
+        setCurrentWorkOrder('');
+        setFrequencyCode('');
+        setDescriptionPmSetup('');
+        setMeterID('');
+        setLPMUsage('');
+        setLPMUOM('');
+        setNextCreateDate('');
+        
+        setWorkOrderNo('');
+        setOriginationDate('');
+        setStatusWOHistory('');
+        setOriginator('');
+        setPhone('');
+        setDescriptionWOHistory('');
+
+        setNewLocation('');
+        setNewLocDesc('');
+        setReason('');
+        setAuditUser('');
+        setAuditDate('');
+
+        setCheckListCode('');
+        setCheckListDescription('');
+        setCarryToWorkOrder('');
+      
+    };
+    
+
+    const handleAddButtonClickPmSetup  = () => {
+    
+        let site_ID = localStorage.getItem("site_ID");
+       
+        //Select PM No
+        console.log("PMNo: ", PMNo)
+
+        //Select Current Work Order
+        console.log("CurrentWorkOrder: ", CurrentWorkOrder)
+
+        //Select Frequency Code
+        console.log("FrequencyCode: ", FrequencyCode)
+
+        //Select Description
+        console.log("Description: ", DescriptionPmSetup)
+
+        //Select Meter ID
+        console.log("MeterID: ", MeterID)
+
+        //Select LPM Usage
+        console.log("LPMUsage: ", LPMUsage)
+
+        //Select LPM UOM
+        console.log("LPMUOM: ", LPMUOM)
+
+
+        //Select Next Create Date
+        let NextCreate_Date = ''
+        if (NextCreateDate == '' || NextCreateDate == null) {
+
+            NextCreate_Date = '';
+        } else {
+
+            NextCreate_Date = Moment(NextCreateDate).format('yyyy-MM-DD HH:mm:ss').trim();
+            console.log("NC Date ", NextCreateDate);
+        }
+
+
+        const newPart = {
+            
+            mst_RowID: location.state.RowID,
+            site_cd: site_ID,
+            prm_mst_pm_no: PMNo,
+            prm_mst_curr_wo: CurrentWorkOrder,
+            prm_mst_freq_code: FrequencyCode,
+            prm_mst_desc: DescriptionPmSetup,
+            prm_mst_meter_id: MeterID,
+            prm_mst_lpm_usg: LPMUsage,
+            prm_mst_lpm_uom: LPMUOM,
+            //prm_mst_next_create: NextCreate_Date,
+
+    
+          };
+          // Add new part to partsList
+          setResultPmSetup([...ResultPmSetup, newPart]);
+          console.log(ResultPmSetup);
+          // Close modal
+          handleClosePmSetup();
+    };
+
+
+  //Sum calculation
+  const totalQtyPmSetup = ResultPmSetup.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0), 0);
+  
+  //Multiply calculation
+  const totalCostPmSetup = ResultPmSetup.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0) * (parseFloat(item.ast_ls2_warranty_usage) || 0), 0);
+
+
+
+
+  //WO History Here
+  const get_assetwohistory = (site_ID, RowID) => {
+    APIServices.get_assetwohistory(site_ID, RowID)
+        .then((responseJson) => {
+        console.log("Login JSON DATA : ", responseJson);
+
+        if (responseJson.data.status === "SUCCESS") {
+
+            setHeaderWOHistory(responseJson.data.data.header);
+            setResultWOHistory(responseJson.data.data.result);
+        
+        } else {
+            Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: responseJson.data.message,
+            });
+        }
+        })
+        .catch((e) => {
+        console.log(e);
+        Swal.fire({
+            icon: "error",
+            title: "Oops get_sitecode...",
+            text: e,
+        });
+        });
+    };
+
+    //Header
+    const renderTableHeaderWOHistory = () => {
+        return (
+            <>
+            <th key="select">
+                {/* <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} /> */}
+            </th>
+            {Object.keys(HeaderWOHistory).map((attr) => (
+                <th key={attr}> {attr.toUpperCase()}</th>
+            ))}
+            </>
+        );
+    };
+            
+    //Body    
+    const renderTableRowsWOHistory = () => {
+    return ResultWOHistory.map((result, index) => {
+
+
+        if (result.wko_mst_org_date == null) {
+            var org_date = ''
+        } else {
+    
+            var org_date = format(new Date(result.wko_mst_org_date.date), "dd/MM/yyyy HH:MM")
+            
+        }
+
+        
+        return (
+        <tr key={index} onClick={(event) =>handleRowClickWOHistory(result, event)}>
+            
+            <td>{index + 1}</td>
+            <td>{result.wko_mst_wo_no}</td>
+            <td>{org_date}</td>
+            <td>{result.wko_mst_status}</td>
+            <td>{result.wko_mst_originator}</td>
+            <td>{result.wko_mst_phone}</td>
+            <td>{result.wko_mst_descs}</td>
+            
+        </tr>
+        );
+    });
+    };
+
+
+    const handleRowClickWOHistory = (data) => {
+        console.log(data);
+    
+        setWorkOrderNo( data.wko_mst_wo_no )
+        setOriginationDate( data.wko_mst_org_date )
+        setStatusWOHistory( data.wko_mst_status )
+        setOriginator( data.wko_mst_originator )
+        setPhone( data.wko_mst_phone )
+        setDescriptionWOHistory( data.wko_mst_descs )
+
+        setShowModalWOHistory(true);
+    };
+
+
+    const handleAddButtonClickWOHistory  = () => {
+    
+        let site_ID = localStorage.getItem("site_ID");
+       
+        //Select Work Order No
+        console.log("WorkOrderNo: ", WorkOrderNo)
+
+        //Select Origination Date
+        let Origination_Date = ''
+        if (OriginationDate == '' || OriginationDate == null) {
+
+            Origination_Date = '';
+        } else {
+
+            Origination_Date = Moment(OriginationDate).format('yyyy-MM-DD HH:mm:ss').trim();
+            console.log("NC Date ", OriginationDate);
+        }
+
+        //Select Status
+        console.log("Status: ", StatusWOHistory)
+
+        //Select Originator
+        console.log("Originator: ", Originator)
+
+        //Select Phone
+        console.log("Phone: ", Phone)
+
+        //Select Description
+        console.log("Description: ", DescriptionWOHistory)
+       
+
+
+        const newPart = {
+            
+            mst_RowID: location.state.RowID,
+            site_cd: site_ID,
+            wko_mst_wo_no: WorkOrderNo,
+            //wko_mst_org_date: Origination_Date,
+            wko_mst_status: StatusWOHistory,
+            wko_mst_originator: Originator,
+            wko_mst_phone: Phone,
+            wko_mst_descs: DescriptionWOHistory,
+
+    
+          };
+          // Add new part to partsList
+          setResultWOHistory([...ResultWOHistory, newPart]);
+          console.log(ResultWOHistory);
+          // Close modal
+          handleCloseWOHistory();
+    };
+
+
+  //Sum calculation
+  const totalQtyWOHistory = ResultWOHistory.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0), 0);
+  
+  //Multiply calculation
+  const totalCostWOHistory = ResultWOHistory.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0) * (parseFloat(item.ast_ls2_warranty_usage) || 0), 0);
+
+
+
+
+  //Relocation History Here
+  const get_assetrelocationhistory = (site_ID, RowID) => {
+    APIServices.get_assetrelocationhistory(site_ID, RowID)
+        .then((responseJson) => {
+        console.log("Login JSON DATA : ", responseJson);
+
+        if (responseJson.data.status === "SUCCESS") {
+
+            setHeaderRelocationHistory(responseJson.data.data.header);
+            setResultRelocationHistory(responseJson.data.data.result);
+        
+        } else {
+            Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: responseJson.data.message,
+            });
+        }
+        })
+        .catch((e) => {
+        console.log(e);
+        Swal.fire({
+            icon: "error",
+            title: "Oops get_sitecode...",
+            text: e,
+        });
+        });
+    };
+
+    //Header
+    const renderTableHeaderRelocationHistory = () => {
+        return (
+            <>
+            <th key="select">
+                {/* <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} /> */}
+            </th>
+            {Object.keys(HeaderRelocationHistory).map((attr) => (
+                <th key={attr}> {attr.toUpperCase()}</th>
+            ))}
+            </>
+        );
+    };
+        
+    //Body    
+    const renderTableRowsRelocationHistory = () => {
+    return ResultRelocationHistory.map((result, index) => {
+
+
+        if (result.audit_date == null) {
+            var a_date = ''
+        } else {
+
+            var a_date = format(new Date(result.audit_date.date), "dd/MM/yyyy HH:MM")
+            
+        }
+
+        
+        return (
+        <tr key={index} onClick={(event) =>handleRowClickRelocationHistory(result, event)}>
+        
+            <td>{index + 1}</td>
+            <td>{result.ast_loc_s_asset_olocn}</td>
+            <td>{result.ast_loc_s_asset_nlocn}</td>
+            <td>{result.ast_loc_s_asset_reason}</td>
+            <td>{result.audit_user}</td>
+            <td>{a_date}</td>
+            
+        </tr>
+        );
+    });
+    };
+
+
+    const handleRowClickRelocationHistory = (data) => {
+        console.log(data);
+
+        setNewLocation( data.ast_loc_s_asset_olocn )
+        setNewLocDesc( data.ast_loc_s_asset_nlocn )
+        setReason( data.ast_loc_s_asset_reason )
+        setAuditUser( data.audit_user )
+        setAuditDate( data.audit_date )
+
+        setShowModalRelocationHistory(true);
+    };
+
+
+    const handleAddButtonClickRelocationHistory  = () => {
+    
+        let site_ID = localStorage.getItem("site_ID");
+       
+        //Select New Location
+        console.log("NewLocation: ", NewLocation)
+
+        //Select New Loc Desc
+        console.log("NewLocDesc: ", NewLocDesc)
+
+        //Select Reason
+        console.log("Reason: ", Reason)
+
+        //Select Audit User
+        console.log("AuditUser: ", AuditUser)
+
+        //Select Audit Date
+        let A_Date = ''
+        if (AuditDate == '' || AuditDate == null) {
+
+            A_Date = '';
+        } else {
+
+            A_Date = Moment(AuditDate).format('yyyy-MM-DD HH:mm:ss').trim();
+            console.log("A Date ", AuditDate);
+        }
+
+
+        const newPart = {
+            
+            mst_RowID: location.state.RowID,
+            site_cd: site_ID,
+            ast_loc_s_asset_olocn: NewLocation,
+            ast_loc_s_asset_nlocn: NewLocDesc,
+            ast_loc_s_asset_reason: Reason,
+            audit_user: AuditUser,
+            //audit_date: A_Date,
+
+    
+          };
+          // Add new part to partsList
+          setResultRelocationHistory([...ResultRelocationHistory, newPart]);
+          console.log(ResultRelocationHistory);
+          // Close modal
+          handleCloseRelocationHistory();
+    };
+
+
+  //Sum calculation
+  const totalQtyRelocationHistory = ResultRelocationHistory.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0), 0);
+  
+  //Multiply calculation
+  const totalCostRelocationHistory = ResultRelocationHistory.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0) * (parseFloat(item.ast_ls2_warranty_usage) || 0), 0);
+
+
+
+
+  //Check List Here
+  const get_assetchecklist = (site_ID, RowID) => {
+    APIServices.get_assetchecklist(site_ID, RowID)
+        .then((responseJson) => {
+        console.log("Login JSON DATA : ", responseJson);
+
+        if (responseJson.data.status === "SUCCESS") {
+
+            setHeaderCheckList(responseJson.data.data.header);
+            setResultCheckList(responseJson.data.data.result);
+        
+        } else {
+            Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: responseJson.data.message,
+            });
+        }
+        })
+        .catch((e) => {
+        console.log(e);
+        Swal.fire({
+            icon: "error",
+            title: "Oops get_sitecode...",
+            text: e,
+        });
+        });
+    };
+
+
+    //Header CheckList
+    const renderTableHeaderCheckList = () => {
+        return (
+            <>
+            <th key="select">
+                {/* <IndeterminateCheckbox {...Header} checked={isHeaderCheckboxChecked} onChange={handleHeaderCheckboxChange} /> */}
+            </th>
+            {Object.keys(HeaderCheckList).map((attr) => (
+                <th key={attr}> {attr.toUpperCase()}</th>
+            ))}
+            </>
+        );
+    };
+          
+    //Body CheckList
+    const renderTableRowsCheckList = () => {
+    return ResultCheckList.map((result, index) => {
+
+
+        if (result.audit_date == null) {
+            var a_date = ''
+        } else {
+    
+            var a_date = format(new Date(result.audit_date.date), "dd/MM/yyyy HH:MM")
+            
+        }
+
+        
+        return (
+        <tr key={index} onClick={(event) =>handleRowClickCheckList(result, event)}>
+          
+            <td>{index + 1}</td>
+            <td>{result.ast_job_job_cd}</td>
+            <td>{result.job_mst_desc}</td>
+            <td>{result.ast_job_carry}</td>
+            
+        </tr>
+        );
+    });
+    };
+
+
+    const handleRowClickCheckList = (data) => {
+        console.log(data);
+    
+        setCheckListCode( data.ast_job_job_cd )
+        setCheckListDescription( data.job_mst_desc )
+        setCarryToWorkOrder( data.ast_job_carry )
+
+        setShowModalCheckList(true);
+    };
+    
+    
+    const handleAddButtonClickCheckList  = () => {
+    
+        let site_ID = localStorage.getItem("site_ID");
+       
+        //Select Check List Code
+        console.log("CheckListCode: ", CheckListCode)
+
+        //Select Check List Description
+        console.log("CheckListDescription: ", CheckListDescription)
+
+        //Select Carry ToWork Order
+        console.log("CarryToWorkOrder: ", CarryToWorkOrder)
+
+
+        const newPart = {
+            
+            mst_RowID: location.state.RowID,
+            site_cd: site_ID,
+            ast_job_job_cd: CheckListCode,
+            job_mst_desc: CheckListDescription,
+            ast_job_carry: CarryToWorkOrder,
+         
+    
+          };
+          // Add new part to partsList
+          setResultCheckList([...ResultCheckList, newPart]);
+          console.log(ResultCheckList);
+          // Close modal
+          handleCloseCheckList();
+    };
+
+    
+    const handleOnChangeCarryToWorkOrder = () => {
+        setCarryToWorkOrder(!CarryToWorkOrder);
+        
+        if(!CarryToWorkOrder){
+            console.log('1')
+            setCheckBox_CarryToWorkOrder('1')
+        }else{
+            console.log('0')
+            setCheckBox_CarryToWorkOrder('0')
+        }
+    }
+
+
+  //Sum calculation CheckList
+  const totalQtyCheckList = ResultCheckList.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0), 0);
+  
+  //Multiply calculation CheckList
+  const totalCostCheckList = ResultCheckList.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0) * (parseFloat(item.ast_ls2_warranty_usage) || 0), 0);
+
+
 
 
 
@@ -1919,7 +2695,344 @@ const [showList, setShowList] = useState(false);
                             <div>
                                 <Modal show={PMSetupShow} onHide={PMSetuphandleClose} centered size="xl">
 
-                                    <AssetPmSetup name={'AssetFrom'} data={{RowID: location.state.RowID }}/>
+                                    <Modal.Header closeButton>
+                
+                                        {/* <Modal.Title>PM Setup</Modal.Title> */}
+                                        <div>
+                                            <div className="template-demo" style={{ display: 'flex', alignItems: 'center' }}>
+
+                                                <div style={{ marginRight: '10px' }}>
+                                                    <img src={logoPmSetup} style={{ width: '60px', height: '60px' }}/>
+                                                </div>
+                                                <div className="template-demo" style={{ display: 'flex', flexDirection: 'column' }}>
+                                                    <div style={{ marginRight: '10px', fontWeight: 'bold'}}>PM Setup</div>
+                                                    <div><span style={{color: "blue"}}>{(totalQtyPmSetup * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCostPmSetup.toFixed(2)}</span></div>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </Modal.Header>
+
+                                    <Modal.Body>
+                                        {/******************** PM Setup ********************/}
+                                        <div>
+                                            <Modal show={showPmSetup} onHide={handleClosePmSetup} centered >
+
+                                                <Modal.Header closeButton>
+                                                    <Modal.Title>PM Setup</Modal.Title>
+                                                </Modal.Header>
+
+
+                                                <Modal.Body>
+                                                    <div className="col-md-12">
+                                                        <Form.Group className="row" controlId="validation_PMNo">
+                                                            <label className="col-sm-4 col-form-label down left">PM No:</label>
+                                                            <div className="col-sm-8 form-label">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control  
+                                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                                    type="text"  
+                                                                    value={PMNo} 
+                                                                    onChange={(e) => setPMNo(e.target.value)}
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                    <div className="col-md-12 moveUpPopUp">
+                                                        <Form.Group className="row" controlId="validation_CurrentWorkOrder">
+                                                            <label className="col-sm-4 col-form-label labelTopEmail down left">Current Work Order:</label>
+                                                            <div className="col-sm-8">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control  
+                                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                                    type="text"  
+                                                                    value={CurrentWorkOrder} 
+                                                                    onChange={(e) => setCurrentWorkOrder(e.target.value)}
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                    <div className="col-md-12 moveUpPopUp">
+                                                        <Form.Group className="row" controlId="validation_FrequencyCode">
+                                                            <label className="col-sm-4 col-form-label labelTopEmail down left">Frequency Code:</label>
+                                                            <div className="col-sm-8">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control  
+                                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                                    type="text"  
+                                                                    value={FrequencyCode} 
+                                                                    onChange={(e) => setFrequencyCode(e.target.value)}
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                    <div className="col-md-12 moveUpPopUp">
+                                                        <Form.Group className="row" controlId="validation_Description">
+                                                            <label className="col-sm-4 col-form-label labelTopEmail down left">Description:</label>
+                                                            <div className="col-sm-8 form-label">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control  
+                                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                                    type="text"  
+                                                                    value={DescriptionPmSetup} 
+                                                                    onChange={(e) => setDescriptionPmSetup(e.target.value)}
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                    <div className="col-md-12 moveUpPopUp">
+                                                        <Form.Group className="row" controlId="validation_MeterID">
+                                                            <label className="col-sm-4 col-form-label labelTopEmail down left">Meter ID:</label>
+                                                            <div className="col-sm-8 form-label">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control  
+                                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                                    type="text"  
+                                                                    value={MeterID} 
+                                                                    onChange={(e) => setMeterID(e.target.value)}
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                    <div className="col-md-12 moveUpPopUp">
+                                                        <Form.Group className="row" controlId="validation_LPMUsage">
+                                                            <label className="col-sm-4 col-form-label labelTopEmail down left">LPM Usage:</label>
+                                                            <div className="col-sm-8 form-label">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control  
+                                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                                    type="text"  
+                                                                    value={LPMUsage} 
+                                                                    onChange={(e) => setLPMUsage(e.target.value)}
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                    <div className="col-md-12 moveUpPopUp">
+                                                        <Form.Group className="row" controlId="validation_LPMUOM">
+                                                            <label className="col-sm-4 col-form-label labelTopEmail down left">LPM UOM:</label>
+                                                            <div className="col-sm-8 form-label">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control  
+                                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                                    type="text"  
+                                                                    value={LPMUOM} 
+                                                                    onChange={(e) => setLPMUOM(e.target.value)}
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                    <div className="col-md-12 moveUpPopUp">
+                                                        <Form.Group className="row" controlId="validation_NextCreateDate">
+                                                            <label className="col-sm-4 col-form-label labelTopEmail down left">Next Create Date:</label>
+                                                            <div className="col-sm-8 form-label">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control        
+                                                                    style={{ fontSize: "13px", height: "38px" }}                                    
+                                                                    type="datetime-local"  
+                                                                    value={NextCreateDate} 
+                                                                    onChange={(e) => setNextCreateDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+                                                </Modal.Body>
+                                                
+
+                                                <Modal.Footer>
+
+                                                    <Button variant="secondary" onClick={handleClosePmSetup}>Close</Button>
+                                                    <Button variant="primary" onClick={handleAddButtonClickPmSetup}>
+                                                    {/* {Button_save} */}
+                                                    Submit
+                                                    </Button>
+                                                </Modal.Footer>
+
+                                            </Modal>
+
+
+                                            {showModalPmSetup && (
+                                            <Modal show={showModalPmSetup} onHide={handleCloseModalPmSetup} centered >
+
+                                            <Modal.Header closeButton>
+                                                <Modal.Title>PM Setup</Modal.Title>
+                                            </Modal.Header>
+
+
+                                            <Modal.Body>
+                                                <div className="col-md-12">
+                                                    <Form.Group className="row" controlId="validation_PMNo">
+                                                        <label className="col-sm-4 col-form-label down">PM No:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="text"
+                                                            value ={PMNo} 
+                                                            readOnly
+                                                            />
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-12 moveUp">
+                                                    <Form.Group className="row" controlId="validation_CurrentWorkOrder">
+                                                        <label className="col-sm-4 col-form-label  labelTopEmail down">Current Work Order:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="text"
+                                                            value ={CurrentWorkOrder} 
+                                                            readOnly
+                                                            />
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-12 moveUp">
+                                                    <Form.Group className="row" controlId="validation_FrequencyCode">
+                                                        <label className="col-sm-4 col-form-label labelTopEmail down">Frequency Code:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="text"
+                                                            value ={FrequencyCode} 
+                                                            readOnly
+                                                            />
+                                                            <i className="input-helper"></i>
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-12 moveUp">
+                                                    <Form.Group className="row" controlId="validation_Description">
+                                                        <label className="col-sm-4 col-form-label labelTopEmail down">Description:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="text"
+                                                            value ={DescriptionPmSetup} 
+                                                            readOnly
+                                                            />
+                                                            <i className="input-helper"></i>
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-12 moveUp">
+                                                    <Form.Group className="row" controlId="validation_MeterID">
+                                                        <label className="col-sm-4 col-form-label labelTopEmail down">Meter ID:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="text"
+                                                            value ={MeterID} 
+                                                            readOnly
+                                                            />
+                                                            <i className="input-helper"></i>
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-12 moveUp">
+                                                    <Form.Group className="row" controlId="validation_LPMUsage">
+                                                        <label className="col-sm-4 col-form-label labelTopEmail down">LPM Usage:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="text"
+                                                            value ={LPMUsage} 
+                                                            readOnly
+                                                            />
+                                                            <i className="input-helper"></i>
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-12 moveUp">
+                                                    <Form.Group className="row" controlId="validation_LPMUOM">
+                                                        <label className="col-sm-4 col-form-label labelTopEmail down">LPM UOM:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="text"
+                                                            value ={LPMUOM} 
+                                                            readOnly
+                                                            />
+                                                            <i className="input-helper"></i>
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-12 moveUp">
+                                                    <Form.Group className="row" controlId="validation_NextCreateDate">
+                                                        <label className="col-sm-4 col-form-label labelTopEmail down">Next Create Date:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="datetime-local"  
+                                                            value ={NextCreateDate} 
+                                                            readOnly
+                                                            />
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                            </Modal.Body>
+                                            
+                                            </Modal>
+                                            )}
+                                        </div> 
+                                        
+                                        <div className="table-responsive">
+                                            <table
+                                            className="table table-hover table-bordered"
+                                            style={{ color: "#000", border: 1 }}
+                                            >
+                                            <thead
+                                                style={{
+                                                color: "#000",
+                                                fontWeight: "bold",
+                                                fontFamily: "montserrat",
+                                                margin: "5px",
+                                                }}
+                                            >
+                                                <tr>{renderTableHeaderPmSetup()}</tr>
+                                            </thead>
+                                            <tbody>{renderTableRowsPmSetup()}</tbody>
+                                            </table>
+                                        </div>
+
+                                    </Modal.Body>
 
                                 </Modal>
                             </div> 
@@ -1928,7 +3041,280 @@ const [showList, setShowList] = useState(false);
                             <div>
                                 <Modal show={WOHistoryShow} onHide={WOHistoryhandleClose} centered size="xl">
 
-                                    <AssetWOHistory name={'AssetFrom'} data={{RowID: location.state.RowID }}/>
+                                    <Modal.Header closeButton>
+            
+                                        {/* <Modal.Title>PM Setup</Modal.Title> */}
+                                        <div>
+                                            <div className="template-demo" style={{ display: 'flex', alignItems: 'center' }}>
+
+                                                <div style={{ marginRight: '10px' }}>
+                                                    <img src={logoWOHistory} style={{ width: '60px', height: '60px' }}/>
+                                                </div>
+                                                <div className="template-demo" style={{ display: 'flex', flexDirection: 'column' }}>
+                                                    <div style={{ marginRight: '10px', fontWeight: 'bold'}}>WO History</div>
+                                                    <div><span style={{color: "blue"}}>{(totalQtyWOHistory * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCostWOHistory.toFixed(2)}</span></div>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </Modal.Header>
+
+                                    <Modal.Body>
+                                            
+                                        <div>
+                                            <Modal show={showWOHistory} onHide={handleCloseWOHistory} centered >
+
+                                                <Modal.Header closeButton>
+                                                    <Modal.Title>WO History</Modal.Title>
+                                                </Modal.Header>
+
+
+                                                <Modal.Body>
+                                                    <div className="col-md-12">
+                                                        <Form.Group className="row" controlId="validation_WorkOrderNo">
+                                                            <label className="col-sm-4 col-form-label down left">Work Order No:</label>
+                                                            <div className="col-sm-8 form-label">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control  
+                                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                                    type="text"  
+                                                                    value={WorkOrderNo} 
+                                                                    onChange={(e) => setWorkOrderNo(e.target.value)}
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                    <div className="col-md-12 moveUpPopUp">
+                                                        <Form.Group className="row" controlId="validation_OriginationDate">
+                                                            <label className="col-sm-4 col-form-label labelTopEmail down left">Origination Date:</label>
+                                                            <div className="col-sm-8 form-label">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control        
+                                                                    style={{ fontSize: "13px", height: "38px" }}                                    
+                                                                    type="datetime-local"  
+                                                                    value={OriginationDate} 
+                                                                    onChange={(e) => setOriginationDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                    <div className="col-md-12 moveUpPopUp">
+                                                        <Form.Group className="row" controlId="validation_Status">
+                                                            <label className="col-sm-4 col-form-label labelTopEmail down left">Status:</label>
+                                                            <div className="col-sm-8">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control  
+                                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                                    type="text"  
+                                                                    value={StatusWOHistory} 
+                                                                    onChange={(e) => setStatusWOHistory(e.target.value)}
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                    <div className="col-md-12 moveUpPopUp">
+                                                        <Form.Group className="row" controlId="validation_Originator">
+                                                            <label className="col-sm-4 col-form-label labelTopEmail down left">Originator:</label>
+                                                            <div className="col-sm-8 form-label">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control  
+                                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                                    type="text"  
+                                                                    value={Originator} 
+                                                                    onChange={(e) => setOriginator(e.target.value)}
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                    <div className="col-md-12 moveUpPopUp">
+                                                        <Form.Group className="row" controlId="validation_Phone">
+                                                            <label className="col-sm-4 col-form-label labelTopEmail down left">Phone:</label>
+                                                            <div className="col-sm-8 form-label">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control  
+                                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                                    type="text"  
+                                                                    value={Phone} 
+                                                                    onChange={(e) => setPhone(e.target.value)}
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                    <div className="col-md-12 moveUpPopUp">
+                                                        <Form.Group className="row" controlId="validation_Description">
+                                                            <label className="col-sm-4 col-form-label labelTopEmail down left">Description:</label>
+                                                            <div className="col-sm-8 form-label">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control  
+                                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                                    type="text"  
+                                                                    value={DescriptionWOHistory} 
+                                                                    onChange={(e) => setDescriptionWOHistory(e.target.value)}
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                </Modal.Body>
+                                                
+
+                                                <Modal.Footer>
+
+                                                    <Button variant="secondary" onClick={handleCloseWOHistory}>Close</Button>
+                                                    <Button variant="primary" onClick={handleAddButtonClickWOHistory}>
+                                                    {/* {Button_save} */}
+                                                    Submit
+                                                    </Button>
+                                                </Modal.Footer>
+
+                                            </Modal>
+
+                                            {showModalWOHistory && (
+                                            <Modal show={showModalWOHistory} onHide={handleCloseModalWOHistory} centered >
+
+                                            <Modal.Header closeButton>
+                                                <Modal.Title>WO History</Modal.Title>
+                                            </Modal.Header>
+
+
+                                            <Modal.Body>
+                                                <div className="col-md-12">
+                                                    <Form.Group className="row" controlId="validation_WorkOrderNo">
+                                                        <label className="col-sm-4 col-form-label down">Work Order No:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="text"
+                                                            value ={WorkOrderNo} 
+                                                            readOnly
+                                                            />
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-12 moveUp">
+                                                    <Form.Group className="row" controlId="validation_OriginationDate">
+                                                        <label className="col-sm-4 col-form-label labelTopEmail down">Origination Date:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="datetime-local"  
+                                                            value ={OriginationDate} 
+                                                            readOnly
+                                                            />
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-12 moveUp">
+                                                    <Form.Group className="row" controlId="validation_Status">
+                                                        <label className="col-sm-4 col-form-label labelTopEmail down">Status:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="text"
+                                                            value ={StatusWOHistory} 
+                                                            readOnly
+                                                            />
+                                                            <i className="input-helper"></i>
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-12 moveUp">
+                                                    <Form.Group className="row" controlId="validation_Originator">
+                                                        <label className="col-sm-4 col-form-label labelTopEmail down">Originator:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="text"
+                                                            value ={Originator} 
+                                                            readOnly
+                                                            />
+                                                            <i className="input-helper"></i>
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-12 moveUp">
+                                                    <Form.Group className="row" controlId="validation_Phone">
+                                                        <label className="col-sm-4 col-form-label labelTopEmail down">Phone:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="text"
+                                                            value ={Phone} 
+                                                            readOnly
+                                                            />
+                                                            <i className="input-helper"></i>
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-12 moveUp">
+                                                    <Form.Group className="row" controlId="validation_Description">
+                                                        <label className="col-sm-4 col-form-label labelTopEmail down">Description:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="text"
+                                                            value ={DescriptionWOHistory} 
+                                                            readOnly
+                                                            />
+                                                            <i className="input-helper"></i>
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+                                                
+
+                                            </Modal.Body>
+                                            
+                                            </Modal>
+                                            )}
+                                        </div> 
+                                        
+                                        <div className="table-responsive">
+                                            <table
+                                            className="table table-hover table-bordered"
+                                            style={{ color: "#000", border: 1 }}
+                                            >
+                                            <thead
+                                                style={{
+                                                color: "#000",
+                                                fontWeight: "bold",
+                                                fontFamily: "montserrat",
+                                                margin: "5px",
+                                                }}
+                                            >
+                                                <tr>{renderTableHeaderWOHistory()}</tr>
+                                            </thead>
+                                            <tbody>{renderTableRowsWOHistory()}</tbody>
+                                            </table>
+                                        </div>
+
+                                    </Modal.Body>
 
                                 </Modal>
                             </div>
@@ -1937,16 +3323,433 @@ const [showList, setShowList] = useState(false);
                             <div>
                                 <Modal show={RelocationHistoryShow} onHide={RelocationHistoryhandleClose} centered size="xl">
 
-                                    <AssetRelocationHistory name={'AssetFrom'} data={{RowID: location.state.RowID }}/>
+                                    <Modal.Header closeButton>
+                
+                                        {/* <Modal.Title>PM Setup</Modal.Title> */}
+                                        <div>
+                                            <div className="template-demo" style={{ display: 'flex', alignItems: 'center' }}>
+
+                                                <div style={{ marginRight: '10px' }}>
+                                                    <img src={logoRelocationHistory} style={{ width: '60px', height: '60px' }}/>
+                                                </div>
+                                                <div className="template-demo" style={{ display: 'flex', flexDirection: 'column' }}>
+                                                    <div style={{ marginRight: '10px', fontWeight: 'bold'}}>Relocation History</div>
+                                                    <div><span style={{color: "blue"}}>{(totalQtyRelocationHistory * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCostRelocationHistory.toFixed(2)}</span></div>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </Modal.Header>
+
+                                    <Modal.Body>
+                                        
+                                        <div>
+                                            <Modal show={showRelocationHistory} onHide={handleCloseRelocationHistory} centered >
+
+                                                <Modal.Header closeButton>
+                                                    <Modal.Title>Relocation History</Modal.Title>
+                                                </Modal.Header>
+
+
+                                                <Modal.Body>
+                                                    <div className="col-md-12">
+                                                        <Form.Group className="row" controlId="validation_NewLocation">
+                                                            <label className="col-sm-4 col-form-label down left">New Location:</label>
+                                                            <div className="col-sm-8 form-label">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control  
+                                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                                    type="text"  
+                                                                    value={NewLocation} 
+                                                                    onChange={(e) => setNewLocation(e.target.value)}
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                    <div className="col-md-12 moveUpPopUp">
+                                                        <Form.Group className="row" controlId="validation_NewLocDesc">
+                                                            <label className="col-sm-4 col-form-label labelTopEmail down left">New Loc Desc:</label>
+                                                            <div className="col-sm-8">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control  
+                                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                                    type="text"  
+                                                                    value={NewLocDesc} 
+                                                                    onChange={(e) => setNewLocDesc(e.target.value)}
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                    <div className="col-md-12 moveUpPopUp">
+                                                        <Form.Group className="row" controlId="validation_Reason">
+                                                            <label className="col-sm-4 col-form-label labelTopEmail down left">Reason:</label>
+                                                            <div className="col-sm-8 form-label">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control  
+                                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                                    type="text"  
+                                                                    value={Reason} 
+                                                                    onChange={(e) => setReason(e.target.value)}
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                    <div className="col-md-12 moveUpPopUp">
+                                                        <Form.Group className="row" controlId="validation_AuditUser">
+                                                            <label className="col-sm-4 col-form-label labelTopEmail down left">Audit User:</label>
+                                                            <div className="col-sm-8 form-label">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control  
+                                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                                    type="text"  
+                                                                    value={AuditUser} 
+                                                                    onChange={(e) => setAuditUser(e.target.value)}
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                    <div className="col-md-12 moveUpPopUp">
+                                                        <Form.Group className="row" controlId="validation_AuditDate">
+                                                            <label className="col-sm-4 col-form-label labelTopEmail down left">Audit Date:</label>
+                                                            <div className="col-sm-8 form-label">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control        
+                                                                    style={{ fontSize: "13px", height: "38px" }}                                    
+                                                                    type="datetime-local"  
+                                                                    value={AuditDate} 
+                                                                    onChange={(e) => setAuditDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+                                                    
+                                                </Modal.Body>
+                                                
+
+                                                <Modal.Footer>
+
+                                                    <Button variant="secondary" onClick={handleCloseRelocationHistory}>Close</Button>
+                                                    <Button variant="primary" onClick={handleAddButtonClickRelocationHistory}>
+                                                    {/* {Button_save} */}
+                                                    Submit
+                                                    </Button>
+                                                </Modal.Footer>
+
+                                            </Modal>
+
+
+                                            {showModalRelocationHistory && (
+                                            <Modal show={showModalRelocationHistory} onHide={handleCloseModalRelocationHistory} centered >
+
+                                            <Modal.Header closeButton>
+                                                <Modal.Title>Relocation History</Modal.Title>
+                                            </Modal.Header>
+
+
+                                            <Modal.Body>
+                                                <div className="col-md-12">
+                                                    <Form.Group className="row" controlId="validation_NewLocation">
+                                                        <label className="col-sm-4 col-form-label down">New Location:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="text"
+                                                            value ={NewLocation} 
+                                                            readOnly
+                                                            />
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-12 moveUp">
+                                                    <Form.Group className="row" controlId="validation_NewLocDesc">
+                                                        <label className="col-sm-4 col-form-label labelTopEmail down">New Loc Desc:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="text"
+                                                            value ={NewLocDesc} 
+                                                            readOnly
+                                                            />
+                                                            <i className="input-helper"></i>
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-12 moveUp">
+                                                    <Form.Group className="row" controlId="validation_Reason">
+                                                        <label className="col-sm-4 col-form-label labelTopEmail down">Reason:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="text"
+                                                            value ={Reason} 
+                                                            readOnly
+                                                            />
+                                                            <i className="input-helper"></i>
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-12 moveUp">
+                                                    <Form.Group className="row" controlId="validation_AuditUser">
+                                                        <label className="col-sm-4 col-form-label labelTopEmail down">Audit User:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="text"
+                                                            value ={AuditUser} 
+                                                            readOnly
+                                                            />
+                                                            <i className="input-helper"></i>
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+                                                <div className="col-md-12 moveUp">
+                                                    <Form.Group className="row" controlId="validation_AuditDate">
+                                                        <label className="col-sm-4 col-form-label labelTopEmail down">Audit Date:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="datetime-local"  
+                                                            value ={AuditDate} 
+                                                            readOnly
+                                                            />
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                            </Modal.Body>
+                                            
+                                            </Modal>
+                                            )}
+                                        </div> 
+                                        
+                                        <div className="table-responsive">
+                                            <table
+                                            className="table table-hover table-bordered"
+                                            style={{ color: "#000", border: 1 }}
+                                            >
+                                            <thead
+                                                style={{
+                                                color: "#000",
+                                                fontWeight: "bold",
+                                                fontFamily: "montserrat",
+                                                margin: "5px",
+                                                }}
+                                            >
+                                                <tr>{renderTableHeaderRelocationHistory()}</tr>
+                                            </thead>
+                                            <tbody>{renderTableRowsRelocationHistory()}</tbody>
+                                            </table>
+                                        </div>
+
+                                    </Modal.Body>
 
                                 </Modal>
                             </div>
 
                                 {/******************** Check List ********************/}
-                                <div>
+                            <div>
                                 <Modal show={CheckListShow} onHide={CheckListhandleClose} centered size="xl">
 
-                                    <AssetCheckList name={'AssetFrom'} data={{RowID: location.state.RowID }}/>
+                                    <Modal.Header closeButton>
+                
+                                        {/* <Modal.Title>PM Setup</Modal.Title> */}
+                                        <div>
+                                            <div className="template-demo" style={{ display: 'flex', alignItems: 'center' }}>
+
+                                                <div style={{ marginRight: '10px' }}>
+                                                    <img src={logoCheckList} style={{ width: '60px', height: '60px' }}/>
+                                                </div>
+                                                <div className="template-demo" style={{ display: 'flex', flexDirection: 'column' }}>
+                                                    <div style={{ marginRight: '10px', fontWeight: 'bold'}}>Check List</div>
+                                                    <div><span style={{color: "blue"}}>{(totalQtyCheckList * 1).toFixed(2)}</span> Total Parts Costing <span style={{color: "#19d895"}}>${totalCostCheckList.toFixed(2)}</span></div>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </Modal.Header>
+
+                                    <Modal.Body>
+                                   
+                                        <div>
+                                            <Modal show={showCheckList} onHide={handleCloseCheckList} centered >
+
+                                                <Modal.Header closeButton>
+                                                    <Modal.Title>Check List</Modal.Title>
+                                                </Modal.Header>
+
+
+                                                <Modal.Body>
+                                                    <div className="col-md-12">
+                                                        <Form.Group className="row" controlId="validation_CheckListCode">
+                                                            <label className="col-sm-4 col-form-label down left">Check List Code:</label>
+                                                            <div className="col-sm-8 form-label">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control  
+                                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                                    type="text"  
+                                                                    value={CheckListCode} 
+                                                                    onChange={(e) => setCheckListCode(e.target.value)}
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                    <div className="col-md-12 moveUpPopUp">
+                                                        <Form.Group className="row" controlId="validation_CheckListDescription">
+                                                            <label className="col-sm-4 col-form-label labelTopAsset down left">Check List Description:</label>
+                                                            <div className="col-sm-8">
+                                                            <label className="col-sm-10 form-label">
+                                                                <Form.Control  
+                                                                    style={{ fontSize: "13px", height: "38px" }}
+                                                                    type="text"  
+                                                                    value={CheckListDescription} 
+                                                                    onChange={(e) => setCheckListDescription(e.target.value)}
+                                                                    />
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+
+                                                    <div className="col-md-12 moveUpPopUp">
+                                                        <Form.Group className="row" controlId="validation_CarryToWorkOrder">
+                                                            <label className="col-sm-5 col-form-label left down">Carry To Work Order:</label>
+                                                            <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                                                            <label className="form-check-label">
+                                                                <input type="checkbox" 
+                                                                className="form-check-input"
+                                                                checked={CarryToWorkOrder}
+                                                                onChange={handleOnChangeCarryToWorkOrder}
+                                                                />
+                                                                <i className="input-helper"></i>
+                                                            </label>
+                                                            </div>
+                                                        </Form.Group>
+                                                    </div>
+                                                </Modal.Body>
+                                                
+
+                                                <Modal.Footer>
+
+                                                    <Button variant="secondary" onClick={handleCloseCheckList}>Close</Button>
+                                                    <Button variant="primary" onClick={handleAddButtonClickCheckList}>
+                                                    {/* {Button_save} */}
+                                                    Submit
+                                                    </Button>
+                                                </Modal.Footer>
+
+                                            </Modal>
+
+
+                                            {showModalCheckList && (
+                                            <Modal show={showModalCheckList} onHide={handleCloseModalCheckList} centered >
+
+                                            <Modal.Header closeButton>
+                                                <Modal.Title>Check List</Modal.Title>
+                                            </Modal.Header>
+
+                                            <Modal.Body>
+                                                <div className="col-md-12">
+                                                    <Form.Group className="row" controlId="validation_CheckListCode">
+                                                        <label className="col-sm-4 col-form-label down">Check List Code:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="text"
+                                                            value ={CheckListCode} 
+                                                            readOnly
+                                                            />
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-12 moveUp">
+                                                    <Form.Group className="row" controlId="validation_CheckListDescription">
+                                                        <label className="col-sm-4 col-form-label labelTopAsset down">Check List Description:</label>
+                                                        <div className="col-sm-8 form-check">
+                                                        <label className="col-sm-10 form-label">
+                                                            <Form.Control
+                                                            style={{ fontSize: "13px", height: "38px" }}
+                                                            type="text"
+                                                            value ={CheckListDescription} 
+                                                            readOnly
+                                                            />
+                                                            <i className="input-helper"></i>
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+
+                                                <div className="col-md-12 moveUp">
+                                                    <Form.Group className="row" controlId="validation_CarryToWorkOrder">
+                                                        <label className="col-sm-5 col-form-label labelTopAsset down">Carry To Work Order:</label>
+                                                        <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                                                        <label className="form-check-label">
+                                                            <input
+                                                                style={{ fontSize: "13px", height: "38px" }}
+                                                                type="checkbox" 
+                                                                checked={CarryToWorkOrder} 
+                                                                readOnly
+                                                            />
+                                                            <i className="input-helper"></i>
+                                                        </label>
+                                                        </div>
+                                                    </Form.Group>
+                                                </div>
+                                            </Modal.Body>
+                                            
+                                            </Modal>
+                                            )}
+                                        </div> 
+                                        
+                                        <div className="table-responsive">
+                                            <table
+                                            className="table table-hover table-bordered"
+                                            style={{ color: "#000", border: 1 }}
+                                            >
+                                            <thead
+                                                style={{
+                                                color: "#000",
+                                                fontWeight: "bold",
+                                                fontFamily: "montserrat",
+                                                margin: "5px",
+                                                }}
+                                            >
+                                                <tr>{renderTableHeaderCheckList()}</tr>
+                                            </thead>
+                                            <tbody>{renderTableRowsCheckList()}</tbody>
+                                            </table>
+                                        </div>
+
+                                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                                            <button type="button" style={{ padding: '5px 10px', background: 'none', color: 'blue', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                                            onClick={handleShowCheckList}>
+                                                + Add Check List
+                                            </button>
+                                        </div>
+                                    </Modal.Body>
 
                                 </Modal>
                             </div>
@@ -1961,7 +3764,7 @@ const [showList, setShowList] = useState(false);
                                         </div>
                                         <i type="button" 
                                         title='Asset History'
-                                        className="mdi mdi-dots-vertical StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm" 
+                                        className="icon mdi mdi-dots-vertical StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm" 
                                         onClick={handleToggleList}
                                         ></i>
                                     </Form.Group>
@@ -2014,13 +3817,12 @@ const [showList, setShowList] = useState(false);
                                         </div>
                                         <i type="button" 
                                         title='Status Audit'
-                                        className="mdi mdi-information-outline StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm" 
+                                        className="icon mdi mdi-information-outline StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm" 
                                         onClick={StatushandleShow}
                                         ></i>
                                     </Form.Group>                        
                                 </div>
 
-                                
                             </div>
 
                             <div className="row moveUp moveUp-md">
