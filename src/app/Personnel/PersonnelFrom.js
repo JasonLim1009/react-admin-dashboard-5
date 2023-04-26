@@ -218,6 +218,39 @@ const PersonnalFrom = (props) => {
     const [UDFDate_10, setUDFDate_10] = useState(new Date());
 
     
+    const [cUserID, setcUserID] = useState("");
+
+    const [cPassword, setcPassword] = useState("");
+
+    const [cName, setcName] = useState("");
+
+    const [cExpiredDate, setcExpiredDate] = useState(new Date());
+
+    const [cSystemAdministrator, setcSystemAdministrator] = useState(false);
+    const [CheckBox_cSystemAdministrator, setCheckBox_cSystemAdministrator] = useState('0');
+
+    const [cAccountLocked, setcAccountLocked] = useState(false);
+    const [CheckBox_cAccountLocked, setCheckBox_cAccountLocked] = useState('0');
+
+    const [cDisableAutoLogout, setcDisableAutoLogout] = useState(false);
+    const [CheckBox_cDisableAutoLogout, setCheckBox_cDisableAutoLogout] = useState('0');
+
+    const [cFailedLoginAttempts, setcFailedLoginAttempts] = useState("");
+
+    const [cLastLogin, setcLastLogin] = useState(new Date());
+
+    const [cLastPasswordChanged, setcLastPasswordChanged] = useState(new Date());
+
+    const [cDefaultSiteCode, setcDefaultSiteCode] = useState([]);
+    const [selected_cDefaultSiteCode, setSelected_cDefaultSiteCode] = useState([]);
+
+    const [cDefaultLanguage, setcDefaultLanguage] = useState([]);
+    const [selected_cDefaultLanguage, setSelected_cDefaultLanguage] = useState([]);
+    
+    const [CreateNewUserLoginShow, setCreateNewUserLoginShow] = useState(false);
+    const CreateNewUserLoginhandleClose = () => setCreateNewUserLoginShow(false);
+    const CreateNewUserLoginhandleShow = () => setCreateNewUserLoginShow(true);
+
 
     const get_employee_Status =(site_ID, type, selected_asset) => {
 
@@ -515,7 +548,26 @@ const PersonnalFrom = (props) => {
                     setUDFDate_10( Moment(responseJson.data.data[index].emp_det_datetime10.date).format('YYYY-MM-DDTHH:mm:ss').trim())
                     console.log('SELECT DTime 10 : '+ Moment(responseJson.data.data[index].emp_det_datetime10.date).format('YYYY-MM-DDTHH:mm:ss'))
                 }
-          
+
+                setcUserID( responseJson.data.data[index].empl_id )
+                setcPassword( responseJson.data.data[index].temp_password )
+                setcName( responseJson.data.data[index].name )
+
+                if(responseJson.data.data[index].expired_date == null){
+                    setcExpiredDate('')
+                }else{
+
+                    setcExpiredDate( Moment(responseJson.data.data[index].expired_date.date).format('YYYY-MM-DDTHH:mm:ss').trim())
+                    console.log('SELECT ExDate : '+ Moment(responseJson.data.data[index].expired_date.date).format('YYYY-MM-DDTHH:mm:ss'))
+                }
+
+                setcSystemAdministrator( responseJson.data.data[index].sys_admin )
+                setcAccountLocked( responseJson.data.data[index].cf_user_locked )
+                setcDisableAutoLogout( responseJson.data.data[index].cf_user_disable_auto_logout )
+
+                setSelected_cDefaultSiteCode( {label:responseJson.data.data[index].default_site} )
+                setSelected_cDefaultLanguage( {label:responseJson.data.data[index].default_language} )
+
               }
 
 
@@ -1151,7 +1203,7 @@ const PersonnalFrom = (props) => {
         })
       });
 
-  }
+    }
   
 
     const Update_Employee =()=>{
@@ -1604,10 +1656,10 @@ const PersonnalFrom = (props) => {
       });
 
 
-  }
+    }
 
 
-  const resetData = () => {
+    const resetData = () => {
     
     setEmp_EmployeeID('');
     setEmp_Name('');
@@ -1705,7 +1757,7 @@ const PersonnalFrom = (props) => {
     
     setButton_save('Save');
     
-  }
+    }
 
 
       const handleOnChangeMrApprover = () => {
@@ -1936,8 +1988,41 @@ const PersonnalFrom = (props) => {
         }
       }
 
+      const handleOnChangeSystemAdministrator = () => {
+        setcSystemAdministrator(!cSystemAdministrator);
 
+        if(!cSystemAdministrator){
+            console.log('1')
+            setCheckBox_cSystemAdministrator('1')
+        }else{
+            console.log('0')
+            setCheckBox_cSystemAdministrator('0')
+        }
+      }
 
+      const handleOnChangeAccountLocked = () => {
+        setcAccountLocked(!cAccountLocked);
+
+        if(!cAccountLocked){
+            console.log('1')
+            setCheckBox_cAccountLocked('1')
+        }else{
+            console.log('0')
+            setCheckBox_cAccountLocked('0')
+        }
+      }
+
+      const handleOnChangeDisableAutoLogout = () => {
+        setcDisableAutoLogout(!cDisableAutoLogout);
+
+        if(!cDisableAutoLogout){
+            console.log('1')
+            setCheckBox_cDisableAutoLogout('1')
+        }else{
+            console.log('0')
+            setCheckBox_cDisableAutoLogout('0')
+        }
+      }
       
       
 
@@ -1950,20 +2035,262 @@ const PersonnalFrom = (props) => {
 
             <nav aria-label="breadcrumb">
                 {/* <ol className="breadcrumb"></ol> */}
-                    <div className="template-demo">
+                <div className="template-demo">
 
-                        <button type="button" className="btn btn-success btn-icon-text" onClick={onClickChange}>
-                            <i className="mdi mdi-file-check btn-icon-prepend" ></i>  {Button_save}
-                        </button>
+                    <button type="button" className="btn btn-success btn-icon-text" onClick={onClickChange}>
+                        <i className="mdi mdi-file-check btn-icon-prepend" ></i>  {Button_save}
+                    </button>
 
-                        <button type="button" className="btn btn-danger btn-icon-text" onClick={onClickCancel}>
-                            <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i> Cancel 
-                        </button>
-                    
-                    </div>
+                    <button type="button" className="btn btn-danger btn-icon-text" onClick={onClickCancel}>
+                        <i className="mdi mdi-close-circle-outline btn-icon-prepend"></i> Cancel 
+                    </button>
+                
+                </div>
                 
             </nav>       
         </div> 
+
+        {/******************** Create New User Login ********************/}
+        <div>
+            <Modal show={CreateNewUserLoginShow} onHide={CreateNewUserLoginhandleClose} centered size="md">
+
+                <Modal.Header closeButton>
+                    <Modal.Title>Create New User Login</Modal.Title>
+                </Modal.Header>
+
+
+                <Modal.Body>
+                    <div className="col-md-12">
+                        <Form.Group className="row" controlId="validation_UserID">
+                            <label className="col-sm-4 col-form-label down left" style={{ fontSize: "13px" }}>User ID:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control  
+                                    style={{ fontSize: "13px", height: "38px" }}
+                                    type="text"  
+                                    value={cUserID} 
+                                    onChange={(e) => setcUserID(e.target.value)}
+                                    />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUpPopUp">
+                        <Form.Group className="row" controlId="validation_Password">
+                            <label className="col-sm-4 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Password:</label>
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control  
+                                    style={{ fontSize: "13px", height: "38px" }}
+                                    type="text"  
+                                    value={cPassword} 
+                                    onChange={(e) => setcPassword(e.target.value)}
+                                    />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUpPopUp">
+                        <Form.Group className="row" controlId="validation_Name">
+                            <label className="col-sm-4 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Name:</label>
+                            <div className="col-sm-8">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control  
+                                    style={{ fontSize: "13px", height: "38px" }}
+                                    type="text"  
+                                    value={cName} 
+                                    onChange={(e) => setcName(e.target.value)}
+                                    />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUpPopUp">
+                        <Form.Group className="row" controlId="validation_ExpiredDate">
+                            <label className="col-sm-4 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Expired Date:</label>
+                            <div className="col-sm-7 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control        
+                                    style={{ fontSize: "13px", height: "38px" }}                                    
+                                    type="datetime-local"  
+                                    value={cExpiredDate} 
+                                    onChange={(e) => setcExpiredDate(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                    />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUpPopUp checkBoxUsage-md">
+                        <Form.Group className="row" controlId="validation_SystemAdministrator">
+                            <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>System Administrator:</label>
+                            <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                            <label className="form-check-label">
+                                <input type="checkbox" 
+                                className="form-check-input"
+                                checked={cSystemAdministrator}
+                                onChange={handleOnChangeSystemAdministrator}
+                                />
+                                <i className="input-helper"></i>
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUpPopUp checkBoxUsage-md">
+                        <Form.Group className="row" controlId="validation_AccountLocked">
+                            <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Account Locked:</label>
+                            <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                            <label className="form-check-label">
+                                <input type="checkbox" 
+                                className="form-check-input"
+                                checked={cAccountLocked}
+                                onChange={handleOnChangeAccountLocked}
+                                />
+                                <i className="input-helper"></i>
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUpPopUp checkBoxUsage-md">
+                        <Form.Group className="row" controlId="validation_DisableAutoLogout">
+                            <label className="col-sm-5 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Disable Auto Logout:</label>
+                            <div className="col-sm-6 form-check checkBoxLeft-md checkBoxLeft-sm">
+                            <label className="form-check-label">
+                                <input type="checkbox" 
+                                className="form-check-input"
+                                checked={cDisableAutoLogout}
+                                onChange={handleOnChangeDisableAutoLogout}
+                                />
+                                <i className="input-helper"></i>
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUpPopUp">
+                        <Form.Group className="row" controlId="validation_FailedLoginAttempts">
+                            <label className="col-sm-4 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Failed Login Attempts:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control  
+                                    style={{ fontSize: "13px", height: "38px" }}
+                                    type="number"  
+                                    placeholder="0" 
+                                    value={cFailedLoginAttempts} 
+                                    //onChange={(e) => setFailedLoginAttempts(e.target.value)}
+                                    />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUpPopUp">
+                        <Form.Group className="row" controlId="validation_LastLogin">
+                            <label className="col-sm-4 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Last Login:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control        
+                                    style={{ fontSize: "13px", height: "38px" }}                                    
+                                    type="datetime-local"  
+                                    value={cLastLogin} 
+                                    onChange={(e) => setcLastLogin(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                    />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div className="col-md-12 moveUpPopUp">
+                        <Form.Group className="row" controlId="validation_LastPasswordChanged">
+                            <label className="col-sm-4 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Last Password Changed:</label>
+                            <div className="col-sm-8 form-label">
+                            <label className="col-sm-10 form-label">
+                                <Form.Control        
+                                    style={{ fontSize: "13px", height: "38px" }}                                    
+                                    type="datetime-local"  
+                                    value={cLastPasswordChanged} 
+                                    onChange={(e) => setcLastPasswordChanged(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                    />
+                            </label>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                        <Form.Group className="row">
+                        <fieldset className="border p-3 w-100">
+                            <legend className="w-auto" style={{ fontSize: "20px" }}>User's Default Settings</legend>
+
+                            <div className="col-md-12">
+                                <Form.Group className="row" controlId="validation_DefaultSiteCode">
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Default Site Code:</label>
+                                    <div className="col-sm-8">
+                                    <label className="col-sm-10 form-label">
+                                        <Select  
+                                        isClearable={true}  
+                                        options={cDefaultSiteCode}
+                                        value={selected_cDefaultSiteCode}
+                                        onChange={setSelected_cDefaultSiteCode} // using id as it is unique
+                                        required
+                                        styles={{ 
+                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                        }}
+                                        />
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
+
+                            <div className="col-md-12 moveUpPopUp">
+                                <Form.Group className="row" controlId="validation_DefaultLanguage">
+                                    <label className="col-sm-4 col-form-label labelTopAsset down left" style={{ fontSize: "13px" }}>Default Language:</label>
+                                    <div className="col-sm-8">
+                                    <label className="col-sm-10 form-label">
+                                        <Select  
+                                        isClearable={true}  
+                                        options={cDefaultLanguage}
+                                        value={selected_cDefaultLanguage}
+                                        onChange={setSelected_cDefaultLanguage} // using id as it is unique
+                                        required
+                                        styles={{ 
+                                            control: (styles) => ({ ...styles, fontSize: "13px" }), 
+                                            singleValue: (styles) => ({ ...styles, fontSize: "13px" })
+                                        }}
+                                        />
+                                    </label>
+                                    </div>
+                                </Form.Group>
+                            </div>
+                        </fieldset>
+                        </Form.Group>
+                    
+                    <div className="col-md-12 moveUpPopUp">
+                        <Form.Group className="row" controlId="validation_footerText">
+                            <label className="col-sm-12 col-form-label labelTopAsset down left footerText" style={{ fontSize: "13px" }}>* System auto assign the user to the default site code during the creation of new user.</label>
+                        </Form.Group>
+                    </div>
+
+                </Modal.Body>
+                
+
+                <Modal.Footer>
+
+                    <Button variant="secondary" onClick={CreateNewUserLoginhandleClose}>Close</Button>
+                    <Button variant="primary" >
+                    {/* {Button_save} */}
+                    Save
+                    </Button>
+                </Modal.Footer>
+
+            </Modal>
+
+        </div> 
+    
 
         <div className="col-12 grid-margin">
             <div className="card" style={{marginLeft: "-15px", marginRight: "-15px"}}>
@@ -2108,7 +2435,7 @@ const PersonnalFrom = (props) => {
                                         </div>
 
                                         <div className="col-sm-5 EmpleftBox-md Empleft-ms">
-                                            <label className="col-form-label labelTop down"><a href="" style={{ fontSize: "13px" }}>Create New User Login</a></label>
+                                            <label className="col-form-label labelTop down CreateNewUserLogin" type='button' onClick={CreateNewUserLoginhandleShow} style={{ fontSize: "13px" }}>Create New User Login</label>
                                         </div>
                                         </Form.Group>
                                     </div> 

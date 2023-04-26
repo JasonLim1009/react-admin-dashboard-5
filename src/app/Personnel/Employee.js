@@ -68,7 +68,11 @@ function Employee(props) {
     let site_ID = localStorage.getItem("site_ID");
     console.log(props.name);
     get_employeemaster(site_ID);
-  }, [page, pageSize]);
+
+    const isAtLeastOneChecked = isCheckedList.some((isChecked) => isChecked);
+    setShowButton(isAtLeastOneChecked);
+
+  }, [page, pageSize, isCheckedList]);
 
 
   //Header
@@ -233,7 +237,23 @@ function Employee(props) {
           <td>{result.emp_mst_privilege_template}</td>
           <td>{result.emp_mst_name}</td>
           <td>{result.emp_mst_title}</td>
-          <td>{result.emp_mst_status}</td>
+          <td>
+            <span style={{ 
+                  backgroundColor: 
+                    result.emp_mst_status === 'ACT' ? '#19D895' :
+                    result.emp_mst_status === 'DEA' ? '#FF6258' :
+                    null, 
+                  color: 'white', 
+                  padding: '5px', 
+                  borderRadius: '5px', 
+                  fontSize:'13px',
+                  fontWeight: 'bold'
+                }}>
+              { result.emp_mst_status === 'ACT' ? 'Active (ACT)' :
+                result.emp_mst_status === 'DEA' ? 'Deactivate (DEA)' :
+                result.emp_mst_status}
+            </span>
+          </td>
           <td>{result.emp_det_supervisor_id}</td>
           <td>{result.emp_supervisor_name}</td>
           <td>{result.emp_mst_homephone}</td>
@@ -367,10 +387,6 @@ const handleCheckboxChange = (index) => {
   setIsCheckedList(newCheckedList);
 };
 
-useEffect(() => {
-  const isAtLeastOneChecked = isCheckedList.some((isChecked) => isChecked);
-  setShowButton(isAtLeastOneChecked);
-}, [isCheckedList]);
 
 // ******************************** RowID: check and read data ***********************************************
   const handleRowClick = (data) => {
