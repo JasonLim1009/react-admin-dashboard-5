@@ -1674,32 +1674,30 @@ const WorkRequestForm = (props) => {
       };   
 
     const getApprovalStatusStyle = (status) => {
+        const baseStyle = {
+            fontSize: "12px",
+            color: "white",
+            padding: "3px",
+            borderRadius: "5px",
+            fontWeight: "bold",
+          };
+
         if (status === "W") {
           return {
+            ...baseStyle,
             backgroundColor: approvalStatusColor[status],
-            fontSize: "12px",
-            color: "white",
-            padding: "3px",
-            borderRadius: "5px",
-            fontWeight: "bold",
           };
+
         } else if (status === "A") {
           return {
+            ...baseStyle,
             backgroundColor: approvalStatusColor[status],
-            fontSize: "12px",
-            color: "white",
-            padding: "3px",
-            borderRadius: "5px",
-            fontWeight: "bold",
           };
+
         } else if (status === "D") {
           return {
+            ...baseStyle,
             backgroundColor: approvalStatusColor[status],
-            fontSize: "12px",
-            color: "white",
-            padding: "3px",
-            borderRadius: "5px",
-            fontWeight: "bold",
           };
         } else {
           return {};
@@ -1981,7 +1979,19 @@ const WorkRequestForm = (props) => {
                                             <Form.Label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Approval Status:</Form.Label>
                                             <div className="col-sm-8  col-form-label top buttonDown buttonDown-ls">
                                             {/* <Form.Control style={{ fontSize: "13px", color: 'white', fontWeight: 'bold', backgroundColor: approvalStatusColor[ApprovalStatus] }} type="text"  value={approvalStatusMap[ApprovalStatus] || ApprovalStatus} onChange={(e) => setApprovalStatus(e.target.value)} disabled={ApprovalStatus_disabled} readOnly/> */}
-                                            <button type="button" className="btn btn-icon-text" style={getApprovalStatusStyle(ApprovalStatus)} onClick={() => {
+                                            <button type="button" className="btn btn-icon-text" style={getApprovalStatusStyle(ApprovalStatus)} 
+                                            onMouseEnter={(e) => {
+                                                if (ApprovalStatus === "A") {
+                                                  e.target.style.backgroundColor = "#32ae83";
+                                                } else if (ApprovalStatus === "D") {
+                                                  e.target.style.backgroundColor = "#d73e33";
+                                                } else {
+                                                  e.target.style.backgroundColor = "#2c80c5";
+                                                }
+                                              }}
+                                              
+                                            onMouseLeave={(e) => (e.target.style.backgroundColor = getApprovalStatusStyle(ApprovalStatus).backgroundColor)}
+                                            onClick={() => {
                                                 if (ApprovalStatus === 'A') {
                                                     ApprovehandleShow();
 

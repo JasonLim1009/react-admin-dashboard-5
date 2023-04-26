@@ -142,7 +142,12 @@ function WorkRequest(props) {
 
     console.log(props.name);
     get_WorkRequestmaster(site_ID);
-  }, [page, pageSize]);
+
+    const isAtLeastOneChecked = isCheckedList.some((isChecked) => isChecked);
+    setShowButton(isAtLeastOneChecked);
+
+    get_dropdown(site_ID, "All");  
+  }, [page, pageSize, isCheckedList, location]);
 
 
   //Header
@@ -350,10 +355,6 @@ function WorkRequest(props) {
     setIsCheckedList(newCheckedList);
   };
 
-  useEffect(() => {
-    const isAtLeastOneChecked = isCheckedList.some((isChecked) => isChecked);
-    setShowButton(isAtLeastOneChecked);
-  }, [isCheckedList]);
 
 // ******************************** RowID: check and read data ***********************************************
   const handleRowClick = (data) => {
@@ -483,15 +484,6 @@ function WorkRequest(props) {
       })
     });
 }
-
-  useEffect(() => {
-
-  let site_ID = localStorage.getItem("site_ID");
-
-  get_dropdown(site_ID, "All");       
- 
-},[location]);
-
 
 
   const onClickApprove = () => {

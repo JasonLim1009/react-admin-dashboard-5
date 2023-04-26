@@ -709,7 +709,9 @@ const WorkOrderFrom = (props) => {
         console.log('select Workorderno',location.state.Workorderno);
     
        //get_workorder_status(site_ID, "All", location.state.select);       
-       
+
+       getsteps(site_ID, location.state.RowID, location.state.Workorderno);
+       console.log('getsteps here: ', getsteps(site_ID, location.state.RowID, location.state.Workorderno));
 
     },[location]);
 
@@ -2413,13 +2415,9 @@ const WorkOrderFrom = (props) => {
         });
     };
 
-    useEffect(() => {
-        let site_ID = localStorage.getItem("site_ID");
-      
-        getsteps(site_ID, location.state.RowID, location.state.Workorderno);
-        console.log('getsteps here: ', getsteps(site_ID, location.state.RowID, location.state.Workorderno));
-    }, []);
 
+
+    
 
   return (   
 
@@ -2555,7 +2553,7 @@ const WorkOrderFrom = (props) => {
                                                     }}
                                                 />
                                             </div>
-                                            <i type="button" title='Status Audit' className="mdi mdi-information-outline StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm" onClick={StatushandleShow}></i>
+                                            <i type="button" title='Status Audit' className="icon mdi mdi-information-outline StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm" onClick={StatushandleShow}></i>
                                         </Form.Group>
                                     </div>
 
