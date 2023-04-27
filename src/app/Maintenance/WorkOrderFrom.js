@@ -16,6 +16,8 @@ import 'react-alice-carousel/lib/alice-carousel.css';
 import {useTable,useSortBy,usePagination,useRowSelect,useResizeColumns  }  from 'react-table';
 import moment from 'moment';
 
+import Tooltip from "rc-tooltip";
+import "rc-tooltip/assets/bootstrap.css";
 import '../style.css';
 import WorkOrderMaterial from "../tables/WorkOrderMaterial";
 import WorkOrderSpecialOrder from "../tables/WorkOrderSpecialOrder";
@@ -2340,7 +2342,6 @@ const WorkOrderFrom = (props) => {
 
 
 
-
     // Status Audit PopUp
     const formatDuration = (duration) => {
         // const seconds = Math.floor(duration % 60);
@@ -2416,8 +2417,12 @@ const WorkOrderFrom = (props) => {
     };
 
 
+    //Tooltip
+    var renderTooltipStatusAudit = <span>Status Audit</span>;
 
     
+
+
 
   return (   
 
@@ -2553,7 +2558,14 @@ const WorkOrderFrom = (props) => {
                                                     }}
                                                 />
                                             </div>
-                                            <i type="button" title='Status Audit' className="icon mdi mdi-information-outline StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm" onClick={StatushandleShow}></i>
+                                            <Tooltip
+                                                placement="bottom"
+                                                overlay={renderTooltipStatusAudit}>
+                                                <i type="button" 
+                                                //title='Status Audit' 
+                                                className="icon mdi mdi-information-outline StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm" 
+                                                onClick={StatushandleShow}></i>
+                                            </Tooltip>
                                         </Form.Group>
                                     </div>
 
