@@ -1932,7 +1932,53 @@ switch ($type) {
 					$mfg_mdl[] = $row;	
 				
 				 }
-			} while ( sqlsrv_next_result($stmt_ast_usage_uom_mst) );
+			} while ( sqlsrv_next_result($stmt_mfg_mdl) );
+			
+			//Default Site Code----JASON
+			$sql= "SELECT	cf_site.site_cd,             
+							cf_site.site_name   
+					FROM	cf_site "; 
+					
+			$stmt_cf_site = sqlsrv_query( $conn, $sql);
+
+			if( !$stmt_cf_site ) {
+				 $error_message = "Error selecting table (cf_site)";
+				 returnError($error_message);
+				 die( print_r( sqlsrv_errors(), true));
+				 
+			}
+
+			$cf_site = array();
+
+			do {
+				 while ($row = sqlsrv_fetch_array($stmt_cf_site, SQLSRV_FETCH_ASSOC)) {		
+					$cf_site[] = $row;	
+				
+				 }
+			} while ( sqlsrv_next_result($stmt_cf_site) );
+			
+			//Default Language----JASON
+			$sql= "SELECT	cf_language.language_cd,             
+							cf_language.descs   
+					FROM	cf_language "; 
+					
+			$stmt_cf_language = sqlsrv_query( $conn, $sql);
+
+			if( !$stmt_cf_language ) {
+				 $error_message = "Error selecting table (cf_language)";
+				 returnError($error_message);
+				 die( print_r( sqlsrv_errors(), true));
+				 
+			}
+
+			$cf_language = array();
+
+			do {
+				 while ($row = sqlsrv_fetch_array($stmt_cf_language, SQLSRV_FETCH_ASSOC)) {		
+					$cf_language[] = $row;	
+				
+				 }
+			} while ( sqlsrv_next_result($stmt_cf_language) );
 			
 			
 			
@@ -2025,6 +2071,8 @@ switch ($type) {
 				 $json_All['Ast_Specification'] = $ast_uom_mst;
 				 $json_All['Ast_Usage'] = $ast_usage_uom_mst;
 				 $json_All['Ast_ModelNumber'] = $mfg_mdl;
+				 $json_All['Default_SiteCode'] = $cf_site;
+				 $json_All['Default_Language'] = $cf_language;
 				 
 			
 			 
@@ -4834,7 +4882,85 @@ switch ($type) {
 			 sqlsrv_commit( $conn );
 			 sqlsrv_close( $conn);	
 			 
-			 $json_All['Ast_ModelNumber'] = $ast_usage_uom_mst;
+			 $json_All['Ast_ModelNumber'] = $stmt_mfg_mdl;
+			 returnData($json_All);	
+			 
+		} else {
+			
+			 sqlsrv_rollback( $conn );
+			 $error_message = "Transaction rolled back.<br />";
+			 returnError($error_message);
+		}
+				
+	break;
+	
+	//Default Site Code----JASON
+			$sql= "SELECT	cf_site.site_cd,              
+							cf_site.site_name     
+					FROM	cf_site "; 
+				
+		$stmt_cf_site = sqlsrv_query( $conn, $sql);
+
+		if( !$stmt_cf_site ) {
+			 $error_message = "Error selecting table (cf_site)";
+			 returnError($error_message);
+			 die( print_r( sqlsrv_errors(), true));
+			 
+		}
+
+		$cf_site = array();
+
+		do {
+			 while ($row = sqlsrv_fetch_array($stmt_cf_site, SQLSRV_FETCH_ASSOC)) {		
+				$cf_site[] = $row;	
+			
+			 }
+		} while ( sqlsrv_next_result($stmt_cf_site) );
+			
+		if($stmt_cf_site) {
+			 sqlsrv_commit( $conn );
+			 sqlsrv_close( $conn);	
+			 
+			 $json_All['Default_SiteCode'] = $stmt_cf_site;
+			 returnData($json_All);	
+			 
+		} else {
+			
+			 sqlsrv_rollback( $conn );
+			 $error_message = "Transaction rolled back.<br />";
+			 returnError($error_message);
+		}
+				
+	break;
+	
+	//Default Language----JASON
+			$sql= "SELECT	cf_language.language_cd,              
+							cf_language.descs     
+					FROM	cf_language "; 
+				
+		$stmt_cf_language = sqlsrv_query( $conn, $sql);
+
+		if( !$stmt_cf_language ) {
+			 $error_message = "Error selecting table (cf_language)";
+			 returnError($error_message);
+			 die( print_r( sqlsrv_errors(), true));
+			 
+		}
+
+		$cf_language = array();
+
+		do {
+			 while ($row = sqlsrv_fetch_array($stmt_cf_language, SQLSRV_FETCH_ASSOC)) {		
+				$cf_language[] = $row;	
+			
+			 }
+		} while ( sqlsrv_next_result($stmt_cf_language) );
+			
+		if($stmt_cf_language) {
+			 sqlsrv_commit( $conn );
+			 sqlsrv_close( $conn);	
+			 
+			 $json_All['Default_Language'] = $stmt_cf_language;
 			 returnData($json_All);	
 			 
 		} else {
