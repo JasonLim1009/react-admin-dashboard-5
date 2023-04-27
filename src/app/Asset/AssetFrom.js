@@ -2469,8 +2469,8 @@ const AssetFrom = (props) => {
 
 
   //Tooltip
-  var renderTooltipAssetHistory = <span>Asset History</span>;
-  var renderTooltipStatusAudit = <span>Status Audit</span>;
+  const renderTooltipAssetHistory = <span>Asset History</span>;
+  const renderTooltipStatusAudit = <span>Status Audit</span>;
 
 
 
