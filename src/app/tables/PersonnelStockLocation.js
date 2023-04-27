@@ -226,7 +226,7 @@ const PersonnelStockLocation = (props) => {
                     <label style={{ fontSize: "13px", color: "#a61414" }}>List Only</label>
                     <Collapse in={showList}>
                         <div style={{ paddingTop: "44px" }}>
-                            <Card className="float-left StockLocationList dotslist-md dotslist-sm">
+                            <Card className="float-left StockLocationList StockLocationList-sm dotslist-md dotslist-sm">
                                 <Card.Body className="p-2">
                                     <td>
                                         <i className="mdi mdi-dropbox"></i>&nbsp;{result.loc_mst_stk_loc}
