@@ -17,6 +17,8 @@ import {useTable,useSortBy,usePagination,useRowSelect,useResizeColumns  }  from 
 import { Card, Collapse } from 'react-bootstrap';
 
 
+import Tooltip from "rc-tooltip";
+import "rc-tooltip/assets/bootstrap.css";
 import '../style.css';
 import AssetPmSetup from "../tables/AssetPmSetup";
 import AssetWOHistory from "../tables/AssetWOHistory";
@@ -2188,8 +2190,8 @@ const AssetFrom = (props) => {
 
 
 
-  //Relocation History Here
-  const get_assetrelocationhistory = (site_ID, RowID) => {
+    //Relocation History Here
+    const get_assetrelocationhistory = (site_ID, RowID) => {
     APIServices.get_assetrelocationhistory(site_ID, RowID)
         .then((responseJson) => {
         console.log("Login JSON DATA : ", responseJson);
@@ -2331,8 +2333,8 @@ const AssetFrom = (props) => {
 
 
 
-  //Check List Here
-  const get_assetchecklist = (site_ID, RowID) => {
+    //Check List Here
+    const get_assetchecklist = (site_ID, RowID) => {
     APIServices.get_assetchecklist(site_ID, RowID)
         .then((responseJson) => {
         console.log("Login JSON DATA : ", responseJson);
@@ -2465,6 +2467,10 @@ const AssetFrom = (props) => {
   //Multiply calculation CheckList
   const totalCostCheckList = ResultCheckList.reduce((acc, item) => acc + (parseFloat(item.ast_ls2_max_avg_usage) || 0) * (parseFloat(item.ast_ls2_warranty_usage) || 0), 0);
 
+
+  //Tooltip
+  var renderTooltipAssetHistory = <span>Asset History</span>;
+  var renderTooltipStatusAudit = <span>Status Audit</span>;
 
 
 
@@ -2713,7 +2719,7 @@ const AssetFrom = (props) => {
                                     </Modal.Header>
 
                                     <Modal.Body>
-                                        {/******************** PM Setup ********************/}
+                                        
                                         <div>
                                             <Modal show={showPmSetup} onHide={handleClosePmSetup} centered >
 
@@ -3762,11 +3768,15 @@ const AssetFrom = (props) => {
                                         <div className="col-sm-7 StatusBox-md StatusBox-sm">
                                             <Form.Control className='formControl' type="text" value={AssetNo} onChange={(e) => {setAssetNo(e.target.value); handleInputChange();}}  disabled={AssetNo_disabled}/>
                                         </div>
-                                        <i type="button" 
-                                        title='Asset History'
-                                        className="icon mdi mdi-dots-vertical StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm" 
-                                        onClick={handleToggleList}
-                                        ></i>
+                                        <Tooltip
+                                            placement="bottom"
+                                            overlay={renderTooltipAssetHistory}>
+                                            <i type="button" 
+                                            //title='Asset History'
+                                            className="icon mdi mdi-dots-vertical StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm" 
+                                            onClick={handleToggleList}
+                                            ></i>
+                                        </Tooltip>
                                     </Form.Group>
                                     <Collapse in={showList}>
                                         <Card className="float-left dotslist dotslist-md dotslist-sm">
@@ -3815,11 +3825,15 @@ const AssetFrom = (props) => {
                                                 }}
                                             />
                                         </div>
-                                        <i type="button" 
-                                        title='Status Audit'
-                                        className="icon mdi mdi-information-outline StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm" 
-                                        onClick={StatushandleShow}
-                                        ></i>
+                                        <Tooltip
+                                            placement="bottom"
+                                            overlay={renderTooltipStatusAudit}>
+                                            <i type="button" 
+                                            //title='Status Audit'
+                                            className="icon mdi mdi-information-outline StatusAuditbuttonDown StatusAuditbuttonDown-md StatusAuditbuttonDown-sm" 
+                                            onClick={StatushandleShow}
+                                            ></i>
+                                        </Tooltip>
                                     </Form.Group>                        
                                 </div>
 
