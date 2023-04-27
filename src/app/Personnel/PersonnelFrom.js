@@ -310,6 +310,19 @@ const PersonnalFrom = (props) => {
                     }));                   
                     setEmployee_Work_Group(Employee_Work_Group);
 
+
+                let cDefaultSiteCode = responseJson.data.data.Default_SiteCode.map(item => ({
+                    label: item.site_cd +" : "+ item.site_name ,
+                    value: item.site_name
+                }));
+                setcDefaultSiteCode(cDefaultSiteCode);
+
+                let cDefaultLanguage = responseJson.data.data.Default_Language.map(item => ({
+                    label: item.language_cd +" : "+ item.descs ,
+                    value: item.language_cd
+                }));
+                setcDefaultLanguage(cDefaultLanguage);
+
                     
                         if(selected_asset == 'New_Employee'){ 
 
@@ -2182,6 +2195,7 @@ const PersonnalFrom = (props) => {
                                     type="number"  
                                     placeholder="0" 
                                     value={cFailedLoginAttempts} 
+                                    readOnly
                                     //onChange={(e) => setFailedLoginAttempts(e.target.value)}
                                     />
                             </label>
@@ -2199,6 +2213,7 @@ const PersonnalFrom = (props) => {
                                     type="datetime-local"  
                                     value={cLastLogin} 
                                     onChange={(e) => setcLastLogin(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                    readOnly
                                     />
                             </label>
                             </div>
@@ -2215,6 +2230,7 @@ const PersonnalFrom = (props) => {
                                     type="datetime-local"  
                                     value={cLastPasswordChanged} 
                                     onChange={(e) => setcLastPasswordChanged(Moment(e.target.value).format('YYYY-MM-DDTHH:mm:ss'))} //insert and show date
+                                    readOnly
                                     />
                             </label>
                             </div>
@@ -2794,7 +2810,7 @@ const PersonnalFrom = (props) => {
                                                 <div className="col-md-6 moveUp-md moveUp-sm">
                                                     <Form.Group className="row">
                                                         <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Supervisor Name:</label>
-                                                        <div className="col-sm-8"></div>
+                                                        <div className="col-sm-8" style={{ fontSize: "13px", paddingTop: "10px", paddingLeft: "25px" }}>{Emp_Name}</div>
                                                     </Form.Group>
                                                 </div>                                      
                                             </div>
