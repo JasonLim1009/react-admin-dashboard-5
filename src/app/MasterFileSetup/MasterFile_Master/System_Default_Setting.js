@@ -164,6 +164,26 @@ const System_Default_Setting = (props) => {
     const [AutoClosePO, setAutoClosePO] = useState(false);
     const [CheckBox_AutoClosePO, setCheckBox_AutoClosePO] = useState('0');
 
+    const [EmailMethod, setEmailMethod] = useState([{label:"PB Mail",value:""},{label:"PBNI Mail",value:""},{label:"SMTP Mail",value:""}]);
+    const [selected_EmailMethod, setSelected_EmailMethod] = useState([]);
+
+    const [EmailServer, setEmailServer] = useState("");
+
+    const [EmailAddress, setEmailAddress] = useState("");
+
+    const [Password, setPassword] = useState("");
+
+    const [EmailName, setEmailName] = useState("");
+
+    const [PortNumber, setPortNumber] = useState('25');
+
+    const [SMTPServerrequiresuseridpassword, setSMTPServerrequiresuseridpassword] = useState(false);
+    const [CheckBox_SMTPServerrequiresuseridpassword, setCheckBox_SMTPServerrequiresuseridpassword] = useState('0');
+
+    const [EmailServerEncryption, setEmailServerEncryption] = useState([{label:"(None)",value:""},{label:"SSL",value:""},{label:"TLS",value:""}]);
+    const [selected_EmailServerEncryption, setSelected_EmailServerEncryption] = useState([]);
+
+    
 
     const get_systemdefaultsetting_status = (site_ID, type) => {
 
@@ -377,6 +397,15 @@ const System_Default_Setting = (props) => {
                 setAutoGeneratePO( responseJson.data.data[index].dft_mst_generate_po )
                 setAutoClosePO( responseJson.data.data[index].dft_mst_po_auto_close )
 
+                setSelected_EmailMethod( {label:responseJson.data.data[index].dft_mst_email_method} )
+                setEmailServer( responseJson.data.data[index].dft_mst_email_server )
+                setEmailAddress( responseJson.data.data[index].dft_mst_email_address )
+                setPassword( responseJson.data.data[index].temp_password )
+                setEmailName( responseJson.data.data[index].dft_mst_email_name )
+                setPortNumber( responseJson.data.data[index].dft_mst_email_port )
+                setSelected_EmailServerEncryption( {label:responseJson.data.data[index].dft_mst_email_encryption} )
+                setSMTPServerrequiresuseridpassword( responseJson.data.data[index].dft_mst_email_auth )
+
               }
 
 
@@ -402,7 +431,6 @@ const System_Default_Setting = (props) => {
     }
 
     
-
     useEffect(() => {
 
         let site_ID = localStorage.getItem("site_ID");
@@ -413,7 +441,6 @@ const System_Default_Setting = (props) => {
        
 
     },[location]);
-
 
 
     const onClickChange = () => {
@@ -451,7 +478,6 @@ const System_Default_Setting = (props) => {
         setEdited(true);
     };
 
-    
 
     const Update_SystemDefaultSetting = () => {
 
@@ -810,8 +836,7 @@ const System_Default_Setting = (props) => {
             })
           });
     
-      }
-
+    }
 
 
     const handleOnChangeShowDashboard = () => {
@@ -1149,6 +1174,19 @@ const System_Default_Setting = (props) => {
         }else{
             console.log('0')
             setCheckBox_AutoClosePO('0')
+        }
+    }
+
+    const handleOnChangeSMTPServerrequiresuseridpassword = () => {
+        setSMTPServerrequiresuseridpassword(!SMTPServerrequiresuseridpassword);
+        handleInputChange();
+        
+        if(!SMTPServerrequiresuseridpassword){
+            console.log('1')
+            setCheckBox_SMTPServerrequiresuseridpassword('1')
+        }else{
+            console.log('0')
+            setCheckBox_SMTPServerrequiresuseridpassword('0')
         }
     }
 
@@ -2392,6 +2430,303 @@ const System_Default_Setting = (props) => {
 
                             <Tab eventKey="Email" title={<><i className="mdi mdi-email"></i><span className="d-none d-md-inline"> Email</span></>} class="nav nav-tabs nav-item nav-link active">
                                 
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_EmailMethod">
+                                        <label className="col-sm-4 col-form-label down" style={{ fontSize: "13px" }}>
+                                            Email Method:
+                                        </label>
+                                        <div className="col-sm-4">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={EmailMethod}
+                                                    value={selected_EmailMethod}
+                                                    onChange={value => {
+                                                        setSelected_EmailMethod(value);
+                                                        handleInputChange();
+                                                        }}  // using id as it is unique
+                                                    required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
+                                                />
+                                        </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                                <div className="row moveUp moveUpSystemEmail-md moveUp-sm">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
+                                        <Form.Group className="row" controlId="validation_EmailServer">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Email Server:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control 
+                                                className='formControl' 
+                                                type="text" 
+                                                value={EmailServer} 
+                                                onChange={(e) => {
+                                                    setEmailServer(e.target.value); 
+                                                    handleInputChange();}} 
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                                <div className="row moveUp moveUpSystemEmail-md moveUp-sm">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
+                                        <Form.Group className="row" controlId="validation_EmailAddress">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Email Address:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control 
+                                                className='formControl' 
+                                                type="text" 
+                                                value={EmailAddress} 
+                                                onChange={(e) => {
+                                                    setEmailAddress(e.target.value); 
+                                                    handleInputChange();}} 
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                                <div className="row moveUp moveUpSystemEmail-md moveUp-sm">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
+                                        <Form.Group className="row" controlId="validation_Password">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Password:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control 
+                                                className='formControl' 
+                                                type="text" 
+                                                value={Password} 
+                                                onChange={(e) => {
+                                                    setPassword(e.target.value); 
+                                                    handleInputChange();}} 
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                                <div className="row moveUp moveUpSystemEmail-md moveUp-sm">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
+                                        <Form.Group className="row" controlId="validation_EmailName">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Email Name:</label>
+                                            <div className="col-sm-8">
+                                                <Form.Control 
+                                                className='formControl' 
+                                                type="text" 
+                                                value={EmailName} 
+                                                onChange={(e) => {
+                                                    setEmailName(e.target.value); 
+                                                    handleInputChange();}} 
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                                <div className="row moveUp moveUpSystemEmail-md moveUp-sm">
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
+                                        <Form.Group className="row" controlId="validation_PortNumber">
+                                            <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>Port Number:</label>
+                                            <div className="col-sm-2">
+                                                <Form.Control 
+                                                className='formControl' 
+                                                type="number" 
+                                                placeholder="0"
+                                                value={PortNumber} 
+                                                onChange={(e) => {
+                                                    setPortNumber(e.target.value); 
+                                                    handleInputChange();}} 
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                                {/********************* This Code is Add image on right *********************/}
+                                {/* <div className="row moveUp moveUpSystemEmail-md moveUp-sm">
+                                    <div className='col'>
+                                        <div className="col-md-13">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label down" style={{ fontSize: "13px" }}>
+                                            Email Server:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control 
+                                                className='formControl' 
+                                                type="text" 
+                                                value={EmailServer} 
+                                                onChange={(e) => {
+                                                    setEmailServer(e.target.value); 
+                                                    handleInputChange();}} 
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-13 moveUp">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
+                                            Email Address:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control 
+                                                className='formControl' 
+                                                type="text" 
+                                                value={EmailAddress} 
+                                                onChange={(e) => {
+                                                    setEmailAddress(e.target.value); 
+                                                    handleInputChange();}} 
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-13 moveUp">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
+                                            Password:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control 
+                                                className='formControl' 
+                                                type="text" 
+                                                value={Password} 
+                                                onChange={(e) => {
+                                                    setPassword(e.target.value); 
+                                                    handleInputChange();}} 
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-13 moveUp">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
+                                            Email Name:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control 
+                                                className='formControl' 
+                                                type="text" 
+                                                value={EmailName} 
+                                                onChange={(e) => {
+                                                    setEmailName(e.target.value); 
+                                                    handleInputChange();}} 
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+
+                                        <div className="col-md-13 moveUp">
+                                            <Form.Group className="row">
+                                            <label className="col-sm-4 col-form-label labelTop down" style={{ fontSize: "13px" }}>
+                                            Port Number:
+                                            </label>
+                                            <div className="col-sm-8">
+                                                <Form.Control 
+                                                className='formControl' 
+                                                type="number" 
+                                                placeholder="0"
+                                                value={PortNumber} 
+                                                onChange={(e) => {
+                                                    setPortNumber(e.target.value); 
+                                                    handleInputChange();}} 
+                                                />
+                                            </div>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-md-6 moveUp-md moveUp-sm">
+                                        <Form.Group className="row">
+                                  
+                                            <img src={require("../../../assets/images/email.png")} className="smtpimg" alt=""/>
+                                       
+                                        </Form.Group>
+                                    </div>
+                                </div> */}
+
+                                <div className="row moveUp moveUpBox-md moveUp-sm">
+                                    <div className="col-md-6">
+                                        <Form.Group className="row" controlId="validation_EmailServerEncryption">
+                                        <label className="col-sm-4 col-form-label top down" style={{ fontSize: "13px" }}>
+                                            Email Server Encryption:
+                                        </label>
+                                        <div className="col-sm-4">
+                                                <Select  
+                                                    isClearable={true}  
+                                                    options={EmailServerEncryption}
+                                                    value={selected_EmailServerEncryption}
+                                                    onChange={value => {
+                                                        setSelected_EmailServerEncryption(value);
+                                                        handleInputChange();
+                                                        }}  // using id as it is unique
+                                                    required
+                                                    styles={{
+                                                        control: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        backgroundColor: isDisabled ? '#E9ECEF' : 'white',
+                                                        color: isDisabled ? 'black' : 'inherit',
+                                                        fontSize: '12px', minHeight:'30px',height: "34px"
+                                                        }),
+                                                        singleValue: (styles, { isDisabled }) => ({
+                                                        ...styles,
+                                                        color: isDisabled ? '#495057' : 'inherit',
+                                                        fontSize: '12px', paddingLeft:'2px'
+                                                        }),
+                                                        menuList: (styles) => ({ ...styles, fontSize: '12px' }),
+                                                        dropdownIndicator: (styles) => ({ ...styles, height: '32px' }),
+                                                        noOptionsMessage: (styles) => ({ ...styles, fontSize: "12px",marginTop: '-5px' }),
+                                                    }}
+                                                />
+                                        </div>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                                <div className="row moveUp moveUpSystemEmail-md moveUp-sm">
+                                    <div className="col-md-12 moveUp-md moveUp-sm">
+                                        <Form.Group className="row" controlId="validation_SMTPServerrequiresuseridpassword">
+                                            <div className="col-sm-2 form-check smtpCheckBoxLeft smtpCheckBoxLeft-md smtpCheckBoxLeft-sm">
+                                                <label className="form-check-label">
+                                                    <input type="checkbox" 
+                                                    className="form-check-input"
+                                                    checked={SMTPServerrequiresuseridpassword}
+                                                    onChange={handleOnChangeSMTPServerrequiresuseridpassword}
+                                                    />
+                                                    <i className="input-helper"></i>
+                                                </label>
+                                            </div>
+                                            <label className="col-sm-6 col-form-label top down smtpCheckBoxLabelLeft-md smtpCheckBoxLabelLeft-sm" style={{ fontSize: "13px" }}>SMTP Server requires userid/password</label>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+
+                                <div className="col-md-12 moveUpPopUp">
+                                    <Form.Group className="row" controlId="validation_footerText">
+                                        <label className="col-sm-12 col-form-label labelTopAsset down left footerText" style={{ fontSize: "13px" }}>* PB Mail establishes a messaging application program interface (MAPI) session.</label>
+                                        <label className="col-sm-12 col-form-label labelTopAsset down left footerText" style={{ fontSize: "13px" }}>* PBNI Mail is a PowerBuilder Native Interface that implements SMTP. It is not supported in Appeon environment.</label>
+                                        <label className="col-sm-12 col-form-label labelTopAsset down left footerText" style={{ fontSize: "13px" }}>* SMTP Mail use Winsock to implemnts SMTP. It is not supported in Appeon environment too.</label>
+                                    </Form.Group>
+                                </div>
+
                             </Tab>
 
 
@@ -2400,6 +2735,7 @@ const System_Default_Setting = (props) => {
                        
                 </div>
             </div>
+
             <div className="page-header">
                 <h3 className="page-title"></h3>
                 <nav aria-label="breadcrumb">
