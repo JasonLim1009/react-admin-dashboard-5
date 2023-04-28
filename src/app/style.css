@@ -64,6 +64,17 @@
   z-index: 1;
 }
 
+  /* System_Default_smtp */
+  .smtpCheckBoxLeft {
+    left: 15%;
+  }
+
+  .smtpimg {
+    width: 25%;
+    height: 75px;
+    object-fit: cover;
+    margin-left: 100px;
+  }
 
 /* .modal-dialog {
   max-width: 900px;
@@ -138,6 +149,10 @@
   .moveUpCheckBoxSpace-md {
     margin-top: -47px;
   }
+
+  .moveUpSystemEmail-md {
+    margin-top: 0px;
+  }
 }
 
 
@@ -189,6 +204,15 @@
 
   .moveLeftRadioLabel-md {
     margin-left: -15px;
+  }
+
+   /* System_Default_smtp */
+   .smtpCheckBoxLeft-md {
+    left: 29%;
+  }
+
+  .smtpCheckBoxLabelLeft-md {
+    left: 17%;
   }
 
 }
@@ -315,6 +339,16 @@
     left: 90%;
     bottom: 35px;
     padding-right: 85%;
+  }
+
+  /* System_Default_smtp */
+  .smtpCheckBoxLeft-sm {
+    left: 4%;
+  }
+
+  .smtpCheckBoxLabelLeft-sm {
+    margin-top: -32px;
+    left: 17%;
   }
 
   .settingTop-sm {
